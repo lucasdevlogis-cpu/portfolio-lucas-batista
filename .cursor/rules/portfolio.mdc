@@ -1,0 +1,35 @@
+---
+description: Regras do portfólio Lucas Batista — stack, design, conteúdo e vibecoding
+alwaysApply: true
+---
+
+# Portfolio Lucas Batista
+
+Consulte `docs/INDEX.md` para mapa da documentação. Regras completas em `.cursorrules` na raiz.
+
+## Stack
+
+- Next.js 16 App Router (docs referem v15 — compatível), React 19, TypeScript
+- Tailwind CSS v4 (`@import "tailwindcss"` + `@theme` em `app/globals.css` — sem `tailwind.config.ts`)
+- shadcn/ui, Framer Motion, Lucide React
+
+## Conteúdo
+
+- Textos sempre de `data/content.ts` (espelha `docs/CONTENT.md`)
+- Nunca hardcode copy nos componentes
+- Português do Brasil
+
+## Design
+
+- Primary `#1e3a5f`, accent `#0d9488`, background `#f8fafc`
+- Inter (headings), Geist Sans (body)
+- Cards: `rounded-xl`, hover `shadow-md scale-[1.02]`
+
+## Deploy
+
+- Static export: `output: 'export'` em `next.config.ts`
+- Demos Streamlit via iframe com `?embed=true` no `DemoModal`
+
+## Seções (ordem)
+
+Header → Hero → Dores → Serviços → Cases → Método → IA → Contato → Footer

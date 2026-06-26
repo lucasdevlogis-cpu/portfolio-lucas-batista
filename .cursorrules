@@ -1,0 +1,137 @@
+# Portfolio Lucas Batista — Regras para Kimi Code no Cursor
+
+> **Uso:** Este arquivo está na raiz do projeto. O Cursor (Kimi Code) lê este arquivo automaticamente para entender o contexto do projeto. Não é necessário copiar nada — o Cursor já tem acesso.
+>
+> **Workflow:** Leia → Execute prompts → Teste → Itere. O arquivo `docs/PROMPTS.md` contém todos os prompts copiar-colar. O arquivo `docs/CONTENT.md` contém todo o texto do site.
+
+---
+
+## Contexto
+
+- Portfólio profissional de Lucas Batista, especialista autônomo em inteligência operacional para logística, transporte, varejo e e-commerce no Brasil.
+- Site: landing page one-page (home) construída com Next.js 15, Tailwind CSS v4, TypeScript e shadcn/ui.
+- Objetivo: gerar leads de consultoria — o visitante deve entender em 30 segundos qual problema resolve, para quem, e como contratar.
+- Todos os textos do site vêm de `data/content.ts`. Nunca hardcode textos diretamente nos componentes — sempre importar do arquivo de dados.
+- Isso facilita edições futuras via vibecoding: basta editar o arquivo de dados, não o componente.
+
+---
+
+## Tecnologias
+
+- Next.js 15 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS v4 (CSS-based config, não tailwind.config.ts)
+- shadcn/ui (componentes UI — usar `npx shadcn@latest add <component>`)
+- Framer Motion (animações)
+- Lucide React (ícones)
+
+### Tailwind v4 — Regras Específicas
+
+- Tailwind v4 usa configuração CSS-based em `app/globals.css`, não `tailwind.config.ts`.
+- O arquivo `globals.css` deve ter: `@import "tailwindcss"` e bloco `@theme` com as variáveis CSS.
+- Cores customizadas são definidas como variáveis CSS em `@theme`, ex: `--color-primary: #1e3a5f`.
+- Não criar `tailwind.config.ts` — isso é v3.
+
+---
+
+## Design
+
+- Estética profissional, limpa, confiável
+- Cores: primary `#1e3a5f`, accent `#0d9488`, background `#f8fafc`, card `#ffffff`, text `#0f172a`, muted `#64748b`, border `#e2e8f0`
+- Tipografia: Inter (Google Fonts) para headings, Geist Sans para body
+- Layout: mobile-first, responsivo
+- Scroll suave: `scroll-behavior: smooth` no CSS global
+- Animações sutis com Framer Motion (fade-in, slide-up)
+- Cards: `rounded-xl`, `shadow-sm`, hover com `shadow-md` e `scale-[1.02]`
+
+---
+
+## Estrutura de Seções (ordem final)
+
+1. **Header/Nav** — logo + links + CTA "Falar sobre minha operação"
+2. **Hero** — headline + subheadline + 2 CTAs
+3. **Dores** — 8 cards de dores logísticas
+4. **Serviços** — 5 níveis de contratação (escada)
+5. **Cases** — grid de 6 cases (P0 + P1) para grid simétrico, ou 7 com grid flexível
+6. **Método** — 5 passos do processo
+7. **IA/Vibecoding** — uso de IA como acelerador
+8. **Contato** — formulário + CTA
+9. **Footer** — copyright + links + declaração ética
+
+---
+
+## Regras de Código
+
+- Todos os componentes: React function components com TypeScript.
+- Use `interface` ou `type` para tipagem. Evite `any`.
+- Use Tailwind classes utilitárias. Não criar CSS custom a menos que necessário.
+- Componentes reutilizáveis: `SectionHeader`, `CaseCard`, `ServiceCard`, `PainPointCard`, `DemoModal`.
+- Imagens: usar placeholders, ícones Lucide, ou componentes SVG. Nunca imagens genéricas de stock.
+- Textos: sempre em português do Brasil. Nunca hardcode — importar de `data/content.ts`.
+- SEO: meta tags, Open Graph, title, description em `layout.tsx`.
+- Performance: lazy loading, `will-change` em animações.
+- Use `cn()` do `lib/utils.ts` (gerado pelo shadcn) para concatenação condicional de classes.
+- **shadcn/ui:** para adicionar componentes, use `npx shadcn@latest add <nome>` (ex: `npx shadcn@latest add button card dialog`).
+
+---
+
+## Integração com Demos Streamlit
+
+- Cada case tem link "Ver demo interativa".
+- Demo embedada via iframe: `src="https://SEU-APP.streamlit.app/?embed=true"`.
+- O `?embed=true` remove toolbar do Streamlit.
+- Estilo do iframe: `width: 100%`, `height: 700px`, `border: none`, `border-radius: 12px`.
+- A demo abre em modal/drawer ao clicar, não em nova página.
+- Em mobile, o iframe deve ter altura reduzida (500px) ou abrir em nova aba.
+
+---
+
+## Deploy
+
+- Target: Vercel (gratuito)
+- Build: `output: 'export'` em `next.config.ts` (static export)
+- Não usar rotas dinâmicas que dependam de SSR
+- Variáveis de ambiente no painel da Vercel
+
+---
+
+## Dicas de Vibecoding
+
+### Como o Cursor Usa Este Arquivo
+
+O Cursor lê `.cursorrules` automaticamente em cada sessão. Não precisa copiar/colar. Para dar instruções adicionais em um prompt, referencie arquivos com `@`.
+
+### Como Dar Contexto nos Prompts
+
+Sempre inclua: **Onde** (pasta/nome), **O que** já existe (arquivos relevantes), **Para que** serve (contexto de negócio).
+
+Exemplo bom:
+
+```
+No componente Hero.tsx (já existe em components/Hero.tsx), adicione um segundo CTA ao lado do botão existente. Este botão deve ser outline com texto "Ver cases demonstráveis" e ao clicar deve fazer scroll suave até a seção #cases. Use o mesmo estilo do botão primário mas com variant="outline".
+```
+
+### Como Iterar
+
+1. **Primeiro prompt:** estrutura básica
+2. **Teste:** `npm run dev` — verifique se compila e o layout está razoável
+3. **Segundo prompt:** ajustes de cores, espaçamentos, animações
+4. **Terceiro prompt:** funcionalidades (filtro, modal, validação)
+5. **Quarto prompt:** polimento (responsive, acessibilidade)
+
+### Como Debugar
+
+- Copie a mensagem de erro inteira e cole no prompt
+- Descreva o comportamento esperado vs o atual
+- Pergunte especificamente: "Por que o componente X não renderiza?"
+
+### Como Manter a Coerência
+
+- Mencione componentes existentes quando criar novos
+- Use `@` para referenciar: `@data/content.ts` ou `@components/CaseCard.tsx`
+- Atualize `.cursorrules` se mudar decisões de design
+
+---
+
+*Arquivo de regras do Cursor. Mantenha na raiz do projeto. Atualize conforme evoluir.*
