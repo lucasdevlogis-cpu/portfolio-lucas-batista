@@ -266,10 +266,12 @@
 
 ## Revisão v1.3 — Junho de 2026 — GitHub + Fase 4 parcial
 
-### Repositórios GitHub criados
+### Repositórios GitHub (conta lucasdevlogis-cpu)
 
-- https://github.com/lucas109895-dev/portfolio-lucas-batista
-- https://github.com/lucas109895-dev/demos-logistica
+- https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista
+- https://github.com/lucasdevlogis-cpu/demos-logistica
+
+> Conta `lucas109895-dev` foi desvinculada do `gh` CLI. Exclua repos antigos manualmente se ainda existirem.
 
 ### Fase 4 (parcial)
 

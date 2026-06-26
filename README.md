@@ -30,7 +30,7 @@ Copie `.env.example` para `.env.local`:
 
 ## Demos Streamlit
 
-Código em [`demos-logistica/`](demos-logistica/). Repositório dedicado: **[github.com/lucas109895-dev/demos-logistica](https://github.com/lucas109895-dev/demos-logistica)**.
+Código em [`demos-logistica/`](demos-logistica/). Repositório dedicado: **[github.com/lucasdevlogis-cpu/demos-logistica](https://github.com/lucasdevlogis-cpu/demos-logistica)**.
 
 Deploy: [`docs/DEPLOY.md`](docs/DEPLOY.md)
 

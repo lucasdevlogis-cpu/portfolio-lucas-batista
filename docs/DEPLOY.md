@@ -1,20 +1,22 @@
 # Deploy — Portfólio Lucas Batista
 
-Guia rápido pós-push GitHub. Conta ativa: **lucas109895-dev**.
+Guia de deploy. Conta GitHub: **lucasdevlogis-cpu** (`lucas.dev.logis@gmail.com`).
 
-## Repositórios criados
+## Repositórios (conta correta)
 
 | Repo | URL |
 |------|-----|
-| Landing Next.js | https://github.com/lucas109895-dev/portfolio-lucas-batista |
-| Demos Streamlit | https://github.com/lucas109895-dev/demos-logistica |
+| Landing Next.js | https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista |
+| Demos Streamlit | https://github.com/lucasdevlogis-cpu/demos-logistica |
+
+> **Nota:** Repositórios criados anteriormente em `lucas109895-dev` devem ser excluídos manualmente em GitHub → Settings → Delete repository (a conta foi desvinculada do `gh` CLI).
 
 ---
 
 ## 1. Streamlit Cloud (demos)
 
 1. Acesse [share.streamlit.io](https://share.streamlit.io) e faça login com GitHub.
-2. **New app** → repositório `lucas109895-dev/demos-logistica`.
+2. **New app** → repositório `lucasdevlogis-cpu/demos-logistica`.
 3. **Branch:** `main` · **Main file path:** `app.py`
 4. Deploy. Anote a URL (ex: `https://demos-logistica-xxxxx.streamlit.app`).
 
