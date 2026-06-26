@@ -52,7 +52,7 @@ Rebuild o Next.js após definir a variável.
 
 6. Deploy.
 
-**Importante — toggles de override no painel:** em cada campo (Framework, Build Command, Output Directory, Install Command), o toggle **Override deve estar DESLIGADO** (usar padrão). Não basta deixar o campo vazio com override ligado — isso faz a Vercel pular o build do Next.js e publicar um site vazio (404).
+**Importante — toggles de override no painel:** em cada campo (Framework, Build Command, Output Directory, Install Command), o toggle **Override deve estar DESLIGADO** (usar padrão). Não basta deixar o campo vazio com override ligado — isso grava `outputDirectory: ""` e faz a Vercel pular o build do Next.js (site vazio / 404).
 
 ### Erro `routes-manifest.json` ou output `dist` não encontrado
 
