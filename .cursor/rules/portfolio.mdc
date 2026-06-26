@@ -27,7 +27,7 @@ Consulte `docs/INDEX.md` para mapa da documentação. Regras completas em `.curs
 
 ## Deploy
 
-- Static export: `output: 'export'` em `next.config.ts` → pasta `out/` (ver `vercel.json`)
+- Deploy na Vercel como Next.js padrão (`next build` → `.next/`). Não usar `output: 'export'` nem override de Output Directory no painel.
 - Demos Streamlit via iframe com `?embed=true` no `DemoModal`
 
 ## Seções (ordem)

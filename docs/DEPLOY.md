@@ -39,9 +39,9 @@ Rebuild o Next.js após definir a variável.
 ## 2. Vercel (landing)
 
 1. Acesse [vercel.com/new](https://vercel.com/new) → importe `portfolio-lucas-batista`.
-2. **Build command:** `npm run build`
-3. **Output directory:** `out` (static export — **não** use `dist` nem `.next`)
-4. **Framework:** deixe Vercel detectar ou use "Other" se o erro `routes-manifest.json` persistir
+2. **Framework Preset:** Next.js (detecção automática).
+3. **Build command:** deixe em branco (usa `npm run build` do `package.json`).
+4. **Output Directory:** deixe em branco — **não** preencha `dist`, `out` nem `.next`.
 5. **Environment variables:**
 
 | Nome | Valor |
@@ -54,14 +54,17 @@ Rebuild o Next.js após definir a variável.
 
 ### Erro `routes-manifest.json` não encontrado
 
-Esse projeto usa **export estático** (`output: 'export'`), não SSR. A pasta gerada é `out/`, sem `.next` nem `routes-manifest.json`.
+Esse erro aparece quando a Vercel procura artefatos do Next.js (`.next/routes-manifest.json`), mas o **Output Directory** no painel aponta para pasta errada (`dist`, `out`, etc.) ou um `vercel.json` antigo força `outputDirectory`.
 
-**Correção:**
+**Correção (neste projeto):**
 
-1. Em **Project Settings → General → Build & Output**: Output Directory = `out`
-2. Remova override de Framework Preset se estiver forçando Next.js SSR
-3. Confirme que `vercel.json` **não** contém `"framework": "nextjs"`
-4. Redeploy
+1. **Project Settings → General → Build & Output**
+   - Output Directory: **vazio** (padrão)
+   - Build Command: **vazio** ou `npm run build`
+   - Framework: **Next.js**
+2. Remova `vercel.json` do repo se existir com `outputDirectory` ou `framework`.
+3. O projeto **não** usa `output: 'export'` — a Vercel roda `next build` e usa `.next/` nativamente.
+4. **Redeploy** após salvar.
 
 ---
 
