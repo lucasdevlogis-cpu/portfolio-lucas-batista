@@ -27,7 +27,7 @@ Consulte `docs/INDEX.md` para mapa da documentação. Regras completas em `.curs
 
 ## Deploy
 
-- Static export: `output: 'export'` em `next.config.ts`
+- Static export: `output: 'export'` em `next.config.ts` → pasta `out/` (ver `vercel.json`)
 - Demos Streamlit via iframe com `?embed=true` no `DemoModal`
 
 ## Seções (ordem)

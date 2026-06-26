@@ -18,14 +18,18 @@ Guia de deploy. Conta GitHub: **lucasdevlogis-cpu** (`lucas.dev.logis@gmail.com`
 1. Acesse [share.streamlit.io](https://share.streamlit.io) e faça login com GitHub.
 2. **New app** → repositório `lucasdevlogis-cpu/demos-logistica`.
 3. **Branch:** `main` · **Main file path:** `app.py`
-4. Deploy. Anote a URL (ex: `https://demos-logistica-xxxxx.streamlit.app`).
+4. Deploy. URL atual:
+
+```
+https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
+```
 
 ### Conectar à landing
 
 Na Vercel (ou `.env.local` local):
 
 ```env
-NEXT_PUBLIC_DEMOS_BASE_URL=https://SUA-URL.streamlit.app
+NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
 ```
 
 Rebuild o Next.js após definir a variável.
@@ -35,9 +39,9 @@ Rebuild o Next.js após definir a variável.
 ## 2. Vercel (landing)
 
 1. Acesse [vercel.com/new](https://vercel.com/new) → importe `portfolio-lucas-batista`.
-2. **Framework:** Next.js (detectado automaticamente).
-3. **Build command:** `npm run build`
-4. **Output directory:** `dist` (já em `vercel.json`).
+2. **Build command:** `npm run build`
+3. **Output directory:** `out` (static export — **não** use `dist` nem `.next`)
+4. **Framework:** deixe Vercel detectar ou use "Other" se o erro `routes-manifest.json` persistir
 5. **Environment variables:**
 
 | Nome | Valor |
@@ -48,7 +52,18 @@ Rebuild o Next.js após definir a variável.
 
 6. Deploy.
 
-### CLI (alternativa)
+### Erro `routes-manifest.json` não encontrado
+
+Esse projeto usa **export estático** (`output: 'export'`), não SSR. A pasta gerada é `out/`, sem `.next` nem `routes-manifest.json`.
+
+**Correção:**
+
+1. Em **Project Settings → General → Build & Output**: Output Directory = `out`
+2. Remova override de Framework Preset se estiver forçando Next.js SSR
+3. Confirme que `vercel.json` **não** contém `"framework": "nextjs"`
+4. Redeploy
+
+---
 
 ```bash
 npx vercel login

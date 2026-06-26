@@ -144,7 +144,7 @@
 
 ### Deploy
 
-- [ ] `next.config.js` com `output: 'export'` e `distDir: 'dist'`
+- [ ] `next.config.ts` com `output: 'export'` (export estático em `out/`)
 - [ ] Não há rotas dinâmicas que dependam de SSR
 - [ ] Build na Vercel passa sem erros
 - [ ] Variáveis de ambiente configuradas no dashboard da Vercel
