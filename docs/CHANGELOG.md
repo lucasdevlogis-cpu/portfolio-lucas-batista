@@ -257,9 +257,26 @@
 
 ### Pendente (manual)
 
-- [ ] Repo GitHub + deploy Streamlit Cloud (prompt 3.5)
-- [ ] Definir `NEXT_PUBLIC_DEMOS_BASE_URL` em `.env.local`
-- [ ] Testar iframes em produção
+- [ ] Deploy Streamlit Cloud — [share.streamlit.io](https://share.streamlit.io) → repo `demos-logistica`
+- [ ] Deploy Vercel — [vercel.com/new](https://vercel.com/new) → repo `portfolio-lucas-batista`
+- [ ] `NEXT_PUBLIC_DEMOS_BASE_URL` e Formspree ID na Vercel
+- [ ] Preencher email, LinkedIn, GitHub em `data/content.ts`
+
+---
+
+## Revisão v1.3 — Junho de 2026 — GitHub + Fase 4 parcial
+
+### Repositórios GitHub criados
+
+- https://github.com/lucas109895-dev/portfolio-lucas-batista
+- https://github.com/lucas109895-dev/demos-logistica
+
+### Fase 4 (parcial)
+
+- `public/robots.txt`, `sitemap.xml`, `og-image.png`, `favicon.ico`
+- Formulário com Formspree (`NEXT_PUBLIC_FORMSPREE_FORM_ID`)
+- Schema.org JSON-LD em `layout.tsx`
+- `vercel.json`, `docs/DEPLOY.md`
 
 ---
 
