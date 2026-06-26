@@ -93,7 +93,7 @@
 
 **Bloqueios atuais:**
 
-- Placeholders `[substituir pelo real]` em `data/content.ts`
+- Placeholders `[substituir pelo real]` em `data/content.ts` — resolvido (Jun/2026)
 - Formspree ID não configurado
 - `public/og-image.png` e `public/favicon.ico` ausentes
 

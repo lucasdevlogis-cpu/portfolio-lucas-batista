@@ -252,8 +252,7 @@
 
 Se estiver com pressa, verifique apenas estes 10 itens:
 
-1. [~] Sem placeholder crítico — falta LinkedIn real
-2. [x] Email real (`lucas.dev.logis@gmail.com`)
+2. [x] Email e LinkedIn reais
 3. [ ] Formulário envia dados (ou console.log + mensagem de sucesso)
 4. [ ] Cases P0 com demos funcionando
 5. [ ] Sem erros no console que impedem funcionamento
@@ -265,4 +264,4 @@ Se estiver com pressa, verifique apenas estes 10 itens:
 
 ---
 
-*Documento de checklist. Versão revisada. Atualize conforme o projeto evolui e novos padrões de qualidade fore
+*Documento de checklist. Versão revisada. Atualize conforme o projeto evolui e novos padrões de qualidade forem definidos.*

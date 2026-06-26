@@ -14,8 +14,8 @@
 | **Título** | Especialista em Inteligência Operacional para Logística | ✅ Fixo |
 | **Headline** | Transformo dados e rotinas logísticas em clareza para decidir melhor. | ✅ Fixo |
 | **Subheadline** | Diagnósticos, análises, automações, painéis e protótipos digitais para operações de transporte, varejo e e-commerce que precisam enxergar custo, prazo, frete, gargalos e performance com mais segurança. | ✅ Fixo |
-| **Email** | lucas.dev.logis@gmail.com | ✅ |
-| **LinkedIn** | [substituir pelo real] | ⚠️ Preencher antes do lançamento |
+| **Email** | lucas.farias.log@outlook.com | ✅ |
+| **LinkedIn** | https://linkedin.com/in/lucasfariaslog | ✅ |
 | **GitHub** | https://github.com/lucasdevlogis-cpu | ✅ |
 
 ---

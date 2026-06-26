@@ -13,13 +13,13 @@
 | Landing page (código) | ✅ Completa | 9 seções, 23 componentes, build OK |
 | Demos Streamlit (código) | ✅ Completa | 5 pages + CSVs em `demos-logistica/` |
 | Deploy produção | ✅ No ar | Vercel + Streamlit Cloud funcionando |
-| Conteúdo / credibilidade | 🟡 Quase | Email + GitHub ✅; LinkedIn ainda placeholder |
+| Conteúdo / credibilidade | ✅ OK | Email, LinkedIn e GitHub configurados |
 | SEO assets | ✅ OK | `og-image.png`, `app/icon.png`, `public/favicon.ico` |
 | Formulário de leads | 🟡 Parcial | Formspree integrado; ID não configurado |
 | Documentação | ✅ Atualizada | Alinhada ao deploy Vercel nativo (sem static export) |
 | Testes manuais / Lighthouse | 🟡 Pendente | QA mobile e performance não registrados |
 
-**Veredicto:** MVP deployável. Falta **LinkedIn real** e **Formspree** para divulgação pública com confiança total.
+**Veredicto:** MVP pronto para divulgação. Pendente apenas **Formspree** (leads reais) e QA mobile/Lighthouse.
 
 ---
 
@@ -50,8 +50,7 @@
 
 ### 🔴 Críticos (corrigir antes de divulgar)
 
-1. **LinkedIn placeholder** — `data/content.ts`: `[substituir pelo real]` (email e GitHub ✅)
-2. **Formspree não configurado** — sem `NEXT_PUBLIC_FORMSPREE_FORM_ID`, formulário faz `console.log`
+1. **Formspree não configurado** — sem `NEXT_PUBLIC_FORMSPREE_FORM_ID`, formulário faz `console.log`
 
 ### 🟡 Importantes
 
@@ -62,7 +61,7 @@
 ### ✅ Resolvido (26/06/2026)
 
 - SEO: `og-image.png`, `app/icon.png`, `favicon.ico`
-- Email `lucas.dev.logis@gmail.com` + GitHub nos cases com demo
+- Email + LinkedIn + GitHub em `data/content.ts`
 - `CaseCard` desabilita demo sem URL; `Contato` usa `camposFormulario`
 - `DemoModal` copy atualizada; lint de ícones (`LucideIconByName`)
 - ESLint ignore `.vercel/`; `tsconfig` sem paths `dist/`
@@ -149,12 +148,7 @@ NEXT_PUBLIC_FORMSPREE_FORM_ID=   # opcional até criar conta Formspree
 
 ## Próximos passos sugeridos
 
-1. Preencher `[substituir pelo real]` em `data/content.ts`.
-2. Gerar og-image + favicon.
-3. Formspree → redeploy Vercel.
-4. QA mobile + Lighthouse → marcar CHECKLIST.
-5. Fase 3: READMEs dos cases P0.
-6. Fase 5: primeiro post LinkedIn.
+1. Configurar Formspree → redeploy Vercel
 
 ---
 

@@ -168,8 +168,8 @@ export const CONTENT: Content = {
       "Transformo dados e rotinas logísticas em clareza para decidir melhor",
     subheadline:
       "Diagnósticos, análises, automações, painéis e protótipos digitais para operações de transporte, varejo e e-commerce que precisam enxergar custo, prazo, frete, gargalos e performance com mais segurança.",
-    email: "lucas.dev.logis@gmail.com",
-    linkedin: "[substituir pelo real]",
+    email: "lucas.farias.log@outlook.com",
+    linkedin: "https://linkedin.com/in/lucasfariaslog",
     github: GITHUB_PROFILE_URL,
   },
 
