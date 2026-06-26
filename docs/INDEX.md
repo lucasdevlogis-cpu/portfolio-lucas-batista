@@ -18,6 +18,7 @@ docs/
 ├── ROADMAP.md        ← Roteiro de execução com fases e prazos
 ├── CHECKLIST.md      ← Checklist de qualidade e pré-deploy
 ├── DEPLOY.md         ← Guia de deploy GitHub / Streamlit / Vercel
+├── AVALIACAO.md      ← Avaliação atual: problemas, melhorias, próximos passos
 ├── CHANGELOG.md      ← Histórico de revisões e mudanças aplicadas
 └── .cursorrules      ← Regras para Kimi Code no Cursor (NA RAIZ DO PROJETO)
 ```
@@ -37,7 +38,8 @@ docs/
 5. Use **PROMPTS.md** para copiar e colar os prompts no Cursor.
 6. Use **CONTENT.md** como fonte de verdade para todos os textos.
 7. Antes de deploy, execute **CHECKLIST.md**.
-8. Consulte **CHANGELOG.md** para ver histórico de revisões.
+8. Consulte **AVALIACAO.md** para bloqueadores e melhorias prioritárias.
+9. Consulte **CHANGELOG.md** para ver histórico de revisões.
 
 ### Para editar conteúdo sem tocar em código
 
@@ -76,16 +78,16 @@ docs/
 | Aspecto | Decisão Unificada | Fonte Principal | Nota da Revisão |
 |---|---|---|---|
 | **Posicionamento** | Inteligência operacional para logística, transporte, varejo e e-commerce | VISION.md | — |
-| **Stack** | Next.js 15 + Tailwind CSS v4 + TypeScript + shadcn/ui + Framer Motion + Lucide React | ARCHITECTURE.md | Implementado com **Next.js 16.2.9** (create-next-app Jun/2026) |
-| **Template** | jigar-sable/next-portfolio (fork) OU scaffold limpo (`create-next-app` + `shadcn@latest init`) | ARCHITECTURE.md | Se template falhar, pivotar imediatamente para scaffold limpo |
+| **Stack** | Next.js 16 + Tailwind CSS v4 + TypeScript + shadcn/ui + Framer Motion + Lucide React | ARCHITECTURE.md | Node 24.x em `package.json` |
+| **Template** | Scaffold limpo (`create-next-app` + `shadcn@latest init`) | ARCHITECTURE.md | Pivot em Jun/2026 — não usar fork jigar-sable |
 | **Execução** | Vibecoding via Cursor + Kimi Code + `.cursorrules` na raiz | PROMPTS.md | `.cursorrules` na raiz = requisito crítico |
 | **Cases** | 7 cases (3 P0 + 2 P1 + 2 P2) | VISION.md + CONTENT.md | 6 cases na home para grid simétrico (3×2) |
-| **Demos** | Streamlit Cloud com iframe embed (`?embed=true`) | ARCHITECTURE.md | Pages: 01_precificacao, 02_cvrp, 03_promessa_cep, 07_classificador |
+| **Demos** | Streamlit Cloud com iframe embed (`?embed=true`) | ARCHITECTURE.md + DEPLOY.md | Pages: `01_precificacao_frete`, `02_mini_torre_controle`, `03_cvrp_urbano`, `04_promessa_cep`, `07_classificador_ocorrencias` |
 | **Ofertas** | 5 níveis de serviço (diagnóstico → produto com IA) | VISION.md | Escada de contratação clara |
 | **Público** | PMEs com operação rodando e dores de logística | VISION.md | — |
 | **Política de dados** | Dados sintéticos/públicos com declaração explícita | VISION.md + CHECKLIST.md | Limitação declarada em cada case |
-| **SEO** | Meta tags, OG, sitemap, robots, schema.org | ARCHITECTURE.md + CHECKLIST.md | — |
-| **Deploy** | Static export na Vercel + Streamlit Cloud | ARCHITECTURE.md + PROMPTS.md | `output: 'export'` no `next.config.js` |
+| **SEO** | Meta tags, OG, sitemap, robots, schema.org | ARCHITECTURE.md + CHECKLIST.md | og-image.png e favicon.ico ainda pendentes |
+| **Deploy** | Vercel (Next.js nativo) + Streamlit Cloud | DEPLOY.md + AVALIACAO.md | Sem `output: 'export'`; Output Directory vazio no painel |
 | **Tempo estimado** | ~60-80h de vibecoding (3-6 semanas a 2-4h/dia) | ROADMAP.md | Tempo realista, não ~4-5h |
 | **Fase inicial** | Fase 0: Design + Setup do template (2 dias) | ROADMAP.md | Adicionada na revisão — antes não existia |
 

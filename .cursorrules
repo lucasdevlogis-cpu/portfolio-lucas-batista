@@ -9,7 +9,7 @@
 ## Contexto
 
 - Portfólio profissional de Lucas Batista, especialista autônomo em inteligência operacional para logística, transporte, varejo e e-commerce no Brasil.
-- Site: landing page one-page (home) construída com Next.js 15, Tailwind CSS v4, TypeScript e shadcn/ui.
+- Site: landing page one-page (home) construída com Next.js 16, Tailwind CSS v4, TypeScript e shadcn/ui.
 - Objetivo: gerar leads de consultoria — o visitante deve entender em 30 segundos qual problema resolve, para quem, e como contratar.
 - Todos os textos do site vêm de `data/content.ts`. Nunca hardcode textos diretamente nos componentes — sempre importar do arquivo de dados.
 - Isso facilita edições futuras via vibecoding: basta editar o arquivo de dados, não o componente.
@@ -18,7 +18,7 @@
 
 ## Tecnologias
 
-- Next.js 15 (App Router)
+- Next.js 16 (App Router)
 - React 19
 - TypeScript
 - Tailwind CSS v4 (CSS-based config, não tailwind.config.ts)
@@ -89,10 +89,10 @@
 
 ## Deploy
 
-- Target: Vercel (gratuito)
-- Build: `output: 'export'` em `next.config.ts` (static export)
-- Não usar rotas dinâmicas que dependam de SSR
-- Variáveis de ambiente no painel da Vercel
+- Target: Vercel (gratuito) — Next.js nativo, **sem** `output: 'export'`
+- Output Directory no painel: **vazio**, overrides desligados (ver `docs/DEPLOY.md`)
+- Demos: Streamlit Cloud; env `NEXT_PUBLIC_DEMOS_BASE_URL` no build
+- Guia completo: `docs/DEPLOY.md` · Avaliação: `docs/AVALIACAO.md`
 
 ---
 

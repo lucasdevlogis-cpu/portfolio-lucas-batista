@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { CONTENT } from "@/data/content";
 import { cn } from "@/lib/utils";
 
 interface DemoModalProps {
@@ -64,8 +65,7 @@ export function DemoModal({
                 isMobile ? "h-[500px]" : "h-[700px]",
               )}
             >
-              Demo interativa em construção — disponível na Fase 2 (Streamlit
-              Cloud).
+              {CONTENT.secoes.demoIndisponivel}
             </div>
           )}
         </div>

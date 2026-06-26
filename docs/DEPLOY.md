@@ -6,8 +6,8 @@ Guia de deploy. Conta GitHub: **lucasdevlogis-cpu** (`lucas.dev.logis@gmail.com`
 
 | Repo | URL |
 |------|-----|
-| Landing Next.js | https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista |
-| Demos Streamlit | https://github.com/lucasdevlogis-cpu/demos-logistica |
+| Landing Next.js | <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista> |
+| Demos Streamlit | <https://github.com/lucasdevlogis-cpu/demos-logistica> |
 
 > **Nota:** Repositórios criados anteriormente em `lucas109895-dev` devem ser excluídos manualmente em GitHub → Settings → Delete repository (a conta foi desvinculada do `gh` CLI).
 
@@ -46,11 +46,20 @@ Rebuild o Next.js após definir a variável.
 
 | Nome | Valor |
 |------|-------|
-| `NEXT_PUBLIC_SITE_URL` | `https://portfolio-lucas-batista.vercel.app` (ou domínio custom) |
-| `NEXT_PUBLIC_DEMOS_BASE_URL` | URL do Streamlit Cloud |
+| `NEXT_PUBLIC_SITE_URL` | `https://portfolio-lucas-batista-murex.vercel.app` |
+| `NEXT_PUBLIC_DEMOS_BASE_URL` | URL do Streamlit Cloud (já deployada) |
 | `NEXT_PUBLIC_FORMSPREE_FORM_ID` | ID Formspree (opcional) |
 
-6. Deploy.
+1. Deploy.
+
+> **URLs de demo:** `linkDemo` em `data/content.ts` é calculado **no build**. Após alterar `NEXT_PUBLIC_DEMOS_BASE_URL`, faça **Redeploy** na Vercel.
+
+**Produção atual:**
+
+| Serviço | URL |
+|---------|-----|
+| Landing | <https://portfolio-lucas-batista-murex.vercel.app> |
+| Demos | <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app> |
 
 **Importante — toggles de override no painel:** em cada campo (Framework, Build Command, Output Directory, Install Command), o toggle **Override deve estar DESLIGADO** (usar padrão). Não basta deixar o campo vazio com override ligado — isso grava `outputDirectory: ""` e faz a Vercel pular o build do Next.js (site vazio / 404).
 

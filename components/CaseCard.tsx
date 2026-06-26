@@ -2,11 +2,11 @@
 
 import { ExternalLink, PlayCircle } from "lucide-react";
 
+import { LucideIconByName } from "@/components/LucideIconByName";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import type { Case, CasePrioridade } from "@/data/content";
-import { getLucideIcon } from "@/lib/lucide-icons";
 import { cn } from "@/lib/utils";
 
 interface CaseCardProps extends Case {
@@ -33,15 +33,15 @@ export function CaseCard({
   prioridade,
   onOpenDemo,
 }: CaseCardProps) {
-  const Icon = getLucideIcon(icone);
   const prio = prioridadeStyles[prioridade];
+  const hasDemo = Boolean(linkDemo);
 
   return (
     <Card className="flex h-full flex-col rounded-xl border bg-card shadow-sm transition-all hover:scale-[1.02] hover:shadow-md">
       <CardContent className="flex flex-1 flex-col p-6">
         <div className="mb-4 flex items-start justify-between gap-2">
           <div className="flex size-12 items-center justify-center rounded-lg bg-primary/5 text-primary">
-            <Icon className="size-6" aria-hidden />
+            <LucideIconByName name={icone} className="size-6" />
           </div>
           <Badge className={cn("shrink-0", prio.badge)}>
             {prioridade} · {prio.label}
@@ -72,9 +72,10 @@ export function CaseCard({
         <Button
           className="w-full bg-primary text-primary-foreground hover:bg-primary/90 sm:flex-1"
           onClick={onOpenDemo}
+          disabled={!hasDemo}
         >
           <PlayCircle className="size-4" aria-hidden />
-          Ver demo interativa
+          {hasDemo ? "Ver demo interativa" : "Demo em breve"}
         </Button>
         {linkGitHub ? (
           <a

@@ -1,9 +1,9 @@
 "use client";
 
+import { LucideIconByName } from "@/components/LucideIconByName";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { LucideIconName } from "@/data/content";
-import { getLucideIcon } from "@/lib/lucide-icons";
 import { cn } from "@/lib/utils";
 
 interface PainPointCardProps {
@@ -19,8 +19,6 @@ export function PainPointCard({
   index,
   className,
 }: PainPointCardProps) {
-  const Icon = getLucideIcon(icon);
-
   return (
     <Card
       className={cn(
@@ -33,7 +31,7 @@ export function PainPointCard({
       </Badge>
       <CardContent className="p-6">
         <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/5 text-primary">
-          <Icon className="size-6" aria-hidden />
+          <LucideIconByName name={icon} className="size-6" />
         </div>
         <p className="pr-8 font-medium leading-snug text-foreground">{title}</p>
       </CardContent>

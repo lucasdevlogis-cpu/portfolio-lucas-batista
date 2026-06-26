@@ -94,19 +94,19 @@ github.com/SEU-USUARIO/portfolio-lucas-batista
 ├── lib/
 │   └── utils.ts               # cn() e helpers (gerado pelo shadcn)
 ├── public/
-│   ├── favicon.ico
-│   ├── og-image.png
+│   ├── favicon.ico            # ⚠️ Pendente — referenciado em layout.tsx
+│   ├── og-image.png           # ⚠️ Pendente — referenciado em layout.tsx
 │   ├── robots.txt
 │   └── sitemap.xml
 ├── design/
 │   └── design.md              # Documento de design (fase 0)
 ├── docs/                      # Documentação do projeto (este diretório)
-├── next.config.ts             # Static export, imagens
+├── next.config.ts             # images unoptimized; sem static export
 ├── package.json
 └── tsconfig.json
 ```
 
-**Nota sobre rotas:** No MVP, mantenha tudo em uma única página (`page.tsx`). Rotas separadas como `/cases/precificacao-frete` exigem `generateStaticParams` e complicam o static export. Adicione rotas separadas apenas após o MVP estar no ar.
+**Nota sobre rotas:** No MVP, tudo em uma única página (`page.tsx`). Deploy na Vercel como Next.js padrão (sem `output: 'export'`). Rotas separadas por case são pós-MVP.
 
 ### Repositório 2 — Demos Streamlit (Streamlit Cloud)
 

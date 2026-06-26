@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState, useSyncExternalStore } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,13 +19,13 @@ interface HeaderProps {
   activeSection?: string;
 }
 
+function subscribeNoop() {
+  return () => {};
+}
+
 export function Header({ activeSection = "" }: HeaderProps) {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(subscribeNoop, () => true, () => false);
 
   const handleNavClick = useCallback((href: string) => {
     scrollToSection(href);

@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CONTENT } from "@/data/content";
+import { CONTENT, type CampoFormulario } from "@/data/content";
+
+type FormFieldName = "nome" | "email" | "empresa" | "desafio";
 
 interface FormState {
   nome: string;
@@ -22,6 +24,20 @@ const initialForm: FormState = {
   empresa: "",
   desafio: "",
 };
+
+function isFormFieldName(name: string): name is FormFieldName {
+  return name === "nome" || name === "email" || name === "empresa" || name === "desafio";
+}
+
+function fieldLabel(campo: CampoFormulario): string {
+  const labels: Record<string, string> = {
+    nome: "Nome",
+    email: "Email",
+    empresa: "Empresa",
+    desafio: "Principal dor ou desafio",
+  };
+  return `${labels[campo.nome] ?? campo.nome}${campo.obrigatorio ? " *" : ""}`;
+}
 
 export function Contato() {
   const { pessoal, contato, secoes } = CONTENT;
@@ -64,12 +80,15 @@ export function Contato() {
       setEnviado(true);
       setForm(initialForm);
     } catch {
-      setErro(
-        "Não foi possível enviar agora. Tente o email direto abaixo ou tente novamente.",
-      );
+      setErro(contato.mensagemErro);
     } finally {
       setEnviando(false);
     }
+  }
+
+  function updateField(name: string, value: string) {
+    if (!isFormFieldName(name)) return;
+    setForm((prev) => ({ ...prev, [name]: value }));
   }
 
   return (
@@ -94,11 +113,10 @@ export function Contato() {
               role="status"
             >
               <p className="font-heading text-xl font-semibold text-primary">
-                Mensagem recebida!
+                {contato.tituloSucesso}
               </p>
               <p className="mt-2 text-muted-foreground">
-                Obrigado pelo contato. Retorno em breve para alinhar a leitura
-                inicial da sua operação.
+                {contato.mensagemSucesso}
               </p>
             </div>
           ) : (
@@ -106,64 +124,40 @@ export function Contato() {
               onSubmit={handleSubmit}
               className="space-y-4 rounded-xl border bg-card p-6 shadow-sm"
             >
-              <div className="space-y-2">
-                <Label htmlFor="nome">Nome *</Label>
-                <Input
-                  id="nome"
-                  name="nome"
-                  required
-                  value={form.nome}
-                  placeholder="Seu nome"
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, nome: e.target.value }))
-                  }
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={form.email}
-                  placeholder="seu@email.com"
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, email: e.target.value }))
-                  }
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="empresa">Empresa</Label>
-                <Input
-                  id="empresa"
-                  name="empresa"
-                  value={form.empresa}
-                  placeholder="Nome da empresa (opcional)"
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, empresa: e.target.value }))
-                  }
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="desafio">Principal dor ou desafio</Label>
-                <Textarea
-                  id="desafio"
-                  name="desafio"
-                  rows={4}
-                  value={form.desafio}
-                  placeholder="Conte brevemente o que mais pesa hoje (opcional)"
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, desafio: e.target.value }))
-                  }
-                />
-              </div>
+              {contato.camposFormulario.map((campo) => (
+                <div key={campo.nome} className="space-y-2">
+                  <Label htmlFor={campo.nome}>{fieldLabel(campo)}</Label>
+                  {campo.tipo === "textarea" ? (
+                    <Textarea
+                      id={campo.nome}
+                      name={campo.nome}
+                      rows={4}
+                      required={campo.obrigatorio}
+                      value={form.desafio}
+                      placeholder={campo.placeholder}
+                      onChange={(e) => updateField(campo.nome, e.target.value)}
+                    />
+                  ) : (
+                    <Input
+                      id={campo.nome}
+                      name={campo.nome}
+                      type={campo.tipo}
+                      required={campo.obrigatorio}
+                      value={
+                        isFormFieldName(campo.nome) ? form[campo.nome] : ""
+                      }
+                      placeholder={campo.placeholder}
+                      onChange={(e) => updateField(campo.nome, e.target.value)}
+                    />
+                  )}
+                </div>
+              ))}
               <Button
                 type="submit"
                 disabled={enviando}
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
               >
-                {enviando ? "Enviando…" : contato.ctaBotao}
+                {enviando ? contato.enviandoLabel : contato.ctaBotao}
               </Button>
               {erro ? (
                 <p className="text-sm text-destructive" role="alert">

@@ -14,9 +14,9 @@
 | **Título** | Especialista em Inteligência Operacional para Logística | ✅ Fixo |
 | **Headline** | Transformo dados e rotinas logísticas em clareza para decidir melhor. | ✅ Fixo |
 | **Subheadline** | Diagnósticos, análises, automações, painéis e protótipos digitais para operações de transporte, varejo e e-commerce que precisam enxergar custo, prazo, frete, gargalos e performance com mais segurança. | ✅ Fixo |
-| **Email** | [substituir pelo real] | ⚠️ Preencher antes do deploy |
-| **LinkedIn** | [substituir pelo real] | ⚠️ Preencher antes do deploy |
-| **GitHub** | [substituir pelo real] | ⚠️ Preencher antes do deploy |
+| **Email** | lucas.dev.logis@gmail.com | ✅ |
+| **LinkedIn** | [substituir pelo real] | ⚠️ Preencher antes do lançamento |
+| **GitHub** | https://github.com/lucasdevlogis-cpu | ✅ |
 
 ---
 

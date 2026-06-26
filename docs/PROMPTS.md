@@ -71,9 +71,10 @@ Não escreva código de componentes ainda. Apenas o design.md.
 4. Adicione componentes shadcn necessários:
    npx shadcn@latest add button card dialog sheet badge
 
-5. Configure `next.config.js` para static export:
-   output: 'export',
-   distDir: 'dist'
+5. Configure `next.config.ts` para deploy na Vercel (Next.js nativo):
+   - NÃO use `output: 'export'` nem `distDir`
+   - Apenas `images: { unoptimized: true }` se necessário
+   - Ver `docs/DEPLOY.md` para configuração do painel Vercel
 
 6. Configure Tailwind v4 em `app/globals.css`:
    - Adicione `@import "tailwindcss"` no topo
@@ -550,24 +551,31 @@ Teste cada página no Streamlit Cloud antes de integrar.
 ### Prompt 4.1 — Configurar deploy na Vercel
 
 ```
-Deploy do portfolio Next.js na Vercel:
+Deploy do portfolio Next.js na Vercel (Next.js nativo — SEM static export):
 
-1. Verifique next.config.js:
-   output: 'export',
-   distDir: 'dist'
+1. Verifique next.config.ts:
+   - Sem output: 'export'
+   - Sem distDir
+   - images: { unoptimized: true } se usar next/image sem optimizer
 
-2. Garanta que não há rotas dinâmicas com SSR
-3. Crie public/robots.txt com:
-   User-agent: *
-   Allow: /
+2. Garanta public/robots.txt e public/sitemap.xml (URLs de produção corretas)
 
-4. Crie public/sitemap.xml (estático ou gerado)
-5. Push para GitHub
-6. Na Vercel: importe projeto, preset Next.js, build: next build, output: dist
-7. Configure variáveis de ambiente se houver
-8. Deploy
+3. Push para GitHub (lucasdevlogis-cpu/portfolio-lucas-batista)
 
-Domínio personalizado (opcional): configure na Vercel.
+4. Na Vercel:
+   - Framework: Next.js
+   - Build command: padrão (npm run build)
+   - Output Directory: VAZIO — override DESLIGADO
+   - NÃO criar vercel.json com outputDirectory
+
+5. Environment variables (obrigatórias para demos):
+   NEXT_PUBLIC_SITE_URL=https://portfolio-lucas-batista-murex.vercel.app
+   NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
+   NEXT_PUBLIC_FORMSPREE_FORM_ID= (opcional)
+
+6. Deploy. Redeploy após alterar env vars (URLs de demo são fixadas no build).
+
+Consulte docs/DEPLOY.md e docs/AVALIACAO.md para troubleshooting.
 ```
 
 ### Prompt 4.2 — SEO e performance finais

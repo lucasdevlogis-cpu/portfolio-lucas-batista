@@ -87,6 +87,10 @@ export interface Contato {
   descricao: string;
   ctaBotao: string;
   camposFormulario: CampoFormulario[];
+  tituloSucesso: string;
+  mensagemSucesso: string;
+  mensagemErro: string;
+  enviandoLabel: string;
 }
 
 export interface FooterConteudo {
@@ -116,6 +120,7 @@ export interface SecoesCopy {
   cases: SecaoCopy;
   metodo: SecaoCopy;
   contatoBeneficio: string;
+  demoIndisponivel: string;
 }
 
 export interface Content {
@@ -134,6 +139,10 @@ export interface Content {
 }
 
 /** URL base das demos no Streamlit Cloud — definir em `.env.local` */
+export const GITHUB_PROFILE_URL = "https://github.com/lucasdevlogis-cpu";
+export const GITHUB_DEMOS_URL =
+  "https://github.com/lucasdevlogis-cpu/demos-logistica";
+
 export const DEMOS_BASE_URL =
   process.env.NEXT_PUBLIC_DEMOS_BASE_URL?.replace(/\/$/, "") ?? "";
 
@@ -159,9 +168,9 @@ export const CONTENT: Content = {
       "Transformo dados e rotinas logísticas em clareza para decidir melhor",
     subheadline:
       "Diagnósticos, análises, automações, painéis e protótipos digitais para operações de transporte, varejo e e-commerce que precisam enxergar custo, prazo, frete, gargalos e performance com mais segurança.",
-    email: "[substituir pelo real]",
+    email: "lucas.dev.logis@gmail.com",
     linkedin: "[substituir pelo real]",
-    github: "[substituir pelo real]",
+    github: GITHUB_PROFILE_URL,
   },
 
   hero: {
@@ -192,6 +201,8 @@ export const CONTENT: Content = {
     },
     contatoBeneficio:
       "Uma leitura inicial ajuda a identificar se faz sentido avançar — sem compromisso de projeto grande.",
+    demoIndisponivel:
+      "Demo interativa em breve. Enquanto isso, solicite uma leitura inicial pelo formulário abaixo.",
   },
 
   nav: [
@@ -309,7 +320,7 @@ export const CONTENT: Content = {
       icone: "Truck",
       tags: ["frete", "custo", "precificação", "componentes", "região"],
       linkDemo: demoUrl(CASE_DEMO_SLUGS["01-precificacao-frete"] ?? ""),
-      linkGitHub: "",
+      linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P0",
       perguntaNegocio: "Qual região concentra maior custo por entrega?",
       metricaPrincipal: "Custo por kg, custo por entrega, composição de frete",
@@ -328,7 +339,7 @@ export const CONTENT: Content = {
       icone: "BarChart3",
       tags: ["SLA", "OTD", "atraso", "ocorrência", "torre de controle"],
       linkDemo: demoUrl(CASE_DEMO_SLUGS["02-torre-controle"] ?? ""),
-      linkGitHub: "",
+      linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P0",
       perguntaNegocio: "Quais entregas exigem ação imediata?",
       metricaPrincipal:
@@ -347,7 +358,7 @@ export const CONTENT: Content = {
       icone: "MapPin",
       tags: ["CEP", "last mile", "promessa", "prazo", "risco territorial"],
       linkDemo: demoUrl(CASE_DEMO_SLUGS["03-promessa-cep"] ?? ""),
-      linkGitHub: "",
+      linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P0",
       perguntaNegocio:
         "Qual CEP ou praça tem maior risco de atraso ou insucesso?",
@@ -428,7 +439,7 @@ export const CONTENT: Content = {
       icone: "AlertTriangle",
       tags: ["IA", "NLP", "ocorrências", "classificação", "triagem"],
       linkDemo: demoUrl(CASE_DEMO_SLUGS["07-classificador-ocorrencias"] ?? ""),
-      linkGitHub: "",
+      linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P2",
       perguntaNegocio:
         "Como transformar mensagens, chamados e justificativas em categorias acionáveis?",
@@ -500,6 +511,12 @@ export const CONTENT: Content = {
     descricao:
       "Me conte qual problema mais pesa hoje: frete, atraso, reentrega, relatório manual, indicador inconsistente, promessa de entrega ou falta de visibilidade. A partir disso, eu te mostro o próximo passo mais lógico.",
     ctaBotao: "Solicitar leitura inicial",
+    tituloSucesso: "Mensagem recebida!",
+    mensagemSucesso:
+      "Obrigado pelo contato. Retorno em breve para alinhar a leitura inicial da sua operação.",
+    mensagemErro:
+      "Não foi possível enviar agora. Tente o email direto abaixo ou tente novamente.",
+    enviandoLabel: "Enviando…",
     camposFormulario: [
       {
         nome: "nome",

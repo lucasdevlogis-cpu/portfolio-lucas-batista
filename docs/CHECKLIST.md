@@ -147,7 +147,8 @@
 - [ ] `next.config.ts` sem `output: 'export'` (deploy Vercel usa `.next/` nativo)
 - [ ] Não há rotas dinâmicas que dependam de SSR
 - [ ] Build na Vercel passa sem erros
-- [ ] Variáveis de ambiente configuradas no dashboard da Vercel
+- [ ] `NEXT_PUBLIC_DEMOS_BASE_URL` definida **antes do build** na Vercel (URLs de demo são fixadas em compile time)
+- [ ] Output Directory no painel Vercel: **vazio**, overrides desligados
 - [ ] Site está acessível no URL da Vercel
 - [ ] Domínio personalizado configurado (opcional)
 
@@ -158,14 +159,12 @@
 - [x] `.cursorrules` está na raiz do projeto (não em `docs/`)
 - [x] O Cursor reconhece o `.cursorrules` (abra um arquivo, verifique se o contexto está carregado)
 - [x] `docs/` contém todos os documentos: INDEX, VISION, ARCHITECTURE, PROMPTS, CONTENT, ROADMAP, CHECKLIST
-- [x] Node.js ≥ 18 instalado (`node -v`)
-- [x] npm ou pnpm instalado
-- [ ] Conta GitHub criada
-- [ ] Conta Vercel criada (login com GitHub)
-- [ ] Conta Streamlit Cloud criada (login com GitHub)
-- [x] Template forkado ou projeto criado (scaffold limpo Next 16)
+- [x] Node.js 24.x (`engines` no package.json)
+- [x] Conta GitHub criada (`lucasdevlogis-cpu`)
+- [x] Conta Vercel criada e projeto linkado
+- [x] Conta Streamlit Cloud — app deployado
 - [x] `npm run dev` funciona sem erros
-- [x] `npm run build` passa (static export)
+- [x] `npm run build` passa (Next.js nativo, sem static export)
 
 ---
 
@@ -188,7 +187,7 @@
 
 ### Após o deploy
 
-- [ ] Acessar o site no URL de produção
+- [ ] Acessar <https://portfolio-lucas-batista-murex.vercel.app>
 - [ ] Testar navegação em todas as seções
 - [ ] Testar formulário de contato em produção
 - [ ] Verificar se demos Streamlit carregam nos iframes
@@ -253,8 +252,8 @@
 
 Se estiver com pressa, verifique apenas estes 10 itens:
 
-1. [ ] Sem placeholder text ("[substituir]", "exemplo.com")
-2. [ ] Email e LinkedIn reais
+1. [~] Sem placeholder crítico — falta LinkedIn real
+2. [x] Email real (`lucas.dev.logis@gmail.com`)
 3. [ ] Formulário envia dados (ou console.log + mensagem de sucesso)
 4. [ ] Cases P0 com demos funcionando
 5. [ ] Sem erros no console que impedem funcionamento
@@ -266,4 +265,4 @@ Se estiver com pressa, verifique apenas estes 10 itens:
 
 ---
 
-*Documento de checklist. Versão revisada. Atualize conforme o projeto evolui e novos padrões de qualidade forem definidos.*
+*Documento de checklist. Versão revisada. Atualize conforme o projeto evolui e novos padrões de qualidade fore

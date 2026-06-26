@@ -117,7 +117,8 @@ Respeitar `prefers-reduced-motion` quando possível.
 |------|-------|-------|
 | Ícones | Lucide React | Truck, BarChart3, MapPin, etc. |
 | Imagens | Nenhuma no MVP | SVG decorativo no Hero (mini KPI bars) |
-| OG Image | `public/og-image.png` | Fase 4 — placeholder até lá |
+| OG Image | `public/og-image.png` | ✅ Criado |
+| Favicon | `app/icon.png` + `public/favicon.ico` | ✅ Criado |
 | Favicon | `public/favicon.ico` | Fase 4 |
 
 ---

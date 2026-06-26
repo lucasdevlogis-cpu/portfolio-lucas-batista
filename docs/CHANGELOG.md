@@ -257,10 +257,36 @@
 
 ### Pendente (manual)
 
-- [ ] Deploy Streamlit Cloud — [share.streamlit.io](https://share.streamlit.io) → repo `demos-logistica`
-- [ ] Deploy Vercel — [vercel.com/new](https://vercel.com/new) → repo `portfolio-lucas-batista`
-- [ ] `NEXT_PUBLIC_DEMOS_BASE_URL` e Formspree ID na Vercel
+- [x] Deploy Streamlit Cloud
+- [x] Deploy Vercel
+- [x] `NEXT_PUBLIC_DEMOS_BASE_URL` na Vercel
+- [ ] `NEXT_PUBLIC_FORMSPREE_FORM_ID` na Vercel
 - [ ] Preencher email, LinkedIn, GitHub em `data/content.ts`
+- [ ] Criar `public/og-image.png` e `public/favicon.ico`
+
+---
+
+## Revisão v1.4 — Junho de 2026 — Deploy Vercel + avaliação
+
+### Deploy
+
+- Landing em produção: <https://portfolio-lucas-batista-murex.vercel.app>
+- Streamlit: <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app>
+- Pivot de static export (`dist/`) para **Next.js nativo** na Vercel
+- Removido `vercel.json`; Output Directory deve ficar vazio (override desligado)
+- Env vars de produção: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_DEMOS_BASE_URL`
+
+### Documentação
+
+- Novo: `docs/AVALIACAO.md` — problemas, melhorias, próximos passos
+- Atualizados: README, AGENTS, INDEX, ROADMAP, CHECKLIST, DEPLOY, PROMPTS (4.1), ARCHITECTURE
+
+### Pendências confirmadas
+
+- `[substituir pelo real]` em email/LinkedIn/GitHub
+- `public/og-image.png`, `public/favicon.ico` — **não existem** (CHANGELOG v1.3 estava incorreto)
+- `NEXT_PUBLIC_FORMSPREE_FORM_ID` — não configurado
+- Lighthouse / QA mobile — não executado
 
 ---
 
@@ -268,17 +294,19 @@
 
 ### Repositórios GitHub (conta lucasdevlogis-cpu)
 
-- https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista
-- https://github.com/lucasdevlogis-cpu/demos-logistica
+- <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista>
+- <https://github.com/lucasdevlogis-cpu/demos-logistica>
 
 > Conta `lucas109895-dev` foi desvinculada do `gh` CLI. Exclua repos antigos manualmente se ainda existirem.
 
 ### Fase 4 (parcial)
 
-- `public/robots.txt`, `sitemap.xml`, `og-image.png`, `favicon.ico`
+- `public/robots.txt`, `public/sitemap.xml`
 - Formulário com Formspree (`NEXT_PUBLIC_FORMSPREE_FORM_ID`)
 - Schema.org JSON-LD em `layout.tsx`
-- `vercel.json`, `docs/DEPLOY.md`
+- `docs/DEPLOY.md`
+- ⚠️ `og-image.png` e `favicon.ico` referenciados em `layout.tsx` mas **ainda não criados**
+- ⚠️ `vercel.json` foi removido na v1.4 (não usar)
 
 ---
 

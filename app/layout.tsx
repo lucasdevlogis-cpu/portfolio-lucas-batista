@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
-  "https://portfolio-lucas-batista.vercel.app";
+  "https://portfolio-lucas-batista-murex.vercel.app";
 
 const title = "Lucas Batista | Inteligência Operacional para Logística";
 const description =
