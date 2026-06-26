@@ -52,7 +52,9 @@ Rebuild o Next.js após definir a variável.
 
 6. Deploy.
 
-### Erro `routes-manifest.json` não encontrado
+**Importante — toggles de override no painel:** em cada campo (Framework, Build Command, Output Directory, Install Command), o toggle **Override deve estar DESLIGADO** (usar padrão). Não basta deixar o campo vazio com override ligado — isso faz a Vercel pular o build do Next.js e publicar um site vazio (404).
+
+### Erro `routes-manifest.json` ou output `dist` não encontrado
 
 Esse erro aparece quando a Vercel procura artefatos do Next.js (`.next/routes-manifest.json`), mas o **Output Directory** no painel aponta para pasta errada (`dist`, `out`, etc.) ou um `vercel.json` antigo força `outputDirectory`.
 
