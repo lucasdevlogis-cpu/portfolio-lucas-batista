@@ -72,9 +72,9 @@
 | 14-15 | Demo 02: Mini Torre de Controle + CVRP | [PROMPTS.md](PROMPTS.md) - 3.3 | [x] `02_mini_torre` + `03_cvrp` |
 | 15-16 | Demo 03: Promessa de Entrega por CEP | adaptado | [x] `04_promessa_cep` |
 | 16 | Demo 07: Classificador de Ocorrências | [PROMPTS.md](PROMPTS.md) - 3.4 | [x] |
-| 17 | Deploy das demos no Streamlit Cloud | [PROMPTS.md](PROMPTS.md) - 3.5 | [ ] Manual — ver `demos-logistica/README.md` |
-| 18 | Embedar demos na landing page (atualizar URLs em content.ts) | Manual | [x] `NEXT_PUBLIC_DEMOS_BASE_URL` + `demoUrl()` |
-| 18 | Testar fluxo: landing → case → demo → contato | Manual | [~] Após deploy Cloud |
+| 17 | Deploy das demos no Streamlit Cloud | [PROMPTS.md](PROMPTS.md) - 3.5 | [~] Repo criado — deploy manual em share.streamlit.io |
+| 18 | Embedar demos na landing page | Manual | [x] `demoUrl()` — aguarda `NEXT_PUBLIC_DEMOS_BASE_URL` |
+| 18 | Testar fluxo landing → demo | Manual | [ ] Após Streamlit + Vercel |
 
 **Entregável da Fase 2:** 3-4 demos no Streamlit Cloud, embedadas via iframe, com fluxo completo testado.
 
@@ -92,12 +92,12 @@
 
 | Dia | Tarefa | Status |
 |---|---|---|
-| 19 | Estruturar repositório principal com README profissional | [ ] |
+| 19 | Estruturar repositório principal com README profissional | [x] |
 | 20-22 | Organizar cases em pastas numeradas | [ ] |
 | 22-24 | Criar README individual para cada case (modelo em ARCHITECTURE.md seção 10) | [ ] |
-| 24 | Adicionar GitHub Topics: `logistics`, `supply-chain`, `analytics`, `python`, `streamlit`, `brazil` | [ ] |
-| 25 | Criar seção de limitações e ética no README principal | [ ] |
-| 26 | Conectar tudo: landing ↔ GitHub ↔ demos | [ ] |
+| 24 | Adicionar GitHub Topics | [x] |
+| 25 | Criar seção de limitações e ética no README principal | [x] |
+| 26 | Conectar tudo: landing ↔ GitHub ↔ demos | [~] Repos criados — deploy pendente |
 
 **Entregável da Fase 3:** Repositório GitHub profissional com 7 cases documentados.
 
@@ -114,12 +114,12 @@
 
 | Dia | Tarefa | Status |
 |---|---|---|
-| 27 | Integrar formulário com Firebase (ou Formspree como fallback) | [ ] |
-| 28 | Testar envio de leads (envie um contato de teste) | [ ] |
-| 29 | Deploy na Vercel | [ ] |
-| 30 | Testar em mobile (DevTools: iPhone, Android) | [ ] |
-| 31 | SEO: meta tags, OG, sitemap, robots, favicon | [ ] |
-| 32 | Lighthouse > 90 em todas as categorias | [ ] |
+| 27 | Integrar formulário com Formspree | [x] Código pronto — aguarda `FORMSPREE_FORM_ID` |
+| 28 | Testar envio de leads | [ ] |
+| 29 | Deploy na Vercel | [~] Repo GitHub — import manual [DEPLOY.md](DEPLOY.md) |
+| 30 | Testar em mobile | [ ] |
+| 31 | SEO: meta tags, OG, sitemap, robots, favicon | [x] |
+| 32 | Lighthouse > 90 | [ ] |
 
 **Entregável da Fase 4:** Site no ar na Vercel, formulário enviando leads, otimizado para SEO.
 

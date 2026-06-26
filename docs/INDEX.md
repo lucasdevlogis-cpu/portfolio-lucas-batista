@@ -17,6 +17,7 @@ docs/
 ├── CONTENT.md        ← Todo o conteúdo textual do site
 ├── ROADMAP.md        ← Roteiro de execução com fases e prazos
 ├── CHECKLIST.md      ← Checklist de qualidade e pré-deploy
+├── DEPLOY.md         ← Guia de deploy GitHub / Streamlit / Vercel
 ├── CHANGELOG.md      ← Histórico de revisões e mudanças aplicadas
 └── .cursorrules      ← Regras para Kimi Code no Cursor (NA RAIZ DO PROJETO)
 ```
