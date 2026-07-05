@@ -8,7 +8,7 @@ viária real (OSMnx/OSRM).
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from lib import brand, geo, ui, viz
+from lib import brand, folium_maps as fm, format, geo, tables, ui
 
 ui.page_setup("09. TSP Baseline SP", icon="🧭")
 
@@ -49,8 +49,11 @@ ui.hero(
     ),
     metric={
         "label": "Distância otimizada",
-        "value": f"{d_final:,.1f} km",
-        "delta": f"-{economia_pct:.0f}% vs ordem de cadastro ({d_cadastro:,.1f} km)",
+        "value": f"{format.fmt_number(d_final, decimals=1)} km",
+        "delta": (
+            f"-{format.fmt_percent(economia_pct, decimals=0)} "
+            f"vs ordem de cadastro ({format.fmt_number(d_cadastro, decimals=1)} km)"
+        ),
         "help": "Rota fechada saindo e voltando ao CD.",
     },
 )
@@ -59,78 +62,145 @@ ui.kpi_row(
     [
         ("Pontos de visita", f"{len(visitas)}"),
         ("Tempo estimado", f"{tempo_min / 60:.1f} h"),
-        ("Nearest-neighbor", f"{d_nn:,.1f} km"),
-        {"label": "Ganho 2-opt", "value": f"{d_nn - d_final:,.1f} km"},
+        ("Nearest-neighbor", f"{format.fmt_number(d_nn, decimals=1)} km"),
+        {"label": "Ganho 2-opt", "value": f"{format.fmt_number(d_nn - d_final, decimals=1)} km"},
     ]
 )
 
-ui.section("Rota otimizada")
 route_coords = [coords[i] for i in ordem_final] + [coords[ordem_final[0]]]
 route_labels = [nomes[i] for i in ordem_final] + [nomes[ordem_final[0]]]
-ui.plot(
-    viz.map_routes(
+
+seq = pd.DataFrame(
+    {
+        "ordem": list(range(1, len(ordem_final) + 1)),
+        "ponto": [nomes[i] for i in ordem_final],
+    }
+)
+
+comp = pd.DataFrame(
+    {
+        "método": ["Ordem cadastro", "Nearest-neighbor", "NN + 2-opt"],
+        "km": [round(d_cadastro, 1), round(d_nn, 1), round(d_final, 1)],
+        "status": ["Baseline", "Intermediário", "Otimizado"],
+    }
+)
+
+tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
+
+with tab_visao:
+    ui.section("Rota otimizada", "Marcadores numerados e setas de direção.")
+    map_height = ui.map_height(brand.MAP_FULL_HEIGHT)
+    m = fm.base_map(
+        (depot_row["lat"], depot_row["lon"]),
+        zoom=11,
+        height=map_height,
+    )
+    m = fm.add_routes(
+        m,
         [
             {
                 "coords": route_coords,
                 "label": "Sequência otimizada",
                 "color": brand.PRIMARY,
-                "hovertext": route_labels,
             }
         ],
         depot=(depot_row["lat"], depot_row["lon"]),
-        zoom=11.5,
-        height=ui.map_height(520),
-    ),
-    width="stretch",
-)
-st.caption("Linhas retas entre pontos (geodésicas), não rotas rodoviárias reais.")
-
-col1, col2 = st.columns([1, 1])
-with col1:
-    ui.section("Comparação de métodos")
-    comp = pd.DataFrame(
-        {
-            "método": ["Ordem cadastro", "Nearest-neighbor", "NN + 2-opt"],
-            "km": [round(d_cadastro, 1), round(d_nn, 1), round(d_final, 1)],
-        }
+        show_numbers=True,
+        show_arrows=True,
     )
-    fig = px.bar(
-        comp, x="método", y="km", color="método", color_discrete_sequence=brand.SEQ
-    )
-    fig.update_layout(height=340, showlegend=False, xaxis_title="", yaxis_title="km")
-    ui.plot(fig, width="stretch")
-with col2:
-    ui.section("Sequência de visita")
-    seq = pd.DataFrame(
-        {
-            "ordem": list(range(1, len(ordem_final) + 1)),
-            "ponto": [nomes[i] for i in ordem_final],
-        }
-    )
-    st.dataframe(seq, width="stretch", hide_index=True, height=340)
+    fm.render(m, height=map_height)
+    st.caption("Linhas retas entre pontos (geodésicas), não rotas rodoviárias reais.")
 
-ui.download_csv_button(
-    pd.DataFrame(
-        {
-            "ordem": range(1, len(ordem_final) + 1),
-            "ponto": [nomes[i] for i in ordem_final],
+with tab_analise:
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        ui.section("Comparação de métodos")
+        color_map = {
+            "Baseline": brand.DANGER,
+            "Intermediário": brand.WARNING,
+            "Otimizado": brand.SUCCESS,
         }
-    ),
-    "tsp_sequencia.csv",
-)
+        fig = px.bar(
+            comp,
+            x="método",
+            y="km",
+            color="status",
+            color_discrete_map=color_map,
+            category_orders={"método": ["Ordem cadastro", "Nearest-neighbor", "NN + 2-opt"]},
+        )
+        fig.update_traces(
+            hovertemplate=format.fmt_hover(
+                [
+                    ("Método", "%{x}"),
+                    ("Distância", "%{y:,.1f} km"),
+                ]
+            )
+        )
+        fig.add_hline(
+            y=d_cadastro,
+            line_dash="dash",
+            line_color=brand.DANGER,
+            annotation_text="baseline",
+            annotation_position="top right",
+        )
+        fig.update_layout(
+            showlegend=False,
+            height=brand.CHART_HALF_HEIGHT,
+            xaxis_title="",
+            yaxis_title="km",
+        )
+        ui.plot(fig, width="stretch")
 
-ui.method_expander(
-    """
+    with col2:
+        ui.section("Sequência de visita")
+        config = {
+            "ordem": tables.number_column("Ordem", decimals=0),
+            "ponto": tables.text_column("Ponto"),
+        }
+        tables.format_dataframe(seq, config)
+
+    st.divider()
+
+    col_a, col_b, col_c = st.columns(3)
+    with col_a:
+        ui.kpi_metric(
+            "Economia vs cadastro",
+            format.fmt_percent(economia_pct, decimals=1),
+            severity="success",
+        )
+    with col_b:
+        ui.kpi_metric(
+            "Ganho do 2-opt",
+            format.fmt_number(d_nn - d_final, decimals=1) + " km",
+            severity="success",
+        )
+    with col_c:
+        ui.kpi_metric(
+            "Tempo estimado",
+            f"{tempo_min / 60:.1f} h",
+            severity="success",
+        )
+
+with tab_exportar:
+    ui.section("Exportar resultados")
+    ui.download_csv_button(seq, "tsp_sequencia.csv")
+
+    st.divider()
+
+    ui.method_expander(
+        """
 - **Nearest-neighbor:** parte do CD e visita sempre o ponto mais próximo.
 - **2-opt:** reverte trechos da rota enquanto houver redução de distância (melhoria local).
 - **Produção:** **OR-Tools** resolve o TSP com qualidade garantida; a distância real
   usaria a **malha viária** (OSMnx/OSRM) em vez de linha reta.
 """
-)
-ui.provenance_expander(
-    fonte="Pontos turísticos/CD de SP (case 08_tsp_baseline_sp).",
-    tipo="Coordenadas reais de SP.",
-    producao="OR-Tools sobre matriz de rede (OSMnx/OSRM).",
-    limitacoes="Sem capacidade, SLA, tráfego ou rota viária real; distância Haversine.",
-)
+    )
+    ui.provenance_expander(
+        fonte="Pontos turísticos/CD de SP (case 08_tsp_baseline_sp).",
+        tipo="Coordenadas reais de SP.",
+        producao="OR-Tools sobre matriz de rede (OSMnx/OSRM).",
+        limitacoes="Sem capacidade, SLA, tráfego ou rota viária real; distância Haversine.",
+    )
+    ui.demo_cta(next_demo_path="pages/10_auditoria_endereco.py")
+
 ui.footer()

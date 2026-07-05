@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 from paths import DATA_DIR
 
-from lib import ui, viz
+from lib import folium_maps, ui
 
 ui.page_setup("Demos Logística | Lucas Batista", icon="🚚")
 ui.sidebar_brand()
@@ -122,7 +122,16 @@ try:
         }
         for _, r in corr.iterrows()
     ]
-    ui.plot(viz.network_map(nodes_df, edges, zoom=3.3, height=360))
+    center_lat = nodes_df["lat"].mean()
+    center_lon = nodes_df["lon"].mean()
+    m = folium_maps.base_map(
+        center=(center_lat, center_lon),
+        zoom=4,
+        height=ui.map_height(360),
+    )
+    folium_maps.add_network(m, nodes_df, edges)
+    folium_maps.render(m, height=ui.map_height(360), key="home_rede_interhubs")
+    st.caption("Corredores entre hubs. Linhas retas, não rotas rodoviárias reais.")
 except FileNotFoundError:
     st.info("Rode `python scripts/build_datasets.py` para gerar os dados das demos.")
 

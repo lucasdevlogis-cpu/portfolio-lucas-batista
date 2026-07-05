@@ -7,8 +7,9 @@ ordem de cadastro. Produção usaria PyVRP / OR-Tools.
 
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
-from lib import brand, geo, ui, viz
+from lib import brand, folium_maps, format as fmt, geo, tables, ui, viz
 
 ui.page_setup("03. Roteirização Urbana SP (CVRP)", icon="🗺️")
 
@@ -67,97 +68,142 @@ ui.hero(
     },
 )
 
-ui.kpi_row(
-    [
-        ("Veículos usados", f"{len(rotas)}"),
-        ("Entregas atendidas", f"{atendidas}/{len(base)}"),
-        ("Tempo estimado", f"{tempo_h:.1f} h"),
-        {"label": "Economia", "value": f"{dist_baseline - dist_otimizada:,.1f} km"},
-    ]
-)
+# KPIs com severidade ---------------------------------------------------------
+kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
+with kpi_col1:
+    ui.kpi_metric("Veículos usados", fmt.fmt_number(len(rotas)))
+with kpi_col2:
+    ui.kpi_metric("Entregas atendidas", f"{atendidas}/{len(base)}")
+with kpi_col3:
+    ui.kpi_metric("Tempo estimado", f"{tempo_h:.1f} h")
+with kpi_col4:
+    economia_severity = "success" if economia_pct > 15 else "warning" if economia_pct > 5 else None
+    ui.kpi_metric(
+        "Economia",
+        f"{dist_baseline - dist_otimizada:,.1f} km",
+        severity=economia_severity,
+    )
+
+st.divider()
 
 if not rotas:
     st.info("Ajuste capacidade/veículos na barra lateral.")
     ui.footer()
     st.stop()
 
-ui.section("Rotas por veículo")
-rotas_viz = []
-for i, r in enumerate(rotas):
-    labels = ["CD"] + [p["entrega_id"] for p in r["paradas"]] + ["CD"]
-    rotas_viz.append(
-        {
-            "coords": r["coords"],
-            "label": f"V{r['veiculo']} · {r['carga_kg']:.0f} kg · {r['distancia_km']:.1f} km",
-            "color": brand.SEQ[i % len(brand.SEQ)],
-            "hovertext": labels,
-        }
-    )
-ui.plot(
-    viz.map_routes(rotas_viz, depot=DEPOT, zoom=10.5, height=ui.map_height(520)),
-    width="stretch",
-)
-st.caption("Linhas retas entre paradas (geodésicas), não rotas rodoviárias reais.")
+# Tabs para demo profunda ------------------------------------------------------
+tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
 
-col1, col2 = st.columns([1, 1])
-with col1:
-    ui.section("Distância por veículo")
-    dist_v = pd.DataFrame(
-        [
-            {
-                "veiculo": f"V{r['veiculo']}",
-                "km": r["distancia_km"],
-                "carga_kg": r["carga_kg"],
-            }
-            for r in rotas
-        ]
-    )
-    fig = px.bar(
-        dist_v, x="veiculo", y="km", color="veiculo", color_discrete_sequence=brand.SEQ
-    )
-    fig.update_layout(showlegend=False, height=340, xaxis_title="", yaxis_title="km")
-    ui.plot(fig, width="stretch")
+with tab_visao:
+    ui.section("Rotas por veículo")
+    m = folium_maps.base_map(center=DEPOT, zoom=10, height=ui.map_height(520))
 
-with col2:
-    ui.section("Ocupação vs capacidade")
-    ocup = pd.DataFrame(
-        [
+    rotas_viz = []
+    for i, r in enumerate(rotas):
+        rotas_viz.append(
             {
-                "veiculo": f"V{r['veiculo']}",
-                "ocupacao_pct": round(r["carga_kg"] / capacidade * 100, 1),
-            }
-            for r in rotas
-        ]
-    )
-    fig2 = px.bar(
-        ocup, x="veiculo", y="ocupacao_pct", color_discrete_sequence=[brand.ACCENT]
-    )
-    fig2.add_hline(y=100, line_dash="dash", line_color=brand.DANGER)
-    fig2.update_layout(height=340, xaxis_title="", yaxis_title="% capacidade")
-    ui.plot(fig2, width="stretch")
-
-ui.section("Sequência de paradas")
-seq_rows = []
-for r in rotas:
-    for s, p in enumerate(r["paradas"], start=1):
-        seq_rows.append(
-            {
-                "veiculo": f"V{r['veiculo']}",
-                "sequencia": s,
-                "entrega_id": p["entrega_id"],
-                "cliente": p["customer"],
-                "zona": p["zone"],
-                "demanda_kg": p["demanda_kg"],
+                "coords": r["coords"],
+                "label": f"V{r['veiculo']} · {r['carga_kg']:.0f} kg · {r['distancia_km']:.1f} km",
+                "color": brand.SEQ[i % len(brand.SEQ)],
             }
         )
-seq_df = pd.DataFrame(seq_rows)
-st.dataframe(seq_df, width="stretch", hide_index=True)
-ui.download_csv_button(seq_df, "cvrp_rotas.csv")
+    m = folium_maps.add_routes(m, rotas_viz, depot=DEPOT, show_numbers=True, show_arrows=True)
 
-if nao_atendidas:
-    st.warning(
-        f"{len(nao_atendidas)} entrega(s) não alocada(s) — aumente veículos ou capacidade."
+    folium_maps.render(m, height=ui.map_height(520), key="cvrp_rotas")
+    st.caption(
+        "Linhas retas entre paradas (geodésicas), não rotas rodoviárias reais. "
+        "Setas indicam sentido de visita e números marcam a sequência de paradas."
     )
+
+with tab_analise:
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        ui.section("Distância por veículo")
+        dist_v = pd.DataFrame(
+            [
+                {
+                    "veiculo": f"V{r['veiculo']}",
+                    "km": r["distancia_km"],
+                    "carga_kg": r["carga_kg"],
+                }
+                for r in rotas
+            ]
+        )
+        media_km = dist_v["km"].mean()
+        fig = px.bar(
+            dist_v,
+            x="veiculo",
+            y="km",
+            color="veiculo",
+            color_discrete_sequence=brand.SEQ,
+        )
+        fig.update_traces(
+            hovertemplate=fmt.fmt_hover(
+                [("Veículo", "%{x}"), ("Distância", "%{y:,.1f} km")]
+            )
+        )
+        fig.update_layout(showlegend=False, height=brand.CHART_HALF_HEIGHT, xaxis_title="", yaxis_title="km")
+        fig = viz.add_reference_line(fig, y=media_km, label="média", color=brand.WARNING)
+        ui.plot(fig, width="stretch")
+
+    with col2:
+        ui.section("Ocupação vs capacidade")
+        ocup = pd.DataFrame(
+            [
+                {
+                    "veiculo": f"V{r['veiculo']}",
+                    "ocupacao_pct": round(r["carga_kg"] / capacidade * 100, 1),
+                }
+                for r in rotas
+            ]
+        )
+        fig2 = px.bar(
+            ocup,
+            x="veiculo",
+            y="ocupacao_pct",
+            color_discrete_sequence=[brand.ACCENT],
+        )
+        fig2.update_traces(
+            hovertemplate=fmt.fmt_hover(
+                [("Veículo", "%{x}"), ("Ocupação", "%{y:.1f}%")]
+            )
+        )
+        fig2.update_layout(height=brand.CHART_HALF_HEIGHT, xaxis_title="", yaxis_title="% capacidade")
+        fig2 = viz.add_reference_line(fig2, y=100, label="capacidade máxima", color=brand.DANGER)
+        ui.plot(fig2, width="stretch")
+
+with tab_exportar:
+    ui.section("Sequência de paradas")
+    seq_rows = []
+    for r in rotas:
+        for s, p in enumerate(r["paradas"], start=1):
+            seq_rows.append(
+                {
+                    "veiculo": f"V{r['veiculo']}",
+                    "sequencia": s,
+                    "entrega_id": p["entrega_id"],
+                    "cliente": p["customer"],
+                    "zona": p["zone"],
+                    "demanda_kg": p["demanda_kg"],
+                }
+            )
+    seq_df = pd.DataFrame(seq_rows)
+
+    config = {
+        "veiculo": tables.text_column("Veículo"),
+        "sequencia": tables.number_column("Sequência"),
+        "entrega_id": tables.text_column("Entrega"),
+        "cliente": tables.text_column("Cliente"),
+        "zona": tables.text_column("Zona"),
+        "demanda_kg": tables.number_column("Demanda (kg)", decimals=1),
+    }
+    tables.format_dataframe(seq_df, config=config, hide_index=True)
+    ui.download_csv_button(seq_df, "cvrp_rotas.csv")
+
+    if nao_atendidas:
+        st.warning(
+            f"{len(nao_atendidas)} entrega(s) não alocada(s) — aumente veículos ou capacidade."
+        )
 
 ui.method_expander(
     """
@@ -176,4 +222,6 @@ ui.provenance_expander(
     producao="PyVRP / OR-Tools sobre matriz de rede (OSRM).",
     limitacoes="Sem trânsito, janelas ou rede viária; distância proxy Haversine.",
 )
+
+ui.demo_cta(next_demo_path="pages/04_promessa_cep.py")
 ui.footer()

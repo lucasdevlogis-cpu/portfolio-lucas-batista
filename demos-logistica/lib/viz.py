@@ -33,6 +33,34 @@ def apply_theme() -> None:
     pio.templates.default = f"plotly_white+{_THEME_NAME}"
 
 
+def add_reference_line(
+    fig: go.Figure,
+    y: float | None = None,
+    x: float | None = None,
+    label: str | None = None,
+    color: str = brand.DANGER,
+    dash: str = "dash",
+) -> go.Figure:
+    """Adiciona linha de referência horizontal ou vertical a um gráfico."""
+    if y is not None:
+        fig.add_hline(
+            y=y,
+            line_dash=dash,
+            line_color=color,
+            annotation_text=label,
+            annotation_position="top right",
+        )
+    if x is not None:
+        fig.add_vline(
+            x=x,
+            line_dash=dash,
+            line_color=color,
+            annotation_text=label,
+            annotation_position="top right",
+        )
+    return fig
+
+
 def map_points(
     df: pd.DataFrame,
     lat: str = "lat",
@@ -42,10 +70,14 @@ def map_points(
     hover_name: str | None = None,
     hover_data: Sequence[str] | None = None,
     zoom: float = 10,
-    height: int = 480,
+    height: int = brand.MAP_FULL_HEIGHT,
     center: tuple[float, float] | None = None,
+    color_discrete_map: dict[str, str] | None = None,
 ) -> go.Figure:
     """Mapa de pontos sobre OpenStreetMap (sem token)."""
+    color_kwargs = {}
+    if color:
+        color_kwargs["color_discrete_map"] = color_discrete_map or brand.STATUS_COLORS
     fig = px.scatter_map(
         df,
         lat=lat,
@@ -56,12 +88,12 @@ def map_points(
         hover_data=list(hover_data) if hover_data else None,
         zoom=zoom,
         height=height,
-        color_discrete_sequence=brand.SEQ,
+        **color_kwargs,
     )
     fig.update_layout(
         map_style=_MAP_STYLE,
         margin=dict(l=0, r=0, t=0, b=0),
-        legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="left", x=0),
+        showlegend=False,
     )
     if center:
         fig.update_layout(map_center={"lat": center[0], "lon": center[1]})
@@ -71,7 +103,7 @@ def map_points(
 def map_routes(
     routes: list[dict],
     depot: tuple[float, float] | None = None,
-    height: int = 520,
+    height: int = brand.MAP_FULL_HEIGHT,
     zoom: float = 10,
 ) -> go.Figure:
     """Mapa de rotas (linhas + marcadores) por veículo/lane.
@@ -124,7 +156,7 @@ def map_routes(
         map_center=center,
         height=height,
         margin=dict(l=0, r=0, t=0, b=0),
-        legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="left", x=0),
+        showlegend=False,
     )
     return fig
 
@@ -135,7 +167,7 @@ def network_map(
     lat: str = "lat",
     lon: str = "lon",
     label: str = "id",
-    height: int = 520,
+    height: int = brand.MAP_FULL_HEIGHT,
     zoom: float = 4,
 ) -> go.Figure:
     """Mapa de rede (nós + arestas) para corredores inter-hubs.
@@ -182,6 +214,6 @@ def network_map(
         map_center={"lat": nodes[lat].mean(), "lon": nodes[lon].mean()},
         height=height,
         margin=dict(l=0, r=0, t=0, b=0),
-        legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="left", x=0),
+        showlegend=False,
     )
     return fig

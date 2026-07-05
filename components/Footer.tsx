@@ -73,7 +73,7 @@ export function Footer() {
           <p className="mt-1 text-sm text-muted-foreground">{pessoal.titulo}</p>
 
           {/* Badge prova social */}
-          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent-contrast">
             <Star className="size-3.5" aria-hidden />
             {footer.badgeCases}
           </div>

@@ -10,7 +10,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from lib import brand, frete, ui
+from lib import brand, folium_maps, format as fmt, frete, tables, ui, viz
 
 ui.page_setup("01. Precificação de Frete BR", icon="🚚")
 
@@ -95,160 +95,203 @@ ui.hero(
     ),
     metric={
         "label": "Frete estimado da carteira",
-        "value": f"R$ {frete_total:,.0f}",
+        "value": fmt.fmt_currency(frete_total, decimals=0),
         "delta": f"{acima_pct:+.1f}% vs piso ANTT",
         "help": "Soma do frete estimado dos embarques filtrados vs soma do piso mínimo ANTT.",
     },
 )
 
-ui.kpi_row(
-    [
-        ("Embarques", f"{len(calc)}"),
-        ("Custo médio por kg", f"R$ {custo_kg:,.2f}"),
-        {"label": "Piso ANTT (carteira)", "value": f"R$ {piso_total:,.0f}"},
-        {
-            "label": "Ajuste diesel",
-            "value": f"R$ {calc['ajuste_diesel'].sum():,.0f}",
-            "help": f"Impacto do diesel a R$ {diesel:.2f}/L vs referência R$ {frete.DIESEL_REF_BRL:.2f}/L.",
-        },
-    ]
-)
-
-col_map, col_wf = st.columns([1.1, 1])
-
-with col_map:
-    ui.section("Fluxos de frete por UF")
-    edges = []
-    fluxo = (
-        calc.groupby(["origin_uf", "destination_uf"])["frete_total"].sum().reset_index()
+# KPIs com severidade ---------------------------------------------------------
+kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
+with kpi_col1:
+    ui.kpi_metric("Embarques", fmt.fmt_number(len(calc)))
+with kpi_col2:
+    ui.kpi_metric("Custo médio por kg", fmt.fmt_currency(custo_kg))
+with kpi_col3:
+    ui.kpi_metric("Piso ANTT (carteira)", fmt.fmt_currency(piso_total, decimals=0))
+with kpi_col4:
+    diesel_severity = "danger" if diesel > 7.0 else "warning" if diesel > 6.5 else "success"
+    ui.kpi_metric(
+        "Ajuste diesel",
+        fmt.fmt_currency(calc["ajuste_diesel"].sum(), decimals=0),
+        severity=diesel_severity,
     )
-    for _, r in fluxo.iterrows():
-        o = UF_CENTROIDE.get(r["origin_uf"])
-        d = UF_CENTROIDE.get(r["destination_uf"])
-        if not o or not d:
-            continue
-        w = 1 + 6 * r["frete_total"] / fluxo["frete_total"].max()
-        label = f"{r['origin_uf']}→{r['destination_uf']}: R$ {r['frete_total']:,.0f}"
-        edges.append({"from": o, "to": d, "label": label, "width": w})
-    fig = go.Figure()
-    for e in edges:
-        fig.add_trace(
-            go.Scattermap(
-                lat=[e["from"][0], e["to"][0]],
-                lon=[e["from"][1], e["to"][1]],
-                mode="lines",
-                line=dict(width=e["width"], color=brand.ACCENT),
-                text=e["label"],
-                hoverinfo="text",
-                showlegend=False,
+
+st.divider()
+
+# Tabs para demo profunda ------------------------------------------------------
+tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
+
+with tab_visao:
+    col_map, col_wf = st.columns([1.1, 1])
+
+    with col_map:
+        ui.section("Fluxos de frete por UF")
+        nodes = pd.DataFrame(
+            [{"uf": uf, "lat": c[0], "lon": c[1]} for uf, c in UF_CENTROIDE.items()]
+        )
+        edges = []
+        fluxo = (
+            calc.groupby(["origin_uf", "destination_uf"])["frete_total"].sum().reset_index()
+        )
+        max_frete = fluxo["frete_total"].max() if not fluxo.empty else 1
+        for _, r in fluxo.iterrows():
+            o = UF_CENTROIDE.get(r["origin_uf"])
+            d = UF_CENTROIDE.get(r["destination_uf"])
+            if not o or not d:
+                continue
+            w = 1 + 6 * r["frete_total"] / max_frete
+            label = f"{r['origin_uf']}→{r['destination_uf']}: {fmt.fmt_currency(r['frete_total'], decimals=0)}"
+            edges.append({"from": o, "to": d, "label": label, "width": w})
+
+        m = folium_maps.base_map(center=(-18, -47), zoom=4, height=ui.map_height(460))
+        if edges:
+            m = folium_maps.add_network(m, nodes, edges, lat="lat", lon="lon", label="uf")
+        folium_maps.render(m, height=ui.map_height(460), key="frete_fluxos")
+        st.caption(
+            "Espessura da linha ∝ frete total no corredor UF→UF. "
+            "Linhas retas entre centroides, não rotas rodoviárias reais."
+        )
+
+    with col_wf:
+        ui.section("Composição do frete (carteira)")
+        componentes = ["Frete-peso", "Pedágio", "GRIS", "Ad Valorem", "Despacho/Taxas"]
+        valores = [calc[c].sum() for c in componentes]
+        hover_comp = fmt.fmt_hover(
+            [(c, fmt.fmt_currency(v)) for c, v in zip(componentes, valores)]
+        )
+        wf = go.Figure(
+            go.Waterfall(
+                orientation="v",
+                measure=["relative"] * len(componentes) + ["total"],
+                x=componentes + ["Total"],
+                y=valores + [sum(valores)],
+                connector=dict(line=dict(color=brand.BORDER)),
+                increasing=dict(marker=dict(color=brand.ACCENT)),
+                totals=dict(marker=dict(color=brand.PRIMARY)),
+                hovertemplate=hover_comp + "<extra></extra>",
             )
         )
-    pts = pd.DataFrame(
-        [{"uf": uf, "lat": c[0], "lon": c[1]} for uf, c in UF_CENTROIDE.items()]
+        wf.update_layout(
+            height=brand.CHART_FULL_HEIGHT,
+            margin=dict(t=10, b=10, l=10, r=10),
+            yaxis_title="R$",
+        )
+        ui.plot(wf, width="stretch")
+
+with tab_analise:
+    ui.section("Frete estimado vs piso mínimo ANTT")
+    top = calc.nlargest(15, "frete_total").copy()
+    top["hover"] = top.apply(
+        lambda r: fmt.fmt_hover(
+            [
+                ("Embarque", r["shipment_id"]),
+                ("Frete estimado", fmt.fmt_currency(r["frete_total"])),
+                ("Piso ANTT", fmt.fmt_currency(r["piso_antt"])),
+                ("Acima do piso", fmt.fmt_percent(r["acima_piso_pct"])),
+            ]
+        ),
+        axis=1,
     )
-    fig.add_trace(
-        go.Scattermap(
-            lat=pts["lat"],
-            lon=pts["lon"],
-            mode="markers+text",
-            marker=dict(size=10, color=brand.PRIMARY),
-            text=pts["uf"],
-            textposition="top center",
-            name="UF",
+    comp_fig = go.Figure()
+    comp_fig.add_bar(
+        x=top["shipment_id"],
+        y=top["frete_total"],
+        name="Frete estimado",
+        marker_color=brand.PRIMARY,
+        hovertext=top["hover"],
+        hoverinfo="text",
+    )
+    comp_fig.add_bar(
+        x=top["shipment_id"],
+        y=top["piso_antt"],
+        name="Piso ANTT",
+        marker_color=brand.ACCENT,
+        hovertemplate="Piso ANTT: %{y:,.2f}<extra></extra>",
+    )
+    comp_fig.update_layout(
+        barmode="group",
+        height=brand.CHART_HALF_HEIGHT,
+        xaxis_title="",
+        yaxis_title="R$",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+    )
+    comp_fig = viz.add_reference_line(comp_fig, y=piso_total / len(top), label="média piso", color=brand.WARNING)
+    ui.plot(comp_fig, width="stretch")
+    st.caption("Top 15 embarques por frete total estimado.")
+
+    st.divider()
+
+    ui.section("Sensibilidade ao diesel")
+    precos = np.linspace(4.5, 8.5, 17)
+    base_components = (
+        calc[["Frete-peso", "Pedágio", "GRIS", "Ad Valorem", "Despacho/Taxas"]].sum().sum()
+    )
+    totais = []
+    for p in precos:
+        ajuste = calc["Frete-peso"].apply(lambda fp: frete.diesel_delta(fp, p)).sum()
+        totais.append(base_components + ajuste)
+    sens_df = pd.DataFrame({"Diesel (R$/L)": precos, "Frete total (R$)": totais})
+    sens = px.line(
+        sens_df,
+        x="Diesel (R$/L)",
+        y="Frete total (R$)",
+        markers=True,
+        color_discrete_sequence=[brand.PRIMARY],
+    )
+    sens.update_traces(
+        hovertemplate=fmt.fmt_hover(
+            [
+                ("Diesel", "%{x:.2f} R$/L"),
+                ("Frete total", "%{y:,.2f}"),
+            ]
         )
     )
-    fig.update_layout(
-        map_style="open-street-map",
-        map_zoom=3.2,
-        map_center={"lat": -18, "lon": -47},
-        height=ui.map_height(460),
-        margin=dict(l=0, r=0, t=0, b=0),
-        showlegend=False,
-    )
-    st.caption("Espessura da linha ∝ frete total no corredor UF→UF.")
-    ui.plot(fig, width="stretch")
+    sens = viz.add_reference_line(sens, x=diesel, label="diesel atual", color=brand.DANGER)
+    sens.update_layout(height=brand.CHART_HALF_HEIGHT)
+    ui.plot(sens, width="stretch")
 
-with col_wf:
-    ui.section("Composição do frete (carteira)")
-    componentes = ["Frete-peso", "Pedágio", "GRIS", "Ad Valorem", "Despacho/Taxas"]
-    valores = [calc[c].sum() for c in componentes]
-    wf = go.Figure(
-        go.Waterfall(
-            orientation="v",
-            measure=["relative"] * len(componentes) + ["total"],
-            x=componentes + ["Total"],
-            y=valores + [sum(valores)],
-            connector=dict(line=dict(color=brand.BORDER)),
-            increasing=dict(marker=dict(color=brand.ACCENT)),
-            totals=dict(marker=dict(color=brand.PRIMARY)),
+with tab_exportar:
+    ui.section("Detalhe por embarque")
+    tabela = calc[
+        [
+            "shipment_id",
+            "origin_uf",
+            "destination_uf",
+            "distance_km",
+            "vehicle_type",
+            "peso_taxavel_kg",
+            "frete_total",
+            "piso_antt",
+            "acima_piso_pct",
+        ]
+    ].round(2)
+    # Status de risco para formatação condicional
+    tabela["status_piso"] = tabela["acima_piso_pct"].apply(
+        lambda x: "Apto" if x >= 0 else "Abaixo do piso"
+    )
+
+    config = {
+        "shipment_id": tables.text_column("Embarque"),
+        "origin_uf": tables.text_column("Origem"),
+        "destination_uf": tables.text_column("Destino"),
+        "distance_km": tables.number_column("Distância (km)", decimals=1),
+        "vehicle_type": tables.text_column("Veículo"),
+        "peso_taxavel_kg": tables.number_column("Peso taxável (kg)", decimals=2),
+        "frete_total": tables.currency_column("Frete estimado"),
+        "piso_antt": tables.currency_column("Piso ANTT"),
+        "acima_piso_pct": tables.percent_column("Acima do piso", signed=True),
+        "status_piso": tables.status_column("Status"),
+    }
+    tables.format_dataframe(tabela, config=config, hide_index=True)
+    ui.download_csv_button(tabela, "precificacao_frete.csv")
+
+    if (calc["acima_piso_pct"] < 0).any():
+        n = int((calc["acima_piso_pct"] < 0).sum())
+        st.warning(
+            f"{n} embarque(s) estimado(s) **abaixo** do piso ANTT — sinal de revisão de "
+            "tarifa ou de enquadramento regulatório."
         )
-    )
-    wf.update_layout(height=460, margin=dict(t=10, b=10, l=10, r=10), yaxis_title="R$")
-    ui.plot(wf, width="stretch")
-
-ui.section("Frete estimado vs piso mínimo ANTT")
-top = calc.nlargest(15, "frete_total")
-comp_fig = go.Figure()
-comp_fig.add_bar(
-    x=top["shipment_id"],
-    y=top["frete_total"],
-    name="Frete estimado",
-    marker_color=brand.PRIMARY,
-)
-comp_fig.add_bar(
-    x=top["shipment_id"],
-    y=top["piso_antt"],
-    name="Piso ANTT",
-    marker_color=brand.ACCENT,
-)
-comp_fig.update_layout(barmode="group", height=380, xaxis_title="", yaxis_title="R$")
-ui.plot(comp_fig, width="stretch")
-
-ui.section("Sensibilidade ao diesel")
-precos = np.linspace(4.5, 8.5, 17)
-totais = []
-for p in precos:
-    ajuste = calc["Frete-peso"].apply(lambda fp: frete.diesel_delta(fp, p)).sum()
-    totais.append(
-        calc[["Frete-peso", "Pedágio", "GRIS", "Ad Valorem", "Despacho/Taxas"]]
-        .sum()
-        .sum()
-        + ajuste
-    )
-sens = px.line(
-    x=precos,
-    y=totais,
-    markers=True,
-    labels={"x": "Diesel (R$/L)", "y": "Frete total (R$)"},
-)
-sens.update_traces(line_color=brand.PRIMARY)
-sens.add_vline(x=diesel, line_dash="dash", line_color=brand.DANGER)
-sens.update_layout(height=340)
-ui.plot(sens, width="stretch")
-
-ui.section("Detalhe por embarque")
-tabela = calc[
-    [
-        "shipment_id",
-        "origin_uf",
-        "destination_uf",
-        "distance_km",
-        "vehicle_type",
-        "peso_taxavel_kg",
-        "frete_total",
-        "piso_antt",
-        "acima_piso_pct",
-    ]
-].round(2)
-st.dataframe(tabela, width="stretch", hide_index=True)
-ui.download_csv_button(tabela, "precificacao_frete.csv")
-
-if (calc["acima_piso_pct"] < 0).any():
-    n = int((calc["acima_piso_pct"] < 0).sum())
-    st.warning(
-        f"{n} embarque(s) estimado(s) **abaixo** do piso ANTT — sinal de revisão de "
-        "tarifa ou de enquadramento regulatório."
-    )
 
 ui.method_expander(
     """
@@ -268,4 +311,6 @@ ui.provenance_expander(
     producao="Calculadora comercial + coeficientes ANTT vigentes + índices NTC.",
     limitacoes="Coeficientes ilustrativos; não é cotação nem validação regulatória de piso.",
 )
+
+ui.demo_cta(next_demo_path="pages/02_mini_torre_controle.py")
 ui.footer()

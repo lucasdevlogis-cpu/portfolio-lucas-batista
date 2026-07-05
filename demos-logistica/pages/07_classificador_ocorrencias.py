@@ -2,8 +2,9 @@
 
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
-from lib import brand, ui
+from lib import brand, format as fmt, tables, ui
 
 ui.page_setup("07. Classificador de Ocorrências", icon="🏷️")
 
@@ -104,10 +105,10 @@ classificado = amostra.assign(
     prioridade_prevista=_previsto["prioridade"],
     confianca=_previsto["confianca"].round(2),
 )
-acuracia = (
-    classificado["categoria_prevista"] == classificado["categoria"]
-).mean() * 100
+acuracia = (classificado["categoria_prevista"] == classificado["categoria"]).mean() * 100
 alta = int((classificado["prioridade_prevista"] == "Alta").sum())
+media = int((classificado["prioridade_prevista"] == "Média").sum())
+baixa = int((classificado["prioridade_prevista"] == "Baixa").sum())
 
 ui.hero(
     "07. Classificador de Ocorrências Operacionais",
@@ -118,11 +119,24 @@ ui.hero(
     ),
     metric={
         "label": "Acurácia na amostra rotulada",
-        "value": f"{acuracia:.0f}%",
+        "value": fmt.fmt_percent(acuracia, decimals=0),
         "delta": f"{alta} de {len(classificado)} classificadas como prioridade Alta",
         "help": "Concordância entre a regra e o rótulo curado da amostra.",
     },
 )
+
+# KPIs com severidade ---------------------------------------------------------
+kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
+with kpi_col1:
+    ui.kpi_metric("Amostra", fmt.fmt_number(len(classificado)))
+with kpi_col2:
+    ui.kpi_metric("Alta", fmt.fmt_number(alta), severity="danger" if alta > 0 else "success")
+with kpi_col3:
+    ui.kpi_metric("Média", fmt.fmt_number(media), severity="warning" if media > 0 else None)
+with kpi_col4:
+    ui.kpi_metric("Baixa", fmt.fmt_number(baixa), severity="success" if baixa > 0 else None)
+
+st.divider()
 
 ui.section("Classificar uma ocorrência")
 exemplo = "Cliente ausente no endereço na segunda tentativa — portaria fechada, necessário reagendar."
@@ -142,6 +156,9 @@ if "ultimo" in st.session_state:
     )
     st.progress(r["confianca"], text=f"Confiança: {r['confianca']:.0%}")
 
+st.divider()
+
+# Gráficos --------------------------------------------------------------------
 col1, col2 = st.columns([1, 1])
 with col1:
     ui.section("Volume por categoria")
@@ -154,7 +171,15 @@ with col1:
         color="categoria",
         color_discrete_sequence=brand.SEQ,
     )
-    fig.update_layout(height=340, showlegend=False, xaxis_title="", yaxis_title="")
+    fig.update_layout(
+        height=brand.CHART_HALF_HEIGHT,
+        showlegend=False,
+        xaxis_title="",
+        yaxis_title="",
+    )
+    fig.update_traces(
+        hovertemplate=fmt.fmt_hover([("Categoria", "%{x}"), ("Ocorrências", "%{y}")])
+    )
     ui.plot(fig, width="stretch")
 with col2:
     ui.section("Distribuição por prioridade")
@@ -165,16 +190,36 @@ with col2:
         names="prioridade",
         values="qtd",
         hole=0.5,
-        color_discrete_sequence=brand.SEQ,
+        color="prioridade",
+        color_discrete_map=brand.SEVERITY_COLORS,
     )
-    fig2.update_layout(height=340)
+    fig2.update_traces(
+        hovertemplate=fmt.fmt_hover([("Prioridade", "%{label}"), ("Ocorrências", "%{value}")])
+    )
+    fig2.update_layout(
+        height=brand.CHART_HALF_HEIGHT,
+        legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5),
+    )
     ui.plot(fig2, width="stretch")
 
+st.divider()
+
+# Tabela ----------------------------------------------------------------------
 ui.section("Amostra classificada")
 tabela = classificado[
     ["texto", "categoria_prevista", "prioridade_prevista", "confianca"]
-]
-st.dataframe(tabela, width="stretch", hide_index=True)
+].copy()
+tabela["prioridade_prevista"] = tabela["prioridade_prevista"].apply(tables.status_text)
+tables.format_dataframe(
+    tabela,
+    config={
+        "texto": tables.text_column("Texto"),
+        "categoria_prevista": tables.text_column("Categoria"),
+        "prioridade_prevista": tables.status_column("Prioridade"),
+        "confianca": tables.percent_column("Confiança", decimals=0),
+    },
+    hide_index=True,
+)
 ui.download_csv_button(tabela, "ocorrencias_classificadas.csv")
 
 ui.method_expander(
@@ -192,4 +237,5 @@ ui.provenance_expander(
     producao="Modelo NLP supervisionado + validação humana.",
     limitacoes="Sem ML treinado; regras não cobrem variações de linguagem.",
 )
+ui.demo_cta(next_demo_path="pages/08_ship_from_store.py")
 ui.footer()

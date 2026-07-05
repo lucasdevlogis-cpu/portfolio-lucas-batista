@@ -85,7 +85,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
       href={demoUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-accent hover:underline"
+      className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-accent-contrast hover:underline"
     >
       <ExternalLink className="h-3.5 w-3.5" aria-hidden />
       Abrir em nova aba
@@ -111,7 +111,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
         {caseItem ? (
           <div className="grid gap-4 border-b bg-muted/20 px-4 py-4 sm:grid-cols-2">
             <div>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent">
+              <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent-contrast">
                 Pergunta de negócio
               </p>
               <p className="mt-0.5 text-sm text-foreground">
@@ -119,7 +119,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
               </p>
             </div>
             <div>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent">
+              <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent-contrast">
                 Decisão apoiada
               </p>
               <p className="mt-0.5 text-sm text-foreground">
@@ -127,7 +127,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
               </p>
             </div>
             <div>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent">
+              <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent-contrast">
                 Métrica principal
               </p>
               <p className="mt-0.5 text-sm text-foreground">

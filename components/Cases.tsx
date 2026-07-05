@@ -114,7 +114,7 @@ export function Cases() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-medium uppercase tracking-wide text-accent">
+                    <p className="text-xs font-medium uppercase tracking-wide text-accent-contrast">
                       {caseItem.categoria}
                     </p>
                     <p className="mt-0.5 font-heading text-sm font-semibold text-primary">

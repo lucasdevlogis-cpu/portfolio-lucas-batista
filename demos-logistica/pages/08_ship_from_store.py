@@ -5,11 +5,12 @@ ou hub) por pedido, comparando com o baseline "sempre o CD". Referência de
 arquitetura: Fleetbase (LSOS) / OMS de fulfillment distribuído.
 """
 
+import folium
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from lib import brand, geo, ui
+from lib import brand, folium_maps as fmap, format as fmt, geo, tables, ui
 
 ui.page_setup("08. Ship-from-Store BR", icon="🏬")
 
@@ -52,9 +53,7 @@ restante = {o["origem_id"]: int(o["capacidade_dia"]) for _, o in origens.iterrow
 linhas = []
 for _, p in pedidos.iterrows():
     # Baseline: sempre o CD.
-    b_custo, b_prazo, _ = custo_origem(
-        CD, p["dest_lat"], p["dest_lon"], p["demanda_un"]
-    )
+    b_custo, b_prazo, _ = custo_origem(CD, p["dest_lat"], p["dest_lon"], p["demanda_un"])
     # Avalia todas as origens com capacidade.
     candidatos = []
     for _, o in origens.iterrows():
@@ -108,115 +107,141 @@ ui.hero(
     ),
     metric={
         "label": "Economia vs baseline (sempre CD)",
-        "value": f"R$ {economia_total:,.0f}",
+        "value": fmt.fmt_currency(economia_total, decimals=0),
         "delta": f"R$ {economia_media:,.2f}/pedido · {reducao_media:+.1f} dia de prazo",
         "help": "Ganho ao escolher a melhor origem por pedido em vez de despachar sempre do CD.",
     },
 )
 
-ui.kpi_row(
-    [
-        ("Pedidos", f"{len(res)}"),
-        ("Atendidos por loja/hub", f"{pct_alternativa:.0f}%"),
-        ("Redução média de prazo", f"{reducao_media:+.1f} dia"),
-        {"label": "Distância média", "value": f"{res['distancia_km'].mean():.0f} km"},
-    ]
-)
+# KPIs com severidade ---------------------------------------------------------
+kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
+with kpi_col1:
+    ui.kpi_metric("Pedidos", fmt.fmt_number(len(res)))
+with kpi_col2:
+    ui.kpi_metric(
+        "Atendidos por loja/hub",
+        fmt.fmt_percent(pct_alternativa),
+        severity="success" if pct_alternativa > 20 else "warning",
+    )
+with kpi_col3:
+    ui.kpi_metric(
+        "Redução média de prazo",
+        f"{reducao_media:+.1f} dia",
+        severity="success" if reducao_media > 0 else "danger",
+    )
+with kpi_col4:
+    ui.kpi_metric(
+        "Distância média",
+        f"{res['distancia_km'].mean():.0f} km",
+    )
 
-ui.section("Alocação origem → destino")
-fig = go.Figure()
-cores = {t: brand.SEQ[i] for i, t in enumerate(sorted(res["origem_tipo"].unique()))}
-# Uma linha-trace por tipo de origem (com separadores None): legenda enxuta e
-# muito menos traces do que uma linha por pedido.
-for tipo, cor in cores.items():
-    sub = res[res["origem_tipo"] == tipo]
-    line_lat: list[float | None] = []
-    line_lon: list[float | None] = []
-    for _, r in sub.iterrows():
-        line_lat += [r["origem_lat"], r["dest_lat"], None]
-        line_lon += [r["origem_lon"], r["dest_lon"], None]
-    fig.add_trace(
-        go.Scattermap(
-            lat=line_lat,
-            lon=line_lon,
-            mode="lines",
-            line=dict(width=1.5, color=cor),
-            name=f"Atendido por {tipo}",
-            hoverinfo="skip",
+st.divider()
+
+# Tabs ------------------------------------------------------------------------
+tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
+
+with tab_visao:
+    ui.section("Alocação origem → destino")
+    m = fmap.base_map(center=(-22, -46), zoom=4, height=ui.map_height(brand.MAP_FULL_HEIGHT))
+    m = fmap.add_flows(
+        m,
+        res,
+        orig_lat="origem_lat",
+        orig_lon="origem_lon",
+        dest_lat="dest_lat",
+        dest_lon="dest_lon",
+        color_by="origem_tipo",
+        popup_fields=["pedido_id", "origem_escolhida", "origem_tipo", "distancia_km", "economia"],
+    )
+    # Origens
+    for _, o in origens.iterrows():
+        folium.Marker(
+            location=[o["lat"], o["lon"]],
+            tooltip=o["origem_id"],
+            icon=fmap._icon_for(o["origem_tipo"].lower()),
+        ).add_to(m)
+    fmap.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="sfs_mapa")
+    st.caption(
+        "Linhas retas entre origem e destino (geodésicas), não rotas rodoviárias reais. "
+        "Espessura uniforme; cores por tipo de origem."
+    )
+
+with tab_analise:
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        ui.section("Pedidos por origem escolhida")
+        porig = (
+            res.groupby(["origem_escolhida", "origem_tipo"])
+            .size()
+            .reset_index(name="pedidos")
         )
-    )
-fig.add_trace(
-    go.Scattermap(
-        lat=res["dest_lat"],
-        lon=res["dest_lon"],
-        mode="markers",
-        marker=dict(size=6, color=brand.MUTED),
-        name="Pedidos",
-    )
-)
-fig.add_trace(
-    go.Scattermap(
-        lat=origens["lat"],
-        lon=origens["lon"],
-        mode="markers+text",
-        marker=dict(size=15, color=brand.PRIMARY),
-        text=origens["origem_id"],
-        textposition="top center",
-        name="Origens",
-    )
-)
-fig.update_layout(
-    map_style="open-street-map",
-    map_zoom=4.2,
-    map_center={"lat": -22, "lon": -46},
-    height=ui.map_height(500),
-    margin=dict(l=0, r=0, t=0, b=0),
-    legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="left", x=0),
-)
-ui.plot(fig, width="stretch")
+        tipo_colors = {"CD": brand.PRIMARY, "Loja": brand.ACCENT, "Hub": brand.WARNING}
+        fig2 = px.bar(
+            porig,
+            x="origem_escolhida",
+            y="pedidos",
+            color="origem_tipo",
+            color_discrete_map=tipo_colors,
+        )
+        fig2.update_layout(
+            height=brand.CHART_HALF_HEIGHT, xaxis_title="", yaxis_title="pedidos"
+        )
+        fig2.update_traces(
+            hovertemplate=fmt.fmt_hover(
+                [("Origem", "%{x}"), ("Pedidos", "%{y}")]
+            )
+        )
+        ui.plot(fig2, width="stretch")
+    with col2:
+        ui.section("Economia por UF de destino")
+        puf = res.groupby("uf_destino")["economia"].sum().reset_index()
+        fig3 = px.bar(
+            puf,
+            x="uf_destino",
+            y="economia",
+            color_discrete_sequence=[brand.ACCENT],
+        )
+        fig3.update_layout(
+            height=brand.CHART_HALF_HEIGHT, xaxis_title="", yaxis_title="R$"
+        )
+        fig3.update_traces(
+            hovertemplate=fmt.fmt_hover(
+                [("UF", "%{x}"), ("Economia", "R$ %{y:,.2f}")]
+            )
+        )
+        ui.plot(fig3, width="stretch")
 
-col1, col2 = st.columns([1, 1])
-with col1:
-    ui.section("Pedidos por origem escolhida")
-    porig = (
-        res.groupby(["origem_escolhida", "origem_tipo"])
-        .size()
-        .reset_index(name="pedidos")
+with tab_exportar:
+    ui.section("Decisões por pedido")
+    tabela = res[
+        [
+            "pedido_id",
+            "uf_destino",
+            "origem_escolhida",
+            "origem_tipo",
+            "distancia_km",
+            "prazo_dias",
+            "custo",
+            "economia",
+            "reducao_prazo",
+        ]
+    ].copy()
+    tables.format_dataframe(
+        tabela,
+        config={
+            "pedido_id": tables.text_column("Pedido"),
+            "uf_destino": tables.text_column("UF"),
+            "origem_escolhida": tables.text_column("Origem"),
+            "origem_tipo": tables.text_column("Tipo"),
+            "distancia_km": tables.number_column("Distância (km)", decimals=0),
+            "prazo_dias": tables.number_column("Prazo (dias)", decimals=0),
+            "custo": tables.currency_column("Custo"),
+            "economia": tables.currency_column("Economia"),
+            "reducao_prazo": tables.number_column("Redução prazo (dias)", decimals=0),
+        },
+        hide_index=True,
     )
-    fig2 = px.bar(
-        porig,
-        x="origem_escolhida",
-        y="pedidos",
-        color="origem_tipo",
-        color_discrete_sequence=brand.SEQ,
-    )
-    fig2.update_layout(height=340, xaxis_title="", yaxis_title="pedidos")
-    ui.plot(fig2, width="stretch")
-with col2:
-    ui.section("Economia por UF de destino")
-    puf = res.groupby("uf_destino")["economia"].sum().reset_index()
-    fig3 = px.bar(
-        puf, x="uf_destino", y="economia", color_discrete_sequence=[brand.ACCENT]
-    )
-    fig3.update_layout(height=340, xaxis_title="", yaxis_title="R$")
-    ui.plot(fig3, width="stretch")
-
-ui.section("Decisões por pedido")
-tabela = res[
-    [
-        "pedido_id",
-        "uf_destino",
-        "origem_escolhida",
-        "origem_tipo",
-        "distancia_km",
-        "prazo_dias",
-        "custo",
-        "economia",
-        "reducao_prazo",
-    ]
-]
-st.dataframe(tabela, width="stretch", hide_index=True)
-ui.download_csv_button(tabela, "ship_from_store.csv")
+    ui.download_csv_button(tabela, "ship_from_store.csv")
 
 ui.method_expander(
     """
@@ -236,4 +261,5 @@ ui.provenance_expander(
     producao="OMS integrado a WMS/ERP com estoque e SLA por praça.",
     limitacoes="Sem estoque por SKU, rede viária ou regras fiscais; distância proxy.",
 )
+ui.demo_cta(next_demo_path="pages/09_tsp_baseline_sp.py")
 ui.footer()

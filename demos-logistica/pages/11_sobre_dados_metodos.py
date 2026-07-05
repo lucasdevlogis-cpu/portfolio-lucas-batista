@@ -3,7 +3,7 @@
 import pandas as pd
 import streamlit as st
 
-from lib import ui
+from lib import tables, ui
 
 ui.page_setup("11. Sobre os dados e métodos", icon="📚")
 
@@ -90,7 +90,16 @@ proveniencia = pd.DataFrame(
     ],
     columns=["Demo", "Fonte da amostra", "Tipo de dado", "Método em produção"],
 )
-st.dataframe(proveniencia, width="stretch", hide_index=True)
+tables.format_dataframe(
+    proveniencia,
+    config={
+        "Demo": tables.text_column("Demo"),
+        "Fonte da amostra": tables.text_column("Fonte da amostra"),
+        "Tipo de dado": tables.text_column("Tipo de dado"),
+        "Método em produção": tables.text_column("Método em produção"),
+    },
+    hide_index=True,
+)
 ui.download_csv_button(
     proveniencia,
     "proveniencia_demos.csv",
@@ -118,4 +127,5 @@ st.info(
     "pagamento) permanece com validação humana e dados do cliente."
 )
 
+ui.demo_cta(next_demo_path="pages/01_precificacao_frete.py")
 ui.footer()

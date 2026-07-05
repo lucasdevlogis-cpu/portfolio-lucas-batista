@@ -22,7 +22,7 @@ def is_embed() -> bool:
 
 def map_height(default: int) -> int:
     """Altura de mapa/gráfico reduzida no embed (iframe apertado no modal)."""
-    return min(default, 360) if is_embed() else default
+    return min(default, brand.MAP_EMBED_HEIGHT) if is_embed() else default
 
 
 def page_setup(title: str, icon: str = "🚚") -> None:
@@ -96,6 +96,21 @@ def _inject_css(embed: bool = False) -> None:
             font-weight:700; color:{brand.PRIMARY}; font-size:1rem; line-height:1.1;
           }}
           .demo-sidebar-brand span {{ display:block; color:{brand.MUTED}; font-weight:500; font-size:.72rem; }}
+          /* KPIs coloridos por severidade */
+          .kpi-card {{
+            background:{brand.CARD}; border:1px solid {brand.BORDER}; border-radius:12px;
+            padding:12px 16px; margin-bottom:8px;
+          }}
+          .kpi-card.success {{ border-left:5px solid {brand.SUCCESS}; }}
+          .kpi-card.warning {{ border-left:5px solid {brand.WARNING}; }}
+          .kpi-card.danger {{ border-left:5px solid {brand.DANGER}; }}
+          .kpi-label {{ font-size:0.78rem; color:{brand.MUTED}; font-weight:600; text-transform:uppercase; }}
+          .kpi-value {{ font-size:1.35rem; color:{brand.PRIMARY}; font-weight:700; }}
+          /* CTA final */
+          .demo-cta {{
+            background:{brand.BACKGROUND}; border:1px solid {brand.BORDER}; border-radius:12px;
+            padding:16px; margin-top:1rem;
+          }}
           /* Limpa chrome do Streamlit para embed mais limpo */
           footer {{ visibility:hidden; height:0; }}
           div[data-testid="stDecoration"] {{ display:none; }}
@@ -229,6 +244,18 @@ def kpi_row(items: list[tuple[str, str]] | list[dict]) -> None:
             col.metric(item[0], item[1])
 
 
+def kpi_metric(label: str, value: str, severity: str | None = None) -> None:
+    """KPI com borda colorida por severidade (success/warning/danger)."""
+    css_class = severity if severity in {"success", "warning", "danger"} else ""
+    st.markdown(
+        f"<div class='kpi-card {css_class}'>"
+        f"<div class='kpi-label'>{label}</div>"
+        f"<div class='kpi-value'>{value}</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+
 def download_csv_button(
     df: pd.DataFrame, filename: str, label: str = "⬇️ Baixar resultado (CSV)"
 ) -> None:
@@ -261,6 +288,20 @@ def provenance_expander(
 - **Limitações:** {limitacoes}
 """
         )
+
+
+def demo_cta(next_demo_path: str | None = None, next_label: str = "Ver próxima demo") -> None:
+    """Container de CTA final das demos: próxima demo e contato."""
+    st.markdown("<div class='demo-cta'>", unsafe_allow_html=True)
+    cols = st.columns([1, 1])
+    with cols[0]:
+        if next_demo_path:
+            nav_link(next_demo_path, next_label, icon="➡️")
+    with cols[1]:
+        st.markdown(
+            "[Solicitar leitura inicial](https://portfolio-lucas-batista-murex.vercel.app#contato)"
+        )
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 def footer() -> None:

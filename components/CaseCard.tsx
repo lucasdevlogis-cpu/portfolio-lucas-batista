@@ -17,7 +17,7 @@ const prioridadeStyles: Record<
   CasePrioridade,
   { badge: string; label: string; border: string; icon: typeof Star }
 > = {
-  P0: { badge: "bg-accent text-white", label: "Essencial", border: "border-l-accent", icon: Star },
+  P0: { badge: "bg-accent-contrast text-white", label: "Essencial", border: "border-l-accent", icon: Star },
   P1: { badge: "bg-primary/20 text-primary border border-primary/20", label: "Forte", border: "border-l-primary", icon: Zap },
   P2: { badge: "bg-slate-100 text-slate-600 border border-slate-200", label: "Complementar", border: "border-l-slate-300", icon: Zap },
 };
@@ -60,7 +60,7 @@ export function CaseCard({
             {prioridade} · {prio.label}
           </Badge>
         </div>
-        <p className="text-xs font-medium uppercase tracking-wide text-accent">
+        <p className="text-xs font-medium uppercase tracking-wide text-accent-contrast">
           {categoria}
         </p>
         <h3 className="mt-1 font-heading text-xl font-semibold text-primary">
@@ -71,7 +71,7 @@ export function CaseCard({
         </p>
 
         <div className="mt-4 rounded-lg border-l-4 border-accent bg-accent/5 px-4 py-3">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent">
+          <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent-contrast">
             Pergunta de negócio
           </p>
           <p className="mt-0.5 text-sm font-medium leading-snug text-foreground">

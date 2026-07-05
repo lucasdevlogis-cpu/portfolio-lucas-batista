@@ -109,3 +109,13 @@
     font-family: var(--font-inter), var(--font-geist-sans), sans-serif;
   }
 }
+
+@layer utilities {
+  /* Tom mais escuro do accent para textos pequenos sobre fundos claros (WCAG AA). */
+  .text-accent-contrast {
+    color: #0a7a70;
+  }
+  .bg-accent-contrast {
+    background-color: #0a7a70;
+  }
+}

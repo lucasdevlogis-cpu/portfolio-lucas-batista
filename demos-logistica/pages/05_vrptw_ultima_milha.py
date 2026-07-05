@@ -9,7 +9,7 @@ Produção usaria PyVRP (time windows).
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from lib import brand, geo, ui, viz
+from lib import brand, folium_maps as fmap, format, geo, tables, ui, viz
 
 ui.page_setup("05. VRPTW — Última Milha", icon="⏱️")
 
@@ -74,6 +74,10 @@ sched_edf = simular(ordem_edf)
 viol_base = int((sched_base["status"] == "Violou SLA").sum())
 viol_edf = int((sched_edf["status"] == "Violou SLA").sum())
 
+espera_total = sched_edf["espera_min"].sum()
+ultima_entrega = sched_edf["chegada_min"].iloc[-1] if len(sched_edf) else 0
+deadline_medio = sched_edf["window_end_min"].mean()
+
 ui.hero(
     "05. VRPTW — Última Milha com Janelas de Tempo",
     "A sequência de entregas respeita as janelas prometidas ao cliente?",
@@ -90,86 +94,150 @@ ui.hero(
     },
 )
 
-ui.kpi_row(
-    [
-        ("Paradas", f"{n}"),
-        ("No prazo (otimizado)", f"{n - viol_edf}/{n}"),
-        ("Espera total", f"{sched_edf['espera_min'].sum():.0f} min"),
-        {
-            "label": "Última entrega",
-            "value": hhmm(sched_edf["chegada_min"].iloc[-1] if len(sched_edf) else 0),
-        },
-    ]
-)
+tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
 
-ui.section("Janela prometida vs chegada planejada (plano otimizado)")
-fig = go.Figure()
-for _, r in sched_edf.iterrows():
+with tab_visao:
+    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+    with kpi1:
+        ui.kpi_metric("Paradas", format.fmt_number(n))
+    with kpi2:
+        ui.kpi_metric(
+            "No prazo (otimizado)",
+            f"{n - viol_edf}/{n}",
+            severity="success" if viol_edf == 0 else "warning" if viol_edf == 1 else "danger",
+        )
+    with kpi3:
+        ui.kpi_metric(
+            "Espera total",
+            f"{espera_total:.0f} min",
+            severity="warning" if espera_total > 60 else None,
+        )
+    with kpi4:
+        ui.kpi_metric("Última entrega", hhmm(ultima_entrega))
+
+    st.divider()
+
+    ui.section("Rota planejada", "Sequência EDF com paradas numeradas e setas de direção")
+    coords = [DEPOT] + [(r["lat"], r["lon"]) for _, r in sched_edf.iterrows()] + [DEPOT]
+    m = fmap.base_map(center=DEPOT, zoom=11, height=ui.map_height(brand.MAP_FULL_HEIGHT))
+    m = fmap.add_routes(
+        m,
+        routes=[{"coords": coords, "label": "Rota EDF", "color": brand.PRIMARY}],
+        depot=DEPOT,
+        show_numbers=True,
+        show_arrows=True,
+    )
+    fmap.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="vrptw_mapa")
+    st.caption("Linhas retas entre paradas (geodésicas), não rotas rodoviárias reais.")
+
+    if viol_edf:
+        st.divider()
+        st.warning(
+            f"{viol_edf} parada(s) ainda violam a janela mesmo no plano otimizado — "
+            "sinal de rever a promessa (SLA), adicionar veículo ou dividir a rota."
+        )
+
+with tab_analise:
+    ui.section("Janela prometida vs chegada planejada (plano otimizado)")
+    fig = go.Figure()
+    for _, r in sched_edf.iterrows():
+        fig.add_trace(
+            go.Bar(
+                y=[r["cliente"]],
+                x=[r["window_end_min"] - r["window_start_min"]],
+                base=[r["window_start_min"]],
+                orientation="h",
+                marker_color=brand.BORDER,
+                hovertemplate=f"<b>{r['cliente']}</b><br>Janela: {r['janela']}<extra></extra>",
+                showlegend=False,
+            )
+        )
+    cor = [brand.DANGER if s == "Violou SLA" else brand.ACCENT for s in sched_edf["status"]]
     fig.add_trace(
-        go.Bar(
-            y=[r["cliente"]],
-            x=[r["window_end_min"] - r["window_start_min"]],
-            base=[r["window_start_min"]],
-            orientation="h",
-            marker_color=brand.BORDER,
-            hovertext=f"Janela {r['janela']}",
-            hoverinfo="text",
-            showlegend=False,
+        go.Scatter(
+            y=sched_edf["cliente"],
+            x=sched_edf["chegada_min"],
+            mode="markers",
+            marker=dict(size=13, color=cor, line=dict(width=1, color="white")),
+            name="Chegada planejada",
+            hovertemplate="<b>%{y}</b><br>Chegada: %{text}<extra></extra>",
+            text=sched_edf["chegada"],
         )
     )
-cor = [brand.DANGER if s == "Violou SLA" else brand.ACCENT for s in sched_edf["status"]]
-fig.add_trace(
-    go.Scatter(
-        y=sched_edf["cliente"],
-        x=sched_edf["chegada_min"],
-        mode="markers",
-        marker=dict(size=13, color=cor, line=dict(width=1, color="white")),
-        name="Chegada planejada",
-        hovertext=[f"Chegada {c}" for c in sched_edf["chegada"]],
-        hoverinfo="text",
+    tickvals = list(range(6 * 60, 22 * 60 + 1, 120))
+    fig = viz.add_reference_line(fig, x=deadline_medio, label="Deadline médio", color=brand.WARNING)
+    fig.update_layout(
+        height=brand.CHART_FULL_HEIGHT,
+        xaxis=dict(
+            title="Horário", tickvals=tickvals, ticktext=[hhmm(t) for t in tickvals]
+        ),
+        yaxis=dict(title=""),
+        margin=dict(t=10, b=10, l=10, r=10),
     )
-)
-tickvals = list(range(6 * 60, 22 * 60 + 1, 120))
-fig.update_layout(
-    height=420,
-    xaxis=dict(
-        title="Horário", tickvals=tickvals, ticktext=[hhmm(t) for t in tickvals]
-    ),
-    margin=dict(t=10, b=10, l=10, r=10),
-)
-ui.plot(fig, width="stretch")
+    ui.plot(fig)
 
-ui.section("Rota planejada")
-coords = [DEPOT] + [(r["lat"], r["lon"]) for _, r in sched_edf.iterrows()]
-labels = ["CD"] + list(sched_edf["stop_id"])
-ui.plot(
-    viz.map_routes(
-        [
-            {
-                "coords": coords,
-                "label": "Rota EDF",
-                "color": brand.PRIMARY,
-                "hovertext": labels,
-            }
-        ],
-        depot=DEPOT,
-        zoom=11,
-        height=ui.map_height(520),
-    ),
-    width="stretch",
-)
-st.caption("Linhas retas entre paradas (geodésicas), não rotas rodoviárias reais.")
+    st.divider()
 
-ui.section("Cronograma")
-tabela = sched_edf[["stop_id", "cliente", "janela", "chegada", "espera_min", "status"]]
-st.dataframe(tabela, width="stretch", hide_index=True)
-ui.download_csv_button(tabela, "vrptw_cronograma.csv")
-
-if viol_edf:
-    st.warning(
-        f"{viol_edf} parada(s) ainda violam a janela mesmo no plano otimizado — "
-        "sinal de rever a promessa (SLA), adicionar veículo ou dividir a rota."
+    ui.section("Comparativo: violações de SLA")
+    comparativo = pd.DataFrame(
+        {
+            "Cenário": ["Ordem de cadastro", "EDF (otimizado)"],
+            "Violações": [viol_base, viol_edf],
+            "No prazo": [n - viol_base, n - viol_edf],
+        }
     )
+    fig2 = go.Figure()
+    fig2.add_trace(
+        go.Bar(
+            x=comparativo["Cenário"],
+            y=comparativo["No prazo"],
+            name="No prazo",
+            marker_color=brand.SUCCESS,
+            hovertemplate="<b>%{x}</b><br>No prazo: %{y}<extra></extra>",
+        )
+    )
+    fig2.add_trace(
+        go.Bar(
+            x=comparativo["Cenário"],
+            y=comparativo["Violações"],
+            name="Violou SLA",
+            marker_color=brand.DANGER,
+            hovertemplate="<b>%{x}</b><br>Violações: %{y}<extra></extra>",
+        )
+    )
+    fig2.update_layout(
+        barmode="stack",
+        height=brand.CHART_HALF_HEIGHT,
+        xaxis_title="",
+        yaxis_title="Paradas",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+    )
+    ui.plot(fig2)
+
+    st.divider()
+
+    ui.section("Cronograma")
+    tabela = sched_edf[["stop_id", "cliente", "janela", "chegada", "espera_min", "status"]].copy()
+    tabela["status"] = tabela["status"].apply(tables.status_text)
+    tables.format_dataframe(
+        tabela,
+        config={
+            "stop_id": tables.text_column("Parada"),
+            "cliente": tables.text_column("Cliente"),
+            "janela": tables.text_column("Janela prometida"),
+            "chegada": tables.text_column("Chegada"),
+            "espera_min": tables.number_column("Espera (min)", decimals=0),
+            "status": tables.status_column("Status"),
+        },
+    )
+
+with tab_exportar:
+    ui.section("Exportar cronograma")
+    export_df = sched_edf[
+        ["stop_id", "cliente", "janela", "chegada", "espera_min", "status"]
+    ].copy()
+    export_df["status"] = export_df["status"].apply(tables.status_text)
+    ui.download_csv_button(export_df, "vrptw_cronograma.csv")
 
 ui.method_expander(
     """
@@ -187,4 +255,5 @@ ui.provenance_expander(
     producao="PyVRP (time windows) sobre matriz de rede.",
     limitacoes="Um veículo, distância proxy, sem otimização global de janelas.",
 )
+ui.demo_cta(next_demo_path="pages/06_rede_interhubs.py")
 ui.footer()

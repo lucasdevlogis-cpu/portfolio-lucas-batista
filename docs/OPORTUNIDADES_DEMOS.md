@@ -4,6 +4,8 @@
 > **Contexto:** Análise pós-deploy das demos Streamlit com foco em **desktop-first**. As demos atualmente são embedadas via iframe (`?embed=true`) no modal da landing, mas o formato de consumo principal é **navegador desktop em tela cheia** (usuário clicando "Abrir em nova aba").
 >
 > **Premissa:** O Streamlit é excelente para protótipos rápidos e validação de conceito, mas **não é uma plataforma de visualização de dados premium**. Este documento propõe alternativas e melhorias para elevar a percepção de valor das demos.
+>
+> **Status de implementação (05/07/2026):** As Fases 1, 2 e 3 foram aplicadas ao `demos-logistica/`. Mapas migrados para Folium (`CartoDB positron`, clustering, ícones FontAwesome, marcadores numerados, setas de rota), gráficos padronizados com cores semânticas, linhas de referência e hovertemplates customizados, tabelas formatadas com `st.column_config`, layout com `st.tabs`, KPIs coloridos e CTA final. A Fase 4 (protótipos ECharts/AgGrid e avaliação de Next.js híbrido) ainda não foi iniciada.
 
 ---
 
@@ -233,31 +235,31 @@ Migrar para **Dash** ou **Panel** para dashboards de monitoramento real:
 
 ## 4. Roadmap Prioritizado
 
-### Fase 1: Quick Wins (Semana 1)
-- [ ] Padronizar altura dos gráficos (360px meia, 480px full)
-- [ ] Adicionar linhas de referência (piso ANTT, capacidade 100%)
-- [ ] Tooltips customizados nos gráficos Plotly
-- [ ] Formatação de moeda/porcentagem nas tabelas (`st.column_config`)
-- [ ] Cores semânticas discretas nos gráficos (status, severidade)
-- [ ] Separadores visuais entre seções (`st.divider` + texto)
-- [ ] Remover legendas redundantes dos mapas
+### Fase 1: Quick Wins (Semana 1) — ✅ Concluída
+- [x] Padronizar altura dos gráficos (`CHART_HALF_HEIGHT=360`, `CHART_FULL_HEIGHT=480`)
+- [x] Adicionar linhas de referência (piso ANTT, capacidade 100%, prazo máximo)
+- [x] Tooltips customizados nos gráficos Plotly (`lib.format.fmt_hover`)
+- [x] Formatação de moeda/porcentagem nas tabelas (`st.column_config` via `lib.tables`)
+- [x] Cores semânticas discretas nos gráficos (status, severidade)
+- [x] Separadores visuais entre seções (`st.divider` + texto)
+- [x] Remover legendas redundantes dos mapas (`showlegend=False`)
 
-### Fase 2: Mapas Premium (Semana 2)
-- [ ] Migrar mapas para `streamlit-folium`
-- [ ] Tiles `CartoDB positron`
-- [ ] Clustering com `MarkerCluster`
-- [ ] Ícones FontAwesome por tipo (CD, entrega, hub)
-- [ ] Marcadores numerados para sequência de rota
-- [ ] Mapa de calor para promessa CEP
+### Fase 2: Mapas Premium (Semana 2) — ✅ Concluída
+- [x] Migrar mapas para `streamlit-folium` (`lib.folium_maps`)
+- [x] Tiles `CartoDB positron`
+- [x] Clustering com `MarkerCluster`
+- [x] Ícones FontAwesome por tipo (CD, entrega, hub)
+- [x] Marcadores numerados para sequência de rota
+- [x] Mapa de calor para promessa CEP
 
-### Fase 3: Tabelas e Layout (Semana 3)
-- [ ] `st.column_config` completo: `ProgressColumn`, `NumberColumn`, `TextColumn` com ícones
-- [ ] Resumo executivo (top 5) antes da tabela completa
-- [ ] `st.tabs` para demos profundas (3 tabs)
-- [ ] KPIs com cor por severidade (CSS custom)
-- [ ] CTA final em cada demo (botão estilizado)
+### Fase 3: Tabelas e Layout (Semana 3) — ✅ Concluída
+- [x] `st.column_config` completo: `ProgressColumn`, `NumberColumn`, `TextColumn` com ícones (`lib.tables`)
+- [x] Resumo executivo (top 5 / KPIs) antes da tabela completa
+- [x] `st.tabs` para demos profundas (`["Visão Geral", "Análise", "Exportar"]`)
+- [x] KPIs com cor por severidade (`ui.kpi_metric` com CSS custom)
+- [x] CTA final em cada demo (`ui.demo_cta`)
 
-### Fase 4: Visual Premium (Semana 4-6)
+### Fase 4: Visual Premium (Semana 4-6) — 🟡 Não iniciada
 - [ ] Avaliar `streamlit-echarts` para gráficos avançados (sankey, sunburst, gauge)
 - [ ] Avaliar `streamlit-aggrid` para tabelas premium
 - [ ] Protótipo de Next.js consumindo JSON das análises

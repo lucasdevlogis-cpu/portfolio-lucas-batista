@@ -26,7 +26,7 @@ export function PainPointCard({
         className,
       )}
     >
-      <Badge className="absolute top-4 right-4 bg-accent/10 text-accent hover:bg-accent/10">
+      <Badge className="absolute top-4 right-4 bg-accent/10 text-accent-contrast hover:bg-accent/10">
         {index + 1}
       </Badge>
       <CardContent className="p-6">

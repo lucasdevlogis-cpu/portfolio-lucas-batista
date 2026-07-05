@@ -27,7 +27,7 @@ function ProofCard() {
 
   return (
     <div className="rounded-2xl border border-white/20 bg-white/60 p-6 shadow-xl backdrop-blur-xl">
-      <p className="text-xs font-semibold uppercase tracking-wide text-accent">
+      <p className="text-xs font-semibold uppercase tracking-wide text-accent-contrast">
         {hero.provasTitulo}
       </p>
       <div className="mt-4 flex flex-col gap-4">
@@ -80,7 +80,7 @@ export function Hero() {
         >
           <motion.span
             variants={item}
-            className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-sm font-medium text-accent"
+            className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-sm font-medium text-accent-contrast"
           >
             <Sparkles className="size-4" aria-hidden />
             {hero.badge}

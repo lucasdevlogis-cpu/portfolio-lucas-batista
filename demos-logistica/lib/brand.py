@@ -16,17 +16,44 @@ SUCCESS = "#16a34a"
 SEQ = [
     PRIMARY,
     ACCENT,
-    "#f59e0b",
+    WARNING,
     "#7c3aed",
-    "#dc2626",
+    DANGER,
     "#0891b2",
     "#65a30d",
     "#db2777",
 ]
 
+# Cores semânticas para status operacionais.
+STATUS_COLORS = {
+    "No prazo": SUCCESS,
+    "Atrasado": DANGER,
+    "Em risco": WARNING,
+    "Ocorrencia aberta": DANGER,
+    "Entregue": SUCCESS,
+    "Em transito": ACCENT,
+}
+
+# Cores semânticas para níveis de confiança / severidade.
+SEVERITY_COLORS = {
+    "Alta": SUCCESS,
+    "Média": WARNING,
+    "Baixa": DANGER,
+    "Baixo": DANGER,
+    "Crítico": DANGER,
+    "Atenção": WARNING,
+    "OK": SUCCESS,
+}
+
+# Alturas padronizadas de gráficos e mapas.
+CHART_HALF_HEIGHT = 360
+CHART_FULL_HEIGHT = 480
+MAP_FULL_HEIGHT = 520
+MAP_EMBED_HEIGHT = 360
+
 FONT_FAMILY = "Inter, system-ui, -apple-system, Segoe UI, sans-serif"
 
 
-# Selo de maturidade padrão — honestidade calibrada, não defensiva.
 def maturidade(metodo: str = "heurístico", producao: str = "solver dedicado") -> str:
+    """Selo de maturidade padrão — honestidade calibrada, não defensiva."""
     return f"Amostra curada · método {metodo} · produção usaria {producao}"

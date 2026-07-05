@@ -30,7 +30,7 @@ export function IASection() {
             {ia.descricao}
           </p>
           <div className="mt-8 rounded-xl border border-accent/30 bg-white p-6">
-            <p className="text-sm font-semibold text-accent">
+            <p className="text-sm font-semibold text-accent-contrast">
               Exemplos seguros
             </p>
             <ul className="mt-3 space-y-2 text-sm text-foreground">

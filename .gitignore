@@ -50,3 +50,7 @@ __pycache__/
 
 .vercel
 .env*
+
+# audit artifacts
+lighthouse-*.json
+wb-*.json

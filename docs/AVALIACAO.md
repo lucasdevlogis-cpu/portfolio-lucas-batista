@@ -12,14 +12,14 @@
 |------|--------|------|
 | Landing page (código) | ✅ Completa | 10 seções (incl. Sobre); build + lint OK |
 | Cases | ✅ Completo | **10 demonstráveis** + 1 roadmap (`06-kpis-cd`); filtro por 6 categorias |
-| Demos Streamlit (código) | ✅ Completa | **11 pages** + `lib/` compartilhada; smoke **12/12** |
+| Demos Streamlit (código) | ✅ Completa | **11 pages** + `lib/` compartilhada; smoke **13/13** |
 | UX demos Streamlit | ✅ Padronizado | `hero`, `section`, `plot`, `sidebar_brand`; home com cards navegáveis |
 | Deploy produção | ✅ No ar | Vercel + Streamlit Cloud funcionando |
 | Conteúdo / credibilidade | ✅ OK | Email, LinkedIn e GitHub configurados |
 | SEO assets | ✅ OK | `public/og-image.png` (1200×630) e `app/icon.png` |
 | Formulário de leads | 🟡 Parcial | Formspree integrado; sem ID usa fallback `mailto` |
 | Documentação | ✅ Enxuta | `AVALIACAO.md` + `DEPLOY.md` |
-| Lighthouse | 🟡 Pendente | Rodar `npx lighthouse` mobile e registrar aqui |
+| Lighthouse | ✅ Aprovado | Desktop 100/100/100/100; Mobile 93/100/100/100 |
 
 **Veredicto:** pronto para divulgação após **Formspree** + **Lighthouse**.
 
@@ -41,7 +41,7 @@
 - **`.streamlit/config.toml`:** `toolbarMode = "minimal"` para embed mais limpo.
 - **11 pages** com esqueleto padronizado: hero → sidebar → KPIs → mapas/gráficos → tabela + download → expanders → footer.
 - **`app.py`:** mapa herói (rede inter-hubs) + grade de cards navegáveis (Profundas / Pontuais).
-- **Dados:** `data/raw/` + `scripts/build_datasets.py` (seed fixa) + `scripts/smoke_test.py` (12/12 OK).
+- **Dados:** `data/raw/` + `scripts/build_datasets.py` (seed fixa) + `scripts/smoke_test.py` (13/13 OK).
 
 ### Site Next.js
 
@@ -98,16 +98,28 @@ Teste automatizado dos 10 modais de demo via Kimi WebBridge.
 
 **Resultado: 10/10 cases aprovados.**
 
-Critérios validados:
-- Modal abre ao clicar no card
-- Link "Abrir em nova aba" presente com `target="_blank"`
-- Link GitHub presente
-- Iframe da demo detectado com `src` correto (`?embed=true`)
+---
 
-Artefatos:
-- `validacao_cases_relatorio.txt` — relatório completo
-- `screenshot_modal_00.png` — evidência visual (Simulador de Custo de Frete)
-- `screenshot_modal_03.png` — evidência visual (Ship from Store, iframe carregado)
+## Pass de melhoria — 05/07/2026 (final)
+
+### Demos Streamlit — upgrade visual
+
+- **`pages/06_rede_interhubs.py`:**
+  - Mapa migrado para Folium (`lib/folium_maps.add_network`) com ícones de hub, popups por lane e espessura das arestas proporcional ao volume.
+  - Layout reorganizado em `st.tabs(["Visão Geral", "Análise", "Exportar"])`.
+  - Gráficos com alturas padronizadas (`brand.CHART_HALF_HEIGHT`), linhas de referência e hovertemplate formatado (`lib.format.fmt_hover`).
+  - Tabela de corredores via `lib.tables.format_dataframe`.
+  - CTA final `ui.demo_cta(next_demo_path="pages/07_classificador_ocorrencias.py")`.
+
+- **`pages/09_tsp_baseline_sp.py`:**
+  - Mapa migrado para Folium (`lib.folium_maps.add_routes`) com marcadores numerados e setas de direção.
+  - Layout em tabs; gráfico de comparação com cores semânticas e linha de referência do baseline.
+  - Tabela de sequência via `lib.tables.format_dataframe`.
+  - CTA final `ui.demo_cta(next_demo_path="pages/10_auditoria_endereco.py")`.
+
+- **Helpers:** `lib/folium_maps.py` corrigido para preservar o nome do ícone ao recolorir marcadores; `lib/tables.py` usa `width="stretch"`.
+
+**Smoke test:** 13/13 OK.
 
 ---
 
@@ -147,16 +159,33 @@ Artefatos:
 | 1 | Configurar `NEXT_PUBLIC_FORMSPREE_FORM_ID` + redeploy | Dashboard Vercel | 🟡 Pendente |
 | 2 | Confirmar preview do `og-image.png` no LinkedIn/WhatsApp | — | 🟡 Pendente |
 
-### Lighthouse mobile (05/07/2026, local `next start`)
+### Lighthouse (05/07/2026, local `next start`)
 
-| Categoria | Simulate (Lantern) | DevTools (throttling aplicado) |
-|-----------|:---:|:---:|
-| Performance | 73 | **87** (LCP 2,3 s · FCP 2,3 s) |
-| Acessibilidade | 94 | — |
-| Boas práticas | 100 | — |
-| SEO | 100 | — |
+Após correção das falhas de contraste (`text-accent` → tom acessível `#0a7369`), os audits locais passaram na meta.
 
-O LCP simulado do Lantern (7,7 s) é pessimista para esta página estática; o insight baseado em trace mostra ~1,4 s de render e o método DevTools confirma LCP real de 2,3 s. Ganho de performance ainda possível reduzindo o TBT do Framer Motion (hydration das seções animadas).
+#### Desktop (`--preset=desktop`)
+
+| Categoria | Score | Meta | Status |
+|-----------|------:|------|:------:|
+| Performance | 100 | ≥ 90 | ✅ |
+| Acessibilidade | 100 | ≥ 95 | ✅ |
+| Boas práticas | 100 | — | ✅ |
+| SEO | 100 | — | ✅ |
+
+Core Web Vitals desktop: FCP 0,3 s · LCP 0,7 s · TBT 0 ms · CLS 0.
+
+#### Mobile (`--form-factor=mobile`)
+
+| Categoria | Score | Meta | Status |
+|-----------|------:|------|:------:|
+| Performance | 93 | ≥ 90 | ✅ |
+| Acessibilidade | 100 | ≥ 95 | ✅ |
+| Boas práticas | 100 | — | ✅ |
+| SEO | 100 | — | ✅ |
+
+Core Web Vitals mobile: FCP 1,1 s · LCP 3,2 s · TBT 110 ms · CLS 0.
+
+O LCP mobile (3,2 s) fica levemente acima do ideal (2,5 s), mas o score de Performance (93) atende à meta. Possíveis ganhos futuros: pré-carregar fonte Inter, lazy-load de seções abaixo da dobra e reduzir hidratação do Framer Motion.
 
 ---
 
@@ -179,7 +208,7 @@ O LCP simulado do Lantern (7,7 s) é pessimista para esta página estática; o i
 | 2 Demos | ✅ 100% | push repo demos separado |
 | 3 GitHub | 🟡 ~40% | READMEs por case |
 | 4 Deploy | ✅ ~95% | Formspree env; validação cases OK |
-| 5 Lançamento | 🟡 | Formspree, Lighthouse, analytics, domínio |
+| 5 Lançamento | 🟡 | Formspree, analytics, domínio (Lighthouse ✅) |
 
 ---
 
@@ -213,7 +242,7 @@ NEXT_PUBLIC_FORMSPREE_FORM_ID=   # opcional até criar conta Formspree
 ## Próximos passos sugeridos
 
 1. Configurar Formspree → redeploy
-2. Lighthouse mobile
+2. Rodar Lighthouse na URL de produção após deploy para confirmar scores
 3. Push demos para repo `demos-logistica` no GitHub
 
 ---
