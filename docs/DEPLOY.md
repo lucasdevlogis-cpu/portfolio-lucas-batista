@@ -15,14 +15,32 @@ Guia de deploy. Conta GitHub: **lucasdevlogis-cpu** (`lucas.dev.logis@gmail.com`
 
 ## 1. Streamlit Cloud (demos)
 
+Desenvolvimento na pasta local `demos-logistica/` deste workspace. Publicação: **copiar a pasta** para o repo GitHub que alimenta o Streamlit Cloud.
+
 1. Acesse [share.streamlit.io](https://share.streamlit.io) e faça login com GitHub.
-2. **New app** → repositório `lucasdevlogis-cpu/demos-logistica`.
-3. **Branch:** `main` · **Main file path:** `app.py`
-4. Deploy. URL atual:
+2. App apontando para `lucasdevlogis-cpu/demos-logistica` · **Branch:** `main` · **Main file path:** `app.py`
+3. URL atual:
 
 ```
 https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
 ```
+
+### Publicar alterações das demos
+
+```powershell
+# clone único (se ainda não existir)
+git clone https://github.com/lucasdevlogis-cpu/demos-logistica.git ..\demos-logistica-deploy
+
+# a cada release: copiar da pasta local deste repo
+robocopy demos-logistica ..\demos-logistica-deploy /E /XD .git __pycache__ .venv .pytest_cache /NFL /NDL /NJH /NJS
+
+cd ..\demos-logistica-deploy
+git add -A
+git commit -m "sync: atualiza demos do portfolio-lucas-batista"
+git push origin main
+```
+
+O Streamlit Cloud redeploya automaticamente após o push.
 
 ### Verificação local antes do push
 
