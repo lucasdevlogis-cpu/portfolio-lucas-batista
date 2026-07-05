@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Brain, Shield, Zap } from "lucide-react";
+import { Brain, Check, Shield, X, Zap } from "lucide-react";
 
 import { CONTENT } from "@/data/content";
 
@@ -23,22 +23,20 @@ export function IASection() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="font-heading text-3xl font-bold tracking-tight text-primary md:text-4xl">
+          <h2 className="font-heading text-3xl font-semibold tracking-tight text-primary md:text-4xl">
             {ia.titulo}
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
             {ia.descricao}
           </p>
-          <div className="mt-8 rounded-xl border-2 border-accent/30 bg-white p-6">
+          <div className="mt-8 rounded-xl border border-accent/30 bg-white p-6">
             <p className="text-sm font-semibold text-accent">
               Exemplos seguros
             </p>
             <ul className="mt-3 space-y-2 text-sm text-foreground">
               {ia.exemplosSeguros.map((item) => (
-                <li key={item} className="flex gap-2">
-                  <span className="text-accent" aria-hidden>
-                    ✓
-                  </span>
+                <li key={item} className="flex items-start gap-2">
+                  <Check className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden />
                   {item}
                 </li>
               ))}
@@ -48,8 +46,8 @@ export function IASection() {
             </p>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
               {ia.naoPrometer.map((item) => (
-                <li key={item} className="flex gap-2">
-                  <span aria-hidden>✗</span>
+                <li key={item} className="flex items-start gap-2">
+                  <X className="mt-0.5 size-4 shrink-0 text-destructive" aria-hidden />
                   {item}
                 </li>
               ))}

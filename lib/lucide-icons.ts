@@ -1,19 +1,27 @@
 import {
   AlertTriangle,
+  ArrowDown,
   BarChart3,
+  Building2,
+  CheckCircle2,
   Clock,
   Database,
   DollarSign,
   FileSpreadsheet,
+  Mail,
   MapPin,
+  MessageSquare,
   Network,
   Package,
   Radar,
   Route,
   ScanSearch,
+  Star,
   Truck,
+  User,
   Warehouse,
   Waypoints,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -36,6 +44,14 @@ export const LUCIDE_ICONS: Record<LucideIconName, LucideIcon> = {
   DollarSign,
   Radar,
   ScanSearch,
+  Star,
+  Zap,
+  User,
+  Mail,
+  Building2,
+  MessageSquare,
+  CheckCircle2,
+  ArrowDown,
 };
 
 export function getLucideIcon(name: LucideIconName): LucideIcon {

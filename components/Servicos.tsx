@@ -18,7 +18,7 @@ export function Servicos() {
         />
         <div className="relative mx-auto max-w-4xl">
           <div
-            className="absolute top-0 left-6 hidden h-full w-px origin-top border-l-2 border-dashed border-border md:block"
+            className="absolute top-0 left-6 hidden h-full w-px origin-top border-l-2 border-dashed border-primary/20 md:block"
             aria-hidden
           >
             <motion.div
@@ -34,7 +34,7 @@ export function Servicos() {
             {servicos.map((servico, index) => (
               <motion.div
                 key={servico.numero}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 1, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.45, delay: index * 0.08 }}

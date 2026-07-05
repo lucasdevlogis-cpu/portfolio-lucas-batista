@@ -22,7 +22,7 @@ export function PainPointCard({
   return (
     <Card
       className={cn(
-        "relative rounded-xl border bg-card shadow-sm transition-shadow hover:shadow-md",
+        "relative rounded-xl border bg-card shadow-md transition-shadow hover:shadow-lg",
         className,
       )}
     >

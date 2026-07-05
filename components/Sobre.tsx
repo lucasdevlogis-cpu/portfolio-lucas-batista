@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 import { Badge } from "@/components/ui/badge";
 import { CONTENT } from "@/data/content";
+import { LucideIconByName } from "@/components/LucideIconByName";
 
 function iniciais(nome: string): string {
   return nome
@@ -28,7 +29,7 @@ export function Sobre() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex size-28 items-center justify-center rounded-2xl bg-primary font-heading text-4xl font-bold text-primary-foreground shadow-sm">
+          <div className="flex size-28 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent font-heading text-4xl font-bold text-white shadow-lg">
             {iniciais(pessoal.nome)}
           </div>
           <p className="mt-4 font-heading text-lg font-semibold text-primary">
@@ -46,6 +47,21 @@ export function Sobre() {
           <h2 className="font-heading text-3xl font-bold tracking-tight text-primary md:text-4xl">
             {sobre.titulo}
           </h2>
+
+          <ul className="mt-4 space-y-2">
+            {sobre.miniTimeline.map((item) => (
+              <li
+                key={item.texto}
+                className="flex items-center gap-2 text-sm text-muted-foreground"
+              >
+                <span className="inline-flex size-5 items-center justify-center rounded-full bg-accent/10 text-accent">
+                  <LucideIconByName name={item.icon} className="size-3" />
+                </span>
+                {item.texto}
+              </li>
+            ))}
+          </ul>
+
           <div className="mt-4 space-y-4 text-lg leading-relaxed text-muted-foreground">
             {sobre.paragrafos.map((paragrafo) => (
               <p key={paragrafo}>{paragrafo}</p>

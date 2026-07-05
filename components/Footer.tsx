@@ -1,4 +1,6 @@
-import { Code2, Link, Mail } from "lucide-react";
+"use client";
+
+import { ArrowUp, Code2, Link, Mail, Star } from "lucide-react";
 
 import { CONTENT } from "@/data/content";
 
@@ -39,19 +41,43 @@ function SocialLink({
 }
 
 export function Footer() {
-  const { pessoal, footer } = CONTENT;
+  const { pessoal, footer, nav } = CONTENT;
   const emailHref = pessoal.email.startsWith("[")
     ? "#"
     : `mailto:${pessoal.email}`;
 
+  const handleVoltarTopo = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <footer className="border-t bg-white py-12">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+    <footer className="border-t bg-white">
+      {/* Botão voltar ao topo */}
+      <div className="mx-auto flex max-w-7xl items-center justify-end px-4 pt-4 sm:px-6 lg:px-8">
+        <button
+          onClick={handleVoltarTopo}
+          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-slate-100 hover:text-primary"
+          aria-label={footer.voltarTopo}
+        >
+          <ArrowUp className="size-4" aria-hidden />
+          {footer.voltarTopo}
+        </button>
+      </div>
+
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-3 lg:px-8">
+        {/* Coluna 1 — Brand + social */}
         <div>
           <p className="font-heading text-lg font-semibold text-primary">
             {pessoal.nome}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">{pessoal.titulo}</p>
+
+          {/* Badge prova social */}
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
+            <Star className="size-3.5" aria-hidden />
+            {footer.badgeCases}
+          </div>
+
           <div className="mt-4 flex flex-wrap gap-4">
             <SocialLink
               href={pessoal.linkedin}
@@ -79,13 +105,35 @@ export function Footer() {
             </SocialLink>
           </div>
         </div>
+
+        {/* Coluna 2 — Links rápidos */}
+        <div>
+          <p className="font-heading text-sm font-semibold text-primary">
+            {footer.linksRapidosTitulo}
+          </p>
+          <nav className="mt-4 flex flex-col gap-2" aria-label="Links rápidos do rodapé">
+            {nav.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm text-muted-foreground transition-colors hover:text-primary"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+
+        {/* Coluna 3 — Declaração */}
         <div>
           <p className="text-sm leading-relaxed text-muted-foreground">
             {footer.declaracaoLimitacao}
           </p>
         </div>
       </div>
-      <div className="mx-auto mt-8 max-w-7xl border-t px-4 pt-8 sm:px-6 lg:px-8">
+
+      {/* Copyright */}
+      <div className="mx-auto max-w-7xl border-t px-4 py-6 sm:px-6 lg:px-8">
         <p className="text-center text-sm text-muted-foreground">
           {footer.copyright}
         </p>

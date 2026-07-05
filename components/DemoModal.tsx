@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, Loader2 } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import {
@@ -21,6 +21,37 @@ interface DemoModalProps {
 }
 
 type IframeStatus = "loading" | "ready" | "error";
+
+function DemoSkeleton() {
+  const bar = "h-4 rounded-md bg-muted motion-reduce:animate-none animate-pulse";
+  const card = "rounded-lg bg-muted motion-reduce:animate-none animate-pulse";
+
+  return (
+    <div className="flex w-full max-w-xl flex-col gap-4">
+      {/* Header simulado */}
+      <div className="flex items-center gap-3">
+        <div className="h-8 w-8 rounded-md bg-muted motion-reduce:animate-none animate-pulse" />
+        <div className={cn(bar, "h-5 w-1/2")} />
+      </div>
+
+      {/* Cards de métricas */}
+      <div className="grid grid-cols-3 gap-3">
+        <div className={cn(card, "h-16")} />
+        <div className={cn(card, "h-16")} />
+        <div className={cn(card, "h-16")} />
+      </div>
+
+      {/* Gráfico principal */}
+      <div className={cn(card, "h-40")} />
+
+      {/* Tabela / lista */}
+      <div className={cn(card, "h-28")} />
+
+      {/* Barra inferior */}
+      <div className={cn(bar, "w-3/4")} />
+    </div>
+  );
+}
 
 export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
   const [isMobile, setIsMobile] = useState(false);
@@ -135,16 +166,13 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
               {status !== "ready" ? (
                 <div
                   className={cn(
-                    "absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background/80 px-6 text-center",
+                    "absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-background/80 px-6 text-center",
                     status === "error" && "bg-background",
                   )}
                 >
                   {status === "loading" ? (
                     <>
-                      <Loader2
-                        className="size-6 animate-spin text-accent"
-                        aria-hidden
-                      />
+                      <DemoSkeleton />
                       <p className="max-w-md text-sm text-muted-foreground">
                         {CONTENT.secoes.demoCarregando}
                       </p>

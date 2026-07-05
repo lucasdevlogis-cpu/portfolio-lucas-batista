@@ -2,7 +2,7 @@
 
 > **Uso:** Snapshot de saúde do portfólio antes dos próximos passos. Consulte após cada fase ou deploy significativo.
 >
-> **Última atualização:** 05/07/2026 — redesign UX demos + integração de 10 cases demonstráveis na landing.
+> **Última atualização:** 05/07/2026 — **Validação dos 10 modais de demo concluída (10/10 aprovados)** via WebBridge.
 
 ---
 
@@ -69,6 +69,49 @@ Arquivo `pages/08_ship_from_store.py` → URL `/ship_from_store` (Streamlit remo
 
 ---
 
+## Validação de modais — 05/07/2026 (noite)
+
+Teste automatizado dos 10 modais de demo via Kimi WebBridge.
+
+| # | Case | Modal | Nova aba | GitHub | Iframe | Status |
+|---|------|:-----:|:--------:|:------:|:------:|:------:|
+| 1 | Simulador de Custo de Frete | ✅ | ✅ | ✅ | ✅ | **APROVADO** |
+| 2 | Mini Torre de Controle | ✅ | ✅ | ✅ | ✅ | **APROVADO** |
+| 3 | Promessa de Entrega por CEP | ✅ | ✅ | ✅ | ✅ | **APROVADO** |
+| 4 | Ship from Store | ✅ | ✅ | ✅ | ✅ | **APROVADO** |
+| 5 | Auditoria de Endereço | ✅ | ✅ | ✅ | ✅ | **APROVADO** |
+| 6 | Classificador de Ocorrências | ✅ | ✅ | ✅ | ✅ | **APROVADO** |
+| 7 | Roteirização Urbana (CVRP) | ✅ | ✅ | ✅ | ✅ | **APROVADO** |
+| 8 | Última Milha com Janelas (VRPTW) | ✅ | ✅ | ✅ | ✅ | **APROVADO** |
+| 9 | Rede Inter-hubs / Corredores | ✅ | ✅ | ✅ | ✅ | **APROVADO** |
+| 10 | Sequência de Visitas (TSP) | ✅ | ✅ | ✅ | ✅ | **APROVADO** |
+
+**Resultado: 10/10 cases aprovados.**
+
+Critérios validados:
+- Modal abre ao clicar no card
+- Link "Abrir em nova aba" presente com `target="_blank"`
+- Link GitHub presente
+- Iframe da demo detectado com `src` correto (`?embed=true`)
+
+Artefatos:
+- `validacao_cases_relatorio.txt` — relatório completo
+- `screenshot_modal_00.png` — evidência visual (Simulador de Custo de Frete)
+- `screenshot_modal_03.png` — evidência visual (Ship from Store, iframe carregado)
+|---------|--------------|-----------|
+| `01-precificacao-frete` | `01_precificacao_frete.py` | `/precificacao_frete` |
+| `02-torre-controle` | `02_mini_torre_controle.py` | `/mini_torre_controle` |
+| `03-promessa-cep` | `04_promessa_cep.py` | `/promessa_cep` |
+| `04-ship-from-store` | `08_ship_from_store.py` | `/ship_from_store` |
+| `05-auditoria-endereco` | `10_auditoria_endereco.py` | `/auditoria_endereco` |
+| `07-classificador-ocorrencias` | `07_classificador_ocorrencias.py` | `/classificador_ocorrencias` |
+| `08-cvrp-urbano` | `03_cvrp_urbano.py` | `/cvrp_urbano` |
+| `09-vrptw-ultima-milha` | `05_vrptw_ultima_milha.py` | `/vrptw_ultima_milha` |
+| `10-rede-interhubs` | `06_rede_interhubs.py` | `/rede_interhubs` |
+| `11-tsp-baseline-sp` | `09_tsp_baseline_sp.py` | `/tsp_baseline_sp` |
+
+---
+
 ## URLs de produção
 
 | Serviço | URL |
@@ -86,7 +129,7 @@ Arquivo `pages/08_ship_from_store.py` → URL `/ship_from_store` (Streamlit remo
 - **Lint:** `npm run lint` passa.
 - **Deploy Vercel:** Next.js nativo (`.next/`), Output Directory vazio.
 - **Demos:** URLs Streamlit embutidas no bundle quando `NEXT_PUBLIC_DEMOS_BASE_URL` está definida **no build**.
-- **Validação de cases:** `npm run validate` (roda no `prebuild`) garante slug ↔ page ↔ 10 cases; falha o build em qualquer desync.
+- **Validação de cases (automatizada):** 10/10 modais de demo testados via WebBridge — modal abre, link "Abrir em nova aba" com `target="_blank"`, link GitHub, e iframe detectado em todos.
 - **Smoke test demos:** `python scripts/smoke_test.py` → 13/13 checagens OK (inclui cenário de filtro vazio na page 02).
 - **Carregamento resiliente de dados:** `ui.load_csv()` mostra instrução amigável se um CSV não existe (clone sem `build_datasets`).
 - **DemoModal:** estado de carregamento/erro, CTA "abrir em tela cheia" no mobile e `DialogDescription` para acessibilidade.
@@ -98,6 +141,11 @@ Arquivo `pages/08_ship_from_store.py` → URL `/ship_from_store` (Streamlit remo
 ---
 
 ## Pendências (para fechar o lançamento)
+
+| # | Ação | Onde | Status |
+|---|------|------|--------|
+| 1 | Configurar `NEXT_PUBLIC_FORMSPREE_FORM_ID` + redeploy | Dashboard Vercel | 🟡 Pendente |
+| 2 | Confirmar preview do `og-image.png` no LinkedIn/WhatsApp | — | 🟡 Pendente |
 
 | # | Ação | Onde |
 |---|------|------|
@@ -126,6 +174,15 @@ O LCP simulado do Lantern (7,7 s) é pessimista para esta página estática; o i
 ---
 
 ## Estado das fases
+
+| Fase | Progresso | Pendências |
+|------|-----------|------------|
+| 0 Setup | ✅ 100% | — |
+| 1 Landing | ✅ 100% | — |
+| 2 Demos | ✅ 100% | push repo demos separado |
+| 3 GitHub | 🟡 ~40% | READMEs por case |
+| 4 Deploy | ✅ ~95% | **Validação cases OK**; Formspree env; redeploy pós-novos cases |
+| 5 Lançamento | 🟡 | Formspree, Lighthouse, analytics, domínio |
 
 | Fase | Progresso | Pendências |
 |------|-----------|------------|

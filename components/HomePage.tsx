@@ -11,6 +11,7 @@ import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { IASection } from "@/components/IASection";
 import { Metodo } from "@/components/Metodo";
+import { SectionDivider } from "@/components/SectionDivider";
 import { Servicos } from "@/components/Servicos";
 import { Sobre } from "@/components/Sobre";
 import { CONTENT } from "@/data/content";
@@ -54,11 +55,17 @@ export function HomePage() {
       <Header activeSection={activeSection} />
       <Hero />
       <Dores />
+      <SectionDivider from="background" to="white" />
       <Servicos />
+      <SectionDivider from="white" to="background" />
       <Cases />
+      <SectionDivider from="background" to="white" />
       <Metodo />
+      <SectionDivider from="white" to="white" withBrandLine />
       <Sobre />
+      <SectionDivider from="white" to="background" />
       <IASection />
+      <SectionDivider from="background" to="white" />
       <Contato />
       <Footer />
     </MotionConfig>

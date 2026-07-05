@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Sparkles, ArrowDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { CONTENT } from "@/data/content";
@@ -25,7 +26,7 @@ function ProofCard() {
   const { hero } = CONTENT;
 
   return (
-    <div className="rounded-2xl border bg-card/80 p-6 shadow-sm backdrop-blur-sm">
+    <div className="rounded-2xl border border-white/20 bg-white/60 p-6 shadow-xl backdrop-blur-xl">
       <p className="text-xs font-semibold uppercase tracking-wide text-accent">
         {hero.provasTitulo}
       </p>
@@ -56,12 +57,17 @@ export function Hero() {
 
   return (
     <section className="relative min-h-[90vh] overflow-hidden bg-gradient-to-b from-secondary/50 to-background">
+      {/* Mesh gradient sutil — primary + accent em ~5% opacidade */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.5]"
+        className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--color-primary) 14%, transparent) 1px, transparent 0)",
-          backgroundSize: "24px 24px",
+          background: `
+            radial-gradient(at 40% 20%, color-mix(in oklab, var(--color-primary) 8%, transparent) 0px, transparent 50%),
+            radial-gradient(at 80% 0%, color-mix(in oklab, var(--color-accent) 6%, transparent) 0px, transparent 50%),
+            radial-gradient(at 0% 50%, color-mix(in oklab, var(--color-primary) 5%, transparent) 0px, transparent 50%),
+            radial-gradient(at 80% 50%, color-mix(in oklab, var(--color-accent) 4%, transparent) 0px, transparent 50%),
+            radial-gradient(at 0% 100%, color-mix(in oklab, var(--color-primary) 7%, transparent) 0px, transparent 50%)
+          `,
         }}
         aria-hidden
       />
@@ -74,8 +80,9 @@ export function Hero() {
         >
           <motion.span
             variants={item}
-            className="inline-block rounded-full bg-accent/10 px-4 py-1 text-sm font-medium text-accent"
+            className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-sm font-medium text-accent"
           >
+            <Sparkles className="size-4" aria-hidden />
             {hero.badge}
           </motion.span>
           <motion.h1
@@ -104,8 +111,10 @@ export function Hero() {
             <Button
               size="lg"
               variant="outline"
+              className="border-primary/30"
               onClick={() => scrollToSection("#cases")}
             >
+              <ArrowDown className="mr-2 size-4" aria-hidden />
               {hero.ctaSecundario}
             </Button>
           </motion.div>

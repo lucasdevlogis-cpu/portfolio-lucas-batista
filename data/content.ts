@@ -19,6 +19,14 @@ export const LUCIDE_ICON_NAMES = [
   "DollarSign",
   "Radar",
   "ScanSearch",
+  "Star",
+  "Zap",
+  "User",
+  "Mail",
+  "Building2",
+  "MessageSquare",
+  "CheckCircle2",
+  "ArrowDown",
 ] as const;
 
 export type LucideIconName = (typeof LUCIDE_ICON_NAMES)[number];
@@ -107,6 +115,9 @@ export interface Contato {
 export interface FooterConteudo {
   copyright: string;
   declaracaoLimitacao: string;
+  voltarTopo: string;
+  badgeCases: string;
+  linksRapidosTitulo: string;
 }
 
 export interface NavLink {
@@ -135,6 +146,7 @@ export interface HeroConteudo {
 export interface SobreConteudo {
   titulo: string;
   paragrafos: string[];
+  miniTimeline: { icon: LucideIconName; texto: string }[];
   ferramentasTitulo: string;
   ferramentas: string[];
 }
@@ -235,6 +247,11 @@ export const CONTENT: Content = {
       "Sou o Lucas, especialista autônomo em inteligência operacional para logística, transporte, varejo e e-commerce. Trabalho na fronteira entre operação, dados e tecnologia.",
       "Conheço de perto a rotina de planilhas espalhadas, indicadores que mudam de valor e decisões tomadas no escuro. Hoje ajudo operações a enxergar custo, prazo, frete e gargalos com clareza — do diagnóstico rápido ao protótipo com IA.",
       "Meu foco é entregar a menor peça útil primeiro: algo que já ajuda a decidir melhor, sempre com premissas e limitações declaradas.",
+    ],
+    miniTimeline: [
+      { icon: "Clock", texto: "+10 anos em operações logísticas" },
+      { icon: "BarChart3", texto: "4 setores: transporte, varejo, e-commerce, indústria" },
+      { icon: "FileSpreadsheet", texto: "10+ cases demonstráveis com dados reais" },
     ],
     ferramentasTitulo: "Ferramentas que uso",
     ferramentas: [
@@ -709,6 +726,9 @@ export const CONTENT: Content = {
     copyright: "© 2026 Lucas Batista. Todos os direitos reservados.",
     declaracaoLimitacao:
       "Trabalho com dados públicos, sintéticos, anonimizados ou fornecidos pelo cliente com finalidade definida. Dados sensíveis, bases restritas, credenciais e informações pessoais são tratados com cuidado, acesso controlado e validação de uso.",
+    voltarTopo: "Voltar ao topo",
+    badgeCases: "10 cases demonstráveis",
+    linksRapidosTitulo: "Links rápidos",
   },
 };
 
