@@ -5,33 +5,29 @@ import { useMemo, useState } from "react";
 
 import { CaseCard } from "@/components/CaseCard";
 import { DemoModal } from "@/components/DemoModal";
+import { LucideIconByName } from "@/components/LucideIconByName";
 import { SectionHeader } from "@/components/SectionHeader";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { CASE_CATEGORIAS, CONTENT, type Case } from "@/data/content";
+import {
+  CASE_CATEGORIAS,
+  CASES_DEMONSTRAVEIS,
+  CASES_ROADMAP,
+  CONTENT,
+  type Case,
+} from "@/data/content";
 import { cn } from "@/lib/utils";
 
 type FiltroCategoria = (typeof CASE_CATEGORIAS)[number];
 
 export function Cases() {
-  const { secoes, cases } = CONTENT;
+  const { secoes } = CONTENT;
   const [filtroAtivo, setFiltroAtivo] = useState<FiltroCategoria>("Todos");
-  const [mostrarTodos, setMostrarTodos] = useState(false);
   const [demoCase, setDemoCase] = useState<Case | null>(null);
 
   const casesFiltrados = useMemo(() => {
-    let lista = cases;
-
-    if (filtroAtivo !== "Todos") {
-      lista = lista.filter((c) => c.categoria === filtroAtivo);
-    } else if (!mostrarTodos) {
-      lista = lista.filter((c) => c.exibirNaHome);
-    }
-
-    return lista;
-  }, [cases, filtroAtivo, mostrarTodos]);
-
-  const caseOculto = cases.find((c) => !c.exibirNaHome);
+    if (filtroAtivo === "Todos") return CASES_DEMONSTRAVEIS;
+    return CASES_DEMONSTRAVEIS.filter((c) => c.categoria === filtroAtivo);
+  }, [filtroAtivo]);
 
   return (
     <section id="cases" className="scroll-mt-20 bg-background py-20">
@@ -47,18 +43,15 @@ export function Cases() {
               key={categoria}
               role="button"
               tabIndex={0}
-              onClick={() => {
-                setFiltroAtivo(categoria);
-                if (categoria !== "Todos") setMostrarTodos(true);
-              }}
+              onClick={() => setFiltroAtivo(categoria)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
                   setFiltroAtivo(categoria);
-                  if (categoria !== "Todos") setMostrarTodos(true);
                 }
               }}
               className={cn(
-                "cursor-pointer px-4 py-2 text-sm transition-colors",
+                "cursor-pointer px-4 py-2 text-sm transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
                 filtroAtivo === categoria
                   ? "bg-primary text-primary-foreground hover:bg-primary/90"
                   : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
@@ -92,11 +85,42 @@ export function Cases() {
           </AnimatePresence>
         </motion.div>
 
-        {filtroAtivo === "Todos" && !mostrarTodos && caseOculto ? (
-          <div className="mt-8 text-center">
-            <Button variant="outline" onClick={() => setMostrarTodos(true)}>
-              Ver todos os cases ({cases.length})
-            </Button>
+        {filtroAtivo === "Todos" && CASES_ROADMAP.length > 0 ? (
+          <div className="mt-16">
+            <div className="mb-6 text-center">
+              <h3 className="font-heading text-xl font-semibold text-primary">
+                {secoes.casesRoadmap.title}
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {secoes.casesRoadmap.subtitle}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {CASES_ROADMAP.map((caseItem) => (
+                <div
+                  key={caseItem.id}
+                  className="flex gap-3 rounded-xl border border-dashed bg-card/50 p-4"
+                >
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/5 text-primary">
+                    <LucideIconByName
+                      name={caseItem.icone}
+                      className="size-5"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium uppercase tracking-wide text-accent">
+                      {caseItem.categoria}
+                    </p>
+                    <p className="mt-0.5 font-heading text-sm font-semibold text-primary">
+                      {caseItem.titulo}
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                      {caseItem.perguntaNegocio}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ) : null}
 
@@ -105,8 +129,7 @@ export function Cases() {
           onClose={(open) => {
             if (!open) setDemoCase(null);
           }}
-          demoUrl={demoCase?.linkDemo ?? ""}
-          titulo={demoCase?.titulo ?? ""}
+          caseItem={demoCase}
         />
       </div>
     </section>

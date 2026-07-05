@@ -1,5 +1,6 @@
 "use client";
 
+import { MotionConfig } from "framer-motion";
 import { useEffect, useState } from "react";
 
 import { Cases } from "@/components/Cases";
@@ -11,6 +12,7 @@ import { Hero } from "@/components/Hero";
 import { IASection } from "@/components/IASection";
 import { Metodo } from "@/components/Metodo";
 import { Servicos } from "@/components/Servicos";
+import { Sobre } from "@/components/Sobre";
 import { CONTENT } from "@/data/content";
 import { sectionIdFromHref } from "@/lib/scroll";
 
@@ -48,16 +50,17 @@ export function HomePage() {
   }, []);
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <Header activeSection={activeSection} />
       <Hero />
       <Dores />
       <Servicos />
       <Cases />
       <Metodo />
+      <Sobre />
       <IASection />
       <Contato />
       <Footer />
-    </>
+    </MotionConfig>
   );
 }

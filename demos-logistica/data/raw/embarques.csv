@@ -1,0 +1,6 @@
+shipment_id,origin_uf,destination_uf,distance_km,gross_weight_kg,volume_m3,invoice_value_brl,vehicle_type,operation_type,gris_profile
+BR-FRT-001,SP,RJ,430,1200,5.5,85000,Truck,carga_fracionada,padrao_ntc
+BR-FRT-002,SP,MG,590,260,2.0,220000,Truck,carga_fracionada,alto_valor_agregado
+BR-FRT-003,PR,RS,710,8500,32.0,180000,Carreta LS,carga_lotacao,baixo_valor_agregado
+BR-FRT-004,SP,SP,38,80,1.8,12000,VUC,carga_fracionada,padrao_ntc
+BR-FRT-005,BA,PE,820,1500,18.0,45000,Truck,carga_fracionada,baixo_valor_agregado

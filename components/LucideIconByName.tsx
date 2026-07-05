@@ -5,10 +5,12 @@ import {
   Database,
   FileSpreadsheet,
   MapPin,
+  Network,
   Package,
   Route,
   Truck,
   Warehouse,
+  Waypoints,
 } from "lucide-react";
 
 import type { LucideIconName } from "@/data/content";
@@ -43,6 +45,10 @@ export function LucideIconByName({ name, className }: LucideIconByNameProps) {
       return <Package {...props} />;
     case "Warehouse":
       return <Warehouse {...props} />;
+    case "Network":
+      return <Network {...props} />;
+    case "Waypoints":
+      return <Waypoints {...props} />;
     default: {
       const _exhaustive: never = name;
       return _exhaustive;

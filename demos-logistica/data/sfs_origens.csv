@@ -1,0 +1,6 @@
+origem_id,origem_tipo,lat,lon,capacidade_dia,cutoff_hora,custo_fixo
+CD-SP-01,CD,-23.51,-46.72,999,20:00,9.0
+LOJA-SP-01,loja,-23.555,-46.64,25,17:00,6.0
+LOJA-RJ-01,loja,-22.91,-43.18,20,16:00,6.5
+HUB-MG-01,hub,-19.93,-43.94,40,18:00,7.0
+LOJA-PR-01,loja,-25.43,-49.27,18,17:00,6.2

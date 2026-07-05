@@ -1,97 +1,137 @@
-"""02. Mini Torre de Controle de Entregas — demo P0."""
+"""02. Mini Torre de Controle de Entregas — demo pontual."""
 
 import numpy as np
 import pandas as pd
+import plotly.express as px
 import streamlit as st
 from paths import DATA_DIR
 
-st.set_page_config(page_title="02. Mini Torre de Controle", layout="wide")
+from lib import brand, ui, viz
 
-st.title("02. Mini Torre de Controle de Entregas")
-st.caption("Visão acionável de entregas: SLA, atrasos e ocorrências. Dados sintéticos.")
+ui.page_setup("02. Mini Torre de Controle", icon="📡")
 
-rng = np.random.default_rng(7)
-TRANSPORTADORAS = ["TransFast", "LogBrasil", "Expresso Sul", "Rota Norte"]
-STATUS = ["No prazo", "Em risco", "Atrasado", "Ocorrência aberta"]
+CRITICOS = ["Atrasado", "Ocorrencia aberta"]
 
+ui.sidebar_brand()
 
-@st.cache_data
-def gerar_entregas(n: int = 120) -> pd.DataFrame:
-    if (DATA_DIR / "torre_entregas.csv").exists():
-        return pd.read_csv(DATA_DIR / "torre_entregas.csv")
-
-    df = pd.DataFrame(
-        {
-            "pedido": [f"PED-{i:05d}" for i in range(1, n + 1)],
-            "transportadora": rng.choice(TRANSPORTADORAS, n),
-            "regiao": rng.choice(
-                ["Sudeste", "Sul", "Nordeste", "Centro-Oeste", "Norte"], n
-            ),
-            "status": rng.choice(STATUS, n, p=[0.45, 0.2, 0.2, 0.15]),
-            "horas_atraso": rng.integers(0, 48, n),
-            "ocorrencias": rng.integers(0, 4, n),
-        }
-    )
-    df.loc[df["status"] == "No prazo", "horas_atraso"] = 0
-    return df
-
+df = pd.read_csv(DATA_DIR / "torre_entregas.csv")
 
 with st.sidebar:
     st.header("Filtros")
     transportadora = st.multiselect(
-        "Transportadora", TRANSPORTADORAS, default=TRANSPORTADORAS
+        "Transportadora",
+        sorted(df["transportadora"].unique()),
+        default=sorted(df["transportadora"].unique()),
     )
     regiao = st.multiselect(
-        "Região",
-        ["Sudeste", "Sul", "Nordeste", "Centro-Oeste", "Norte"],
-        default=["Sudeste", "Sul", "Nordeste", "Centro-Oeste", "Norte"],
+        "Região", sorted(df["regiao"].unique()), default=sorted(df["regiao"].unique())
     )
     so_criticos = st.checkbox("Somente ação imediata", value=False)
 
-df = gerar_entregas()
-df = df[df["transportadora"].isin(transportadora) & df["regiao"].isin(regiao)]
-
+f = df[df["transportadora"].isin(transportadora) & df["regiao"].isin(regiao)].copy()
 if so_criticos:
-    df = df[df["status"].isin(["Atrasado", "Ocorrência aberta", "Em risco"])]
+    f = f[f["status"].isin(CRITICOS + ["Em risco"])]
 
-criticos = len(df[df["status"].isin(["Atrasado", "Ocorrência aberta"])])
-atraso_medio = df.loc[df["horas_atraso"] > 0, "horas_atraso"].mean()
+criticos = int(f["status"].isin(CRITICOS).sum())
+atraso_medio = f.loc[f["horas_atraso"] > 0, "horas_atraso"].mean()
 
-c1, c2, c3, c4 = st.columns(4)
-c1.metric("Entregas monitoradas", len(df))
-c2.metric("Ação imediata", criticos)
-c3.metric(
-    "Atraso médio (h)", f"{atraso_medio:.1f}" if not np.isnan(atraso_medio) else "—"
+ui.hero(
+    "02. Mini Torre de Controle de Entregas",
+    "Quais entregas exigem ação imediata agora?",
+    frameworks=["Torre de controle", "Fleetbase (tracking)"],
+    selo=brand.maturidade(metodo="regras de status", producao="TMS/WMS + telemetria"),
+    metric={
+        "label": "Entregas em ação imediata",
+        "value": f"{criticos}",
+        "delta": f"{criticos / max(len(f), 1) * 100:.0f}% da carteira monitorada",
+        "delta_color": "inverse",
+        "help": "Atrasadas ou com ocorrência aberta.",
+    },
 )
-c4.metric("Com ocorrência", int((df["ocorrencias"] > 0).sum()))
 
-st.subheader("Prioridade de follow-up")
-prioridade = df.sort_values(
-    by=["status", "horas_atraso", "ocorrencias"],
-    ascending=[True, False, False],
+ui.kpi_row(
+    [
+        ("Monitoradas", f"{len(f)}"),
+        (
+            "Atraso médio",
+            f"{atraso_medio:.1f} h" if not np.isnan(atraso_medio) else "—",
+        ),
+        ("Com ocorrência", f"{int((f['ocorrencias'] > 0).sum())}"),
+        {"label": "Em risco", "value": f"{int((f['status'] == 'Em risco').sum())}"},
+    ]
 )
-st.dataframe(
+
+ui.section("Mapa de status por região")
+ui.plot(
+    viz.map_points(
+        f,
+        color="status",
+        hover_name="pedido",
+        hover_data=["transportadora", "regiao", "horas_atraso"],
+        zoom=3.2,
+        height=460,
+        center=(-15, -50),
+    ),
+    width="stretch",
+)
+
+col1, col2 = st.columns([1, 1])
+with col1:
+    ui.section("Por transportadora")
+    agg = (
+        f.groupby("transportadora")
+        .agg(
+            atrasadas=("status", lambda s: (s == "Atrasado").sum()),
+            ocorrencias=("ocorrencias", "sum"),
+        )
+        .reset_index()
+    )
+    fig = px.bar(
+        agg,
+        x="transportadora",
+        y=["atrasadas", "ocorrencias"],
+        barmode="group",
+        color_discrete_sequence=brand.SEQ,
+    )
+    fig.update_layout(height=340, xaxis_title="", yaxis_title="")
+    ui.plot(fig, width="stretch")
+with col2:
+    ui.section("Distribuição de status")
+    dist = f["status"].value_counts().reset_index()
+    dist.columns = ["status", "qtd"]
+    fig2 = px.pie(
+        dist, names="status", values="qtd", hole=0.5, color_discrete_sequence=brand.SEQ
+    )
+    fig2.update_layout(height=340)
+    ui.plot(fig2, width="stretch")
+
+ui.section("Prioridade de follow-up")
+prioridade = f.sort_values(
+    by=["status", "horas_atraso", "ocorrencias"], ascending=[True, False, False]
+)
+tabela = prioridade[
+    ["pedido", "transportadora", "regiao", "status", "horas_atraso", "ocorrencias"]
+].head(25)
+st.dataframe(tabela, width="stretch", hide_index=True)
+ui.download_csv_button(
     prioridade[
         ["pedido", "transportadora", "regiao", "status", "horas_atraso", "ocorrencias"]
-    ].head(25),
-    use_container_width=True,
-    hide_index=True,
+    ],
+    "torre_controle.csv",
 )
 
-st.subheader("Visão por transportadora")
-agg = (
-    df.groupby("transportadora")
-    .agg(
-        entregas=("pedido", "count"),
-        atrasadas=("status", lambda s: (s == "Atrasado").sum()),
-        ocorrencias=("ocorrencias", "sum"),
-    )
-    .reset_index()
+ui.method_expander(
+    """
+- **Ação imediata:** entregas **atrasadas** ou com **ocorrência aberta**.
+- **Prioridade:** ordena por status, horas de atraso e nº de ocorrências.
+- **Produção:** integra **TMS/WMS** e telemetria (padrão de plataformas como
+  Fleetbase) via API/eventos, não exportação manual.
+"""
 )
-st.bar_chart(agg.set_index("transportadora")[["atrasadas", "ocorrencias"]])
-
-with st.expander("Limitações"):
-    st.markdown(
-        "Demo sintética. Não substitui TMS/WMS. Integração real exige API ou exportação "
-        "periódica dos status de entrega."
-    )
+ui.provenance_expander(
+    fonte="Base sintética de entregas com região/coordenadas.",
+    tipo="Sintético.",
+    producao="TMS/WMS + rastreamento em tempo real.",
+    limitacoes="Não substitui torre real; sem eventos de tracking ao vivo.",
+)
+ui.footer()

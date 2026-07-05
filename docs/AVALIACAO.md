@@ -1,8 +1,8 @@
-# Avaliação do Projeto — Junho 2026
+# Avaliação do Projeto — Julho 2026
 
 > **Uso:** Snapshot de saúde do portfólio antes dos próximos passos. Consulte após cada fase ou deploy significativo.
 >
-> **Última atualização:** 26/06/2026 — pós-deploy Vercel + Streamlit Cloud.
+> **Última atualização:** 05/07/2026 — redesign UX demos + integração de 10 cases demonstráveis na landing.
 
 ---
 
@@ -10,16 +10,60 @@
 
 | Área | Status | Nota |
 |------|--------|------|
-| Landing page (código) | ✅ Completa | 9 seções, 23 componentes, build OK |
-| Demos Streamlit (código) | ✅ Completa | 5 pages + CSVs em `demos-logistica/` |
+| Landing page (código) | ✅ Completa | 10 seções (incl. Sobre); build + lint OK |
+| Cases | ✅ Completo | **10 demonstráveis** + 1 roadmap (`06-kpis-cd`); filtro por 6 categorias |
+| Demos Streamlit (código) | ✅ Completa | **11 pages** + `lib/` compartilhada; smoke **12/12** |
+| UX demos Streamlit | ✅ Padronizado | `hero`, `section`, `plot`, `sidebar_brand`; home com cards navegáveis |
 | Deploy produção | ✅ No ar | Vercel + Streamlit Cloud funcionando |
 | Conteúdo / credibilidade | ✅ OK | Email, LinkedIn e GitHub configurados |
-| SEO assets | ✅ OK | `og-image.png`, `app/icon.png`, `public/favicon.ico` |
-| Formulário de leads | 🟡 Parcial | Formspree integrado; ID não configurado |
-| Documentação | ✅ Atualizada | Alinhada ao deploy Vercel nativo (sem static export) |
-| Testes manuais / Lighthouse | 🟡 Pendente | QA mobile e performance não registrados |
+| SEO assets | ✅ OK | `public/og-image.png` (1200×630) e `app/icon.png` |
+| Formulário de leads | 🟡 Parcial | Formspree integrado; sem ID usa fallback `mailto` |
+| Documentação | ✅ Enxuta | Só `AVALIACAO.md` + `DEPLOY.md` |
+| Lighthouse | 🟡 Pendente | Rodar `npx lighthouse` mobile e registrar aqui |
 
-**Veredicto:** MVP pronto para divulgação. Pendente apenas **Formspree** (leads reais) e QA mobile/Lighthouse.
+**Veredicto:** pronto para divulgação após redeploy da Vercel (novos cases) e **Formspree** + **Lighthouse**.
+
+---
+
+## Pass de melhoria — 05/07/2026 (manhã)
+
+- Documentação enxugada: removidos docs de scaffolding (`INDEX`, `VISION`, `ARCHITECTURE`, `PROMPTS`, etc.). Essencial de posicionamento migrou para o `README.md`.
+- Assets de SEO criados (`public/og-image.png`, `app/icon.png`).
+- Cases: modelo distingue demonstráveis (`CASE_DEMO_SLUGS`) de roadmap; `CaseCard` e `DemoModal` enriquecidos.
+- Visual: Hero com card de provas, seção Sobre, `prefers-reduced-motion` respeitado.
+- Formulário: fallback `mailto` quando Formspree não está configurado.
+
+## Pass de melhoria — 05/07/2026 (tarde)
+
+### Demos Streamlit (`demos-logistica/`)
+
+- **`lib/ui.py`:** `hero()`, `section()`, `plot()` (modebar off), `sidebar_brand()`, `nav_link()`, CSS ampliado.
+- **`.streamlit/config.toml`:** `toolbarMode = "minimal"` para embed mais limpo.
+- **11 pages** com esqueleto padronizado: hero → sidebar → KPIs → mapas/gráficos → tabela + download → expanders → footer.
+- **`app.py`:** mapa herói (rede inter-hubs) + grade de cards navegáveis (Profundas / Pontuais).
+- **Dados:** `data/raw/` + `scripts/build_datasets.py` (seed fixa) + `scripts/smoke_test.py` (12/12 OK).
+
+### Site Next.js
+
+- **4 novos cases** na landing: CVRP, VRPTW, Rede Inter-hubs, TSP.
+- **Corrigidos** `04-ship-from-store` e `05-auditoria-endereco` (links de demo vazios).
+- Nova categoria **`Rede e Estratégia`**; ícones `Network` e `Waypoints`.
+- **`DemoModal`:** link "Abrir em nova aba" (URL sem `?embed=true`).
+
+### Mapeamento case → demo
+
+| Case ID | Page Streamlit |
+|---------|----------------|
+| `01-precificacao-frete` | `01_precificacao_frete` |
+| `02-torre-controle` | `02_mini_torre_controle` |
+| `03-promessa-cep` | `04_promessa_cep` |
+| `04-ship-from-store` | `08_ship_from_store` |
+| `05-auditoria-endereco` | `10_auditoria_endereco` |
+| `07-classificador-ocorrencias` | `07_classificador_ocorrencias` |
+| `08-cvrp-urbano` | `03_cvrp_urbano` |
+| `09-vrptw-ultima-milha` | `05_vrptw_ultima_milha` |
+| `10-rede-interhubs` | `06_rede_interhubs` |
+| `11-tsp-baseline-sp` | `09_tsp_baseline_sp` |
 
 ---
 
@@ -37,103 +81,63 @@
 ## O que está funcionando
 
 - **Build local:** `npm run build` passa (Next.js 16.2.9, Turbopack).
-- **Deploy Vercel:** Next.js nativo (`.next/`), Output Directory vazio, sem `vercel.json`.
-- **Demos P0/P2:** URLs Streamlit embutidas no bundle quando `NEXT_PUBLIC_DEMOS_BASE_URL` está definida **no build**.
+- **Lint:** `npm run lint` passa.
+- **Deploy Vercel:** Next.js nativo (`.next/`), Output Directory vazio.
+- **Demos:** URLs Streamlit embutidas no bundle quando `NEXT_PUBLIC_DEMOS_BASE_URL` está definida **no build**.
+- **Smoke test demos:** `python scripts/smoke_test.py` → 12/12 pages OK.
 - **Navegação:** scroll suave, menu mobile (Sheet), Intersection Observer para nav ativa.
-- **Modal de demo:** iframe com `?embed=true`, fallback placeholder para cases sem demo.
-- **SEO parcial:** meta tags, OG, Twitter Card, JSON-LD em `layout.tsx`; `robots.txt` e `sitemap.xml`.
-- **Footer:** declaração ética sobre dados sintéticos.
+- **Cases:** 10 cards demonstráveis com filtro; modal com contexto de negócio + iframe + link nova aba.
+- **SEO:** meta tags, OG, JSON-LD, favicon, `robots.txt`, `sitemap.xml`.
+- **Acessibilidade:** `prefers-reduced-motion` respeitado.
 
 ---
 
-## Problemas identificados
+## Pendências (para fechar o lançamento)
 
-### 🔴 Críticos (corrigir antes de divulgar)
+| # | Ação | Onde |
+|---|------|------|
+| 1 | **Redeploy Vercel** após novos cases (URLs de demo fixadas no build) | Dashboard Vercel |
+| 2 | Configurar `NEXT_PUBLIC_FORMSPREE_FORM_ID` + redeploy | Dashboard Vercel |
+| 3 | Rodar Lighthouse mobile (meta ≥ 90) e registrar aqui | — |
+| 4 | Confirmar preview do `og-image.png` no LinkedIn/WhatsApp | — |
+| 5 | Push das demos para `lucasdevlogis-cpu/demos-logistica` (repo separado) | GitHub |
 
-1. **Formspree não configurado** — sem `NEXT_PUBLIC_FORMSPREE_FORM_ID`, formulário faz `console.log`
+## Backlog (desejável)
 
-### 🟡 Importantes
-
-1. **URLs de demo fixadas no build** — redeploy após alterar env na Vercel
-2. **Lighthouse / mobile QA** — não executado
-3. **READMEs por case** (Fase 3)
-
-### ✅ Resolvido (26/06/2026)
-
-- SEO: `og-image.png`, `app/icon.png`, `favicon.ico`
-- Email + LinkedIn + GitHub em `data/content.ts`
-- `CaseCard` desabilita demo sem URL; `Contato` usa `camposFormulario`
-- `DemoModal` copy atualizada; lint de ícones (`LucideIconByName`)
-- ESLint ignore `.vercel/`; `tsconfig` sem paths `dist/`
-
-### 🟢 Desejáveis (backlog)
-
-1. **READMEs por case** (Fase 3) — não criados.
-2. **Campo "limite" nos serviços** — CHECKLIST menciona; tipo `Servico` não tem o campo.
-3. **DemoModal copy desatualizada** — ~~ainda menciona "Fase 2"~~ corrigido
-4. **Lighthouse / mobile QA** — não executado nem documentado.
-5. **Vercel Analytics** — não configurado.
-6. **Repos antigos** em `lucas109895-dev` — exclusão manual pendente.
+- Vercel Analytics
+- Domínio custom / alias estável
+- READMEs por case no repo demos
+- Migrar `scattermapbox` → `scattermap` (Plotly deprecation)
+- Campo "limite" no tipo `Servico`
 
 ---
 
-## Inconsistências doc vs código (corrigidas nesta revisão)
+## Estado das fases
 
-| Tema | Antes (docs) | Realidade (código) |
-|------|--------------|-------------------|
-| Deploy | `output: 'export'` → `dist/` | Next.js nativo na Vercel, sem export |
-| `vercel.json` | CHANGELOG dizia que existia | Removido; não usar |
-| Next.js | Docs citavam v15 | v16.2.9 |
-| Node | "≥ 18" | `engines.node: 24.x` |
-| Slugs demos | INDEX citava `02_cvrp` | `02_mini_torre_controle`, `03_cvrp_urbano`, `04_promessa_cep` |
-| Fase 4 deploy | "Pendente" | Parcialmente concluída (site no ar) |
-
----
-
-## Melhorias recomendadas (prioridade)
-
-### Sprint imediata (pré-lançamento)
-
-| # | Ação | Arquivo(s) |
-|---|------|------------|
-| 1 | Preencher email, LinkedIn, GitHub reais | `data/content.ts`, `docs/CONTENT.md` |
-| 2 | Criar `og-image.png` (1200×630) e `favicon.ico` | `public/` |
-| 3 | Configurar Formspree + env na Vercel | Dashboard Vercel |
-| 4 | Atualizar sitemap/robots com URL de produção | `public/sitemap.xml`, `public/robots.txt` |
-| 5 | Testar fluxo landing → modal → iframe (mobile) | Manual + registrar em CHECKLIST |
-| 6 | Desabilitar botão demo quando `linkDemo` vazio | `CaseCard.tsx` |
-
-### Sprint seguinte (polimento)
-
-| # | Ação | Arquivo(s) |
-|---|------|------------|
-| 7 | Formulário 100% driven by `content.ts` | `Contato.tsx` |
-| 8 | Lighthouse mobile ≥ 85 | — |
-| 9 | READMEs individuais por case | Fase 3 / `docs/PROMPTS.md` |
-| 10 | Domínio custom ou alias estável | Vercel dashboard |
-| 11 | Vercel Analytics | Fase 5 |
-
----
-
-## Estado das fases (ROADMAP)
-
-| Fase | Progresso | Pendências principais |
-|------|-----------|----------------------|
+| Fase | Progresso | Pendências |
+|------|-----------|------------|
 | 0 Setup | ✅ 100% | — |
-| 1 Landing | ✅ ~95% | QA manual mobile; commit history OK |
-| 2 Demos | ✅ ~90% | Teste E2E documentado; case 03_cvrp extra não linkado na landing |
-| 3 GitHub | 🟡 ~40% | READMEs por case; pastas numeradas |
-| 4 Deploy | 🟡 ~75% | Formspree, og-image, favicon, Lighthouse |
-| 5 Lançamento | ⬜ 0% | LinkedIn, analytics, domínio |
+| 1 Landing | ✅ 100% | — |
+| 2 Demos | ✅ 100% | push repo demos separado |
+| 3 GitHub | 🟡 ~40% | READMEs por case |
+| 4 Deploy | ✅ ~90% | Formspree env; redeploy pós-novos cases |
+| 5 Lançamento | 🟡 | Formspree, Lighthouse, analytics, domínio |
 
 ---
 
 ## Comandos de verificação
 
 ```bash
-npm run build          # deve passar
-npm run lint           # deve passar só em src/ (sem .vercel/)
+# Site
+npm run build
+npm run lint
 npm run dev            # localhost:3000
+
+# Demos
+cd demos-logistica
+python scripts/build_datasets.py
+python scripts/smoke_test.py   # 12/12 pages OK
+streamlit run app.py           # localhost:8501
 ```
 
 **Env local** (copiar de `.env.example`):
@@ -148,7 +152,10 @@ NEXT_PUBLIC_FORMSPREE_FORM_ID=   # opcional até criar conta Formspree
 
 ## Próximos passos sugeridos
 
-1. Configurar Formspree → redeploy Vercel
+1. Redeploy Vercel (novos cases + env demos)
+2. Push demos para repo `demos-logistica` no GitHub
+3. Configurar Formspree → redeploy
+4. Lighthouse mobile
 
 ---
 

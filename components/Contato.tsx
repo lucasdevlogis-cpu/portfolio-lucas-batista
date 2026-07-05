@@ -26,7 +26,12 @@ const initialForm: FormState = {
 };
 
 function isFormFieldName(name: string): name is FormFieldName {
-  return name === "nome" || name === "email" || name === "empresa" || name === "desafio";
+  return (
+    name === "nome" ||
+    name === "email" ||
+    name === "empresa" ||
+    name === "desafio"
+  );
 }
 
 function fieldLabel(campo: CampoFormulario): string {
@@ -74,7 +79,18 @@ export function Contato() {
           throw new Error("Falha ao enviar formulário");
         }
       } else {
-        console.log("Contato recebido (Formspree não configurado):", form);
+        const assunto = "Leitura inicial — Portfólio Lucas Batista";
+        const corpo = [
+          `Nome: ${form.nome}`,
+          `Email: ${form.email}`,
+          `Empresa: ${form.empresa || "-"}`,
+          "",
+          "Principal dor/desafio:",
+          form.desafio || "-",
+        ].join("\n");
+        window.location.href = `mailto:${pessoal.email}?subject=${encodeURIComponent(
+          assunto,
+        )}&body=${encodeURIComponent(corpo)}`;
       }
 
       setEnviado(true);

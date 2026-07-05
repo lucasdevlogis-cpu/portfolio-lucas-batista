@@ -2,6 +2,15 @@
 
 Landing page profissional — inteligência operacional para logística, transporte, varejo e e-commerce.
 
+## Posicionamento
+
+**Tese central:** transformo dados espalhados, processos manuais e decisões lentas em clareza, controle e soluções digitais enxutas para operações de logística, transporte, varejo e e-commerce.
+
+- **Público:** pequenas e médias empresas com operação rodando e dores de frete, SLA, last mile, ocorrências ou indicadores inconsistentes.
+- **Escada de ofertas:** do diagnóstico rápido ao piloto com IA — o cliente começa comprando clareza, não um projeto grande.
+- **Prova:** 10 cases demonstráveis com dados sintéticos, cada um respondendo a uma pergunta real de negócio.
+- **Ética de dados:** dados públicos, sintéticos, anonimizados ou fornecidos pelo cliente com finalidade definida; limitação declarada em cada case.
+
 ## Stack
 
 - Next.js 16 (App Router) + React 19 + TypeScript
@@ -30,7 +39,17 @@ Copie `.env.example` para `.env.local`:
 
 ## Demos Streamlit
 
-Código em [`demos-logistica/`](demos-logistica/). Repositório dedicado: **[github.com/lucasdevlogis-cpu/demos-logistica](https://github.com/lucasdevlogis-cpu/demos-logistica)**.
+Código em [`demos-logistica/`](demos-logistica/) — **11 pages** interativas (frete, roteirização, rede, last mile, ocorrências). Repositório dedicado no deploy: **[github.com/lucasdevlogis-cpu/demos-logistica](https://github.com/lucasdevlogis-cpu/demos-logistica)**.
+
+A landing embute **10 demos** via modal (`DemoModal` + iframe `?embed=true`). Mapeamento em `CASE_DEMO_SLUGS` (`data/content.ts`).
+
+```bash
+cd demos-logistica
+pip install -r requirements.txt
+python scripts/build_datasets.py
+python scripts/smoke_test.py   # 12/12 pages OK
+streamlit run app.py
+```
 
 ## Deploy
 
@@ -45,11 +64,13 @@ Guia completo: [`docs/DEPLOY.md`](docs/DEPLOY.md)
 
 ## Documentação
 
+Documentação enxuta — apenas o essencial. Conteúdo do site vive em [`data/content.ts`](data/content.ts) (fonte única, sem hardcode nos componentes).
+
 | Doc | Conteúdo |
 |-----|----------|
-| [`docs/INDEX.md`](docs/INDEX.md) | Mapa da documentação |
-| [`docs/AVALIACAO.md`](docs/AVALIACAO.md) | Avaliação atual, problemas e próximos passos |
-| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Fases de execução |
+| [`docs/AVALIACAO.md`](docs/AVALIACAO.md) | Estado atual, pendências e próximos passos |
+| [`docs/DEPLOY.md`](docs/DEPLOY.md) | Guia de deploy (Vercel + Streamlit) |
+| [`design/design.md`](design/design.md) | Decisões visuais e de layout |
 
 ## Licença
 

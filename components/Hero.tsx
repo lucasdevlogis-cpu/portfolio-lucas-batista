@@ -19,20 +19,32 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-function KpiBars() {
-  const heights = [40, 65, 50, 80, 55, 72];
+function ProofCard() {
+  const { hero } = CONTENT;
 
   return (
-    <div className="flex h-32 items-end justify-center gap-2 rounded-xl border bg-white/80 p-4 shadow-sm backdrop-blur-sm">
-      {heights.map((height, index) => (
-        <motion.div
-          key={height}
-          className="w-4 rounded-t-sm bg-accent/80"
-          initial={{ height: 0 }}
-          animate={{ height: `${height}%` }}
-          transition={{ duration: 0.6, delay: 0.5 + index * 0.08 }}
-        />
-      ))}
+    <div className="rounded-2xl border bg-white/80 p-6 shadow-sm backdrop-blur-sm">
+      <p className="text-xs font-semibold uppercase tracking-wide text-accent">
+        {hero.provasTitulo}
+      </p>
+      <div className="mt-4 flex flex-col gap-4">
+        {hero.provas.map((prova, index) => (
+          <motion.div
+            key={prova.valor}
+            className="flex items-baseline gap-3 border-b border-border/60 pb-4 last:border-0 last:pb-0"
+            initial={{ opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, delay: 0.5 + index * 0.12 }}
+          >
+            <span className="font-heading text-2xl font-bold text-primary">
+              {prova.valor}
+            </span>
+            <span className="text-sm leading-snug text-muted-foreground">
+              {prova.label}
+            </span>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -102,7 +114,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <KpiBars />
+          <ProofCard />
         </motion.div>
       </div>
     </section>

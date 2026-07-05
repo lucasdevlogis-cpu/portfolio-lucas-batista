@@ -1,41 +1,61 @@
 texto,categoria,prioridade
-"Cliente ausente no endereço, tentativa 2",Cliente Ausente,Média
-Atraso por trânsito intenso na marginal,Atraso,Alta
-Endereço incompleto — sem número,Endereco Incorreto,Alta
-Embalagem avariada na conferência,Avaria,Alta
-Destinatário recusou recebimento,Recusa,Média
-Devolução solicitada pelo embarcador,Devolucao,Média
-Carga aguardando liberação no CD,Atraso,Baixa
-"Cliente ausente no endereço, tentativa 2",Cliente Ausente,Média
-Atraso por trânsito intenso na marginal,Atraso,Alta
-Endereço incompleto — sem número,Endereco Incorreto,Alta
-Embalagem avariada na conferência,Avaria,Alta
-Destinatário recusou recebimento,Recusa,Média
-Devolução solicitada pelo embarcador,Devolucao,Média
-Carga aguardando liberação no CD,Atraso,Baixa
-"Cliente ausente no endereço, tentativa 2",Cliente Ausente,Média
-Atraso por trânsito intenso na marginal,Atraso,Alta
-Endereço incompleto — sem número,Endereco Incorreto,Alta
-Embalagem avariada na conferência,Avaria,Alta
-Destinatário recusou recebimento,Recusa,Média
-Devolução solicitada pelo embarcador,Devolucao,Média
-Carga aguardando liberação no CD,Atraso,Baixa
-"Cliente ausente no endereço, tentativa 2",Cliente Ausente,Média
-Atraso por trânsito intenso na marginal,Atraso,Alta
-Endereço incompleto — sem número,Endereco Incorreto,Alta
-Embalagem avariada na conferência,Avaria,Alta
-Destinatário recusou recebimento,Recusa,Média
-Devolução solicitada pelo embarcador,Devolucao,Média
-Carga aguardando liberação no CD,Atraso,Baixa
-"Cliente ausente no endereço, tentativa 2",Cliente Ausente,Média
-Atraso por trânsito intenso na marginal,Atraso,Alta
-Endereço incompleto — sem número,Endereco Incorreto,Alta
-Embalagem avariada na conferência,Avaria,Alta
-Destinatário recusou recebimento,Recusa,Média
-Devolução solicitada pelo embarcador,Devolucao,Média
-Carga aguardando liberação no CD,Atraso,Baixa
-"Cliente ausente no endereço, tentativa 2",Cliente Ausente,Média
-Atraso por trânsito intenso na marginal,Atraso,Alta
-Endereço incompleto — sem número,Endereco Incorreto,Alta
-Embalagem avariada na conferência,Avaria,Alta
-Destinatário recusou recebimento,Recusa,Média
+Embalagem avariada na conferencia,Avaria,Alta
+Endereco incompleto - sem numero,Endereco Incorreto,Alta
+Embalagem avariada na conferencia,Avaria,Alta
+Endereco incompleto - sem numero,Endereco Incorreto,Alta
+Atraso por transito intenso na marginal,Atraso,Alta
+CEP divergente do cadastro,Endereco Incorreto,Alta
+Atraso por transito intenso na marginal,Atraso,Alta
+Cliente nao atende o interfone,Cliente Ausente,Media
+Cliente nao atende o interfone,Cliente Ausente,Media
+Carga aguardando liberacao no CD,Atraso,Baixa
+CEP divergente do cadastro,Endereco Incorreto,Alta
+"Cliente ausente no endereco, tentativa 2",Cliente Ausente,Media
+Embalagem avariada na conferencia,Avaria,Alta
+Atraso por transito intenso na marginal,Atraso,Alta
+Devolucao solicitada pelo embarcador,Devolucao,Media
+Carga aguardando liberacao no CD,Atraso,Baixa
+Produto danificado durante o transporte,Avaria,Alta
+Embalagem avariada na conferencia,Avaria,Alta
+Endereco incompleto - sem numero,Endereco Incorreto,Alta
+CEP divergente do cadastro,Endereco Incorreto,Alta
+Carga aguardando liberacao no CD,Atraso,Baixa
+Cliente nao atende o interfone,Cliente Ausente,Media
+Destinatario recusou recebimento,Recusa,Media
+Destinatario recusou recebimento,Recusa,Media
+Embalagem avariada na conferencia,Avaria,Alta
+Cliente nao atende o interfone,Cliente Ausente,Media
+Endereco incompleto - sem numero,Endereco Incorreto,Alta
+CEP divergente do cadastro,Endereco Incorreto,Alta
+Atraso por transito intenso na marginal,Atraso,Alta
+Destinatario recusou recebimento,Recusa,Media
+Embalagem avariada na conferencia,Avaria,Alta
+Carga aguardando liberacao no CD,Atraso,Baixa
+Carga aguardando liberacao no CD,Atraso,Baixa
+CEP divergente do cadastro,Endereco Incorreto,Alta
+Cliente nao atende o interfone,Cliente Ausente,Media
+Endereco incompleto - sem numero,Endereco Incorreto,Alta
+Endereco incompleto - sem numero,Endereco Incorreto,Alta
+Produto danificado durante o transporte,Avaria,Alta
+Destinatario recusou recebimento,Recusa,Media
+"Cliente ausente no endereco, tentativa 2",Cliente Ausente,Media
+Produto danificado durante o transporte,Avaria,Alta
+Carga aguardando liberacao no CD,Atraso,Baixa
+"Cliente ausente no endereco, tentativa 2",Cliente Ausente,Media
+Cliente nao atende o interfone,Cliente Ausente,Media
+Carga aguardando liberacao no CD,Atraso,Baixa
+Carga aguardando liberacao no CD,Atraso,Baixa
+Produto danificado durante o transporte,Avaria,Alta
+Destinatario recusou recebimento,Recusa,Media
+Destinatario recusou recebimento,Recusa,Media
+Carga aguardando liberacao no CD,Atraso,Baixa
+Atraso por transito intenso na marginal,Atraso,Alta
+Atraso por transito intenso na marginal,Atraso,Alta
+Produto danificado durante o transporte,Avaria,Alta
+Endereco incompleto - sem numero,Endereco Incorreto,Alta
+Devolucao solicitada pelo embarcador,Devolucao,Media
+Endereco incompleto - sem numero,Endereco Incorreto,Alta
+Endereco incompleto - sem numero,Endereco Incorreto,Alta
+Devolucao solicitada pelo embarcador,Devolucao,Media
+Produto danificado durante o transporte,Avaria,Alta
+Destinatario recusou recebimento,Recusa,Media

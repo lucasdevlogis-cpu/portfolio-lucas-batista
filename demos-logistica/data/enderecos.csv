@@ -1,0 +1,61 @@
+pedido_id,cep8,logradouro,numero,complemento,bairro,municipio,uf,lat,lon,fonte
+ped_ok_000,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.53274,-46.64197,cadastro
+ped_bad_cep_001,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.55038,-46.6332,cadastro
+ped_generic_002,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.90783,-43.17939,cadastro
+ped_bad_latlon_003,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_004,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.56538,-46.63238,cadastro
+ped_bad_cep_005,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.5582,-46.63245,cadastro
+ped_generic_006,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.91479,-43.1839,cadastro
+ped_bad_latlon_007,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_008,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.54818,-46.6318,cadastro
+ped_bad_cep_009,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.54473,-46.61145,cadastro
+ped_generic_010,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.90408,-43.16805,cadastro
+ped_bad_latlon_011,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_012,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.5613,-46.64618,cadastro
+ped_bad_cep_013,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.53469,-46.64254,cadastro
+ped_generic_014,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.91729,-43.17329,cadastro
+ped_bad_latlon_015,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_016,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.55142,-46.64234,cadastro
+ped_bad_cep_017,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.55357,-46.62102,cadastro
+ped_generic_018,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.91491,-43.18684,cadastro
+ped_bad_latlon_019,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_020,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.54109,-46.62839,cadastro
+ped_bad_cep_021,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.55673,-46.64913,cadastro
+ped_generic_022,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.9143,-43.17345,cadastro
+ped_bad_latlon_023,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_024,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.53886,-46.64368,cadastro
+ped_bad_cep_025,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.55137,-46.62656,cadastro
+ped_generic_026,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.93066,-43.16256,cadastro
+ped_bad_latlon_027,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_028,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.56234,-46.62999,cadastro
+ped_bad_cep_029,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.54805,-46.62246,cadastro
+ped_generic_030,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.90134,-43.19667,cadastro
+ped_bad_latlon_031,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_032,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.55837,-46.63193,cadastro
+ped_bad_cep_033,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.55247,-46.62853,cadastro
+ped_generic_034,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.89896,-43.16682,cadastro
+ped_bad_latlon_035,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_036,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.55266,-46.65177,cadastro
+ped_bad_cep_037,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.55507,-46.62915,cadastro
+ped_generic_038,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.91775,-43.16659,cadastro
+ped_bad_latlon_039,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_040,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.54144,-46.63204,cadastro
+ped_bad_cep_041,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.58116,-46.64609,cadastro
+ped_generic_042,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.88799,-43.17837,cadastro
+ped_bad_latlon_043,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_044,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.57036,-46.62096,cadastro
+ped_bad_cep_045,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.55039,-46.62226,cadastro
+ped_generic_046,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.90408,-43.16831,cadastro
+ped_bad_latlon_047,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_048,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.54689,-46.62634,cadastro
+ped_bad_cep_049,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.52775,-46.6236,cadastro
+ped_generic_050,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.92265,-43.16843,cadastro
+ped_bad_latlon_051,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_052,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.53911,-46.62128,cadastro
+ped_bad_cep_053,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.55479,-46.62166,cadastro
+ped_generic_054,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.89757,-43.14717,cadastro
+ped_bad_latlon_055,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca
+ped_ok_056,01001000,Praca da Se,100,,Se,Sao Paulo,SP,-23.55802,-46.63838,cadastro
+ped_bad_cep_057,123,Rua Incompleta,10,,Centro,Sao Paulo,SP,-23.55358,-46.63821,cadastro
+ped_generic_058,20040999,,,Bloco A,Centro,Rio de Janeiro,RJ,-22.91575,-43.20053,cadastro
+ped_bad_latlon_059,30140071,Rua Paraiba,,Sala 1,Savassi,Belo Horizonte,MG,15.00000,-10.00000,fonte_baixa_confianca

@@ -1,0 +1,9 @@
+id,name,city,state,latitude,longitude,role,service_time_min
+sp_start_001,CD Barra Funda,Sao Paulo,SP,-23.5251,-46.6676,depot,0
+sp_visit_001,Parque Villa-Lobos,Sao Paulo,SP,-23.5463,-46.7251,delivery,25
+sp_visit_002,Parque do Povo,Sao Paulo,SP,-23.5874,-46.6865,delivery,20
+sp_visit_003,Parque Ibirapuera,Sao Paulo,SP,-23.5874,-46.6576,delivery,30
+sp_visit_004,Estadio do Pacaembu,Sao Paulo,SP,-23.5489,-46.6658,delivery,18
+sp_visit_005,Allianz Parque,Sao Paulo,SP,-23.5275,-46.6786,delivery,18
+sp_visit_006,MASP Avenida Paulista,Sao Paulo,SP,-23.5614,-46.6559,delivery,20
+sp_visit_007,Mercado Municipal,Sao Paulo,SP,-23.5417,-46.6296,delivery,22

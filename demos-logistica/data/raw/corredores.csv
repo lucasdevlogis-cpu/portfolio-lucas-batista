@@ -1,0 +1,9 @@
+origin,destination,distance_km,volume_ton,service_level
+Barueri,Rio de Janeiro,430,18,D+1
+Barueri,Betim,590,22,D+2
+Curitiba,Canoas,710,16,D+2
+Campinas,Santos,180,12,D+0
+Guarulhos,Belo Horizonte,586,20,D+2
+Ribeirao Preto,Goiania,510,9,D+2
+Sao Paulo,Salvador,1960,14,D+4
+Sao Paulo,Recife,2660,10,D+5

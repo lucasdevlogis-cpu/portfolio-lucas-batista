@@ -9,7 +9,7 @@ Guia de deploy. Conta GitHub: **lucasdevlogis-cpu** (`lucas.dev.logis@gmail.com`
 | Landing Next.js | <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista> |
 | Demos Streamlit | <https://github.com/lucasdevlogis-cpu/demos-logistica> |
 
-> **Nota:** Repositórios criados anteriormente em `lucas109895-dev` devem ser excluídos manualmente em GitHub → Settings → Delete repository (a conta foi desvinculada do `gh` CLI).
+> **Nota:** Repositórios criados anteriormente em `lucas109895-dev` devem ser excluídos manualmente em GitHub → Settings → Delete repository.
 
 ---
 
@@ -24,6 +24,16 @@ Guia de deploy. Conta GitHub: **lucasdevlogis-cpu** (`lucas.dev.logis@gmail.com`
 https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
 ```
 
+### Verificação local antes do push
+
+```bash
+cd demos-logistica
+pip install -r requirements.txt
+python scripts/build_datasets.py
+python scripts/smoke_test.py   # meta: 12/12 pages OK
+streamlit run app.py
+```
+
 ### Conectar à landing
 
 Na Vercel (ou `.env.local` local):
@@ -32,7 +42,9 @@ Na Vercel (ou `.env.local` local):
 NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
 ```
 
-Rebuild o Next.js após definir a variável.
+**Rebuild** o Next.js após definir ou alterar a variável.
+
+> **10 cases demonstráveis** na landing mapeiam para 10 pages Streamlit via `CASE_DEMO_SLUGS` em `data/content.ts`. Após adicionar ou alterar cases, faça **Redeploy** na Vercel.
 
 ---
 
@@ -50,9 +62,9 @@ Rebuild o Next.js após definir a variável.
 | `NEXT_PUBLIC_DEMOS_BASE_URL` | URL do Streamlit Cloud (já deployada) |
 | `NEXT_PUBLIC_FORMSPREE_FORM_ID` | ID Formspree (opcional) |
 
-1. Deploy.
+6. Deploy.
 
-> **URLs de demo:** `linkDemo` em `data/content.ts` é calculado **no build**. Após alterar `NEXT_PUBLIC_DEMOS_BASE_URL`, faça **Redeploy** na Vercel.
+> **URLs de demo:** `linkDemo` em `data/content.ts` é calculado **no build**. Após alterar `NEXT_PUBLIC_DEMOS_BASE_URL` ou `CASE_DEMO_SLUGS`, faça **Redeploy** na Vercel.
 
 **Produção atual:**
 
@@ -90,19 +102,22 @@ npx vercel --prod
 
 1. Crie conta em [formspree.io](https://formspree.io).
 2. Novo form → copie o ID (ex: `abcxyzde`).
-3. Adicione `NEXT_PUBLIC_FORMSPREE_FORM_ID=abcxyzde` na Vercel.
-4. Sem ID configurado, o form faz `console.log` + mensagem de sucesso (modo dev).
+3. Adicione `NEXT_PUBLIC_FORMSPREE_FORM_ID=abcxyzde` na Vercel e faça **Redeploy**.
+4. Sem ID configurado, o form abre um `mailto` pré-preenchido para o e-mail do `data/content.ts` (o lead não se perde).
 
 ---
 
 ## 4. Checklist pós-deploy
 
 - [ ] Site abre na URL Vercel
-- [ ] Demos P0 abrem no modal (iframe)
-- [ ] Formulário envia (Formspree) ou log no console
+- [ ] **10 cases** aparecem na grade com filtro por categoria
+- [ ] Demos abrem no modal (iframe) com contexto de negócio
+- [ ] Link "Abrir em nova aba" no modal funciona
+- [ ] Formulário envia (Formspree) ou abre `mailto`
 - [ ] `robots.txt` e `sitemap.xml` acessíveis
-- [ ] Preencher email, LinkedIn, GitHub em `data/content.ts`
-- [ ] Lighthouse > 85 em mobile
+- [ ] `og-image.png` aparece no preview de link (LinkedIn/WhatsApp)
+- [ ] email, LinkedIn, GitHub preenchidos em `data/content.ts`
+- [ ] Lighthouse ≥ 90 em mobile
 
 ---
 

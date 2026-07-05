@@ -1,0 +1,13 @@
+stop_id,customer,lat,lon,demand_kg,service_time_min,window_start_min,window_end_min
+TW-001,Farmacia Centro,-23.540192,-46.644851,19,8,540,720
+TW-002,Cliente B2C Moema,-23.621652,-46.680432,11,6,600,780
+TW-003,Loja Tatuape,-23.525541,-46.567638,9,10,660,840
+TW-004,Cliente Lapa,-23.516739,-46.726286,16,7,780,960
+TW-005,Farmacia Centro,-23.578975,-46.624374,7,8,540,720
+TW-006,Cliente B2C Moema,-23.634753,-46.653424,9,6,600,780
+TW-007,Loja Tatuape,-23.55308,-46.547576,17,10,660,840
+TW-008,Cliente Lapa,-23.526858,-46.700222,11,7,780,960
+TW-009,Farmacia Centro,-23.541077,-46.643969,9,8,540,720
+TW-010,Cliente B2C Moema,-23.581847,-46.688512,4,6,600,780
+TW-011,Loja Tatuape,-23.508581,-46.525613,17,10,660,840
+TW-012,Cliente Lapa,-23.566237,-46.71181,13,7,780,960

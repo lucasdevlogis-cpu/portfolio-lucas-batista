@@ -1,0 +1,6 @@
+stop_id,customer,latitude,longitude,demand_kg,service_time_min,zone
+SP-001,Loja Paulista,-23.5614,-46.6559,35,12,centro-expandido
+SP-002,Condominio Mooca,-23.5587,-46.5969,42,10,zona-leste
+SP-003,Mercado Pinheiros,-23.5663,-46.7018,28,8,zona-oeste
+SP-004,Cliente Santana,-23.5015,-46.6246,30,10,zona-norte
+SP-005,Cliente Jabaquara,-23.6469,-46.6417,25,9,zona-sul

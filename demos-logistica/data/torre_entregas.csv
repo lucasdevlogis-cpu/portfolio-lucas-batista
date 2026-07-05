@@ -1,0 +1,141 @@
+pedido,transportadora,regiao,lat,lon,status,horas_atraso,ocorrencias
+PED-00001,Expresso Sul,Nordeste,-9.78915,-34.51631,No prazo,0,0
+PED-00002,LogBrasil,Nordeste,-7.67775,-37.49737,Ocorrencia aberta,8,1
+PED-00003,TransFast,Nordeste,-8.41387,-38.51891,Ocorrencia aberta,32,3
+PED-00004,LogBrasil,Nordeste,-8.32886,-35.736,No prazo,0,2
+PED-00005,LogBrasil,Norte,-7.81342,-59.06993,No prazo,0,3
+PED-00006,Expresso Sul,Centro-Oeste,-14.00052,-51.6238,Em risco,7,0
+PED-00007,Expresso Sul,Sul,-28.28647,-50.84761,No prazo,0,0
+PED-00008,Rota Norte,Sudeste,-19.3208,-42.98091,No prazo,0,3
+PED-00009,Rota Norte,Nordeste,-9.30174,-36.53888,Atrasado,17,0
+PED-00010,LogBrasil,Centro-Oeste,-13.19675,-48.65098,No prazo,0,0
+PED-00011,Expresso Sul,Norte,-4.0596,-59.6444,Atrasado,19,3
+PED-00012,TransFast,Sul,-26.98162,-48.82332,Em risco,26,3
+PED-00013,Expresso Sul,Nordeste,-9.56362,-37.1354,Ocorrencia aberta,44,1
+PED-00014,TransFast,Sul,-28.12046,-52.58976,No prazo,0,3
+PED-00015,TransFast,Centro-Oeste,-15.78364,-47.13276,No prazo,0,0
+PED-00016,Rota Norte,Sudeste,-20.19289,-45.75824,Atrasado,40,2
+PED-00017,Rota Norte,Sul,-26.23546,-53.75916,Atrasado,23,1
+PED-00018,Expresso Sul,Centro-Oeste,-18.17409,-48.7966,Ocorrencia aberta,20,1
+PED-00019,Rota Norte,Norte,-2.87045,-62.9878,Ocorrencia aberta,33,2
+PED-00020,LogBrasil,Sul,-28.20706,-51.32994,Em risco,40,2
+PED-00021,Expresso Sul,Norte,-2.43169,-59.49389,Atrasado,14,3
+PED-00022,Expresso Sul,Norte,-5.3855,-62.96549,Em risco,5,1
+PED-00023,Expresso Sul,Centro-Oeste,-16.45714,-51.62186,Ocorrencia aberta,19,2
+PED-00024,TransFast,Sudeste,-19.22405,-42.05783,Atrasado,46,2
+PED-00025,LogBrasil,Sul,-31.22336,-54.35015,No prazo,0,1
+PED-00026,LogBrasil,Nordeste,-8.8385,-35.95918,No prazo,0,0
+PED-00027,LogBrasil,Sudeste,-21.02694,-41.2203,Ocorrencia aberta,45,0
+PED-00028,LogBrasil,Sul,-27.33604,-51.43671,Atrasado,38,3
+PED-00029,TransFast,Nordeste,-10.57296,-37.50245,Em risco,10,0
+PED-00030,Rota Norte,Centro-Oeste,-14.68612,-51.74891,Ocorrencia aberta,31,0
+PED-00031,Rota Norte,Norte,-4.60177,-60.82455,Em risco,37,3
+PED-00032,Rota Norte,Nordeste,-9.64506,-37.02596,No prazo,0,2
+PED-00033,Rota Norte,Centro-Oeste,-14.0065,-51.08828,Em risco,31,3
+PED-00034,Expresso Sul,Sudeste,-23.10107,-44.7783,No prazo,0,0
+PED-00035,TransFast,Sudeste,-22.23854,-45.29291,Em risco,19,2
+PED-00036,LogBrasil,Centro-Oeste,-16.33764,-50.77982,Em risco,46,3
+PED-00037,Rota Norte,Sudeste,-20.94163,-48.15692,Atrasado,29,2
+PED-00038,Expresso Sul,Nordeste,-6.09356,-39.58623,No prazo,0,0
+PED-00039,LogBrasil,Norte,-4.18292,-59.80721,No prazo,0,0
+PED-00040,LogBrasil,Sudeste,-21.0036,-43.03243,No prazo,0,1
+PED-00041,Rota Norte,Sudeste,-19.25494,-40.52085,No prazo,0,1
+PED-00042,Expresso Sul,Sudeste,-21.87692,-42.28262,Ocorrencia aberta,47,0
+PED-00043,LogBrasil,Sul,-26.72487,-48.80809,Em risco,29,2
+PED-00044,Expresso Sul,Sudeste,-19.55158,-45.05283,Em risco,23,0
+PED-00045,TransFast,Norte,-2.71219,-59.77727,Atrasado,31,2
+PED-00046,Rota Norte,Norte,-3.11162,-63.08065,Atrasado,13,2
+PED-00047,Rota Norte,Centro-Oeste,-14.7304,-50.38483,No prazo,0,1
+PED-00048,Expresso Sul,Centro-Oeste,-15.71202,-50.66855,No prazo,0,0
+PED-00049,LogBrasil,Centro-Oeste,-13.76279,-49.02405,No prazo,0,3
+PED-00050,Rota Norte,Norte,-2.32698,-61.55762,Ocorrencia aberta,31,1
+PED-00051,Rota Norte,Sudeste,-20.23161,-43.76609,No prazo,0,3
+PED-00052,Expresso Sul,Centro-Oeste,-15.67289,-50.8768,Em risco,5,0
+PED-00053,Expresso Sul,Nordeste,-8.20034,-41.0224,No prazo,0,1
+PED-00054,Expresso Sul,Centro-Oeste,-14.97754,-50.68407,Atrasado,24,0
+PED-00055,LogBrasil,Nordeste,-6.6158,-37.35388,No prazo,0,3
+PED-00056,Rota Norte,Sul,-24.80819,-48.95958,Ocorrencia aberta,43,2
+PED-00057,LogBrasil,Sudeste,-23.89539,-43.65515,Em risco,32,0
+PED-00058,TransFast,Centro-Oeste,-15.30734,-50.13179,Em risco,33,2
+PED-00059,LogBrasil,Sudeste,-18.97391,-42.02978,Em risco,18,0
+PED-00060,Expresso Sul,Norte,-3.45631,-59.17161,Atrasado,13,1
+PED-00061,Rota Norte,Centro-Oeste,-15.10494,-48.87647,Atrasado,8,3
+PED-00062,Rota Norte,Sudeste,-19.8592,-47.39473,No prazo,0,0
+PED-00063,TransFast,Nordeste,-12.06205,-36.13108,Ocorrencia aberta,19,3
+PED-00064,Expresso Sul,Sul,-27.17247,-48.87788,Atrasado,19,0
+PED-00065,LogBrasil,Nordeste,-7.67652,-40.39558,Atrasado,43,1
+PED-00066,Expresso Sul,Nordeste,-9.62756,-41.34226,Em risco,22,1
+PED-00067,TransFast,Nordeste,-10.23397,-35.01672,Em risco,23,0
+PED-00068,Expresso Sul,Sul,-27.16166,-51.99364,Atrasado,41,2
+PED-00069,LogBrasil,Sul,-28.80687,-51.07638,Atrasado,12,1
+PED-00070,LogBrasil,Nordeste,-8.99148,-35.94762,Ocorrencia aberta,18,1
+PED-00071,Rota Norte,Centro-Oeste,-16.12674,-50.38512,No prazo,0,3
+PED-00072,Rota Norte,Centro-Oeste,-14.65818,-50.15823,Atrasado,35,3
+PED-00073,Expresso Sul,Nordeste,-9.25027,-35.04736,Em risco,17,0
+PED-00074,Expresso Sul,Nordeste,-10.69182,-41.41607,Ocorrencia aberta,2,3
+PED-00075,TransFast,Centro-Oeste,-16.53747,-49.51731,Em risco,20,2
+PED-00076,Expresso Sul,Nordeste,-10.61329,-39.26015,Atrasado,21,0
+PED-00077,Expresso Sul,Sul,-27.30993,-51.71919,Atrasado,25,3
+PED-00078,TransFast,Centro-Oeste,-14.4943,-47.41524,No prazo,0,2
+PED-00079,Rota Norte,Sul,-26.91522,-48.1816,Em risco,9,0
+PED-00080,LogBrasil,Nordeste,-7.02742,-38.39887,No prazo,0,3
+PED-00081,LogBrasil,Centro-Oeste,-17.97686,-49.7459,Atrasado,37,1
+PED-00082,TransFast,Centro-Oeste,-18.65562,-52.30309,No prazo,0,0
+PED-00083,LogBrasil,Sudeste,-18.76138,-42.78217,Ocorrencia aberta,38,2
+PED-00084,LogBrasil,Norte,-5.37917,-58.45702,Em risco,31,2
+PED-00085,Expresso Sul,Sul,-27.16262,-51.31718,No prazo,0,3
+PED-00086,Rota Norte,Sudeste,-20.51639,-44.70404,Ocorrencia aberta,11,3
+PED-00087,TransFast,Sudeste,-22.82433,-44.75452,Atrasado,27,2
+PED-00088,LogBrasil,Sudeste,-19.33701,-46.45486,No prazo,0,0
+PED-00089,LogBrasil,Norte,-3.71257,-61.05368,No prazo,0,0
+PED-00090,Expresso Sul,Norte,-4.27128,-56.68574,Ocorrencia aberta,34,0
+PED-00091,Expresso Sul,Nordeste,-6.23613,-38.83221,Ocorrencia aberta,25,2
+PED-00092,LogBrasil,Centro-Oeste,-15.97624,-45.57516,Atrasado,1,1
+PED-00093,TransFast,Norte,-5.33044,-63.19746,Em risco,31,1
+PED-00094,Expresso Sul,Nordeste,-9.75178,-38.3002,No prazo,0,0
+PED-00095,LogBrasil,Centro-Oeste,-16.22982,-52.91433,Atrasado,2,2
+PED-00096,LogBrasil,Sul,-26.47798,-50.40322,Em risco,21,2
+PED-00097,Rota Norte,Norte,-6.58714,-60.96034,No prazo,0,3
+PED-00098,LogBrasil,Sudeste,-22.11047,-47.77843,No prazo,0,0
+PED-00099,Expresso Sul,Sul,-25.95164,-49.96192,Em risco,22,1
+PED-00100,LogBrasil,Norte,0.21559,-58.99936,Em risco,13,0
+PED-00101,Expresso Sul,Norte,-1.59279,-61.18992,No prazo,0,1
+PED-00102,Expresso Sul,Sul,-26.88437,-50.82995,No prazo,0,2
+PED-00103,LogBrasil,Sul,-28.21917,-48.33674,No prazo,0,1
+PED-00104,Rota Norte,Nordeste,-9.82608,-36.01933,Ocorrencia aberta,10,2
+PED-00105,LogBrasil,Sudeste,-21.41203,-43.46795,No prazo,0,2
+PED-00106,Rota Norte,Sudeste,-19.60116,-46.26744,No prazo,0,0
+PED-00107,Rota Norte,Sul,-24.73819,-54.44802,No prazo,0,0
+PED-00108,Rota Norte,Sudeste,-22.01493,-45.15597,No prazo,0,0
+PED-00109,LogBrasil,Sudeste,-20.98847,-45.46346,Em risco,10,0
+PED-00110,Expresso Sul,Sul,-26.15092,-53.77332,No prazo,0,1
+PED-00111,LogBrasil,Sudeste,-20.98532,-44.70928,Ocorrencia aberta,6,3
+PED-00112,Expresso Sul,Centro-Oeste,-11.60972,-51.64741,Em risco,29,1
+PED-00113,Rota Norte,Centro-Oeste,-14.81077,-50.19356,No prazo,0,2
+PED-00114,Rota Norte,Nordeste,-7.08586,-37.86428,No prazo,0,2
+PED-00115,Expresso Sul,Norte,-2.8291,-61.19626,Ocorrencia aberta,3,2
+PED-00116,Expresso Sul,Norte,-2.74208,-58.24323,No prazo,0,2
+PED-00117,TransFast,Sul,-25.31045,-50.56188,No prazo,0,1
+PED-00118,Expresso Sul,Norte,-3.79814,-60.61129,Ocorrencia aberta,1,2
+PED-00119,LogBrasil,Sudeste,-22.25344,-38.99284,Em risco,33,1
+PED-00120,Expresso Sul,Norte,-1.5531,-59.88374,Em risco,10,3
+PED-00121,Expresso Sul,Norte,-5.71779,-63.41108,Em risco,16,2
+PED-00122,Rota Norte,Sudeste,-21.85951,-45.99631,Ocorrencia aberta,11,2
+PED-00123,TransFast,Sul,-26.29619,-48.94654,No prazo,0,1
+PED-00124,Rota Norte,Norte,-3.18158,-59.74502,No prazo,0,1
+PED-00125,TransFast,Centro-Oeste,-14.92541,-50.16923,Em risco,16,1
+PED-00126,TransFast,Sul,-28.55959,-53.17872,Ocorrencia aberta,38,2
+PED-00127,Rota Norte,Nordeste,-7.70632,-39.00881,No prazo,0,2
+PED-00128,Expresso Sul,Sudeste,-21.85936,-45.23602,No prazo,0,1
+PED-00129,Rota Norte,Sudeste,-22.91859,-43.52102,Ocorrencia aberta,24,2
+PED-00130,Expresso Sul,Norte,-7.57606,-59.35674,Atrasado,42,2
+PED-00131,TransFast,Sudeste,-22.63162,-42.85813,Em risco,4,3
+PED-00132,TransFast,Nordeste,-10.03113,-39.21724,No prazo,0,2
+PED-00133,LogBrasil,Sudeste,-20.55709,-46.93076,Em risco,39,2
+PED-00134,TransFast,Sudeste,-19.1149,-42.59851,Ocorrencia aberta,31,2
+PED-00135,TransFast,Nordeste,-6.7254,-38.72226,Atrasado,31,2
+PED-00136,TransFast,Nordeste,-8.96088,-38.52813,No prazo,0,1
+PED-00137,LogBrasil,Centro-Oeste,-14.92405,-48.69315,Atrasado,33,3
+PED-00138,Expresso Sul,Centro-Oeste,-16.07131,-54.52897,No prazo,0,1
+PED-00139,LogBrasil,Nordeste,-8.15004,-37.79516,Em risco,19,1
+PED-00140,Rota Norte,Centro-Oeste,-15.64389,-49.45202,Em risco,18,0

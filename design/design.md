@@ -1,7 +1,7 @@
 # Design — Portfólio Lucas Batista
 
-> Documento de design da Fase 0. Fonte de decisões visuais antes da implementação dos componentes.
-> Referências: `docs/VISION.md`, `docs/ARCHITECTURE.md`, `.cursorrules`
+> Documento vivo de decisões visuais e de layout. Fonte da verdade do design; atualizar quando as decisões mudarem.
+> Referências: `README.md`, `.cursorrules`, `data/content.ts`
 
 ---
 
@@ -12,14 +12,15 @@ Ordem vertical das seções (IDs para navegação):
 | # | Seção | ID | Propósito |
 |---|--------|-----|-----------|
 | 1 | Header | — | Nav fixo, logo, links, CTA principal |
-| 2 | Hero | — | Proposta de valor em 30 segundos |
+| 2 | Hero | — | Proposta de valor em 30s + card de provas |
 | 3 | Dores | `dores` | 8 cards — problemas que o visitante reconhece |
 | 4 | Serviços | `servicos` | Escada de 5 níveis de contratação |
-| 5 | Cases | `cases` | Grid de cases demonstráveis + filtro |
+| 5 | Cases | `cases` | Grid de **10 cases demonstráveis** + filtro por categoria + lista "Próximas análises" |
 | 6 | Método | `metodo` | 5 passos do processo de trabalho |
-| 7 | IA | `ia` | IA como acelerador, limites éticos |
-| 8 | Contato | `contato` | Formulário + CTA de diagnóstico |
-| 9 | Footer | — | Links, copyright, declaração ética |
+| 7 | Sobre | `sobre` | Quem é o Lucas: bio + ferramentas |
+| 8 | IA | `ia` | IA como acelerador, limites éticos |
+| 9 | Contato | `contato` | Formulário + CTA de diagnóstico |
+| 10 | Footer | — | Links, copyright, declaração ética |
 
 ---
 
@@ -72,12 +73,14 @@ Hero: botões empilham (`flex-col`) em mobile, lado a lado em `sm+`.
 | `SectionHeader` | Título + subtítulo de seção, alinhamento configurável |
 | `PainPointCard` | Card de dor com ícone Lucide + badge numérico |
 | `ServiceCard` | Card de serviço com borda lateral colorida + entregas |
-| `CaseCard` | Card de case com tags, prioridade, botão demo |
-| `DemoModal` | Dialog shadcn com iframe Streamlit (`?embed=true`) |
+| `CaseCard` | Card de case: ícone, prioridade, pergunta de negócio (destaque), métrica, tags, botões demo/código |
+| `DemoModal` | Dialog shadcn: contexto de negócio + iframe Streamlit (`?embed=true`) + link "Abrir em nova aba" |
 | `Header` | Nav fixo, scroll suave, menu mobile (Sheet) |
 | `Footer` | Copyright, links sociais, declaração ética |
 
-Seções de página (Fase 1): `Hero`, `Dores`, `Servicos`, `Cases`, `Metodo`, `IASection`, `Contato`.
+Seções de página: `Hero` (com card de provas), `Dores`, `Servicos`, `Cases` (grid de demonstráveis + lista de roadmap), `Metodo`, `Sobre`, `IASection`, `Contato`.
+
+Distinção de cases: um case é "demonstrável" quando tem slug em `CASE_DEMO_SLUGS` (`data/content.ts`). Os demais aparecem na lista compacta "Próximas análises" — sem botões desabilitados.
 
 ---
 
@@ -85,7 +88,7 @@ Seções de página (Fase 1): `Hero`, `Dores`, `Servicos`, `Cases`, `Metodo`, `I
 
 ### Links do Header
 
-Dores → `#dores` | Serviços → `#servicos` | Cases → `#cases` | Método → `#metodo` | Contato → `#contato`
+Dores → `#dores` | Serviços → `#servicos` | Cases → `#cases` | Método → `#metodo` | Sobre → `#sobre` | Contato → `#contato`
 
 CTA fixo: **"Falar sobre minha operação"** → scroll para `#contato`
 
@@ -107,7 +110,7 @@ CTA fixo: **"Falar sobre minha operação"** → scroll para `#contato`
 | Hover cards | scale + shadow | `scale-[1.02]`, `shadow-md`, `transition 0.2s` |
 | Hero | stagger children | badge → título → subtítulo → CTAs |
 
-Respeitar `prefers-reduced-motion` quando possível.
+`prefers-reduced-motion` é respeitado globalmente via `<MotionConfig reducedMotion="user">` em `HomePage`.
 
 ---
 
@@ -116,10 +119,9 @@ Respeitar `prefers-reduced-motion` quando possível.
 | Tipo | Fonte | Notas |
 |------|-------|-------|
 | Ícones | Lucide React | Truck, BarChart3, MapPin, etc. |
-| Imagens | Nenhuma no MVP | SVG decorativo no Hero (mini KPI bars) |
-| OG Image | `public/og-image.png` | ✅ Criado |
-| Favicon | `app/icon.png` + `public/favicon.ico` | ✅ Criado |
-| Favicon | `public/favicon.ico` | Fase 4 |
+| Imagens | Nenhuma no MVP | Bloco de provas no Hero (sem stock photo) |
+| OG Image | `public/og-image.png` | Gerado (1200×630) |
+| Favicon | `app/icon.png` | Ícone via convenção do App Router |
 
 ---
 
@@ -133,20 +135,28 @@ Respeitar `prefers-reduced-motion` quando possível.
 | Principal dor/desafio | textarea | Não |
 
 - Validação HTML5 (`required`, `type="email"`)
-- Submit MVP: `console.log` + mensagem de sucesso
-- Integração Firebase/Formspree: Fase 4
+- Submit: POST para Formspree quando `NEXT_PUBLIC_FORMSPREE_FORM_ID` existe
+- Fallback sem Formspree: abre `mailto` pré-preenchido (o lead não se perde)
 - CTA: **"Solicitar leitura inicial"**
 
 ---
 
 ## 9. Modal de Demo (Streamlit)
 
-- Componente: `DemoModal` (shadcn Dialog)
-- URL: `{demoUrl}?embed=true`
-- Desktop: iframe `height: 700px`
-- Mobile: `height: 500px` ou link "Abrir em nova aba"
-- Estilo: `width 100%`, `border none`, `border-radius 12px`
+- Componente: `DemoModal` (shadcn Dialog), recebe o `Case` selecionado
+- Header: título + link **"Abrir em nova aba"** (URL sem `?embed=true`)
+- Topo: contexto de negócio (pergunta, decisão apoiada, métrica principal, limitação)
+- Abaixo: iframe `{demoUrl}?embed=true`
+- Desktop: iframe `height: 700px` · Mobile: `height: 500px`
+- Container: `max-h-[90vh] overflow-y-auto` (contexto + iframe cabem na viewport)
 - Fechar: X do Dialog ou clique fora
+
+### Demos Streamlit (UX interno)
+
+- Marca alinhada: primary `#1e3a5f`, accent `#0d9488`
+- `lib/ui.py`: `hero`, `section`, `plot`, `sidebar_brand`
+- `.streamlit/config.toml`: `toolbarMode = "minimal"` para embed limpo
+- Home: mapa herói + cards navegáveis (Profundas / Pontuais)
 
 ---
 
@@ -160,4 +170,4 @@ Respeitar `prefers-reduced-motion` quando possível.
 
 ---
 
-*Design document — Fase 0. Atualizar quando decisões visuais mudarem.*
+*Design document — documento vivo. Atualizar quando decisões visuais mudarem.*

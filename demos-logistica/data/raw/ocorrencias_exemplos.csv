@@ -1,0 +1,11 @@
+texto,categoria,prioridade
+"Cliente ausente no endereco, tentativa 2",Cliente Ausente,Media
+Atraso por transito intenso na marginal,Atraso,Alta
+Endereco incompleto - sem numero,Endereco Incorreto,Alta
+Embalagem avariada na conferencia,Avaria,Alta
+Destinatario recusou recebimento,Recusa,Media
+Devolucao solicitada pelo embarcador,Devolucao,Media
+Carga aguardando liberacao no CD,Atraso,Baixa
+Cliente nao atende o interfone,Cliente Ausente,Media
+Produto danificado durante o transporte,Avaria,Alta
+CEP divergente do cadastro,Endereco Incorreto,Alta

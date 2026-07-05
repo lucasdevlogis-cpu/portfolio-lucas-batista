@@ -1,0 +1,5 @@
+stop_id,customer,latitude,longitude,demand_kg,service_time_min,window_start_min,window_end_min
+TW-001,Farmacia Centro,-23.5505,-46.6333,12,8,540,720
+TW-002,Cliente B2C Moema,-23.6091,-46.6677,8,6,600,780
+TW-003,Loja Tatuape,-23.5408,-46.5766,20,10,660,840
+TW-004,Cliente Lapa,-23.5275,-46.7056,15,7,780,960

@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, PlayCircle } from "lucide-react";
+import { ExternalLink, PlayCircle, Target } from "lucide-react";
 
 import { LucideIconByName } from "@/components/LucideIconByName";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +31,8 @@ export function CaseCard({
   linkDemo,
   linkGitHub,
   prioridade,
+  perguntaNegocio,
+  metricaPrincipal,
   onOpenDemo,
 }: CaseCardProps) {
   const prio = prioridadeStyles[prioridade];
@@ -53,10 +55,31 @@ export function CaseCard({
         <h3 className="mt-1 font-heading text-xl font-semibold text-primary">
           {titulo}
         </h3>
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           {descricao}
         </p>
-        <div className="mt-4 flex flex-wrap gap-2">
+
+        <div className="mt-4 rounded-lg border-l-2 border-accent bg-accent/5 px-3 py-2">
+          <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent">
+            Pergunta de negócio
+          </p>
+          <p className="mt-0.5 text-sm font-medium leading-snug text-foreground">
+            {perguntaNegocio}
+          </p>
+        </div>
+
+        <div className="mt-3 flex items-start gap-2 text-xs text-muted-foreground">
+          <Target
+            className="mt-0.5 size-3.5 shrink-0 text-primary"
+            aria-hidden
+          />
+          <span>
+            <span className="font-medium text-foreground">Métrica: </span>
+            {metricaPrincipal}
+          </span>
+        </div>
+
+        <div className="mt-4 flex flex-1 flex-wrap items-end gap-2">
           {tags.map((tag) => (
             <Badge
               key={tag}
@@ -75,7 +98,7 @@ export function CaseCard({
           disabled={!hasDemo}
         >
           <PlayCircle className="size-4" aria-hidden />
-          {hasDemo ? "Ver demo interativa" : "Demo em breve"}
+          {hasDemo ? "Ver demo e detalhes" : "Demo em breve"}
         </Button>
         {linkGitHub ? (
           <a
@@ -88,12 +111,12 @@ export function CaseCard({
             )}
           >
             <ExternalLink className="size-4" aria-hidden />
-            Ver no GitHub
+            Ver código
           </a>
         ) : (
           <Button variant="outline" className="w-full sm:w-auto" disabled>
             <ExternalLink className="size-4" aria-hidden />
-            Ver no GitHub
+            Ver código
           </Button>
         )}
       </CardFooter>

@@ -1,0 +1,9 @@
+origem,destino,origem_lat,origem_lon,destino_lat,destino_lon,distance_km,volume_ton,service_level
+Barueri,Rio de Janeiro,-23.5106,-46.8761,-22.9068,-43.1729,430,18,D+1
+Barueri,Betim,-23.5106,-46.8761,-19.9678,-44.1983,590,22,D+2
+Curitiba,Canoas,-25.4284,-49.2733,-29.9177,-51.1836,710,16,D+2
+Campinas,Santos,-22.9099,-47.0626,-23.9608,-46.3336,180,12,D+0
+Guarulhos,Belo Horizonte,-23.4538,-46.5333,-19.9167,-43.9345,586,20,D+2
+Ribeirao Preto,Goiania,-21.1775,-47.8103,-16.6869,-49.2648,510,9,D+2
+Sao Paulo,Salvador,-23.5505,-46.6333,-12.9777,-38.5016,1960,14,D+4
+Sao Paulo,Recife,-23.5505,-46.6333,-8.0476,-34.877,2660,10,D+5

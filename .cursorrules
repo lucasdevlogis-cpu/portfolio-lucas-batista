@@ -2,7 +2,7 @@
 
 > **Uso:** Este arquivo está na raiz do projeto. O Cursor (Kimi Code) lê este arquivo automaticamente para entender o contexto do projeto. Não é necessário copiar nada — o Cursor já tem acesso.
 >
-> **Workflow:** Leia → Execute prompts → Teste → Itere. O arquivo `docs/PROMPTS.md` contém todos os prompts copiar-colar. O arquivo `docs/CONTENT.md` contém todo o texto do site.
+> **Workflow:** Leia → Edite conteúdo em `data/content.ts` → Teste → Itere. Todo o texto do site vive em `data/content.ts` (fonte única). Estado atual e pendências em `docs/AVALIACAO.md`.
 
 ---
 
@@ -53,11 +53,12 @@
 2. **Hero** — headline + subheadline + 2 CTAs
 3. **Dores** — 8 cards de dores logísticas
 4. **Serviços** — 5 níveis de contratação (escada)
-5. **Cases** — grid de 6 cases (P0 + P1) para grid simétrico, ou 7 com grid flexível
+5. **Cases** — grid de **10 cases demonstráveis** + filtro por categoria; `06-kpis-cd` fica em "Próximas análises"
 6. **Método** — 5 passos do processo
-7. **IA/Vibecoding** — uso de IA como acelerador
-8. **Contato** — formulário + CTA
-9. **Footer** — copyright + links + declaração ética
+7. **Sobre** — bio + ferramentas
+8. **IA/Vibecoding** — uso de IA como acelerador
+9. **Contato** — formulário + CTA
+10. **Footer** — copyright + links + declaração ética
 
 ---
 
@@ -78,12 +79,16 @@
 
 ## Integração com Demos Streamlit
 
-- Cada case tem link "Ver demo interativa".
-- Demo embedada via iframe: `src="https://SEU-APP.streamlit.app/?embed=true"`.
-- O `?embed=true` remove toolbar do Streamlit.
+- **10 cases demonstráveis** mapeados em `CASE_DEMO_SLUGS` (`data/content.ts`).
+- Cada case demonstrável tem botão "Ver demo interativa".
+- Demo embedada via iframe: `src="{demoUrl}?embed=true"`.
+- O `?embed=true` remove toolbar do Streamlit (complementado por `toolbarMode = "minimal"` no config).
+- `DemoModal` inclui link "Abrir em nova aba" (URL sem embed).
 - Estilo do iframe: `width: 100%`, `height: 700px`, `border: none`, `border-radius: 12px`.
-- A demo abre em modal/drawer ao clicar, não em nova página.
-- Em mobile, o iframe deve ter altura reduzida (500px) ou abrir em nova aba.
+- A demo abre em modal ao clicar, não em nova página (exceto link explícito no header).
+- Em mobile, o iframe deve ter altura reduzida (500px).
+- Demos Streamlit: 11 pages em `demos-logistica/pages/`; UX padronizado via `lib/ui.py`.
+- Verificação: `python scripts/smoke_test.py` (meta 12/12).
 
 ---
 

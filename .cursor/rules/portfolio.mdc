@@ -5,19 +5,21 @@ alwaysApply: true
 
 # Portfolio Lucas Batista
 
-Consulte `docs/INDEX.md` para mapa da documentação. Regras completas em `.cursorrules` na raiz.
+Documentação enxuta em `docs/` (AVALIACAO.md, DEPLOY.md). Regras completas em `.cursorrules` na raiz.
 
 ## Stack
 
-- Next.js 16 App Router (docs referem v15 — compatível), React 19, TypeScript
+- Next.js 16 App Router, React 19, TypeScript
 - Tailwind CSS v4 (`@import "tailwindcss"` + `@theme` em `app/globals.css` — sem `tailwind.config.ts`)
 - shadcn/ui, Framer Motion, Lucide React
+- Demos: Streamlit (11 pages) em `demos-logistica/`
 
 ## Conteúdo
 
-- Textos sempre de `data/content.ts` (espelha `docs/CONTENT.md`)
+- Textos sempre de `data/content.ts` (fonte única)
 - Nunca hardcode copy nos componentes
 - Português do Brasil
+- 10 cases demonstráveis via `CASE_DEMO_SLUGS`; 1 no roadmap (`06-kpis-cd`)
 
 ## Design
 
@@ -28,8 +30,9 @@ Consulte `docs/INDEX.md` para mapa da documentação. Regras completas em `.curs
 ## Deploy
 
 - Deploy na Vercel como Next.js padrão (`next build` → `.next/`). Não usar `output: 'export'` nem override de Output Directory no painel.
-- Demos Streamlit via iframe com `?embed=true` no `DemoModal`
+- Demos Streamlit via iframe com `?embed=true` no `DemoModal`; link "Abrir em nova aba" no header do modal
+- Redeploy Vercel após alterar `CASE_DEMO_SLUGS` ou `NEXT_PUBLIC_DEMOS_BASE_URL`
 
 ## Seções (ordem)
 
-Header → Hero → Dores → Serviços → Cases → Método → IA → Contato → Footer
+Header → Hero → Dores → Serviços → Cases → Método → Sobre → IA → Contato → Footer

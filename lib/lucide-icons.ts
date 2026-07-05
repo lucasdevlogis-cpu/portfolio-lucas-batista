@@ -5,10 +5,12 @@ import {
   Database,
   FileSpreadsheet,
   MapPin,
+  Network,
   Package,
   Route,
   Truck,
   Warehouse,
+  Waypoints,
   type LucideIcon,
 } from "lucide-react";
 
@@ -25,6 +27,8 @@ export const LUCIDE_ICONS: Record<LucideIconName, LucideIcon> = {
   AlertTriangle,
   Package,
   Warehouse,
+  Network,
+  Waypoints,
 };
 
 export function getLucideIcon(name: LucideIconName): LucideIcon {
