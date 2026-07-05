@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUp, Code2, Link, Mail, Star } from "lucide-react";
+import { ArrowUp, ArrowUpRight, Code2, Link, Mail, Star } from "lucide-react";
 
 import { CONTENT } from "@/data/content";
 
@@ -116,9 +116,10 @@ export function Footer() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                className="inline-flex items-center gap-1 text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
               >
                 {link.label}
+                <ArrowUpRight className="size-3.5" aria-hidden />
               </a>
             ))}
           </nav>
