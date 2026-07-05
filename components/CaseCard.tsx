@@ -19,7 +19,7 @@ const prioridadeStyles: Record<
 > = {
   P0: { badge: "bg-accent-contrast text-white", label: "Essencial", border: "border-l-accent", icon: Star },
   P1: { badge: "bg-primary/20 text-primary border border-primary/20", label: "Forte", border: "border-l-primary", icon: Zap },
-  P2: { badge: "bg-slate-100 text-slate-600 border border-slate-200", label: "Complementar", border: "border-l-slate-300", icon: Zap },
+  P2: { badge: "bg-primary/10 text-primary border border-primary/20", label: "Complementar", border: "border-l-slate-300", icon: Zap },
 };
 
 export function CaseCard({
@@ -96,7 +96,7 @@ export function CaseCard({
             <Badge
               key={tag}
               variant="secondary"
-              className="bg-secondary text-secondary-foreground text-[0.65rem] px-1.5 py-0"
+              className="bg-secondary text-secondary-foreground text-xs px-2 py-0.5"
             >
               {tag}
             </Badge>

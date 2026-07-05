@@ -29,7 +29,7 @@ export function Sobre() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex size-28 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent font-heading text-4xl font-bold text-white shadow-lg">
+          <div className="flex size-24 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent font-heading text-4xl font-bold text-white shadow-lg lg:size-28">
             {iniciais(pessoal.nome)}
           </div>
           <p className="mt-4 font-heading text-lg font-semibold text-primary">

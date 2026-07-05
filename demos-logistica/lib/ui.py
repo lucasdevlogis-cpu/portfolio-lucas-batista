@@ -80,7 +80,6 @@ def _inject_css(embed: bool = False) -> None:
             border-radius:12px; padding:12px 16px;
           }}
           /* Hero (container com borda) */
-          div[data-testid="stVerticalBlockBorderWrapper"] {{ border-radius:14px; }}
           .demo-badge {{
             display:inline-block; background:{brand.PRIMARY}14; color:{brand.PRIMARY};
             border:1px solid {brand.BORDER}; padding:2px 10px; border-radius:999px;
@@ -292,16 +291,14 @@ def provenance_expander(
 
 def demo_cta(next_demo_path: str | None = None, next_label: str = "Ver próxima demo") -> None:
     """Container de CTA final das demos: próxima demo e contato."""
-    st.markdown("<div class='demo-cta'>", unsafe_allow_html=True)
-    cols = st.columns([1, 1])
-    with cols[0]:
-        if next_demo_path:
-            nav_link(next_demo_path, next_label, icon="➡️")
-    with cols[1]:
-        st.markdown(
-            "[Solicitar leitura inicial](https://portfolio-lucas-batista-murex.vercel.app#contato)"
-        )
-    st.markdown("</div>", unsafe_allow_html=True)
+    with st.container(border=True):
+        st.markdown(f"<p style='font-weight:600;color:{brand.PRIMARY};margin:0 0 .5rem 0;'>Próximos passos</p>", unsafe_allow_html=True)
+        cols = st.columns([1, 1])
+        with cols[0]:
+            if next_demo_path:
+                nav_link(next_demo_path, next_label, icon="➡️")
+        with cols[1]:
+            st.markdown("[Solicitar leitura inicial](https://portfolio-lucas-batista-murex.vercel.app#contato)")
 
 
 def footer() -> None:

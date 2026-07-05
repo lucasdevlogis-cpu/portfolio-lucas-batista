@@ -64,7 +64,7 @@ export function Cases() {
 
         <motion.div
           layout
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           <AnimatePresence mode="popLayout">
             {casesFiltrados.map((caseItem) => (
@@ -101,11 +101,11 @@ export function Cases() {
                 {secoes.casesRoadmap.subtitle}
               </p>
             </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {CASES_ROADMAP.map((caseItem) => (
                 <div
                   key={caseItem.id}
-                  className="flex gap-3 rounded-xl border border-dashed bg-card/50 p-4"
+                  className="flex gap-3 rounded-xl border border-dashed bg-card/50 p-5"
                 >
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/5 text-primary">
                     <LucideIconByName
@@ -117,10 +117,10 @@ export function Cases() {
                     <p className="text-xs font-medium uppercase tracking-wide text-accent-contrast">
                       {caseItem.categoria}
                     </p>
-                    <p className="mt-0.5 font-heading text-sm font-semibold text-primary">
+                    <p className="mt-0.5 font-heading text-base font-semibold text-primary">
                       {caseItem.titulo}
                     </p>
-                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                       {caseItem.perguntaNegocio}
                     </p>
                   </div>

@@ -79,33 +79,33 @@ ui.hero(
     },
 )
 
+kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+with kpi1:
+    ui.kpi_metric("CEPs na análise", format.fmt_number(len(f)))
+with kpi2:
+    ui.kpi_metric(
+        "Insucesso médio",
+        format.fmt_percent(insucesso_medio),
+        severity="danger" if insucesso_medio > 8 else "warning" if insucesso_medio > 5 else "success",
+    )
+with kpi3:
+    ui.kpi_metric(
+        "Prazo médio",
+        f"{prazo_medio:.1f} dias",
+        severity="danger" if prazo_medio > 5 else "warning" if prazo_medio > 3 else "success",
+    )
+with kpi4:
+    ui.kpi_metric(
+        "Custo médio",
+        format.fmt_currency(custo_medio),
+        severity="danger" if custo_medio > 60 else "warning" if custo_medio > 45 else "success",
+    )
+
+st.divider()
+
 tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
 
 with tab_visao:
-    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
-    with kpi1:
-        ui.kpi_metric("CEPs na análise", format.fmt_number(len(f)))
-    with kpi2:
-        ui.kpi_metric(
-            "Insucesso médio",
-            format.fmt_percent(insucesso_medio),
-            severity="danger" if insucesso_medio > 8 else "warning" if insucesso_medio > 5 else "success",
-        )
-    with kpi3:
-        ui.kpi_metric(
-            "Prazo médio",
-            f"{prazo_medio:.1f} dias",
-            severity="danger" if prazo_medio > 5 else "warning" if prazo_medio > 3 else "success",
-        )
-    with kpi4:
-        ui.kpi_metric(
-            "Custo médio",
-            format.fmt_currency(custo_medio),
-            severity="danger" if custo_medio > 60 else "warning" if custo_medio > 45 else "success",
-        )
-
-    st.divider()
-
     ui.section("Mapa de risco territorial", "Heatmap de score + CEPs agrupados por severidade")
     m = fmap.base_map(center=(-15, -50), zoom=4, height=ui.map_height(brand.MAP_FULL_HEIGHT))
     m = fmap.add_heatmap(m, f, value_field="score_risco", radius=18, blur=14)

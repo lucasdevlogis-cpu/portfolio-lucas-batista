@@ -144,10 +144,10 @@ with tab_visao:
             label = f"{r['origin_uf']}→{r['destination_uf']}: {fmt.fmt_currency(r['frete_total'], decimals=0)}"
             edges.append({"from": o, "to": d, "label": label, "width": w})
 
-        m = folium_maps.base_map(center=(-18, -47), zoom=4, height=ui.map_height(460))
+        m = folium_maps.base_map(center=(-18, -47), zoom=4, height=ui.map_height(brand.CHART_FULL_HEIGHT))
         if edges:
             m = folium_maps.add_network(m, nodes, edges, lat="lat", lon="lon", label="uf")
-        folium_maps.render(m, height=ui.map_height(460), key="frete_fluxos")
+        folium_maps.render(m, height=ui.map_height(brand.CHART_FULL_HEIGHT), key="frete_fluxos")
         st.caption(
             "Espessura da linha ∝ frete total no corredor UF→UF. "
             "Linhas retas entre centroides, não rotas rodoviárias reais."
@@ -214,6 +214,7 @@ with tab_analise:
         height=brand.CHART_HALF_HEIGHT,
         xaxis_title="",
         yaxis_title="R$",
+        xaxis_tickangle=-30,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
     comp_fig = viz.add_reference_line(comp_fig, y=piso_total / len(top), label="média piso", color=brand.WARNING)

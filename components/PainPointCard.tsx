@@ -33,7 +33,7 @@ export function PainPointCard({
         <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/5 text-primary">
           <LucideIconByName name={icon} className="size-6" />
         </div>
-        <p className="pr-8 font-medium leading-snug text-foreground">{title}</p>
+        <p className="pr-8 text-base font-medium leading-snug text-foreground">{title}</p>
       </CardContent>
     </Card>
   );

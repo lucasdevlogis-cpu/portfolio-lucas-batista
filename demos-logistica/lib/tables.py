@@ -20,6 +20,10 @@ def status_icon(status: str) -> str:
         "Alta": "🟢",
         "Média": "🟡",
         "Baixa": "🔴",
+        "Crítico": "🔴",
+        "Atenção": "🟡",
+        "OK": "🟢",
+        "Violou SLA": "🔴",
         "Apto a prometer/rotear": "🟢",
         "Revisar antes de prometer": "🟡",
         "Bloquear até corrigir cadastro": "🔴",
@@ -67,20 +71,21 @@ def score_column(label: str | None = None, min_value: int = 0, max_value: int = 
     )
 
 
-def status_column(label: str | None = None) -> st.column_config.TextColumn:
+def status_column(label: str | None = None, width: str = "medium") -> st.column_config.TextColumn:
     """Coluna de texto para status com emoji."""
-    return st.column_config.TextColumn(label=label)
+    return st.column_config.TextColumn(label=label, width=width)
 
 
-def text_column(label: str | None = None) -> st.column_config.TextColumn:
+def text_column(label: str | None = None, width: str = "medium") -> st.column_config.TextColumn:
     """Coluna de texto padrão."""
-    return st.column_config.TextColumn(label=label)
+    return st.column_config.TextColumn(label=label, width=width)
 
 
 def format_dataframe(
     df: pd.DataFrame,
     config: dict[str, st.column_config.Column],
     hide_index: bool = True,
+    **kwargs,
 ) -> None:
     """Renderiza DataFrame com column_config padronizado."""
-    st.dataframe(df, column_config=config, hide_index=hide_index, width="stretch")
+    st.dataframe(df, column_config=config, hide_index=hide_index, width="stretch", **kwargs)

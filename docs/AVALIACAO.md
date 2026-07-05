@@ -19,9 +19,9 @@
 | SEO assets | ✅ OK | `public/og-image.png` (1200×630) e `app/icon.png` |
 | Formulário de leads | 🟡 Parcial | Formspree integrado; sem ID usa fallback `mailto` |
 | Documentação | ✅ Enxuta | `AVALIACAO.md` + `DEPLOY.md` |
-| Lighthouse | ✅ Aprovado | Desktop 100/100/100/100; Mobile 93/100/100/100 |
+| Lighthouse | ✅ Aprovado | Desktop 100/100/100/100; Mobile 92/100/100/100 (local) |
 
-**Veredicto:** pronto para divulgação após **Formspree** + **Lighthouse**.
+**Veredicto:** revisão visual/layout concluída. Pronto para divulgação após **Formspree**.
 
 ---
 
@@ -97,6 +97,33 @@ Teste automatizado dos 10 modais de demo via Kimi WebBridge.
 | 10 | Sequência de Visitas (TSP) | ✅ | ✅ | ✅ | ✅ | **APROVADO** |
 
 **Resultado: 10/10 cases aprovados.**
+
+---
+
+## Pass de melhoria — 05/07/2026 (revisão visual/layout)
+
+### Landing Next.js
+
+- **Tokens visuais:** `ring` agora usa accent `#0d9488`; adicionado `--accent-contrast: #0a7369`; removidos aliases `--color-brand-primary/accent` duplicados.
+- **Hero:** card de provas com fundo sólido, borda e sombra mais fortes (sem `backdrop-blur` para preservar performance); gap entre texto e card reduzido; mesh gradient mantido sutil.
+- **Cases:** grid passou a usar `lg:grid-cols-3`; cards do roadmap com mais respiro (`p-5 gap-5`) e tipografia maior.
+- **IA:** título em negrito consistente com as outras seções; grid de ícones corrigido para `lg:grid-cols-3`; cards com hover/elevação via CSS.
+- **Método:** maior gap entre passos e setas maiores no mobile.
+- **Sobre:** avatar responsivo (`size-24` mobile → `size-28` lg).
+- **Cards:** `CaseCard` badge P2 agora usa tom de primary; tags com `text-xs` mínimo; `PainPointCard` e `ServiceCard` com hover/escala padronizado.
+- **Footer:** animação de entrada sutil; botão "Voltar ao topo" integrado à barra de copyright.
+- **Modal:** contexto de negócio com fundo mais visível; iframe mobile usa `60vh` com `max-h-[500px]`; botão fechar do Dialog maior.
+- **Dividers:** linha brand entre seções brancas mais visível (`h-6`, opacidade 16%).
+
+### Demos Streamlit
+
+- **`lib/ui.py`:** CTA final reescrito como `st.container(border=True)` (card real); removido seletor CSS global de border-radius que afetava todos os containers.
+- **`lib/folium_maps.py`:** `add_routes()` reusa uma única `PolyLine`; `add_flows()` adiciona `LayerControl`; exposto `icon_for` público.
+- **`lib/tables.py`:** emojis para `Crítico`, `Atenção`, `OK`, `Violou SLA`; colunas de texto com `width` padrão; `format_dataframe()` usa `width="stretch"`.
+- **Padronização cross-page:** KPIs fora das tabs (page 04); method/provenance/CTA fora das tabs (pages 06, 09); KPI rows convertidos para cards (`kpi_metric`); alturas de mapas/gráficos alinhadas; margens de donuts ajustadas; Gantt com altura dinâmica; tabela de exportação da page 10 reduzida para menos scroll horizontal.
+
+**Build:** `npm run build` OK; lint OK (escopo do projeto).  
+**Smoke test demos:** 13/13 OK.
 
 ---
 
@@ -178,14 +205,14 @@ Core Web Vitals desktop: FCP 0,3 s · LCP 0,7 s · TBT 0 ms · CLS 0.
 
 | Categoria | Score | Meta | Status |
 |-----------|------:|------|:------:|
-| Performance | 93 | ≥ 90 | ✅ |
+| Performance | 92 | ≥ 90 | ✅ |
 | Acessibilidade | 100 | ≥ 95 | ✅ |
 | Boas práticas | 100 | — | ✅ |
 | SEO | 100 | — | ✅ |
 
-Core Web Vitals mobile: FCP 1,1 s · LCP 3,2 s · TBT 110 ms · CLS 0.
+Core Web Vitals mobile: FCP 1,1 s · LCP 3,2 s · TBT 140 ms · CLS 0.
 
-O LCP mobile (3,2 s) fica levemente acima do ideal (2,5 s), mas o score de Performance (93) atende à meta.
+O LCP mobile (3,2 s) fica levemente acima do ideal (2,5 s), mas o score de Performance (92) atende à meta. A revisão visual priorizou equilíbrio entre aparência e performance: o card de provas do Hero ganhou destaque sem `backdrop-blur` para não penalizar o LCP.
 
 ### Lighthouse em produção (05/07/2026, `https://portfolio-lucas-batista-murex.vercel.app`)
 

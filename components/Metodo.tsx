@@ -17,7 +17,7 @@ export function Metodo() {
           title={secoes.metodo.title}
           subtitle={secoes.metodo.subtitle}
         />
-        <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex flex-col items-stretch gap-6 lg:flex-row lg:items-start lg:justify-between">
           {metodo.map((passo, index) => (
             <motion.div
               key={passo.numero}
@@ -29,7 +29,7 @@ export function Metodo() {
             >
               <div
                 className={cn(
-                  "w-full rounded-xl border bg-slate-50 p-5 text-center lg:text-left",
+                  "w-full rounded-xl border bg-secondary/70 p-5 text-center lg:text-left",
                   index % 2 === 1 && "bg-white",
                 )}
               >
@@ -50,7 +50,7 @@ export function Metodo() {
                     aria-hidden
                   />
                   <ArrowDown
-                    className="my-1 size-5 text-muted-foreground lg:hidden"
+                    className="my-2 size-6 text-muted-foreground lg:hidden"
                     aria-hidden
                   />
                 </>

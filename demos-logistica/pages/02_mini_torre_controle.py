@@ -153,6 +153,7 @@ with col2:
     )
     fig2.update_layout(
         height=brand.CHART_HALF_HEIGHT,
+        margin=dict(t=10, b=80, l=10, r=10),
         legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5),
     )
     ui.plot(fig2, width="stretch")

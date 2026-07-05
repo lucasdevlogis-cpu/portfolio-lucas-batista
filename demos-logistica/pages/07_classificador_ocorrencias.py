@@ -146,14 +146,16 @@ if st.button("Classificar", type="primary"):
 
 if "ultimo" in st.session_state:
     r = st.session_state["ultimo"]
-    ui.kpi_row(
-        [
-            ("Categoria", r["categoria"]),
-            ("Prioridade", r["prioridade"]),
-            ("Causa provável", r["causa"]),
-            ("Ação sugerida", r["acao"]),
-        ]
-    )
+    severity = {"Alta": "danger", "Média": "warning", "Baixa": "success"}.get(r["prioridade"])
+    kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
+    with kpi_col1:
+        ui.kpi_metric("Categoria", r["categoria"])
+    with kpi_col2:
+        ui.kpi_metric("Prioridade", r["prioridade"], severity=severity)
+    with kpi_col3:
+        ui.kpi_metric("Causa provável", r["causa"])
+    with kpi_col4:
+        ui.kpi_metric("Ação sugerida", r["acao"])
     st.progress(r["confianca"], text=f"Confiança: {r['confianca']:.0%}")
 
 st.divider()
@@ -198,6 +200,7 @@ with col2:
     )
     fig2.update_layout(
         height=brand.CHART_HALF_HEIGHT,
+        margin=dict(t=10, b=80, l=10, r=10),
         legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5),
     )
     ui.plot(fig2, width="stretch")

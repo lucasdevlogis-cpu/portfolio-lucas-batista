@@ -23,7 +23,7 @@ export function IASection() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="font-heading text-3xl font-semibold tracking-tight text-primary md:text-4xl">
+          <h2 className="font-heading text-3xl font-bold tracking-tight text-primary md:text-4xl">
             {ia.titulo}
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
@@ -56,7 +56,7 @@ export function IASection() {
         </motion.div>
 
         <motion.div
-          className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3"
+          className="grid gap-4 sm:grid-cols-3 lg:grid-cols-3"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
@@ -65,7 +65,7 @@ export function IASection() {
           {iconCards.map(({ icon: Icon, label }) => (
             <div
               key={label}
-              className="flex flex-col items-center rounded-xl border bg-card p-6 text-center shadow-sm"
+              className="flex flex-col items-center rounded-xl border bg-card p-6 text-center shadow-sm transition-all hover:shadow-md hover:border-accent/30 hover:-translate-y-1"
             >
               <div className="flex size-14 items-center justify-center rounded-full bg-accent/10 text-accent">
                 <Icon className="size-7" aria-hidden />

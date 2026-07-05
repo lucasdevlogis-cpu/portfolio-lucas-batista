@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { ArrowUp, ArrowUpRight, Code2, Link, Mail, Star } from "lucide-react";
 
 import { CONTENT } from "@/data/content";
@@ -51,19 +52,13 @@ export function Footer() {
   };
 
   return (
-    <footer className="border-t bg-white">
-      {/* Botão voltar ao topo */}
-      <div className="mx-auto flex max-w-7xl items-center justify-end px-4 pt-4 sm:px-6 lg:px-8">
-        <button
-          onClick={handleVoltarTopo}
-          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-slate-100 hover:text-primary"
-          aria-label={footer.voltarTopo}
-        >
-          <ArrowUp className="size-4" aria-hidden />
-          {footer.voltarTopo}
-        </button>
-      </div>
-
+    <motion.footer
+      className="border-t bg-white"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-3 lg:px-8">
         {/* Coluna 1 — Brand + social */}
         <div>
@@ -134,11 +129,19 @@ export function Footer() {
       </div>
 
       {/* Copyright */}
-      <div className="mx-auto max-w-7xl border-t px-4 py-6 sm:px-6 lg:px-8">
-        <p className="text-center text-sm text-muted-foreground">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 border-t px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
+        <p className="text-sm text-muted-foreground">
           {footer.copyright}
         </p>
+        <button
+          onClick={handleVoltarTopo}
+          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-slate-100 hover:text-primary"
+          aria-label={footer.voltarTopo}
+        >
+          <ArrowUp className="size-4" aria-hidden />
+          {footer.voltarTopo}
+        </button>
       </div>
-    </footer>
+    </motion.footer>
   );
 }

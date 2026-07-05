@@ -54,14 +54,15 @@ ui.hero(
     },
 )
 
-ui.kpi_row(
-    [
-        ("Corredores", f"{len(base)}"),
-        ("Volume total", f"{format.fmt_number(base['volume_ton'].sum(), decimals=0)} t"),
-        ("Custo total", format.fmt_currency(base['custo_total'].sum(), decimals=0)),
-        {"label": "Custo médio/ton", "value": format.fmt_currency(media_ton, decimals=0)},
-    ]
-)
+kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
+with kpi_col1:
+    ui.kpi_metric("Corredores", f"{len(base)}")
+with kpi_col2:
+    ui.kpi_metric("Volume total", f"{format.fmt_number(base['volume_ton'].sum(), decimals=0)} t")
+with kpi_col3:
+    ui.kpi_metric("Custo total", format.fmt_currency(base['custo_total'].sum(), decimals=0))
+with kpi_col4:
+    ui.kpi_metric("Custo médio/ton", format.fmt_currency(media_ton, decimals=0))
 
 nodes = {}
 for _, r in base.iterrows():
@@ -104,7 +105,7 @@ with tab_visao:
     map_height = ui.map_height(brand.MAP_FULL_HEIGHT)
     m = fm.base_map(center, zoom=4, height=map_height)
     m = fm.add_network(m, nodes_df, edges, lat="lat", lon="lon", label="id")
-    fm.render(m, height=map_height)
+    fm.render(m, height=map_height, key="rede_interhubs_mapa")
     st.caption(
         "Linhas retas entre cidades (geodésicas), não rotas rodoviárias reais. "
         "Arestas com espessura proporcional ao volume movimentado."
@@ -200,10 +201,8 @@ with tab_exportar:
     ui.section("Exportar resultados")
     ui.download_csv_button(tabela, "rede_interhubs.csv")
 
-    st.divider()
-
-    ui.method_expander(
-        """
+ui.method_expander(
+    """
 - **Custo do corredor (demonstrativo):** `distância × custo_km + volume × distância × custo_ton_km`.
 - **Custo por tonelada:** normaliza lanes de volumes diferentes para comparação justa.
 - **Leitura:** lanes longas e de baixo volume tendem a custo/ton alto — candidatas a
@@ -211,13 +210,13 @@ with tab_exportar:
 - **Produção:** **NetworkX**/solvers de fluxo com malha real, pedágio vigente e
   restrições de frota.
 """
-    )
-    ui.provenance_expander(
-        fonte="Corredores curados BR (case 05_rede_interhubs) + coordenadas de cidades.",
-        tipo="Sintético com premissa de custo paramétrica.",
-        producao="Modelo de rede com malha real e custos contratados.",
-        limitacoes="Sem pedágio real, consolidação multi-lane ou balanceamento de fluxo.",
-    )
-    ui.demo_cta(next_demo_path="pages/07_classificador_ocorrencias.py")
+)
+ui.provenance_expander(
+    fonte="Corredores curados BR (case 05_rede_interhubs) + coordenadas de cidades.",
+    tipo="Sintético com premissa de custo paramétrica.",
+    producao="Modelo de rede com malha real e custos contratados.",
+    limitacoes="Sem pedágio real, consolidação multi-lane ou balanceamento de fluxo.",
+)
+ui.demo_cta(next_demo_path="pages/07_classificador_ocorrencias.py")
 
 ui.footer()

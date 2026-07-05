@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 from paths import DATA_DIR
 
-from lib import folium_maps, ui
+from lib import brand, folium_maps, ui
 
 ui.page_setup("Demos Logística | Lucas Batista", icon="🚚")
 ui.sidebar_brand()
@@ -85,7 +85,8 @@ PONTUAIS = [
 ]
 
 
-def render_cards(demos: list[tuple], por_linha: int = 3) -> None:
+def render_cards(demos: list[tuple]) -> None:
+    por_linha = 2 if ui.is_embed() else 3
     for inicio in range(0, len(demos), por_linha):
         linha = demos[inicio : inicio + por_linha]
         cols = st.columns(por_linha)
@@ -127,10 +128,10 @@ try:
     m = folium_maps.base_map(
         center=(center_lat, center_lon),
         zoom=4,
-        height=ui.map_height(360),
+        height=ui.map_height(brand.MAP_FULL_HEIGHT),
     )
     folium_maps.add_network(m, nodes_df, edges)
-    folium_maps.render(m, height=ui.map_height(360), key="home_rede_interhubs")
+    folium_maps.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="home_rede_interhubs")
     st.caption("Corredores entre hubs. Linhas retas, não rotas rodoviárias reais.")
 except FileNotFoundError:
     st.info("Rode `python scripts/build_datasets.py` para gerar os dados das demos.")

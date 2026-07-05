@@ -109,7 +109,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
         </DialogHeader>
 
         {caseItem ? (
-          <div className="grid gap-4 border-b bg-muted/20 px-4 py-4 sm:grid-cols-2">
+          <div className="grid gap-4 border-b bg-muted/50 px-4 py-4 sm:grid-cols-2">
             <div>
               <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent-contrast">
                 Pergunta de negócio
@@ -192,7 +192,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
                 onError={() => setErrorUrl(embedUrl)}
                 className={cn(
                   "w-full border-0",
-                  isMobile ? "h-[500px]" : "h-[700px]",
+                  isMobile ? "h-[60vh] min-h-[300px] max-h-[500px]" : "h-[700px]",
                 )}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               />

@@ -139,7 +139,7 @@ def add_routes(
         coords = r["coords"]
         color = r.get("color", brand.SEQ[i % len(brand.SEQ)])
         if len(coords) > 1:
-            folium.PolyLine(
+            route_line = folium.PolyLine(
                 coords,
                 color=color,
                 weight=4,
@@ -148,7 +148,7 @@ def add_routes(
             ).add_to(m)
             if show_arrows:
                 PolyLineTextPath(
-                    folium.PolyLine(coords, color=color, weight=4),
+                    route_line,
                     text="▶",
                     repeat=True,
                     offset=8,
@@ -235,6 +235,7 @@ def add_flows(
                 opacity=0.7,
                 popup=folium.Popup(popup, max_width=250) if popup else None,
             ).add_to(group)
+    folium.LayerControl().add_to(m)
     return m
 
 
@@ -256,6 +257,9 @@ def add_heatmap(
         data.append(entry)
     HeatMap(data, radius=radius, blur=blur, name="Heatmap").add_to(m)
     return m
+
+
+icon_for = _icon_for
 
 
 def render(

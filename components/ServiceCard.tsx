@@ -25,7 +25,7 @@ export function ServiceCard({
   return (
     <Card
       className={cn(
-        "rounded-xl border bg-card shadow-sm transition-shadow hover:shadow-md",
+        "rounded-xl border bg-card shadow-sm transition-all hover:shadow-md hover:scale-[1.01]",
         "border-l-4",
         borderClass,
       )}

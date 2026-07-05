@@ -94,9 +94,9 @@ tables.format_dataframe(
     proveniencia,
     config={
         "Demo": tables.text_column("Demo"),
-        "Fonte da amostra": tables.text_column("Fonte da amostra"),
+        "Fonte da amostra": tables.text_column("Fonte da amostra", width="large"),
         "Tipo de dado": tables.text_column("Tipo de dado"),
-        "Método em produção": tables.text_column("Método em produção"),
+        "Método em produção": tables.text_column("Método em produção", width="large"),
     },
     hide_index=True,
 )

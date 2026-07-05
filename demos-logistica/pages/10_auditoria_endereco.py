@@ -115,7 +115,7 @@ with overview_tab:
             m = folium_maps.base_map(
                 center=(-15, -50),
                 zoom=4,
-                height=ui.map_height(480),
+                height=ui.map_height(brand.CHART_FULL_HEIGHT),
             )
             folium_maps.add_points(
                 m,
@@ -135,7 +135,7 @@ with overview_tab:
                 tooltip_field="pedido_id",
                 cluster=True,
             )
-            folium_maps.render(m, height=ui.map_height(480), key="auditoria_mapa")
+            folium_maps.render(m, height=ui.map_height(brand.CHART_FULL_HEIGHT), key="auditoria_mapa")
         fora = len(aud) - len(validos)
         if fora:
             st.caption(
@@ -157,7 +157,7 @@ with overview_tab:
                 orientation="h",
                 color_discrete_sequence=[brand.DANGER],
             )
-            fig.update_layout(height=430, yaxis_title="", xaxis_title="ocorrências")
+            fig.update_layout(height=brand.CHART_FULL_HEIGHT, yaxis_title="", xaxis_title="ocorrências")
             ui.plot(fig, width="stretch")
         else:
             st.success("Nenhum alerta na amostra.")
@@ -184,7 +184,7 @@ with analysis_tab:
             color_discrete_map=cores,
             labels={"nivel_confianca": "Confiança", "qtd": "Endereços"},
         )
-        fig.update_layout(height=360, showlegend=False)
+        fig.update_layout(height=brand.CHART_HALF_HEIGHT, showlegend=False)
         ui.plot(fig, width="stretch")
 
     with col_uf:
@@ -206,7 +206,7 @@ with analysis_tab:
             labels={"score": "Score médio", "uf": "UF"},
         )
         fig.add_vline(x=80, line_dash="dash", line_color=brand.SUCCESS)
-        fig.update_layout(height=360, coloraxis_showscale=False)
+        fig.update_layout(height=brand.CHART_HALF_HEIGHT, coloraxis_showscale=False)
         ui.plot(fig, width="stretch")
 
     ui.section("Top 10 endereços com maior risco")
@@ -236,8 +236,6 @@ with export_tab:
             "cep8",
             "logradouro",
             "numero",
-            "complemento",
-            "bairro",
             "municipio",
             "uf",
             "score",
@@ -255,8 +253,6 @@ with export_tab:
             "cep8": tables.text_column("CEP"),
             "logradouro": tables.text_column("Logradouro"),
             "numero": tables.text_column("Nº"),
-            "complemento": tables.text_column("Complemento"),
-            "bairro": tables.text_column("Bairro"),
             "municipio": tables.text_column("Município"),
             "uf": tables.text_column("UF"),
             "score": tables.score_column("Score"),

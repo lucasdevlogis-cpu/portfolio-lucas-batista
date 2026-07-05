@@ -32,6 +32,8 @@ Ordem vertical das seções (IDs para navegação):
 |-------|-----|-----|
 | Primary | `#1e3a5f` | Headings, botões primários, nav |
 | Accent | `#0d9488` | Badges, hover, destaques |
+| Accent contrast | `#0a7369` | Textos pequenos sobre fundo claro (WCAG AA) |
+| Ring | `#0d9488` | Foco acessível |
 | Background | `#f8fafc` | Fundo da página |
 | Foreground | `#0f172a` | Texto principal |
 | Muted | `#64748b` | Subtítulos, legendas |
@@ -48,7 +50,7 @@ Ordem vertical das seções (IDs para navegação):
 
 - Seções: `py-20`
 - Container: `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`
-- Cards: `p-6`, grid `gap-6`
+- Cards: `p-6`, grid `gap-6` (roadmap `p-5 gap-5`)
 
 ---
 
@@ -60,7 +62,7 @@ Mobile-first. Breakpoints Tailwind padrão:
 |------------|------------|------------|-----|
 | `< md` | 1 coluna | 1 coluna | Sheet (hamburger) |
 | `md` | 2 colunas | 2 colunas | Links visíveis |
-| `lg` | 4 colunas | 3 colunas | Links + CTA |
+| `lg` | 4 colunas | **3 colunas** | Links + CTA |
 
 Hero: botões empilham (`flex-col`) em mobile, lado a lado em `sm+`.
 

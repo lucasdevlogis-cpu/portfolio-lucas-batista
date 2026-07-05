@@ -167,7 +167,7 @@ with tab_analise:
     tickvals = list(range(6 * 60, 22 * 60 + 1, 120))
     fig = viz.add_reference_line(fig, x=deadline_medio, label="Deadline médio", color=brand.WARNING)
     fig.update_layout(
-        height=brand.CHART_FULL_HEIGHT,
+        height=max(brand.CHART_HALF_HEIGHT, 40 * len(sched_edf)),
         xaxis=dict(
             title="Horário", tickvals=tickvals, ticktext=[hhmm(t) for t in tickvals]
         ),

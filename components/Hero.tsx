@@ -26,7 +26,7 @@ function ProofCard() {
   const { hero } = CONTENT;
 
   return (
-    <div className="rounded-2xl border border-white/20 bg-white/60 p-6 shadow-xl backdrop-blur-xl">
+    <div className="rounded-2xl border border-border/60 bg-white p-6 shadow-xl">
       <p className="text-xs font-semibold uppercase tracking-wide text-accent-contrast">
         {hero.provasTitulo}
       </p>
@@ -71,7 +71,7 @@ export function Hero() {
         }}
         aria-hidden
       />
-      <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col items-center justify-center gap-12 px-4 py-20 sm:px-6 lg:flex-row lg:justify-between lg:px-8">
+      <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col items-center justify-center gap-8 px-4 py-20 sm:px-6 lg:flex-row lg:justify-between lg:gap-10 lg:px-8">
         <motion.div
           className="max-w-2xl text-center lg:text-left"
           variants={container}

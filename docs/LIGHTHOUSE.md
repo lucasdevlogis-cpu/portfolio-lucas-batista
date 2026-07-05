@@ -19,7 +19,7 @@
 
 | Categoria | Score | Meta | Status |
 |-----------|-------|------|--------|
-| **Performance** | **93** | ≥ 90 | ✅ Aprovado |
+| **Performance** | **92** | ≥ 90 | ✅ Aprovado |
 | **Acessibilidade** | **100** | ≥ 95 | ✅ Aprovado |
 | Best Practices | 100 | — | ✅ |
 | SEO | 100 | — | ✅ |
@@ -50,7 +50,7 @@
 |---------|-------|---------------|--------|
 | First Contentful Paint (FCP) | 1.1 s | ≤ 1.8 s | ✅ Bom |
 | Largest Contentful Paint (LCP) | 3.2 s | ≤ 2.5 s | ⚠️ Precisa melhorar |
-| Total Blocking Time (TBT) | 110 ms | ≤ 200 ms | ✅ Bom |
+| Total Blocking Time (TBT) | 140 ms | ≤ 200 ms | ✅ Bom |
 | Cumulative Layout Shift (CLS) | 0 | ≤ 0.1 | ✅ Bom |
 | Speed Index | 1.1 s | ≤ 3.4 s | ✅ Bom |
 | Time to Interactive (TTI) | 3.5 s | ≤ 3.8 s | ✅ Bom |
@@ -58,7 +58,7 @@
 ### Diagnóstico de Performance
 
 - **Desktop:** todas as métricas estão no verde. A página estática + cache local produzem resultados excelentes.
-- **Mobile:** o LCP de 3.2 s fica levemente acima do ideal (2.5 s). Provável causa: hidratação do React / Framer Motion e carregamento da fonte Inter em hardware emulado. Ainda assim, o score de Performance (93) atende a meta ≥ 90.
+- **Mobile:** o LCP de 3.2 s fica levemente acima do ideal (2.5 s). A revisão visual mantém o equilíbrio: o card de provas do Hero ganhou destaque sólido sem `backdrop-blur` para não penalizar a pintura. O score de Performance (92) ainda atende a meta ≥ 90.
 - **CLS = 0** em ambos — layout estável, nenhum shift visual detectado.
 
 ---
@@ -148,4 +148,4 @@ Core Web Vitals mobile: FCP 1,2 s · LCP 2,9 s · TBT 60 ms · CLS 0,004.
 
 ---
 
-*Documento atualizado após correções de contraste, deploy e re-audit de produção no dia 2026-07-05.*
+*Documento atualizado após revisão visual/layout no dia 2026-07-05. Scores de produção ainda são do deploy anterior; re-audit recomendado após novo deploy.*

@@ -58,14 +58,15 @@ ui.hero(
     },
 )
 
-ui.kpi_row(
-    [
-        ("Pontos de visita", f"{len(visitas)}"),
-        ("Tempo estimado", f"{tempo_min / 60:.1f} h"),
-        ("Nearest-neighbor", f"{format.fmt_number(d_nn, decimals=1)} km"),
-        {"label": "Ganho 2-opt", "value": f"{format.fmt_number(d_nn - d_final, decimals=1)} km"},
-    ]
-)
+kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
+with kpi_col1:
+    ui.kpi_metric("Pontos de visita", f"{len(visitas)}")
+with kpi_col2:
+    ui.kpi_metric("Tempo estimado", f"{tempo_min / 60:.1f} h")
+with kpi_col3:
+    ui.kpi_metric("Nearest-neighbor", f"{format.fmt_number(d_nn, decimals=1)} km")
+with kpi_col4:
+    ui.kpi_metric("Ganho 2-opt", f"{format.fmt_number(d_nn - d_final, decimals=1)} km")
 
 route_coords = [coords[i] for i in ordem_final] + [coords[ordem_final[0]]]
 route_labels = [nomes[i] for i in ordem_final] + [nomes[ordem_final[0]]]
@@ -108,7 +109,7 @@ with tab_visao:
         show_numbers=True,
         show_arrows=True,
     )
-    fm.render(m, height=map_height)
+    fm.render(m, height=map_height, key="tsp_mapa")
     st.caption("Linhas retas entre pontos (geodésicas), não rotas rodoviárias reais.")
 
 with tab_analise:
@@ -185,22 +186,20 @@ with tab_exportar:
     ui.section("Exportar resultados")
     ui.download_csv_button(seq, "tsp_sequencia.csv")
 
-    st.divider()
-
-    ui.method_expander(
-        """
+ui.method_expander(
+    """
 - **Nearest-neighbor:** parte do CD e visita sempre o ponto mais próximo.
 - **2-opt:** reverte trechos da rota enquanto houver redução de distância (melhoria local).
 - **Produção:** **OR-Tools** resolve o TSP com qualidade garantida; a distância real
   usaria a **malha viária** (OSMnx/OSRM) em vez de linha reta.
 """
-    )
-    ui.provenance_expander(
-        fonte="Pontos turísticos/CD de SP (case 08_tsp_baseline_sp).",
-        tipo="Coordenadas reais de SP.",
-        producao="OR-Tools sobre matriz de rede (OSMnx/OSRM).",
-        limitacoes="Sem capacidade, SLA, tráfego ou rota viária real; distância Haversine.",
-    )
-    ui.demo_cta(next_demo_path="pages/10_auditoria_endereco.py")
+)
+ui.provenance_expander(
+    fonte="Pontos turísticos/CD de SP (case 08_tsp_baseline_sp).",
+    tipo="Coordenadas reais de SP.",
+    producao="OR-Tools sobre matriz de rede (OSMnx/OSRM).",
+    limitacoes="Sem capacidade, SLA, tráfego ou rota viária real; distância Haversine.",
+)
+ui.demo_cta(next_demo_path="pages/10_auditoria_endereco.py")
 
 ui.footer()

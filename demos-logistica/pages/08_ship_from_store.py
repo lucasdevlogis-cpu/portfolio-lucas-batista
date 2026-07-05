@@ -158,7 +158,7 @@ with tab_visao:
         folium.Marker(
             location=[o["lat"], o["lon"]],
             tooltip=o["origem_id"],
-            icon=fmap._icon_for(o["origem_tipo"].lower()),
+            icon=fmap.icon_for(o["origem_tipo"].lower()),
         ).add_to(m)
     fmap.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="sfs_mapa")
     st.caption(

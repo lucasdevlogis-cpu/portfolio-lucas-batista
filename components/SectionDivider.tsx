@@ -29,7 +29,7 @@ export function SectionDivider({
     <div
       className={cn(
         "relative w-full",
-        withBrandLine ? "h-4" : "h-3",
+        withBrandLine ? "h-6" : "h-3",
         className,
       )}
       aria-hidden="true"
@@ -44,7 +44,7 @@ export function SectionDivider({
       />
       {/* Linha brand sutil — thread visual */}
       {withBrandLine ? (
-        <div className="absolute top-1/2 right-0 left-0 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-primary/[0.08] to-transparent" />
+        <div className="absolute top-1/2 right-0 left-0 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-primary/[0.16] to-transparent" />
       ) : null}
     </div>
   );
