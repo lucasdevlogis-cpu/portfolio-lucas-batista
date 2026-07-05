@@ -19,7 +19,7 @@
 
 | Categoria | Score | Meta | Status |
 |-----------|-------|------|--------|
-| **Performance** | **92** | ≥ 90 | ✅ Aprovado |
+| **Performance** | **94** | ≥ 90 | ✅ Aprovado |
 | **Acessibilidade** | **100** | ≥ 95 | ✅ Aprovado |
 | Best Practices | 100 | — | ✅ |
 | SEO | 100 | — | ✅ |
@@ -49,8 +49,8 @@
 | Métrica | Valor | Threshold Bom | Status |
 |---------|-------|---------------|--------|
 | First Contentful Paint (FCP) | 1.1 s | ≤ 1.8 s | ✅ Bom |
-| Largest Contentful Paint (LCP) | 3.2 s | ≤ 2.5 s | ⚠️ Precisa melhorar |
-| Total Blocking Time (TBT) | 140 ms | ≤ 200 ms | ✅ Bom |
+| Largest Contentful Paint (LCP) | 2.9 s | ≤ 2.5 s | ⚠️ Precisa melhorar |
+| Total Blocking Time (TBT) | 80 ms | ≤ 200 ms | ✅ Bom |
 | Cumulative Layout Shift (CLS) | 0 | ≤ 0.1 | ✅ Bom |
 | Speed Index | 1.1 s | ≤ 3.4 s | ✅ Bom |
 | Time to Interactive (TTI) | 3.5 s | ≤ 3.8 s | ✅ Bom |
@@ -58,7 +58,7 @@
 ### Diagnóstico de Performance
 
 - **Desktop:** todas as métricas estão no verde. A página estática + cache local produzem resultados excelentes.
-- **Mobile:** o LCP de 3.2 s fica levemente acima do ideal (2.5 s). A revisão visual mantém o equilíbrio: o card de provas do Hero ganhou destaque sólido sem `backdrop-blur` para não penalizar a pintura. O score de Performance (92) ainda atende a meta ≥ 90.
+- **Mobile:** o LCP de 2.9 s fica levemente acima do ideal (2.5 s). A revisão visual mantém o equilíbrio: o card de provas do Hero ganhou destaque sólido sem `backdrop-blur` e as animações do footer/IA cards foram mantidas só quando não penalizam a hidratação. O score de Performance (94) atende a meta ≥ 90.
 - **CLS = 0** em ambos — layout estável, nenhum shift visual detectado.
 
 ---
@@ -112,13 +112,13 @@ Ocorreu `EPERM` ao tentar remover o diretório temporário do Chrome (`\Temp\lig
 
 ## 6. Re-audit em Produção (2026-07-05)
 
-Deploy do commit `a93c3a1` concluído com sucesso na Vercel. Audit executado na URL pública `https://portfolio-lucas-batista-murex.vercel.app`.
+Deploy do commit `13e5f94` concluído com sucesso na Vercel. Audit executado na URL pública `https://portfolio-lucas-batista-murex.vercel.app`.
 
 ### Desktop
 
 | Categoria | Score | Meta | Status |
 |-----------|------:|------|:------:|
-| Performance | 99 | ≥ 90 | ✅ |
+| Performance | 100 | ≥ 90 | ✅ |
 | Acessibilidade | 100 | ≥ 95 | ✅ |
 | Boas práticas | 100 | — | ✅ |
 | SEO | 100 | — | ✅ |
@@ -129,12 +129,12 @@ Core Web Vitals desktop: FCP 0,7 s · LCP 0,7 s · TBT 0 ms · CLS 0.
 
 | Categoria | Score | Meta | Status |
 |-----------|------:|------|:------:|
-| Performance | 95 | ≥ 90 | ✅ |
+| Performance | 94 | ≥ 90 | ✅ |
 | Acessibilidade | 100 | ≥ 95 | ✅ |
 | Boas práticas | 100 | — | ✅ |
 | SEO | 100 | — | ✅ |
 
-Core Web Vitals mobile: FCP 1,2 s · LCP 2,9 s · TBT 60 ms · CLS 0,004.
+Core Web Vitals mobile: FCP 1,2 s · LCP 2,9 s · TBT 80 ms · CLS 0.
 
 **Resultado:** todos os scores atendem às metas. A produção está performática e acessível.
 
@@ -148,4 +148,4 @@ Core Web Vitals mobile: FCP 1,2 s · LCP 2,9 s · TBT 60 ms · CLS 0,004.
 
 ---
 
-*Documento atualizado após revisão visual/layout no dia 2026-07-05. Scores de produção ainda são do deploy anterior; re-audit recomendado após novo deploy.*
+*Documento atualizado após revisão visual/layout e deploy no dia 2026-07-05.*

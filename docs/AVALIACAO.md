@@ -19,7 +19,7 @@
 | SEO assets | ✅ OK | `public/og-image.png` (1200×630) e `app/icon.png` |
 | Formulário de leads | 🟡 Parcial | Formspree integrado; sem ID usa fallback `mailto` |
 | Documentação | ✅ Enxuta | `AVALIACAO.md` + `DEPLOY.md` |
-| Lighthouse | ✅ Aprovado | Desktop 100/100/100/100; Mobile 92/100/100/100 (local) |
+| Lighthouse | ✅ Aprovado | Desktop 100/100/100/100; Mobile 94/100/100/100 (produção) |
 
 **Veredicto:** revisão visual/layout concluída. Pronto para divulgação após **Formspree**.
 
@@ -205,18 +205,18 @@ Core Web Vitals desktop: FCP 0,3 s · LCP 0,7 s · TBT 0 ms · CLS 0.
 
 | Categoria | Score | Meta | Status |
 |-----------|------:|------|:------:|
-| Performance | 92 | ≥ 90 | ✅ |
+| Performance | 94 | ≥ 90 | ✅ |
 | Acessibilidade | 100 | ≥ 95 | ✅ |
 | Boas práticas | 100 | — | ✅ |
 | SEO | 100 | — | ✅ |
 
-Core Web Vitals mobile: FCP 1,1 s · LCP 3,2 s · TBT 140 ms · CLS 0.
+Core Web Vitals mobile: FCP 1,2 s · LCP 2,9 s · TBT 80 ms · CLS 0.
 
-O LCP mobile (3,2 s) fica levemente acima do ideal (2,5 s), mas o score de Performance (92) atende à meta. A revisão visual priorizou equilíbrio entre aparência e performance: o card de provas do Hero ganhou destaque sem `backdrop-blur` para não penalizar o LCP.
+O LCP mobile (2,9 s) fica levemente acima do ideal (2,5 s), mas o score de Performance (94) atende à meta. A revisão visual priorizou equilíbrio entre aparência e performance: o card de provas do Hero ganhou destaque sem `backdrop-blur` e as animações do footer/IA cards foram mantidas só quando não penalizam a hidratação.
 
 ### Lighthouse em produção (05/07/2026, `https://portfolio-lucas-batista-murex.vercel.app`)
 
-Após o deploy do commit `a93c3a1`, os scores de produção atenderam às metas em ambos os dispositivos.
+Após o deploy do commit `13e5f94`, os scores de produção atenderam às metas em ambos os dispositivos.
 
 #### Desktop
 
@@ -233,12 +233,12 @@ Core Web Vitals desktop: FCP 0,7 s · LCP 0,7 s · TBT 0 ms · CLS 0.
 
 | Categoria | Score | Meta | Status |
 |-----------|------:|------|:------:|
-| Performance | 95 | ≥ 90 | ✅ |
+| Performance | 94 | ≥ 90 | ✅ |
 | Acessibilidade | 100 | ≥ 95 | ✅ |
 | Boas práticas | 100 | — | ✅ |
 | SEO | 100 | — | ✅ |
 
-Core Web Vitals mobile: FCP 1,2 s · LCP 2,9 s · TBT 60 ms · CLS 0,004.
+Core Web Vitals mobile: FCP 1,2 s · LCP 2,9 s · TBT 80 ms · CLS 0.
 
 Possíveis ganhos futuros: pré-carregar fonte Inter, lazy-load de seções abaixo da dobra e reduzir hidratação do Framer Motion.
 
