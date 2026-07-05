@@ -55,13 +55,7 @@ export function IASection() {
           </div>
         </motion.div>
 
-        <motion.div
-          className="grid gap-4 sm:grid-cols-3 lg:grid-cols-3"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-        >
+        <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-3">
           {iconCards.map(({ icon: Icon, label }) => (
             <div
               key={label}
@@ -73,7 +67,7 @@ export function IASection() {
               <p className="mt-3 text-sm font-medium text-primary">{label}</p>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

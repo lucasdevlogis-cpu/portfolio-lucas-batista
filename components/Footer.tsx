@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArrowUp, ArrowUpRight, Code2, Link, Mail, Star } from "lucide-react";
 
 import { CONTENT } from "@/data/content";
@@ -52,13 +51,7 @@ export function Footer() {
   };
 
   return (
-    <motion.footer
-      className="border-t bg-white"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5 }}
-    >
+    <footer className="border-t bg-white">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-3 lg:px-8">
         {/* Coluna 1 — Brand + social */}
         <div>
@@ -142,6 +135,6 @@ export function Footer() {
           {footer.voltarTopo}
         </button>
       </div>
-    </motion.footer>
+    </footer>
   );
 }
