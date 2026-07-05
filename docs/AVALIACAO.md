@@ -52,18 +52,20 @@
 
 ### Mapeamento case → demo
 
-| Case ID | Page Streamlit |
-|---------|----------------|
-| `01-precificacao-frete` | `01_precificacao_frete` |
-| `02-torre-controle` | `02_mini_torre_controle` |
-| `03-promessa-cep` | `04_promessa_cep` |
-| `04-ship-from-store` | `08_ship_from_store` |
-| `05-auditoria-endereco` | `10_auditoria_endereco` |
-| `07-classificador-ocorrencias` | `07_classificador_ocorrencias` |
-| `08-cvrp-urbano` | `03_cvrp_urbano` |
-| `09-vrptw-ultima-milha` | `05_vrptw_ultima_milha` |
-| `10-rede-interhubs` | `06_rede_interhubs` |
-| `11-tsp-baseline-sp` | `09_tsp_baseline_sp` |
+Arquivo `pages/08_ship_from_store.py` → URL `/ship_from_store` (Streamlit remove o prefixo numérico).
+
+| Case ID | Arquivo page | URL embed |
+|---------|--------------|-----------|
+| `01-precificacao-frete` | `01_precificacao_frete.py` | `/precificacao_frete` |
+| `02-torre-controle` | `02_mini_torre_controle.py` | `/mini_torre_controle` |
+| `03-promessa-cep` | `04_promessa_cep.py` | `/promessa_cep` |
+| `04-ship-from-store` | `08_ship_from_store.py` | `/ship_from_store` |
+| `05-auditoria-endereco` | `10_auditoria_endereco.py` | `/auditoria_endereco` |
+| `07-classificador-ocorrencias` | `07_classificador_ocorrencias.py` | `/classificador_ocorrencias` |
+| `08-cvrp-urbano` | `03_cvrp_urbano.py` | `/cvrp_urbano` |
+| `09-vrptw-ultima-milha` | `05_vrptw_ultima_milha.py` | `/vrptw_ultima_milha` |
+| `10-rede-interhubs` | `06_rede_interhubs.py` | `/rede_interhubs` |
+| `11-tsp-baseline-sp` | `09_tsp_baseline_sp.py` | `/tsp_baseline_sp` |
 
 ---
 

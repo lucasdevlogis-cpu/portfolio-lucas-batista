@@ -21,14 +21,17 @@ Adaptam cases de logística BR com amostras curadas, mapas Plotly e gráficos. R
 
 ## Mapeamento landing → demo
 
-A landing Next.js usa `CASE_DEMO_SLUGS` em `data/content.ts` (10 cases demonstráveis). Ex.:
+A landing Next.js usa `CASE_DEMO_SLUGS` em `data/content.ts` (10 cases demonstráveis).
 
-| Case ID (landing) | Page Streamlit |
-|-------------------|----------------|
-| `08-cvrp-urbano` | `03_cvrp_urbano` |
-| `09-vrptw-ultima-milha` | `05_vrptw_ultima_milha` |
-| `10-rede-interhubs` | `06_rede_interhubs` |
-| `11-tsp-baseline-sp` | `09_tsp_baseline_sp` |
+**Importante:** a URL Streamlit **não** inclui o prefixo numérico do arquivo. Ex.: `pages/08_ship_from_store.py` → `/ship_from_store?embed=true`.
+
+| Case ID (landing) | Arquivo page | URL embed |
+|-------------------|--------------|-----------|
+| `04-ship-from-store` | `08_ship_from_store.py` | `/ship_from_store` |
+| `08-cvrp-urbano` | `03_cvrp_urbano.py` | `/cvrp_urbano` |
+| `09-vrptw-ultima-milha` | `05_vrptw_ultima_milha.py` | `/vrptw_ultima_milha` |
+| `10-rede-interhubs` | `06_rede_interhubs.py` | `/rede_interhubs` |
+| `11-tsp-baseline-sp` | `09_tsp_baseline_sp.py` | `/tsp_baseline_sp` |
 
 ## Estrutura
 
@@ -82,7 +85,9 @@ CSVs curados em `data/raw/`. O `build_datasets.py` expande com seed fixa (reprod
 O componente `DemoModal` adiciona `?embed=true`. Ex.:
 
 ```
-https://SUA-URL.streamlit.app/06_rede_interhubs?embed=true
+https://SUA-URL.streamlit.app/rede_interhubs?embed=true
 ```
+
+(Use o slug **sem** prefixo numérico: `06_rede_interhubs.py` → `/rede_interhubs`.)
 
 O modal também oferece link "Abrir em nova aba" (URL sem `?embed=true`).

@@ -169,18 +169,21 @@ export function demoUrl(pageSlug: string): string {
   return `${DEMOS_BASE_URL}/${pageSlug}`;
 }
 
-/** Mapeamento case id → slug da page Streamlit */
+/**
+ * Mapeamento case id → slug de URL Streamlit (sem prefixo numérico).
+ * Arquivo `pages/08_ship_from_store.py` → URL `/ship_from_store`, não `/08_ship_from_store`.
+ */
 export const CASE_DEMO_SLUGS: Record<string, string> = {
-  "01-precificacao-frete": "01_precificacao_frete",
-  "02-torre-controle": "02_mini_torre_controle",
-  "03-promessa-cep": "04_promessa_cep",
-  "04-ship-from-store": "08_ship_from_store",
-  "05-auditoria-endereco": "10_auditoria_endereco",
-  "07-classificador-ocorrencias": "07_classificador_ocorrencias",
-  "08-cvrp-urbano": "03_cvrp_urbano",
-  "09-vrptw-ultima-milha": "05_vrptw_ultima_milha",
-  "10-rede-interhubs": "06_rede_interhubs",
-  "11-tsp-baseline-sp": "09_tsp_baseline_sp",
+  "01-precificacao-frete": "precificacao_frete",
+  "02-torre-controle": "mini_torre_controle",
+  "03-promessa-cep": "promessa_cep",
+  "04-ship-from-store": "ship_from_store",
+  "05-auditoria-endereco": "auditoria_endereco",
+  "07-classificador-ocorrencias": "classificador_ocorrencias",
+  "08-cvrp-urbano": "cvrp_urbano",
+  "09-vrptw-ultima-milha": "vrptw_ultima_milha",
+  "10-rede-interhubs": "rede_interhubs",
+  "11-tsp-baseline-sp": "tsp_baseline_sp",
 };
 
 export const CONTENT: Content = {

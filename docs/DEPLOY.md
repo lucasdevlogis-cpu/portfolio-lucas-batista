@@ -82,7 +82,7 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 
 6. Deploy.
 
-> **URLs de demo:** `linkDemo` em `data/content.ts` é calculado **no build**. Após alterar `NEXT_PUBLIC_DEMOS_BASE_URL` ou `CASE_DEMO_SLUGS`, faça **Redeploy** na Vercel.
+> **URLs de demo:** `linkDemo` em `data/content.ts` é calculado **no build**. Slugs seguem a URL Streamlit (sem prefixo numérico: `08_ship_from_store.py` → `/ship_from_store`). Após alterar `NEXT_PUBLIC_DEMOS_BASE_URL` ou `CASE_DEMO_SLUGS`, faça **Redeploy** na Vercel.
 
 **Produção atual:**
 
