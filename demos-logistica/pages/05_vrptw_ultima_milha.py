@@ -9,8 +9,6 @@ Produção usaria PyVRP (time windows).
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from paths import DATA_DIR
-
 from lib import brand, geo, ui, viz
 
 ui.page_setup("05. VRPTW — Última Milha", icon="⏱️")
@@ -25,7 +23,7 @@ def hhmm(minutos: float) -> str:
 
 ui.sidebar_brand()
 
-df = pd.read_csv(DATA_DIR / "vrptw_paradas.csv")
+df = ui.load_csv("vrptw_paradas.csv")
 
 with st.sidebar:
     st.header("Parâmetros")
@@ -156,9 +154,11 @@ ui.plot(
         ],
         depot=DEPOT,
         zoom=11,
+        height=ui.map_height(520),
     ),
     width="stretch",
 )
+st.caption("Linhas retas entre paradas (geodésicas), não rotas rodoviárias reais.")
 
 ui.section("Cronograma")
 tabela = sched_edf[["stop_id", "cliente", "janela", "chegada", "espera_min", "status"]]

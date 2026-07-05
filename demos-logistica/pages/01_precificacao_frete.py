@@ -10,8 +10,6 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from paths import DATA_DIR
-
 from lib import brand, frete, ui
 
 ui.page_setup("01. Precificação de Frete BR", icon="🚚")
@@ -34,7 +32,7 @@ UF_CENTROIDE = {
 
 ui.sidebar_brand()
 
-df = pd.read_csv(DATA_DIR / "frete_embarques.csv")
+df = ui.load_csv("frete_embarques.csv")
 
 with st.sidebar:
     st.header("Parâmetros globais")
@@ -135,7 +133,7 @@ with col_map:
     fig = go.Figure()
     for e in edges:
         fig.add_trace(
-            go.Scattermapbox(
+            go.Scattermap(
                 lat=[e["from"][0], e["to"][0]],
                 lon=[e["from"][1], e["to"][1]],
                 mode="lines",
@@ -149,7 +147,7 @@ with col_map:
         [{"uf": uf, "lat": c[0], "lon": c[1]} for uf, c in UF_CENTROIDE.items()]
     )
     fig.add_trace(
-        go.Scattermapbox(
+        go.Scattermap(
             lat=pts["lat"],
             lon=pts["lon"],
             mode="markers+text",
@@ -160,13 +158,14 @@ with col_map:
         )
     )
     fig.update_layout(
-        mapbox_style="open-street-map",
-        mapbox_zoom=3.2,
-        mapbox_center={"lat": -18, "lon": -47},
-        height=460,
+        map_style="open-street-map",
+        map_zoom=3.2,
+        map_center={"lat": -18, "lon": -47},
+        height=ui.map_height(460),
         margin=dict(l=0, r=0, t=0, b=0),
         showlegend=False,
     )
+    st.caption("Espessura da linha ∝ frete total no corredor UF→UF.")
     ui.plot(fig, width="stretch")
 
 with col_wf:

@@ -7,15 +7,13 @@ e risco por CEP, com score demonstrativo e mapa.
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from paths import DATA_DIR
-
 from lib import brand, ui, viz
 
 ui.page_setup("04. Promessa por CEP", icon="📍")
 
 ui.sidebar_brand()
 
-df = pd.read_csv(DATA_DIR / "promessa_cep.csv", dtype={"cep5": str})
+df = ui.load_csv("promessa_cep.csv", dtype={"cep5": str})
 
 with st.sidebar:
     st.header("Filtros")
@@ -82,7 +80,7 @@ ui.plot(
         hover_name="cep5",
         hover_data=["regiao", "prazo_medio_dias", "taxa_insucesso_pct"],
         zoom=3.2,
-        height=460,
+        height=ui.map_height(460),
         center=(-15, -50),
     ),
     width="stretch",

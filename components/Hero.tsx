@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { CONTENT } from "@/data/content";
 import { scrollToSection } from "@/lib/scroll";
 
+// Mantém opacidade 1 no estado inicial para o texto (LCP) pintar sem depender
+// da hidratação; o movimento de entrada fica só no deslocamento vertical.
 const container = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 1 },
   show: {
     opacity: 1,
     transition: { staggerChildren: 0.1 },
@@ -15,7 +17,7 @@ const container = {
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 1, y: 16 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
@@ -23,7 +25,7 @@ function ProofCard() {
   const { hero } = CONTENT;
 
   return (
-    <div className="rounded-2xl border bg-white/80 p-6 shadow-sm backdrop-blur-sm">
+    <div className="rounded-2xl border bg-card/80 p-6 shadow-sm backdrop-blur-sm">
       <p className="text-xs font-semibold uppercase tracking-wide text-accent">
         {hero.provasTitulo}
       </p>
@@ -53,12 +55,12 @@ export function Hero() {
   const { pessoal, hero } = CONTENT;
 
   return (
-    <section className="relative min-h-[90vh] overflow-hidden bg-gradient-to-b from-slate-50 to-background">
+    <section className="relative min-h-[90vh] overflow-hidden bg-gradient-to-b from-secondary/50 to-background">
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
+        className="pointer-events-none absolute inset-0 opacity-[0.5]"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 1px 1px, rgb(148 163 184 / 0.35) 1px, transparent 0)",
+            "radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--color-primary) 14%, transparent) 1px, transparent 0)",
           backgroundSize: "24px 24px",
         }}
         aria-hidden

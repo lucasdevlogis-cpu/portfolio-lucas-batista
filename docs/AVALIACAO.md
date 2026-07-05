@@ -86,7 +86,10 @@ Arquivo `pages/08_ship_from_store.py` → URL `/ship_from_store` (Streamlit remo
 - **Lint:** `npm run lint` passa.
 - **Deploy Vercel:** Next.js nativo (`.next/`), Output Directory vazio.
 - **Demos:** URLs Streamlit embutidas no bundle quando `NEXT_PUBLIC_DEMOS_BASE_URL` está definida **no build**.
-- **Smoke test demos:** `python scripts/smoke_test.py` → 12/12 pages OK.
+- **Validação de cases:** `npm run validate` (roda no `prebuild`) garante slug ↔ page ↔ 10 cases; falha o build em qualquer desync.
+- **Smoke test demos:** `python scripts/smoke_test.py` → 13/13 checagens OK (inclui cenário de filtro vazio na page 02).
+- **Carregamento resiliente de dados:** `ui.load_csv()` mostra instrução amigável se um CSV não existe (clone sem `build_datasets`).
+- **DemoModal:** estado de carregamento/erro, CTA "abrir em tela cheia" no mobile e `DialogDescription` para acessibilidade.
 - **Navegação:** scroll suave, menu mobile (Sheet), Intersection Observer para nav ativa.
 - **Cases:** 10 cards demonstráveis com filtro; modal com contexto de negócio + iframe + link nova aba.
 - **SEO:** meta tags, OG, JSON-LD, favicon, `robots.txt`, `sitemap.xml`.
@@ -98,11 +101,19 @@ Arquivo `pages/08_ship_from_store.py` → URL `/ship_from_store` (Streamlit remo
 
 | # | Ação | Onde |
 |---|------|------|
-| 1 | **Redeploy Vercel** após novos cases (URLs de demo fixadas no build) | Dashboard Vercel |
-| 2 | Configurar `NEXT_PUBLIC_FORMSPREE_FORM_ID` + redeploy | Dashboard Vercel |
-| 3 | Rodar Lighthouse mobile (meta ≥ 90) e registrar aqui | — |
-| 4 | Confirmar preview do `og-image.png` no LinkedIn/WhatsApp | — |
-| 5 | Push das demos para `lucasdevlogis-cpu/demos-logistica` (repo separado) | GitHub |
+| 1 | Configurar `NEXT_PUBLIC_FORMSPREE_FORM_ID` + redeploy | Dashboard Vercel |
+| 2 | Confirmar preview do `og-image.png` no LinkedIn/WhatsApp | — |
+
+### Lighthouse mobile (05/07/2026, local `next start`)
+
+| Categoria | Simulate (Lantern) | DevTools (throttling aplicado) |
+|-----------|:---:|:---:|
+| Performance | 73 | **87** (LCP 2,3 s · FCP 2,3 s) |
+| Acessibilidade | 94 | — |
+| Boas práticas | 100 | — |
+| SEO | 100 | — |
+
+O LCP simulado do Lantern (7,7 s) é pessimista para esta página estática; o insight baseado em trace mostra ~1,4 s de render e o método DevTools confirma LCP real de 2,3 s. Ganho de performance ainda possível reduzindo o TBT do Framer Motion (hydration das seções animadas).
 
 ## Backlog (desejável)
 
@@ -131,15 +142,17 @@ Arquivo `pages/08_ship_from_store.py` → URL `/ship_from_store` (Streamlit remo
 
 ```bash
 # Site
-npm run build
+npm run validate       # integridade dos cases (slug ↔ page ↔ 10 cases); roda no prebuild
+npm run build          # dispara prebuild (validate) antes do next build
 npm run lint
 npm run dev            # localhost:3000
 
 # Demos
 cd demos-logistica
 python scripts/build_datasets.py
-python scripts/smoke_test.py   # 12/12 pages OK
-streamlit run app.py           # localhost:8501
+python scripts/validate_slugs.py   # slugs esperados pela landing existem como pages
+python scripts/smoke_test.py       # 13/13 checagens OK (inclui filtro vazio na page 02)
+streamlit run app.py               # localhost:8501
 ```
 
 **Env local** (copiar de `.env.example`):

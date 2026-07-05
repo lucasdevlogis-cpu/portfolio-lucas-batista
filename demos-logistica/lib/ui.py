@@ -9,19 +9,69 @@ import streamlit as st
 
 from lib import brand
 from lib.viz import apply_theme
+from paths import DATA_DIR
+
+
+def is_embed() -> bool:
+    """True quando a page é carregada em iframe (`?embed=true`), como na landing."""
+    try:
+        return st.query_params.get("embed") == "true"
+    except Exception:  # noqa: BLE001 — fora de contexto (ex.: AppTest)
+        return False
+
+
+def map_height(default: int) -> int:
+    """Altura de mapa/gráfico reduzida no embed (iframe apertado no modal)."""
+    return min(default, 360) if is_embed() else default
 
 
 def page_setup(title: str, icon: str = "🚚") -> None:
     """Configura a página e aplica o tema visual da marca."""
-    st.set_page_config(page_title=title, page_icon=icon, layout="wide")
+    embed = is_embed()
+    st.set_page_config(
+        page_title=title,
+        page_icon=icon,
+        layout="wide",
+        initial_sidebar_state="collapsed" if embed else "auto",
+    )
     apply_theme()
-    _inject_css()
+    _inject_css(embed)
 
 
-def _inject_css() -> None:
+def load_csv(filename: str, **read_kwargs) -> pd.DataFrame:
+    """Lê um CSV de `data/` com mensagem amigável se o dataset não existir.
+
+    Um clone novo do repo não tem os CSVs até rodar `build_datasets.py`; sem este
+    guard, cada page quebraria com um traceback cru.
+    """
+    path = DATA_DIR / filename
+    try:
+        return pd.read_csv(path, **read_kwargs)
+    except FileNotFoundError:
+        st.error(
+            f"Dataset `{filename}` não encontrado. Gere os dados com:\n\n"
+            "```bash\npython scripts/build_datasets.py\n```"
+        )
+        st.stop()
+
+
+def _inject_css(embed: bool = False) -> None:
+    # No embed, escondemos o header do Streamlit e reduzimos o padding do topo
+    # para o iframe do modal aproveitar melhor a área visível.
+    embed_css = (
+        """
+          header[data-testid="stHeader"] { display:none; }
+          div[data-testid="stAppViewContainer"] > .main .block-container {
+            padding-top: 1rem;
+          }
+        """
+        if embed
+        else ""
+    )
     st.markdown(
         f"""
         <style>
+          {embed_css}
           .stApp h1, .stApp h2, .stApp h3 {{ color: {brand.PRIMARY}; }}
           div[data-testid="stMetricValue"] {{ color: {brand.PRIMARY}; font-weight:700; }}
           /* KPIs como cartões */

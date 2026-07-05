@@ -1,4 +1,8 @@
-"""Tema Plotly e helpers de mapa (tokenless, open-street-map)."""
+"""Tema Plotly e helpers de mapa (tokenless, open-street-map).
+
+Usa a API de mapas atual do Plotly (`scatter_map` / `Scattermap`, MapLibre),
+que substitui a família `*_mapbox` depreciada.
+"""
 
 from __future__ import annotations
 
@@ -12,6 +16,7 @@ import plotly.io as pio
 from lib import brand
 
 _THEME_NAME = "demos"
+_MAP_STYLE = "open-street-map"
 
 
 def apply_theme() -> None:
@@ -41,7 +46,7 @@ def map_points(
     center: tuple[float, float] | None = None,
 ) -> go.Figure:
     """Mapa de pontos sobre OpenStreetMap (sem token)."""
-    fig = px.scatter_mapbox(
+    fig = px.scatter_map(
         df,
         lat=lat,
         lon=lon,
@@ -54,12 +59,12 @@ def map_points(
         color_discrete_sequence=brand.SEQ,
     )
     fig.update_layout(
-        mapbox_style="open-street-map",
+        map_style=_MAP_STYLE,
         margin=dict(l=0, r=0, t=0, b=0),
         legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="left", x=0),
     )
     if center:
-        fig.update_layout(mapbox_center={"lat": center[0], "lon": center[1]})
+        fig.update_layout(map_center={"lat": center[0], "lon": center[1]})
     return fig
 
 
@@ -85,7 +90,7 @@ def map_routes(
         all_lon += lons
         color = r.get("color", brand.SEQ[i % len(brand.SEQ)])
         fig.add_trace(
-            go.Scattermapbox(
+            go.Scattermap(
                 lat=lats,
                 lon=lons,
                 mode="lines+markers",
@@ -98,7 +103,7 @@ def map_routes(
         )
     if depot:
         fig.add_trace(
-            go.Scattermapbox(
+            go.Scattermap(
                 lat=[depot[0]],
                 lon=[depot[1]],
                 mode="markers",
@@ -114,9 +119,9 @@ def map_routes(
         else None
     )
     fig.update_layout(
-        mapbox_style="open-street-map",
-        mapbox_zoom=zoom,
-        mapbox_center=center,
+        map_style=_MAP_STYLE,
+        map_zoom=zoom,
+        map_center=center,
         height=height,
         margin=dict(l=0, r=0, t=0, b=0),
         legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="left", x=0),
@@ -136,24 +141,32 @@ def network_map(
     """Mapa de rede (nós + arestas) para corredores inter-hubs.
 
     edges: {"from": (lat, lon), "to": (lat, lon), "label": str, "width": float?}.
+    As arestas são agrupadas num único trace (legenda "Corredores") para não
+    poluir a legenda com uma entrada por lane.
     """
     fig = go.Figure()
+    edge_lat: list[float | None] = []
+    edge_lon: list[float | None] = []
+    edge_text: list[str] = []
     for e in edges:
         a, b = e["from"], e["to"]
+        edge_lat += [a[0], b[0], None]
+        edge_lon += [a[1], b[1], None]
+        edge_text += [e.get("label", ""), e.get("label", ""), ""]
+    if edge_lat:
         fig.add_trace(
-            go.Scattermapbox(
-                lat=[a[0], b[0]],
-                lon=[a[1], b[1]],
+            go.Scattermap(
+                lat=edge_lat,
+                lon=edge_lon,
                 mode="lines",
-                line=dict(width=e.get("width", 2), color=brand.ACCENT),
-                name=e.get("label", ""),
+                line=dict(width=2, color=brand.ACCENT),
+                name="Corredores",
                 hoverinfo="text",
-                text=e.get("label", ""),
-                showlegend=False,
+                text=edge_text,
             )
         )
     fig.add_trace(
-        go.Scattermapbox(
+        go.Scattermap(
             lat=nodes[lat],
             lon=nodes[lon],
             mode="markers+text",
@@ -164,9 +177,9 @@ def network_map(
         )
     )
     fig.update_layout(
-        mapbox_style="open-street-map",
-        mapbox_zoom=zoom,
-        mapbox_center={"lat": nodes[lat].mean(), "lon": nodes[lon].mean()},
+        map_style=_MAP_STYLE,
+        map_zoom=zoom,
+        map_center={"lat": nodes[lat].mean(), "lon": nodes[lon].mean()},
         height=height,
         margin=dict(l=0, r=0, t=0, b=0),
         legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="left", x=0),

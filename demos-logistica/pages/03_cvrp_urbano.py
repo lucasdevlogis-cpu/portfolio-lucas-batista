@@ -8,8 +8,6 @@ ordem de cadastro. Produção usaria PyVRP / OR-Tools.
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from paths import DATA_DIR
-
 from lib import brand, geo, ui, viz
 
 ui.page_setup("03. Roteirização Urbana SP (CVRP)", icon="🗺️")
@@ -19,7 +17,7 @@ VELOCIDADE_KMH = 22  # média urbana
 
 ui.sidebar_brand()
 
-df = pd.read_csv(DATA_DIR / "cvrp_entregas.csv")
+df = ui.load_csv("cvrp_entregas.csv")
 
 with st.sidebar:
     st.header("Parâmetros da operação")
@@ -95,7 +93,11 @@ for i, r in enumerate(rotas):
             "hovertext": labels,
         }
     )
-ui.plot(viz.map_routes(rotas_viz, depot=DEPOT, zoom=10.5), width="stretch")
+ui.plot(
+    viz.map_routes(rotas_viz, depot=DEPOT, zoom=10.5, height=ui.map_height(520)),
+    width="stretch",
+)
+st.caption("Linhas retas entre paradas (geodésicas), não rotas rodoviárias reais.")
 
 col1, col2 = st.columns([1, 1])
 with col1:

@@ -1,17 +1,27 @@
-/** Ícones Lucide usados no site — referenciados como string para render dinâmico. */
-export type LucideIconName =
-  | "Truck"
-  | "BarChart3"
-  | "Clock"
-  | "FileSpreadsheet"
-  | "Database"
-  | "Route"
-  | "MapPin"
-  | "AlertTriangle"
-  | "Package"
-  | "Warehouse"
-  | "Network"
-  | "Waypoints";
+/**
+ * Ícones Lucide usados no site — fonte única. Referenciados como string para
+ * render dinâmico via `LucideIconByName`. Ao adicionar um ícone aqui, registre-o
+ * também em `components/LucideIconByName.tsx`.
+ */
+export const LUCIDE_ICON_NAMES = [
+  "Truck",
+  "BarChart3",
+  "Clock",
+  "FileSpreadsheet",
+  "Database",
+  "Route",
+  "MapPin",
+  "AlertTriangle",
+  "Package",
+  "Warehouse",
+  "Network",
+  "Waypoints",
+  "DollarSign",
+  "Radar",
+  "ScanSearch",
+] as const;
+
+export type LucideIconName = (typeof LUCIDE_ICON_NAMES)[number];
 
 export type CasePrioridade = "P0" | "P1" | "P2";
 
@@ -137,6 +147,8 @@ export interface SecoesCopy {
   metodo: SecaoCopy;
   contatoBeneficio: string;
   demoIndisponivel: string;
+  demoCarregando: string;
+  demoErro: string;
 }
 
 export interface Content {
@@ -211,8 +223,8 @@ export const CONTENT: Content = {
       },
       { valor: "5 níveis", label: "do diagnóstico rápido ao piloto com IA" },
       {
-        valor: "Cases reais",
-        label: "análises demonstráveis com dados sintéticos",
+        valor: "10 demos",
+        label: "análises interativas com dados sintéticos",
       },
     ],
   },
@@ -266,6 +278,10 @@ export const CONTENT: Content = {
       "Uma leitura inicial ajuda a identificar se faz sentido avançar — sem compromisso de projeto grande.",
     demoIndisponivel:
       "Demo interativa em breve. Enquanto isso, solicite uma leitura inicial pelo formulário abaixo.",
+    demoCarregando:
+      "Carregando a demo… As demos hospedadas no plano gratuito podem levar até 30 segundos para acordar na primeira visita.",
+    demoErro:
+      "Não foi possível carregar a demo aqui. Abra em uma nova aba pelo botão acima.",
   },
 
   nav: [
@@ -381,9 +397,9 @@ export const CONTENT: Content = {
       descricao:
         "Decomposição de componentes de custo em embarques logísticos. Identifica onde o frete pesa, quais regiões e transportadoras concentram maior custo, e onde há oportunidade de investigação.",
       categoria: "Frete e Custo",
-      icone: "Truck",
+      icone: "DollarSign",
       tags: ["frete", "custo", "precificação", "componentes", "região"],
-      linkDemo: demoUrl(CASE_DEMO_SLUGS["01-precificacao-frete"] ?? ""),
+      linkDemo: "",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P0",
       perguntaNegocio: "Qual região concentra maior custo por entrega?",
@@ -399,9 +415,9 @@ export const CONTENT: Content = {
       descricao:
         "Visão acionável de entregas em andamento: status por transportadora, região e canal, alertas de atraso e ocorrências, priorização de follow-up.",
       categoria: "Roteirização e SLA",
-      icone: "BarChart3",
+      icone: "Radar",
       tags: ["SLA", "OTD", "atraso", "ocorrência", "torre de controle"],
-      linkDemo: demoUrl(CASE_DEMO_SLUGS["02-torre-controle"] ?? ""),
+      linkDemo: "",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P0",
       perguntaNegocio: "Quais entregas exigem ação imediata?",
@@ -419,7 +435,7 @@ export const CONTENT: Content = {
       categoria: "Last Mile e E-commerce",
       icone: "MapPin",
       tags: ["CEP", "last mile", "promessa", "prazo", "risco territorial"],
-      linkDemo: demoUrl(CASE_DEMO_SLUGS["03-promessa-cep"] ?? ""),
+      linkDemo: "",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P0",
       perguntaNegocio:
@@ -438,7 +454,7 @@ export const CONTENT: Content = {
       categoria: "Last Mile e E-commerce",
       icone: "Package",
       tags: ["ship from store", "omnichannel", "origem", "estoque", "prazo"],
-      linkDemo: demoUrl(CASE_DEMO_SLUGS["04-ship-from-store"] ?? ""),
+      linkDemo: "",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P1",
       perguntaNegocio: "Qual origem atende melhor: CD, loja, hub ou parceiro?",
@@ -455,9 +471,9 @@ export const CONTENT: Content = {
       descricao:
         "Validação de qualidade de endereços para entrega: geocoding, correção de CEP, identificação de endereços de risco, sugestão de revisão.",
       categoria: "Last Mile e E-commerce",
-      icone: "MapPin",
+      icone: "ScanSearch",
       tags: ["endereço", "geocoding", "CEP", "qualidade", "risco"],
-      linkDemo: demoUrl(CASE_DEMO_SLUGS["05-auditoria-endereco"] ?? ""),
+      linkDemo: "",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P1",
       perguntaNegocio:
@@ -496,7 +512,7 @@ export const CONTENT: Content = {
       categoria: "Método e Governança",
       icone: "AlertTriangle",
       tags: ["IA", "NLP", "ocorrências", "classificação", "triagem"],
-      linkDemo: demoUrl(CASE_DEMO_SLUGS["07-classificador-ocorrencias"] ?? ""),
+      linkDemo: "",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P2",
       perguntaNegocio:
@@ -516,7 +532,7 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Route",
       tags: ["CVRP", "roteirização", "capacidade", "frota", "otimização"],
-      linkDemo: demoUrl(CASE_DEMO_SLUGS["08-cvrp-urbano"] ?? ""),
+      linkDemo: "",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P0",
       perguntaNegocio:
@@ -536,7 +552,7 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Clock",
       tags: ["VRPTW", "janela de tempo", "SLA", "última milha", "sequência"],
-      linkDemo: demoUrl(CASE_DEMO_SLUGS["09-vrptw-ultima-milha"] ?? ""),
+      linkDemo: "",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P1",
       perguntaNegocio:
@@ -562,7 +578,7 @@ export const CONTENT: Content = {
         "consolidação",
         "hubs",
       ],
-      linkDemo: demoUrl(CASE_DEMO_SLUGS["10-rede-interhubs"] ?? ""),
+      linkDemo: "",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P1",
       perguntaNegocio:
@@ -582,7 +598,7 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Waypoints",
       tags: ["TSP", "sequência", "2-opt", "visitas", "otimização"],
-      linkDemo: demoUrl(CASE_DEMO_SLUGS["11-tsp-baseline-sp"] ?? ""),
+      linkDemo: "",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P1",
       perguntaNegocio:
@@ -699,6 +715,13 @@ export const CONTENT: Content = {
 /** Um case é "demonstrável" quando tem uma demo Streamlit publicada. */
 export function caseTemDemo(id: string): boolean {
   return id in CASE_DEMO_SLUGS;
+}
+
+// Fonte única: `linkDemo` é derivado de CASE_DEMO_SLUGS, nunca declarado à mão.
+// Adicionar/remover uma entrada em CASE_DEMO_SLUGS já ativa ou desativa a demo.
+for (const c of CONTENT.cases) {
+  const slug = CASE_DEMO_SLUGS[c.id];
+  c.linkDemo = slug ? demoUrl(slug) : "";
 }
 
 /** Cases com demo interativa — destaque da seção Cases. */

@@ -7,8 +7,6 @@ geográfica, alertas e ação recomendada antes de prometer ou rotear.
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from paths import DATA_DIR
-
 from lib import brand, ui, viz
 
 ui.page_setup("10. Auditoria de Endereço", icon="✅")
@@ -19,8 +17,8 @@ LON_MIN, LON_MAX = -74.0, -34.0
 
 ui.sidebar_brand()
 
-df = pd.read_csv(
-    DATA_DIR / "enderecos.csv",
+df = ui.load_csv(
+    "enderecos.csv",
     dtype={"cep8": str, "numero": str, "logradouro": str, "complemento": str},
 ).fillna("")
 
@@ -112,7 +110,7 @@ with col_map:
                 hover_name="pedido_id",
                 hover_data=["municipio", "uf", "score"],
                 zoom=3.4,
-                height=430,
+                height=ui.map_height(430),
                 center=(-15, -50),
             ),
             width="stretch",

@@ -8,8 +8,6 @@ viária real (OSMnx/OSRM).
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from paths import DATA_DIR
-
 from lib import brand, geo, ui, viz
 
 ui.page_setup("09. TSP Baseline SP", icon="🧭")
@@ -18,7 +16,7 @@ VELOCIDADE_KMH = 25
 
 ui.sidebar_brand()
 
-df = pd.read_csv(DATA_DIR / "tsp_visits.csv")
+df = ui.load_csv("tsp_visits.csv")
 
 with st.sidebar:
     st.header("Parâmetros")
@@ -81,9 +79,11 @@ ui.plot(
         ],
         depot=(depot_row["lat"], depot_row["lon"]),
         zoom=11.5,
+        height=ui.map_height(520),
     ),
     width="stretch",
 )
+st.caption("Linhas retas entre pontos (geodésicas), não rotas rodoviárias reais.")
 
 col1, col2 = st.columns([1, 1])
 with col1:

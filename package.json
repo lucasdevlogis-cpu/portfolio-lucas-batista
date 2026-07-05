@@ -7,6 +7,8 @@
   },
   "scripts": {
     "dev": "next dev",
+    "validate": "tsx scripts/validate-cases.ts",
+    "prebuild": "tsx scripts/validate-cases.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -32,6 +34,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
+    "tsx": "^4.23.0",
     "typescript": "^5"
   }
 }

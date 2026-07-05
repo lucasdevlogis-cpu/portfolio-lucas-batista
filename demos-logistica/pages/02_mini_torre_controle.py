@@ -4,8 +4,6 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from paths import DATA_DIR
-
 from lib import brand, ui, viz
 
 ui.page_setup("02. Mini Torre de Controle", icon="📡")
@@ -14,7 +12,7 @@ CRITICOS = ["Atrasado", "Ocorrencia aberta"]
 
 ui.sidebar_brand()
 
-df = pd.read_csv(DATA_DIR / "torre_entregas.csv")
+df = ui.load_csv("torre_entregas.csv")
 
 with st.sidebar:
     st.header("Filtros")
@@ -31,6 +29,11 @@ with st.sidebar:
 f = df[df["transportadora"].isin(transportadora) & df["regiao"].isin(regiao)].copy()
 if so_criticos:
     f = f[f["status"].isin(CRITICOS + ["Em risco"])]
+
+if f.empty:
+    st.info("Nenhuma entrega com os filtros atuais. Ajuste transportadora ou região.")
+    ui.footer()
+    st.stop()
 
 criticos = int(f["status"].isin(CRITICOS).sum())
 atraso_medio = f.loc[f["horas_atraso"] > 0, "horas_atraso"].mean()
@@ -69,7 +72,7 @@ ui.plot(
         hover_name="pedido",
         hover_data=["transportadora", "regiao", "horas_atraso"],
         zoom=3.2,
-        height=460,
+        height=ui.map_height(460),
         center=(-15, -50),
     ),
     width="stretch",

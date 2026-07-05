@@ -1,4 +1,8 @@
-"""Smoke test: executa app.py e cada page via AppTest e reporta exceções."""
+"""Smoke test: executa app.py e cada page via AppTest e reporta exceções.
+
+Além do happy-path, cobre um cenário de borda conhecido: filtro vazio na
+Mini Torre de Controle (page 02), que já derrubou a demo em produção.
+"""
 
 import sys
 from pathlib import Path
@@ -24,5 +28,27 @@ for script in scripts:
         falhas += 1
         print(f"[ERRO]  {script.name}: {exc}")
 
-print(f"\n{len(scripts) - falhas}/{len(scripts)} pages OK")
+
+def test_torre_filtro_vazio() -> bool:
+    """Page 02 não pode quebrar quando todos os filtros ficam vazios."""
+    page = ROOT / "pages" / "02_mini_torre_controle.py"
+    try:
+        at = AppTest.from_file(str(page), default_timeout=60)
+        at.run()
+        at.multiselect[0].set_value([]).run()
+        if at.exception:
+            print(f"[FALHA] 02 filtro vazio: {at.exception}")
+            return False
+        print("[OK]    02 filtro vazio (multiselect vazio não quebra)")
+        return True
+    except Exception as exc:  # noqa: BLE001
+        print(f"[ERRO]  02 filtro vazio: {exc}")
+        return False
+
+
+if not test_torre_filtro_vazio():
+    falhas += 1
+
+total = len(scripts) + 1
+print(f"\n{total - falhas}/{total} checagens OK")
 sys.exit(1 if falhas else 0)

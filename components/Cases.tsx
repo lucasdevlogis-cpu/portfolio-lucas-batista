@@ -7,7 +7,6 @@ import { CaseCard } from "@/components/CaseCard";
 import { DemoModal } from "@/components/DemoModal";
 import { LucideIconByName } from "@/components/LucideIconByName";
 import { SectionHeader } from "@/components/SectionHeader";
-import { Badge } from "@/components/ui/badge";
 import {
   CASE_CATEGORIAS,
   CASES_DEMONSTRAVEIS,
@@ -37,34 +36,35 @@ export function Cases() {
           subtitle={secoes.cases.subtitle}
         />
 
-        <div className="mb-8 flex flex-wrap justify-center gap-2">
-          {CASE_CATEGORIAS.map((categoria) => (
-            <Badge
-              key={categoria}
-              role="button"
-              tabIndex={0}
-              onClick={() => setFiltroAtivo(categoria)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  setFiltroAtivo(categoria);
-                }
-              }}
-              className={cn(
-                "cursor-pointer px-4 py-2 text-sm transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
-                filtroAtivo === categoria
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-              )}
-            >
-              {categoria}
-            </Badge>
-          ))}
+        <div
+          role="group"
+          aria-label="Filtrar cases por categoria"
+          className="mb-8 flex flex-wrap justify-center gap-2"
+        >
+          {CASE_CATEGORIAS.map((categoria) => {
+            const ativo = filtroAtivo === categoria;
+            return (
+              <button
+                key={categoria}
+                type="button"
+                aria-pressed={ativo}
+                onClick={() => setFiltroAtivo(categoria)}
+                className={cn(
+                  "rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
+                  ativo
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+                )}
+              >
+                {categoria}
+              </button>
+            );
+          })}
         </div>
 
         <motion.div
           layout
-          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
         >
           <AnimatePresence mode="popLayout">
             {casesFiltrados.map((caseItem) => (
@@ -85,7 +85,13 @@ export function Cases() {
           </AnimatePresence>
         </motion.div>
 
-        {filtroAtivo === "Todos" && CASES_ROADMAP.length > 0 ? (
+        {casesFiltrados.length === 0 ? (
+          <p className="py-12 text-center text-sm text-muted-foreground">
+            Nenhum case nesta categoria por enquanto.
+          </p>
+        ) : null}
+
+        {CASES_ROADMAP.length > 0 ? (
           <div className="mt-16">
             <div className="mb-6 text-center">
               <h3 className="font-heading text-xl font-semibold text-primary">

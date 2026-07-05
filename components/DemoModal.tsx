@@ -1,14 +1,16 @@
 "use client";
 
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { buttonVariants } from "@/components/ui/button";
 import { CONTENT, type Case } from "@/data/content";
 import { cn } from "@/lib/utils";
 
@@ -18,8 +20,14 @@ interface DemoModalProps {
   caseItem: Case | null;
 }
 
+type IframeStatus = "loading" | "ready" | "error";
+
 export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
   const [isMobile, setIsMobile] = useState(false);
+  // Status derivado da URL carregada/em erro: troca de demo volta a "loading"
+  // automaticamente, sem effect de reset.
+  const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
+  const [errorUrl, setErrorUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
@@ -34,6 +42,25 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
     ? `${demoUrl}${demoUrl.includes("?") ? "&" : "?"}embed=true`
     : "";
 
+  const status: IframeStatus =
+    errorUrl === embedUrl && embedUrl
+      ? "error"
+      : loadedUrl === embedUrl && embedUrl
+        ? "ready"
+        : "loading";
+
+  const abrirNovaAba = demoUrl ? (
+    <a
+      href={demoUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-accent hover:underline"
+    >
+      <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+      Abrir em nova aba
+    </a>
+  ) : null;
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
@@ -43,18 +70,11 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
         <DialogHeader className="border-b px-4 py-3">
           <div className="flex items-center justify-between gap-3 pr-6">
             <DialogTitle>{caseItem?.titulo ?? ""}</DialogTitle>
-            {demoUrl ? (
-              <a
-                href={demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-accent hover:underline"
-              >
-                <ExternalLink className="h-3.5 w-3.5" aria-hidden />
-                Abrir em nova aba
-              </a>
-            ) : null}
+            {abrirNovaAba}
           </div>
+          <DialogDescription className="sr-only">
+            {caseItem?.perguntaNegocio ?? "Demonstração interativa da análise."}
+          </DialogDescription>
         </DialogHeader>
 
         {caseItem ? (
@@ -94,17 +114,61 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
           </div>
         ) : null}
 
-        <div className="bg-muted/30">
+        {/* No mobile, o iframe é apertado: destacamos abrir em nova aba. */}
+        {isMobile && demoUrl ? (
+          <div className="border-b bg-accent/5 px-4 py-3">
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(buttonVariants({ variant: "default" }), "w-full")}
+            >
+              <ExternalLink className="size-4" aria-hidden />
+              Abrir demo em tela cheia
+            </a>
+          </div>
+        ) : null}
+
+        <div className="relative bg-muted/30">
           {embedUrl ? (
-            <iframe
-              src={embedUrl}
-              title={caseItem?.titulo ?? "Demo"}
-              className={cn(
-                "w-full border-0",
-                isMobile ? "h-[500px]" : "h-[700px]",
-              )}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            />
+            <>
+              {status !== "ready" ? (
+                <div
+                  className={cn(
+                    "absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background/80 px-6 text-center",
+                    status === "error" && "bg-background",
+                  )}
+                >
+                  {status === "loading" ? (
+                    <>
+                      <Loader2
+                        className="size-6 animate-spin text-accent"
+                        aria-hidden
+                      />
+                      <p className="max-w-md text-sm text-muted-foreground">
+                        {CONTENT.secoes.demoCarregando}
+                      </p>
+                    </>
+                  ) : (
+                    <p className="max-w-md text-sm text-muted-foreground">
+                      {CONTENT.secoes.demoErro}
+                    </p>
+                  )}
+                </div>
+              ) : null}
+              <iframe
+                src={embedUrl}
+                title={caseItem?.titulo ?? "Demo"}
+                loading="lazy"
+                onLoad={() => setLoadedUrl(embedUrl)}
+                onError={() => setErrorUrl(embedUrl)}
+                className={cn(
+                  "w-full border-0",
+                  isMobile ? "h-[500px]" : "h-[700px]",
+                )}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              />
+            </>
           ) : (
             <div
               className={cn(

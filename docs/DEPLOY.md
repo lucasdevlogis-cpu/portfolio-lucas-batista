@@ -70,7 +70,7 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 
 1. Acesse [vercel.com/new](https://vercel.com/new) → importe `portfolio-lucas-batista`.
 2. **Framework Preset:** Next.js (detecção automática).
-3. **Build command:** deixe em branco (usa `npm run build` do `package.json`).
+3. **Build command:** deixe em branco (usa `npm run build`, que roda `prebuild` → `npm run validate` antes; um desync de cases/slug falha o deploy).
 4. **Output Directory:** deixe em branco — **não** preencha `dist`, `out` nem `.next`.
 5. **Environment variables:**
 

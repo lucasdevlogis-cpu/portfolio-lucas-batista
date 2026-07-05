@@ -3,8 +3,6 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from paths import DATA_DIR
-
 from lib import brand, ui
 
 ui.page_setup("07. Classificador de Ocorrências", icon="🏷️")
@@ -99,19 +97,12 @@ def classificar(texto: str) -> dict:
 
 ui.sidebar_brand()
 
-amostra = pd.read_csv(DATA_DIR / "ocorrencias.csv")
+amostra = ui.load_csv("ocorrencias.csv")
+_previsto = amostra["texto"].apply(classificar).apply(pd.Series)
 classificado = amostra.assign(
-    **{
-        "categoria_prevista": amostra["texto"].apply(
-            lambda t: classificar(t)["categoria"]
-        ),
-        "prioridade_prevista": amostra["texto"].apply(
-            lambda t: classificar(t)["prioridade"]
-        ),
-        "confianca": amostra["texto"].apply(
-            lambda t: round(classificar(t)["confianca"], 2)
-        ),
-    }
+    categoria_prevista=_previsto["categoria"],
+    prioridade_prevista=_previsto["prioridade"],
+    confianca=_previsto["confianca"].round(2),
 )
 acuracia = (
     classificado["categoria_prevista"] == classificado["categoria"]

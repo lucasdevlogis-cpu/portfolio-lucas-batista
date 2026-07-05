@@ -9,8 +9,6 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from paths import DATA_DIR
-
 from lib import brand, geo, ui
 
 ui.page_setup("08. Ship-from-Store BR", icon="🏬")
@@ -28,8 +26,8 @@ def prazo_por_distancia(km: float) -> int:
 
 ui.sidebar_brand()
 
-origens = pd.read_csv(DATA_DIR / "sfs_origens.csv")
-pedidos = pd.read_csv(DATA_DIR / "sfs_pedidos.csv")
+origens = ui.load_csv("sfs_origens.csv")
+pedidos = ui.load_csv("sfs_pedidos.csv")
 
 with st.sidebar:
     st.header("Política de alocação")
@@ -127,20 +125,28 @@ ui.kpi_row(
 
 ui.section("Alocação origem → destino")
 fig = go.Figure()
-cores = {t: brand.SEQ[i] for i, t in enumerate(res["origem_tipo"].unique())}
-for _, r in res.iterrows():
+cores = {t: brand.SEQ[i] for i, t in enumerate(sorted(res["origem_tipo"].unique()))}
+# Uma linha-trace por tipo de origem (com separadores None): legenda enxuta e
+# muito menos traces do que uma linha por pedido.
+for tipo, cor in cores.items():
+    sub = res[res["origem_tipo"] == tipo]
+    line_lat: list[float | None] = []
+    line_lon: list[float | None] = []
+    for _, r in sub.iterrows():
+        line_lat += [r["origem_lat"], r["dest_lat"], None]
+        line_lon += [r["origem_lon"], r["dest_lon"], None]
     fig.add_trace(
-        go.Scattermapbox(
-            lat=[r["origem_lat"], r["dest_lat"]],
-            lon=[r["origem_lon"], r["dest_lon"]],
+        go.Scattermap(
+            lat=line_lat,
+            lon=line_lon,
             mode="lines",
-            line=dict(width=1.5, color=cores[r["origem_tipo"]]),
+            line=dict(width=1.5, color=cor),
+            name=f"Atendido por {tipo}",
             hoverinfo="skip",
-            showlegend=False,
         )
     )
 fig.add_trace(
-    go.Scattermapbox(
+    go.Scattermap(
         lat=res["dest_lat"],
         lon=res["dest_lon"],
         mode="markers",
@@ -149,7 +155,7 @@ fig.add_trace(
     )
 )
 fig.add_trace(
-    go.Scattermapbox(
+    go.Scattermap(
         lat=origens["lat"],
         lon=origens["lon"],
         mode="markers+text",
@@ -160,10 +166,10 @@ fig.add_trace(
     )
 )
 fig.update_layout(
-    mapbox_style="open-street-map",
-    mapbox_zoom=4.2,
-    mapbox_center={"lat": -22, "lon": -46},
-    height=500,
+    map_style="open-street-map",
+    map_zoom=4.2,
+    map_center={"lat": -22, "lon": -46},
+    height=ui.map_height(500),
     margin=dict(l=0, r=0, t=0, b=0),
     legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="left", x=0),
 )

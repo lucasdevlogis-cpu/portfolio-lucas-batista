@@ -39,7 +39,12 @@ export function CaseCard({
   const hasDemo = Boolean(linkDemo);
 
   return (
-    <Card className="flex h-full flex-col rounded-xl border bg-card shadow-sm transition-all hover:scale-[1.02] hover:shadow-md">
+    <Card
+      className={cn(
+        "flex h-full flex-col rounded-xl border bg-card shadow-sm transition-all hover:shadow-md",
+        hasDemo && "hover:scale-[1.02]",
+      )}
+    >
       <CardContent className="flex flex-1 flex-col p-6">
         <div className="mb-4 flex items-start justify-between gap-2">
           <div className="flex size-12 items-center justify-center rounded-lg bg-primary/5 text-primary">

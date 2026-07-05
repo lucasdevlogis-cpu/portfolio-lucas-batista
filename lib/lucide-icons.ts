@@ -3,11 +3,14 @@ import {
   BarChart3,
   Clock,
   Database,
+  DollarSign,
   FileSpreadsheet,
   MapPin,
   Network,
   Package,
+  Radar,
   Route,
+  ScanSearch,
   Truck,
   Warehouse,
   Waypoints,
@@ -16,6 +19,7 @@ import {
 
 import type { LucideIconName } from "@/data/content";
 
+/** Fonte única de resolução nome → componente Lucide. */
 export const LUCIDE_ICONS: Record<LucideIconName, LucideIcon> = {
   Truck,
   BarChart3,
@@ -29,6 +33,9 @@ export const LUCIDE_ICONS: Record<LucideIconName, LucideIcon> = {
   Warehouse,
   Network,
   Waypoints,
+  DollarSign,
+  Radar,
+  ScanSearch,
 };
 
 export function getLucideIcon(name: LucideIconName): LucideIcon {

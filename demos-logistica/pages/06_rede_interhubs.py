@@ -7,15 +7,13 @@ rede e ranking de lanes para priorização e negociação.
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from paths import DATA_DIR
-
 from lib import brand, ui, viz
 
 ui.page_setup("06. Rede Inter-hubs", icon="🕸️")
 
 ui.sidebar_brand()
 
-df = pd.read_csv(DATA_DIR / "corredores_geo.csv")
+df = ui.load_csv("corredores_geo.csv")
 
 with st.sidebar:
     st.header("Premissas de custo")
@@ -79,7 +77,10 @@ for _, r in base.iterrows():
             "width": w,
         }
     )
-ui.plot(viz.network_map(nodes_df, edges, zoom=3.4), width="stretch")
+ui.plot(
+    viz.network_map(nodes_df, edges, zoom=3.4, height=ui.map_height(520)),
+    width="stretch",
+)
 
 col1, col2 = st.columns([1, 1])
 with col1:
