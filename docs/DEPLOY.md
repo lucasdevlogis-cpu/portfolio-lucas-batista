@@ -135,6 +135,15 @@ npx vercel --prod
 - [ ] `robots.txt` e `sitemap.xml` acessíveis
 - [ ] `og-image.png` aparece no preview de link (LinkedIn/WhatsApp)
 - [ ] email, LinkedIn, GitHub preenchidos em `data/content.ts`
+- [ ] Footer: links rápidos com `underline` + ícone `ArrowUpRight`
+- [ ] Lighthouse ≥ 90 em mobile
+- [ ] **10 cases** aparecem na grade com filtro por categoria
+- [ ] Demos abrem no modal (iframe) com contexto de negócio
+- [ ] Link "Abrir em nova aba" no modal funciona
+- [ ] Formulário envia (Formspree) ou abre `mailto`
+- [ ] `robots.txt` e `sitemap.xml` acessíveis
+- [ ] `og-image.png` aparece no preview de link (LinkedIn/WhatsApp)
+- [ ] email, LinkedIn, GitHub preenchidos em `data/content.ts`
 - [ ] Lighthouse ≥ 90 em mobile
 
 ---

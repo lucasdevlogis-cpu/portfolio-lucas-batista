@@ -2,7 +2,7 @@
 
 > **Uso:** Snapshot de saúde do portfólio antes dos próximos passos. Consulte após cada fase ou deploy significativo.
 >
-> **Última atualização:** 05/07/2026 — **Validação dos 10 modais de demo concluída (10/10 aprovados)** via WebBridge.
+> **Última atualização:** 05/07/2026 — **Footer atualizado** (`underline` + `ArrowUpRight` nos links rápidos); hero e Sobre com ícones Lucide.
 
 ---
 
@@ -18,10 +18,10 @@
 | Conteúdo / credibilidade | ✅ OK | Email, LinkedIn e GitHub configurados |
 | SEO assets | ✅ OK | `public/og-image.png` (1200×630) e `app/icon.png` |
 | Formulário de leads | 🟡 Parcial | Formspree integrado; sem ID usa fallback `mailto` |
-| Documentação | ✅ Enxuta | Só `AVALIACAO.md` + `DEPLOY.md` |
+| Documentação | ✅ Enxuta | `AVALIACAO.md` + `DEPLOY.md` |
 | Lighthouse | 🟡 Pendente | Rodar `npx lighthouse` mobile e registrar aqui |
 
-**Veredicto:** pronto para divulgação após redeploy da Vercel (novos cases) e **Formspree** + **Lighthouse**.
+**Veredicto:** pronto para divulgação após **Formspree** + **Lighthouse**.
 
 ---
 
@@ -67,6 +67,16 @@ Arquivo `pages/08_ship_from_store.py` → URL `/ship_from_store` (Streamlit remo
 | `10-rede-interhubs` | `06_rede_interhubs.py` | `/rede_interhubs` |
 | `11-tsp-baseline-sp` | `09_tsp_baseline_sp.py` | `/tsp_baseline_sp` |
 
+## Pass de melhoria — 05/07/2026 (noite)
+
+### Landing (Visual e UX)
+
+- **Hero:** badge "Consultor em Inteligência Logística" agora com ícone `Sparkles` (Lucide); CTA secundário "Ver cases demonstráveis" com ícone `ArrowDown`; fundo com mesh gradient (`bg-slate-50` → `bg-gradient-to-br` com stops sutis) para quebrar o cinza plano.
+- **Seção Sobre:** avatar inicial com gradiente `from-primary to-accent` e sombra; mini-timeline com 3 bullets (ícones `Clock`, `BarChart3`, `FileSpreadsheet`); lista de ferramentas em badges `variant="secondary"`.
+- **Footer:** badge "10 cases demonstráveis" com ícone `Star`; botão "Voltar ao topo" com ícone `ArrowUp`; links rápidos com `underline underline-offset-4` + ícone `ArrowUpRight` para indicar navegação interna.
+
+**Commit:** `085226c` — `fix(footer): adiciona underline e icone ArrowUpRight nos links rapidos`
+
 ---
 
 ## Validação de modais — 05/07/2026 (noite)
@@ -98,17 +108,6 @@ Artefatos:
 - `validacao_cases_relatorio.txt` — relatório completo
 - `screenshot_modal_00.png` — evidência visual (Simulador de Custo de Frete)
 - `screenshot_modal_03.png` — evidência visual (Ship from Store, iframe carregado)
-|---------|--------------|-----------|
-| `01-precificacao-frete` | `01_precificacao_frete.py` | `/precificacao_frete` |
-| `02-torre-controle` | `02_mini_torre_controle.py` | `/mini_torre_controle` |
-| `03-promessa-cep` | `04_promessa_cep.py` | `/promessa_cep` |
-| `04-ship-from-store` | `08_ship_from_store.py` | `/ship_from_store` |
-| `05-auditoria-endereco` | `10_auditoria_endereco.py` | `/auditoria_endereco` |
-| `07-classificador-ocorrencias` | `07_classificador_ocorrencias.py` | `/classificador_ocorrencias` |
-| `08-cvrp-urbano` | `03_cvrp_urbano.py` | `/cvrp_urbano` |
-| `09-vrptw-ultima-milha` | `05_vrptw_ultima_milha.py` | `/vrptw_ultima_milha` |
-| `10-rede-interhubs` | `06_rede_interhubs.py` | `/rede_interhubs` |
-| `11-tsp-baseline-sp` | `09_tsp_baseline_sp.py` | `/tsp_baseline_sp` |
 
 ---
 
@@ -129,9 +128,10 @@ Artefatos:
 - **Lint:** `npm run lint` passa.
 - **Deploy Vercel:** Next.js nativo (`.next/`), Output Directory vazio.
 - **Demos:** URLs Streamlit embutidas no bundle quando `NEXT_PUBLIC_DEMOS_BASE_URL` está definida **no build**.
-- **Validação de cases (automatizada):** 10/10 modais de demo testados via WebBridge — modal abre, link "Abrir em nova aba" com `target="_blank"`, link GitHub, e iframe detectado em todos.
+- **Footer:** badge "10 cases demonstráveis" com ícone `Star`, botão "Voltar ao topo" com `ArrowUp`, links rápidos com `underline` + ícone `ArrowUpRight`.
+- **Validação de cases (automatizada):** 10/10 modais de demo testados via WebBridge.
 - **Smoke test demos:** `python scripts/smoke_test.py` → 13/13 checagens OK (inclui cenário de filtro vazio na page 02).
-- **Carregamento resiliente de dados:** `ui.load_csv()` mostra instrução amigável se um CSV não existe (clone sem `build_datasets`).
+- **Carregamento resiliente de dados:** `ui.load_csv()` mostra instrução amigável se um CSV não existe.
 - **DemoModal:** estado de carregamento/erro, CTA "abrir em tela cheia" no mobile e `DialogDescription` para acessibilidade.
 - **Navegação:** scroll suave, menu mobile (Sheet), Intersection Observer para nav ativa.
 - **Cases:** 10 cards demonstráveis com filtro; modal com contexto de negócio + iframe + link nova aba.
@@ -147,11 +147,6 @@ Artefatos:
 | 1 | Configurar `NEXT_PUBLIC_FORMSPREE_FORM_ID` + redeploy | Dashboard Vercel | 🟡 Pendente |
 | 2 | Confirmar preview do `og-image.png` no LinkedIn/WhatsApp | — | 🟡 Pendente |
 
-| # | Ação | Onde |
-|---|------|------|
-| 1 | Configurar `NEXT_PUBLIC_FORMSPREE_FORM_ID` + redeploy | Dashboard Vercel |
-| 2 | Confirmar preview do `og-image.png` no LinkedIn/WhatsApp | — |
-
 ### Lighthouse mobile (05/07/2026, local `next start`)
 
 | Categoria | Simulate (Lantern) | DevTools (throttling aplicado) |
@@ -162,6 +157,8 @@ Artefatos:
 | SEO | 100 | — |
 
 O LCP simulado do Lantern (7,7 s) é pessimista para esta página estática; o insight baseado em trace mostra ~1,4 s de render e o método DevTools confirma LCP real de 2,3 s. Ganho de performance ainda possível reduzindo o TBT do Framer Motion (hydration das seções animadas).
+
+---
 
 ## Backlog (desejável)
 
@@ -181,16 +178,7 @@ O LCP simulado do Lantern (7,7 s) é pessimista para esta página estática; o i
 | 1 Landing | ✅ 100% | — |
 | 2 Demos | ✅ 100% | push repo demos separado |
 | 3 GitHub | 🟡 ~40% | READMEs por case |
-| 4 Deploy | ✅ ~95% | **Validação cases OK**; Formspree env; redeploy pós-novos cases |
-| 5 Lançamento | 🟡 | Formspree, Lighthouse, analytics, domínio |
-
-| Fase | Progresso | Pendências |
-|------|-----------|------------|
-| 0 Setup | ✅ 100% | — |
-| 1 Landing | ✅ 100% | — |
-| 2 Demos | ✅ 100% | push repo demos separado |
-| 3 GitHub | 🟡 ~40% | READMEs por case |
-| 4 Deploy | ✅ ~90% | Formspree env; redeploy pós-novos cases |
+| 4 Deploy | ✅ ~95% | Formspree env; validação cases OK |
 | 5 Lançamento | 🟡 | Formspree, Lighthouse, analytics, domínio |
 
 ---
@@ -224,10 +212,9 @@ NEXT_PUBLIC_FORMSPREE_FORM_ID=   # opcional até criar conta Formspree
 
 ## Próximos passos sugeridos
 
-1. Redeploy Vercel (novos cases + env demos)
-2. Push demos para repo `demos-logistica` no GitHub
-3. Configurar Formspree → redeploy
-4. Lighthouse mobile
+1. Configurar Formspree → redeploy
+2. Lighthouse mobile
+3. Push demos para repo `demos-logistica` no GitHub
 
 ---
 
