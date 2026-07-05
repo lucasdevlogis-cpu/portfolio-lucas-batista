@@ -185,7 +185,35 @@ Core Web Vitals desktop: FCP 0,3 s · LCP 0,7 s · TBT 0 ms · CLS 0.
 
 Core Web Vitals mobile: FCP 1,1 s · LCP 3,2 s · TBT 110 ms · CLS 0.
 
-O LCP mobile (3,2 s) fica levemente acima do ideal (2,5 s), mas o score de Performance (93) atende à meta. Possíveis ganhos futuros: pré-carregar fonte Inter, lazy-load de seções abaixo da dobra e reduzir hidratação do Framer Motion.
+O LCP mobile (3,2 s) fica levemente acima do ideal (2,5 s), mas o score de Performance (93) atende à meta.
+
+### Lighthouse em produção (05/07/2026, `https://portfolio-lucas-batista-murex.vercel.app`)
+
+Após o deploy do commit `a93c3a1`, os scores de produção atenderam às metas em ambos os dispositivos.
+
+#### Desktop
+
+| Categoria | Score | Meta | Status |
+|-----------|------:|------|:------:|
+| Performance | 99 | ≥ 90 | ✅ |
+| Acessibilidade | 100 | ≥ 95 | ✅ |
+| Boas práticas | 100 | — | ✅ |
+| SEO | 100 | — | ✅ |
+
+Core Web Vitals desktop: FCP 0,7 s · LCP 0,7 s · TBT 0 ms · CLS 0.
+
+#### Mobile
+
+| Categoria | Score | Meta | Status |
+|-----------|------:|------|:------:|
+| Performance | 95 | ≥ 90 | ✅ |
+| Acessibilidade | 100 | ≥ 95 | ✅ |
+| Boas práticas | 100 | — | ✅ |
+| SEO | 100 | — | ✅ |
+
+Core Web Vitals mobile: FCP 1,2 s · LCP 2,9 s · TBT 60 ms · CLS 0,004.
+
+Possíveis ganhos futuros: pré-carregar fonte Inter, lazy-load de seções abaixo da dobra e reduzir hidratação do Framer Motion.
 
 ---
 

@@ -110,13 +110,42 @@ Ocorreu `EPERM` ao tentar remover o diretório temporário do Chrome (`\Temp\lig
 
 ---
 
-## 6. Próximos Passos
+## 6. Re-audit em Produção (2026-07-05)
 
-1. **Deploy na Vercel** e rodar Lighthouse na URL de produção para confirmar que os scores se mantêm.
-2. **Configurar `NEXT_PUBLIC_FORMSPREE_FORM_ID`** e validar o envio do formulário.
-3. **Investigar LCP mobile** caso o score de produção fique abaixo de 90.
-4. **Atualizar `docs/AVALIACAO.md`** com os novos status de Lighthouse.
+Deploy do commit `a93c3a1` concluído com sucesso na Vercel. Audit executado na URL pública `https://portfolio-lucas-batista-murex.vercel.app`.
+
+### Desktop
+
+| Categoria | Score | Meta | Status |
+|-----------|------:|------|:------:|
+| Performance | 99 | ≥ 90 | ✅ |
+| Acessibilidade | 100 | ≥ 95 | ✅ |
+| Boas práticas | 100 | — | ✅ |
+| SEO | 100 | — | ✅ |
+
+Core Web Vitals desktop: FCP 0,7 s · LCP 0,7 s · TBT 0 ms · CLS 0.
+
+### Mobile
+
+| Categoria | Score | Meta | Status |
+|-----------|------:|------|:------:|
+| Performance | 95 | ≥ 90 | ✅ |
+| Acessibilidade | 100 | ≥ 95 | ✅ |
+| Boas práticas | 100 | — | ✅ |
+| SEO | 100 | — | ✅ |
+
+Core Web Vitals mobile: FCP 1,2 s · LCP 2,9 s · TBT 60 ms · CLS 0,004.
+
+**Resultado:** todos os scores atendem às metas. A produção está performática e acessível.
 
 ---
 
-*Documento atualizado após correções de contraste e re-audit no dia 2026-07-05.*
+## 7. Próximos Passos
+
+1. **Configurar `NEXT_PUBLIC_FORMSPREE_FORM_ID`** e validar o envio do formulário.
+2. **Adicionar Vercel Analytics** (opcional) para monitorar Core Web Vitals reais dos usuários.
+3. **Considerar domínio custom** para estabilizar a URL de divulgação.
+
+---
+
+*Documento atualizado após correções de contraste, deploy e re-audit de produção no dia 2026-07-05.*
