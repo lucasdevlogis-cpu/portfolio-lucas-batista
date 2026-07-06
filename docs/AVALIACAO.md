@@ -13,7 +13,7 @@
 | **Layout oficial** | Executive Proof System — dossiê profissional para headhunters |
 | **Spec visual** | [`design/design.md`](../design/design.md) + tokens em `app/globals.css` |
 | **URL** | <https://portfolio-lucas-batista-murex.vercel.app> |
-| **Deploy Vercel** | ✅ `e2516a7` (docs) · layout `0ff7aa3` | [`docs/VERCEL.md`](VERCEL.md) |
+| **Deploy Vercel** | ✅ `9dd9cf4` (docs) · layout `0ff7aa3` | [`docs/VERCEL.md`](VERCEL.md) |
 
 ### Homepage (ordem)
 
@@ -50,7 +50,7 @@
 | Landing | ✅ Completa | Executive Proof; build + lint OK |
 | Cases | ✅ Completo | 3 âncora + biblioteca + 1 roadmap |
 | Demos Streamlit | ✅ Completa | 11 pages; smoke **13/13**; rebrand editorial |
-| Deploy produção | ✅ | Layout `0ff7aa3` · docs `e2516a7` live |
+| Deploy produção | ✅ | Layout `0ff7aa3` · docs `9dd9cf4` live |
 | Lighthouse | 🟡 Revalidar | Baseline layout antigo: desktop 97 / mobile 93 |
 
 **Veredicto:** linha oficial em produção. Próximo marco: OG image, Lighthouse pós-pivot, sync demos Streamlit.

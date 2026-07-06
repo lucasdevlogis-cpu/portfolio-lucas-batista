@@ -35,7 +35,7 @@ components/                   → seções ativas + ui/ (shadcn)
 components/archive/consultoria/ → landing comercial shelved
 data/                         → content.ts (fonte única)
 design/                       → design.md (spec ativa) + archive/
-docs/                         → AVALIACAO.md, DEPLOY.md, OPORTUNIDADES_DEMOS.md
+docs/                         → AVALIACAO.md, DEPLOY.md, VERCEL.md, OPORTUNIDADES_DEMOS.md
 demos-logistica/              → app Streamlit (11 pages + lib/)
 .agents/skills/               → portfolio-demos-viz
 ```
