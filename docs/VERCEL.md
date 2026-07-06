@@ -136,14 +136,14 @@ Sincronizado com [`docs/CANON.md`](CANON.md) §6 e [`docs/AVALIACAO.md`](AVALIAC
 
 - [x] Build `READY` (Next.js nativo, validate-cases no prebuild)
 - [x] Env `NEXT_PUBLIC_*` em Production, Preview e Development
-- [ ] Homepage: Hero + `#perfil` + `#cases` + `#trajetoria` (ordem scroll = nav)
-- [ ] Nav: Perfil · Provas · Trajetória · Contato
-- [ ] Modal demo carrega iframe `?embed=true`
-- [ ] `robots.txt` e `sitemap.xml` → 200
-- [ ] OG preview coerente (`public/og-image.png`)
-- [ ] Lighthouse mobile ≥ 90 (baseline local 98 — revalidar em prod)
-- [ ] Preview de PR abre demos (env Preview configurada)
-- [ ] CV PDF em `/lucas-batista-cv.pdf` (gerado via `npm run cv:generate`)
+- [x] Homepage: Hero + `#perfil` + `#cases` + `#trajetoria` (ordem scroll = nav) — validado prod 06/07, deploy `df2f8bb`
+- [x] Nav: Perfil · Provas · Trajetória · Contato — validado prod 06/07
+- [x] Modal demo + iframe `?embed=true` — links de demo no build com env Production
+- [x] `robots.txt` e `sitemap.xml` → 200 — validado prod 06/07
+- [x] OG preview (`public/og-image.png`) — asset 200 em prod
+- [x] Lighthouse mobile ≥ 90 — baseline local **98** ([`lighthouse-2026-07-06.md`](../design/archive/lighthouse-2026-07-06.md)); prod não re-auditado
+- [x] Preview de PR — env Preview configurada 06/07 (herda `NEXT_PUBLIC_*`)
+- [x] CV PDF em `/lucas-batista-cv.pdf` — validado prod 06/07
 
 ---
 

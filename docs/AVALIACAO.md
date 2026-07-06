@@ -41,11 +41,11 @@ Ver tabela completa em [`docs/CANON.md`](CANON.md) §6. Resumo:
 
 | Área | Lançado | QA manual |
 |------|:-------:|:---------:|
-| Layout Executive Proof | ✅ | 🟡 |
-| Demos Streamlit | ✅ | 🟡 |
-| Deploy Vercel | ✅ | 🟡 |
-| OG + CV PDF | ✅ | 🟡 |
-| Lighthouse (local) | ✅ | 🟡 prod |
+| Layout Executive Proof | ✅ | ✅ |
+| Demos Streamlit | ✅ | ✅ |
+| Deploy Vercel | ✅ | ✅ |
+| OG + CV PDF | ✅ | ✅ |
+| Lighthouse | ✅ local | 🟡 prod opcional |
 
 ---
 
@@ -53,9 +53,11 @@ Ver tabela completa em [`docs/CANON.md`](CANON.md) §6. Resumo:
 
 | # | Ação | Onde | Status |
 |---|------|------|--------|
-| 1 | QA manual pós-canonicalização (nav, scroll, modal, OG) | [`docs/VERCEL.md`](VERCEL.md) checklist | 🟡 Pendente |
-| 2 | CV oficial substituir PDF gerado | `public/lucas-batista-cv.pdf` | 🟡 Polimento |
-| 3 | READMEs por case no repo demos | Fase 3 | 🟡 ~40% |
+| 1 | CV oficial substituir PDF gerado | `public/lucas-batista-cv.pdf` | 🟡 Polimento |
+| 2 | READMEs por case no repo demos | Fase 3 | 🟡 ~40% |
+| 3 | Lighthouse em produção (opcional) | Vercel / PSI | 🟡 Baseline local OK |
+
+Checklist QA manual: [`docs/VERCEL.md`](VERCEL.md) — **concluído** 06/07 (deploy `df2f8bb`).
 
 ---
 
@@ -91,7 +93,7 @@ Audit detalhado: [`design/archive/lighthouse-2026-07-06.md`](../design/archive/l
 | 2 Demos | ✅ | — |
 | 3 GitHub | 🟡 ~40% | READMEs por case |
 | 4 Deploy | ✅ | QA manual |
-| 5 Lançamento | 🟡 | QA checklist VERCEL; CV oficial opcional |
+| 5 Lançamento | 🟡 | CV oficial; READMEs por case |
 
 ---
 

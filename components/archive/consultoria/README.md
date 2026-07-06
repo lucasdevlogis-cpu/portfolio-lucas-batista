@@ -14,6 +14,6 @@ Seções da landing de **geração de leads de consultoria** (Dores, Serviços, 
 | `DarkSection.tsx` | Faixa escura reutilizável |
 | `SectionDivider.tsx` | Divisor decorativo (não usado) |
 
-Copy correspondente permanece em `data/content.ts` (`dores`, `servicos`, `metodo`, `sobre`, `ia`).
+Copy shelved: [`data/archive/content-consultoria.ts`](../../data/archive/content-consultoria.ts).
 
 Spec ativa: [`design/design.md`](../../../design/design.md).

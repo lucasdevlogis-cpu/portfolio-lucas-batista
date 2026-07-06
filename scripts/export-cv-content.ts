@@ -6,11 +6,7 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-import {
-  CASES_DESTAQUE,
-  CONTENT,
-  SITE_URL,
-} from "../data/content";
+import { CASES_DESTAQUE, CONTENT, SITE_URL } from "../data/content";
 
 const outPath = join(process.cwd(), "public", "cv-export.json");
 

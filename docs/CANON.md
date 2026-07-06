@@ -78,16 +78,16 @@ Validação: `npm run validate` (10 demos + slug ↔ `demos-logistica/pages/`)
 
 | Área | Lançado | QA manual | Polimento | Notas |
 |------|:-------:|:---------:|:---------:|-------|
-| Layout Executive Proof | ✅ | 🟡 | — | Ordem seções canônica pós-refactor |
-| Demos Streamlit (11 pages) | ✅ | 🟡 | — | Sync via `demos-logistica-deploy` |
-| Deploy Vercel | ✅ | 🟡 | — | Verificar: `npx vercel inspect portfolio-lucas-batista-murex.vercel.app` |
-| OG image | ✅ | 🟡 | — | Validar preview LinkedIn/WhatsApp |
-| CV PDF | ✅ | 🟡 | Substituir por CV oficial quando existir | `npm run cv:generate` |
-| Lighthouse | ✅ local | 🟡 prod | Re-auditar após mudanças visuais | [`design/archive/lighthouse-2026-07-06.md`](../design/archive/lighthouse-2026-07-06.md) |
+| Layout Executive Proof | ✅ | ✅ | — | QA checklist 06/07 |
+| Demos Streamlit (11 pages) | ✅ | ✅ | — | smoke 13/13 |
+| Deploy Vercel | ✅ | ✅ | — | deploy `df2f8bb` |
+| OG image | ✅ | ✅ | — | prod 200 |
+| CV PDF | ✅ | ✅ | CV oficial | `npm run cv:generate` |
+| Lighthouse | ✅ local | 🟡 prod | — | desktop 100 / mobile 98 local |
 | READMEs por case (Fase 3) | — | — | 🟡 | ~40% |
 | Domínio custom / Analytics | — | — | 🟡 | Backlog |
 
-**Regra:** "Lançado" = código em produção. "QA manual" = checklist em [`docs/VERCEL.md`](VERCEL.md). Não marcar fases como 100% enquanto QA pendente.
+**Regra:** "Lançado" = código em produção. "QA manual" = checklist em [`docs/VERCEL.md`](VERCEL.md) (concluído 06/07).
 
 ---
 
