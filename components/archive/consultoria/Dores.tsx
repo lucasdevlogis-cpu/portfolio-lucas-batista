@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 
-import { PainPointCard } from "@/components/PainPointCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CONTENT } from "@/data/content";
+import { PainPointCard } from "./PainPointCard";
 
 const cardContainer = {
   hidden: { opacity: 1 },

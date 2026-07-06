@@ -32,7 +32,7 @@ function SocialLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
+      className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-ink"
     >
       {children}
       <span className="sr-only">{label}</span>
@@ -51,17 +51,17 @@ export function Footer() {
   };
 
   return (
-    <footer className="border-t bg-white">
+    <footer className="border-t border-border bg-card">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-3 lg:px-8">
         {/* Coluna 1 — Brand + social */}
         <div>
-          <p className="font-heading text-lg font-semibold text-primary">
+          <p className="font-heading text-lg font-black text-ink">
             {pessoal.nome}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">{pessoal.titulo}</p>
 
           {/* Badge prova social */}
-          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent-contrast">
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-bold text-accent-contrast">
             <Star className="size-3.5" aria-hidden />
             {footer.badgeCases}
           </div>
@@ -96,7 +96,7 @@ export function Footer() {
 
         {/* Coluna 2 — Links rápidos */}
         <div>
-          <p className="font-heading text-sm font-semibold text-primary">
+          <p className="font-heading text-sm font-black text-ink">
             {footer.linksRapidosTitulo}
           </p>
           <nav className="mt-4 flex flex-col gap-2" aria-label="Links rápidos do rodapé">
@@ -104,7 +104,7 @@ export function Footer() {
               <a
                 key={link.href}
                 href={link.href}
-                className="inline-flex items-center gap-1 text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
+                className="inline-flex items-center gap-1 text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-ink"
               >
                 {link.label}
                 <ArrowUpRight className="size-3.5" aria-hidden />
@@ -122,13 +122,13 @@ export function Footer() {
       </div>
 
       {/* Copyright */}
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 border-t px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-border px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
         <p className="text-sm text-muted-foreground">
           {footer.copyright}
         </p>
         <button
           onClick={handleVoltarTopo}
-          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-slate-100 hover:text-primary"
+          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-bold text-muted-foreground transition-colors hover:bg-editorial hover:text-ink"
           aria-label={footer.voltarTopo}
         >
           <ArrowUp className="size-4" aria-hidden />

@@ -1,240 +1,158 @@
-# Design — Portfólio Lucas Batista
+# Design — Executive Proof System
 
-> Documento vivo de decisões visuais e de layout. Fonte da verdade do design; atualizar quando as decisões mudarem.
-> Referências: `README.md`, `.cursorrules`, `data/content.ts`
-
----
-
-## 1. Estrutura da One-Page
-
-Ordem vertical das seções (IDs para navegação):
-
-| # | Seção | ID | Propósito |
-|---|--------|-----|-----------|
-| 1 | Header | — | Nav fixo, logo, links, CTA principal |
-| 2 | Hero | — | Proposta de valor em 30s + brief strip (stats + contato) |
-| 3 | Dores | `dores` | 8 cards — problemas que o visitante reconhece |
-| 4 | Serviços | `servicos` | Escada de 5 níveis de contratação |
-| 5 | Cases | `cases` | Grid de **10 cases demonstráveis** + filtro por categoria + lista "Próximas análises" |
-| 6 | Método | `metodo` | 5 passos do processo de trabalho |
-| 7 | Sobre | `sobre` | Quem é o Lucas: bio + ferramentas |
-| 8 | IA | `ia` | IA como acelerador, limites éticos |
-| 9 | Contato | `contato` | Formulário + CTA de diagnóstico |
-| 10 | Footer | — | Links, copyright, declaração ética |
+> Fonte da verdade visual do portfólio Lucas Batista. Esta versão substitui a leitura comercial antiga por uma peça premium para headhunters, recrutadores e lideranças que avaliam fit profissional.
+>
+> **Fluxo de design:** spec em Markdown + tokens CSS (`app/globals.css`) + paridade Streamlit (`demos-logistica/lib/brand.py`). **Figma não faz parte do fluxo** — alterações visuais entram pelo código e por este documento.
 
 ---
 
-## 2. Decisões Visuais
+## 1. Norte
+
+O site deve funcionar como um dossiê profissional de leitura rápida. Em até 60 segundos, a pessoa recrutadora precisa entender:
+
+- quem é Lucas Batista;
+- para quais posições o perfil faz sentido;
+- quais sinais de senioridade existem;
+- quais provas técnicas estão disponíveis;
+- qual stack e quais domínios operacionais aparecem no trabalho;
+- como entrar em contato.
+
+Não é uma landing de consultoria, não é currículo comum e não é vitrine genérica de apps. Os cases são evidência de julgamento profissional.
+
+---
+
+## 2. Estrutura da One-Page
+
+| Ordem | Seção | ID | Função |
+|---|---|---|---|
+| 1 | Header | — | Navegação curta e CTA de contato |
+| 2 | Hero executivo | — | Nome, posicionamento, fit e provas rápidas |
+| 3 | Perfil em 60s | `perfil` | Leitura de fit, senioridade, modelo de atuação e sinais |
+| 4 | Provas técnicas | `cases` | 3 cases âncora + biblioteca complementar |
+| 5 | Trajetória e stack | `trajetoria` | Experiência, stack por contribuição e domínios |
+| 6 | Contato profissional | `contato` | LinkedIn, email, GitHub e CV quando existir |
+| 7 | Footer | — | Links, declaração de uso e retorno ao topo |
+
+Seções antigas de venda direta (`Dores`, `Servicos`, `Metodo`, `IASection`) não comandam mais a homepage.
+
+---
+
+## 3. Direção Visual
 
 ### Paleta
 
 | Token | Hex | Uso |
-|-------|-----|-----|
-| Primary | `#1e3a5f` | Headings, botões primários, nav |
-| Accent | `#0d9488` | Badges, hover, destaques |
-| Accent contrast | `#0a7369` | Textos pequenos sobre fundo claro (WCAG AA) |
-| Ring | `#0d9488` | Foco acessível |
-| Background | `#f8fafc` | Fundo da página |
-| Foreground | `#0f172a` | Texto principal |
-| Muted | `#64748b` | Subtítulos, legendas |
-| Border | `#e2e8f0` | Bordas de cards |
-| Card | `#ffffff` | Cards, modais |
+|---|---:|---|
+| Editorial | `#f6f1e8` | Fundo principal, tom de publicação premium |
+| Card | `#fffdf8` | Blocos claros e áreas de leitura |
+| Ink | `#111827` | Texto forte, CTA principal, contraste |
+| Primary | `#17324d` | Azul petróleo técnico |
+| Surface dark | `#102033` | Blocos premium escuros |
+| Accent | `#0f766e` | Sinal técnico mínimo |
+| Warm accent | `#9a6a2f` | Eyebrows e acento editorial |
+| Muted | `#4b5563` | Texto secundário |
+| Border | `#d8cfbf` | Divisórias editoriais |
 
-### Tokens de seção escura (`DarkSection`)
+### Princípios
 
-Faixas escuras (Hero, Método, IA) usam tokens únicos em vez de gradientes hardcoded. Definidos em `globals.css` e consumidos pelo componente `DarkSection`.
-
-| Token | Hex | Uso |
-|-------|-----|-----|
-| `--surface-dark` | `#122845` | Fundo base das faixas escuras |
-| `--surface-dark-2` | `#16304f` | Topo do gradiente navy |
-| `--surface-dark-3` | `#0f2038` | Base do gradiente navy |
-| `--text-on-dark` | `#ffffff` | Texto principal sobre navy |
-| `--text-on-dark-muted` | `#cbd5e1` | Texto secundário sobre navy |
-
-O gradiente radial (glow teal + navy) e a grade sutil ficam encapsulados em `DarkSection`, com prop `glow` para variar a origem do brilho por seção. Espelhados na coleção `Tokens` do Figma v2 (`color/surface-dark*`, `color/text-on-dark*`).
-
-### Paridade landing ↔ Streamlit
-
-| Elemento | Landing (`globals.css`) | Streamlit (`lib/brand.py` + `ui.py`) |
-|----------|-------------------------|--------------------------------------|
-| Primary | `#1e3a5f` / `--color-primary` | `PRIMARY` / `config.toml` primaryColor |
-| Accent | `#0d9488` / `--color-accent` | `ACCENT` |
-| Background | `#f8fafc` | `BG` |
-| Card | `#ffffff` | `CARD` |
-| Muted | `#64748b` | `MUTED` |
-| Border | `#e2e8f0` | `BORDER` |
-| Surface dark | `--surface-dark*` | Hero navy via CSS injetado |
-| Fonte headings | Inter (Google Fonts) | Inter via `@import` no CSS |
-| Radius cards | `rounded-xl` (12px) | `RADIUS = "12px"` |
-| KPI row embed | — | `kpi_grid()` 2×2 quando `?embed=true` |
-| Filtros embed | — | `filter_container()` expander no topo |
-
-**Figma v2 (spec base):** [Portfolio Lucas — Design System v2](https://www.figma.com/design/857tvb7je0mJctJWYujqG7) — coleção `Tokens` + nodes `2:31`, `2:38`, `3:15`.
-
-**Pass editorial v3:** spec de frames em `design/figma-v3-editorial-frames.md` · referências em `design/references-editorial.md`.
-
-**FigJam (jornadas):** [Headhunter 60s](https://www.figma.com/board/oo6IohJkFVx2jYnenXMlC5) · [Embed demo](https://www.figma.com/board/iOesutJfRKn3HxB4Mm5lc3).
-
-### Tipografia
-
-- **Headings:** Inter (Google Fonts), bold, `tracking-tight`
-- **Body:** Geist Sans (Next.js default), normal
-- **Escala editorial** (`globals.css` utilities): `.text-display` (hero), `.text-lede` (subheadline), `.text-eyebrow` (11px uppercase)
-- **Larguras de coluna:** `--prose-width` (42rem narrativa), `--brief-width` (22rem brief strip)
-
-### Tokens editoriais (pass v3)
-
-| Token / utility | Valor | Uso |
-|-----------------|-------|-----|
-| `--prose-width` | 42rem | Coluna narrativa (hero, SectionLead) |
-| `--brief-width` | 22rem | Brief strip stats/contato |
-| `.text-display` | clamp(2.25rem → 3.75rem) | Headline hero |
-| `.text-lede` | 1.125rem / 1.6 | Subheadline |
-| `.text-eyebrow` | 11px / 0.06em tracking | Categoria, labels de modal |
-
-### Escala legado (seções não refatoradas)
-
-- Hero display via `.text-display`; seções `text-3xl`, cards `text-xl`, body `text-base`
-
-### Espaçamento
-
-- Seções: `py-20`
-- Container: `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`
-- Cards: `p-6`, grid `gap-6` (roadmap `p-5 gap-5`)
+- Tipografia e hierarquia mandam mais que decoração.
+- Whitespace generoso, blocos densos só onde ajudam a triagem.
+- Poucos ícones; ícone só quando melhora reconhecimento.
+- Sem grid homogêneo de cards como linguagem dominante.
+- Sem gradientes chamativos, orbs ou estética SaaS genérica.
+- Motion discreto: entrada por opacidade/translação, sem competir com leitura.
+- Conteúdo essencial não pode começar invisível por dependência de scroll/JS. Animação é aceitável só quando o conteúdo continua presente em screenshot, crawler e fallback sem interação.
 
 ---
 
-## 3. Layout Responsivo
-
-Mobile-first. Breakpoints Tailwind padrão:
-
-| Breakpoint | Grid Dores | Cases (destaques) | Cases (biblioteca) | Nav |
-|------------|------------|-------------------|--------------------|-----|
-| `< md` | 1 coluna | 1 coluna (stack) | lista vertical | Sheet |
-| `md` | 2 colunas | 1 coluna | lista vertical | Links visíveis |
-| `lg` | 4 colunas | **assimétrico** (1 featured + 2 compact) | lista + tabs underline | Links + CTA |
-
-Hero: **2 colunas** em `lg+` (narrativa + brief strip); mobile stack nome → headline → stats → CTAs → contato. Sem grade decorativa no hero editorial.
-
----
-
-## 4. Componentes Reutilizáveis
-
-### Camada editorial (`components/editorial/`)
+## 4. Componentes-Chave
 
 | Componente | Responsabilidade |
-|------------|------------------|
-| `EditorialHero` | Hero 2 colunas: lede + display headline + CTAs; `BriefStrip` stats/contato |
-| `BriefStrip` | Stats + LinkedIn/email (sidebar desktop, inline mobile) |
-| `SectionLead` | Cabeçalho editorial sem risquinho teal repetido |
-| `BriefingCaseCard` | Card briefing executivo (eyebrow, pull quote métrica, rule + pergunta, CTA) |
-| `CaseBriefingGrid` | Destaques assimétricos: 1 featured + 2 compact |
-| `CaseLibraryRow` | Linha da biblioteca filtrável |
-| `CategoryTabs` | Filtros underline (não pills) |
-| `DemoBriefingModal` | Modal 2 colunas pergunta/decisão + métrica tipográfica + iframe |
+|---|---|
+| `Hero` | Briefing executivo com nome, posicionamento, provas e contato rápido |
+| `ProfileBrief` | Fit profissional, senioridade, disponibilidade, stack e domínios |
+| `Cases` | Provas técnicas: 3 cases âncora + biblioteca filtrável |
+| `CaseCard` | Mini case study: categoria, métrica, pergunta, decisão e links |
+| `DemoModal` | Contexto de case study + iframe Streamlit preservado |
+| `Contato` | Canais profissionais diretos, sem formulário como foco |
+| `Header` / `Footer` | Navegação curta, consistência e links |
 
-Wrappers de compatibilidade: `Hero` → `EditorialHero`; `DemoModal` → `DemoBriefingModal`; `CaseCard` → `BriefingCaseCard` (deprecated).
-
-### Demais moléculas
-
-| Componente | Responsabilidade |
-|------------|------------------|
-| `SectionHeader` | Título + subtítulo (seções ainda não migradas) |
-| `PainPointCard` | Card de dor com ícone Lucide + badge numérico |
-| `ServiceCard` | Card de serviço com borda lateral colorida + entregas |
-| `Header` | Nav fixo, scroll suave, menu mobile (Sheet) |
-| `Footer` | Copyright, links sociais, declaração ética |
-
-Seções: `Hero` (editorial), `Dores`, `Servicos`, `Cases` (destaques assimétricos + biblioteca lista + roadmap), `Metodo`, `Sobre`, `IASection`, `Contato`.
-
-Distinção de cases: um case é "demonstrável" quando tem slug em `CASE_DEMO_SLUGS` (`data/content.ts`). Os demais aparecem na lista compacta "Próximas análises" — sem botões desabilitados.
+Todo copy deve vir de `data/content.ts`. Componentes não devem hardcodar narrativa de carreira, rótulos de CTA ou textos comerciais.
 
 ---
 
-## 5. Navegação
+## 5. Cases Como Prova
 
-### Links do Header
+Os cases devem responder: que problema Lucas entendeu, qual decisão apoiou, qual métrica usou, qual stack aparece e qual limitação foi declarada.
 
-Dores → `#dores` | Serviços → `#servicos` | Cases → `#cases` | Método → `#metodo` | Sobre → `#sobre` | Contato → `#contato`
+Cases âncora:
 
-CTA fixo: **"Falar sobre minha operação"** → scroll para `#contato`
+1. `01-precificacao-frete` — frete e custo.
+2. `02-torre-controle` — SLA, OTD e follow-up.
+3. `08-cvrp-urbano` — roteirização, frota e distância.
 
-### Comportamento
-
-- `scroll-behavior: smooth` em `globals.css`
-- Clique no link: `scrollIntoView({ behavior: 'smooth' })`
-- Intersection Observer para destacar seção ativa no menu
-- Mobile: Sheet fecha ao clicar em link
+Demais cases continuam acessíveis na biblioteca complementar. O modal preserva `?embed=true`, link de nova aba e lazy loading mobile.
 
 ---
 
-## 6. Animações (Framer Motion)
+## 6. Demos Streamlit
 
-| Elemento | Animação | Notas |
-|----------|----------|-------|
-| Hero editorial | estático | Sem stagger Framer; reduz custo e monotonia |
-| Seções legado | fade-in + slide-up | `Dores`, `Servicos` etc. |
-| Cards legado | hover scale + shadow | Editorial cards **sem** scale hover |
-| Filtro cases | instantâneo | Lista editorial sem AnimatePresence |
+As demos não podem parecer outro produto visual. Elas são a camada interativa do mesmo dossiê profissional e devem sustentar a leitura headhunter-first.
 
-`prefers-reduced-motion` é respeitado globalmente via `<MotionConfig reducedMotion="user">` em `HomePage`.
+### Direção
 
----
+- Home das demos como índice de provas técnicas, não catálogo genérico.
+- Hero escuro editorial com pergunta de negócio, stack, maturidade e métricas compactas.
+- Sidebar desktop curada, com agrupamento por cases âncora, biblioteca e método; a navegação automática padrão do Streamlit não deve aparecer.
+- Tabs em estilo controle segmentado editorial, não underline padrão cru.
+- Cards claros com borda editorial e acentos mínimos em teal ou warm accent.
+- Charts Plotly com fundo alinhado ao editorial, grid discreto, hover escuro e legenda contida.
+- Linhas de referência em gráficos devem usar o mesmo recorte analítico exibido; não podem distorcer escala a ponto de achatar as séries principais.
+- Todos os gráficos Plotly passam por acabamento final compartilhado (`ui.plot`/`viz.polish`) para manter margem, fundo, hover e eixo consistentes.
+- Mapas Folium com tiles neutros, círculos e rotas sem excesso de ícones decorativos.
+- Embed compacto para modal da landing: altura controlada, sem UI poluída e com contexto visível.
+- No embed, a sidebar Streamlit deve sumir e os filtros usam defaults ocultos; o case study deve começar por breadcrumb, pergunta, KPI e contexto. Ajuste fino de filtros pertence à demo em página completa/nova aba.
 
-## 7. Asset Manifest
+### Alturas e Densidade
 
-| Tipo | Fonte | Notas |
-|------|-------|-------|
-| Ícones | Lucide React | Truck, BarChart3, MapPin, etc. |
-| Imagens | Nenhuma no MVP | Bloco de provas no Hero (sem stock photo) |
-| OG Image | `public/og-image.png` | Gerado (1200×630) |
-| Favicon | `app/icon.png` | Ícone via convenção do App Router |
+| Elemento | Desktop | Embed |
+|---|---:|---:|
+| Chart meia coluna | `340px` | `320px` |
+| Chart full width | `430px` | `360px` |
+| Mapa full width | `460px` | `330px` |
+| Container principal | `1180px` máx. | largura disponível |
 
----
+### Critérios
 
-## 8. Formulário de Contato
-
-| Campo | Tipo | Obrigatório |
-|-------|------|-------------|
-| Nome | text | Sim |
-| Email | email | Sim |
-| Empresa | text | Não |
-| Principal dor/desafio | textarea | Não |
-
-- Validação HTML5 (`required`, `type="email"`)
-- Submit: POST para Formspree quando `NEXT_PUBLIC_FORMSPREE_FORM_ID` existe
-- Fallback sem Formspree: abre `mailto` pré-preenchido (o lead não se perde)
-- CTA: **"Solicitar leitura inicial"**
+- Cada demo precisa deixar visível: problema, abordagem, stack, trade-off, métrica e limite.
+- KPIs e gráficos devem apoiar decisão, não decorar a tela.
+- Tabelas precisam ter formatação de moeda, percentual, score e status quando aplicável.
+- Links de contato nas demos devem ser profissionais: LinkedIn, email, GitHub ou CV.
+- Não usar CTA de venda consultiva como centro da experiência.
 
 ---
 
-## 9. Modal de Demo (Streamlit)
+## 7. Critérios de Qualidade
 
-- Componente: `DemoBriefingModal` (exportado como `DemoModal`)
-- Header: título + link **"Abrir em nova aba"** (URL sem `?embed=true`)
-- Contexto: faixa **2 colunas** (pergunta | decisão) + métrica em destaque tipográfico + tags inline + limitação footnote
-- Mobile: contexto colapsável (`details`); iframe **sob demanda** (botão "Carregar demo aqui")
-- Iframe: `{demoUrl}?embed=true` — desktop 700px, mobile até 500px
-- Sem grid 2×2 de labels no topo (padrão banido no pass editorial)
-
-### Demos Streamlit (UX interno)
-
-- Marca alinhada: primary `#1e3a5f`, accent `#0d9488`
-- `lib/ui.py`: `hero`, `section`, `plot`, `sidebar_brand`
-- `.streamlit/config.toml`: `toolbarMode = "minimal"` para embed limpo
-- Home: mapa herói + cards navegáveis (Profundas / Pontuais)
+- Primeira dobra comunica perfil para headhunter sem depender de rolagem longa.
+- CTA de LinkedIn/email fica claro.
+- 3 provas técnicas aparecem cedo.
+- Biblioteca não parece coleção de clones; deve apoiar repertório.
+- Contraste AA em fundos claros e escuros.
+- Demos Streamlit preservam a mesma paleta, densidade e linguagem da landing.
+- Performance continua como sinal profissional: build limpo e Lighthouse ≥90.
+- Mobile precisa ser escaneável para triagem via LinkedIn.
 
 ---
 
-## 10. Princípios de Design
+## 8. Referências
 
-1. **Clareza comercial** — visitante entende problema, oferta e próximo passo em 30s
-2. **Confiança** — paleta sóbria, sem stock photos, declaração ética visível
-3. **Prova técnica** — cases com demo interativa, não só texto
-4. **Mobile-first** — maioria do tráfego B2B vem de LinkedIn no celular
-5. **Sem ruído** — animações sutis, uma CTA principal por viewport
+- `KpG782/3D_Portfolio` — conceito estrutural forte e cases como traces com trade-offs.
+- `fuaadabdullah/fuaad-portfolio` — apresentação employer-ready, resume e case studies.
+- `M-F-Tushar/My-Portfolio` — orientação explícita para recrutador entender direção, provas, links e contato.
+- `mohabbis/personal-portfolio` — estética editorial, neutros quentes, tipografia forte e mínimo chrome.
+- SitesPlaced / Portfolio Studio — princípios de recrutamento: projetos cedo, resultados, links funcionais, stack tags e performance.
 
 ---
 
-*Design document — documento vivo. Atualizar quando decisões visuais mudarem.*
+*Documento vivo. Atualize quando a direção de carreira, paleta ou estrutura principal mudar.*

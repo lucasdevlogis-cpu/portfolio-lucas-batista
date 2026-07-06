@@ -1,138 +1,122 @@
-"use client";
+import { ArrowRight, ExternalLink, Mail } from "lucide-react";
 
-import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight, Link as LinkIcon, Mail, Route } from "lucide-react";
-
-import { DarkSection } from "@/components/DarkSection";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { CONTENT } from "@/data/content";
-import { scrollToSection } from "@/lib/scroll";
-
-const container = {
-  hidden: { opacity: 1 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
+import { cn } from "@/lib/utils";
 
 export function Hero() {
-  const { pessoal, hero } = CONTENT;
+  const { pessoal, hero, careerTarget, proofStats, contactLinks } = CONTENT;
 
   return (
-    <DarkSection glow="hero" grid>
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          className="max-w-3xl pt-24 pb-14 md:pt-32 md:pb-20"
-          variants={container}
-          initial="hidden"
-          animate="show"
-        >
-          <motion.p
-            variants={item}
-            className="text-sm font-medium text-on-dark-muted"
-          >
-            <span className="font-semibold text-white">{pessoal.nome}</span>
-            {" · "}
-            {pessoal.titulo}
-          </motion.p>
-
-          <motion.span
-            variants={item}
-            className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-on-dark-accent backdrop-blur-sm"
-          >
-            <Route className="size-4" aria-hidden />
+    <section className="relative overflow-hidden bg-editorial text-ink">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_10%,rgba(15,118,110,0.13),transparent_34%),linear-gradient(180deg,rgba(255,253,248,0.9),rgba(246,241,232,1))]"
+        aria-hidden
+      />
+      <div className="relative mx-auto grid w-full max-w-7xl gap-8 px-4 pt-24 pb-12 sm:px-6 md:pt-32 lg:grid-cols-[minmax(0,1.08fr)_minmax(22rem,0.92fr)] lg:gap-12 lg:px-8">
+        <div className="min-w-0 max-w-3xl overflow-hidden">
+          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-warm-accent">
             {hero.badge}
-          </motion.span>
-
-          <motion.h1
-            variants={item}
-            className="mt-6 font-heading text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl"
-          >
+          </p>
+          <h1 className="mt-5 font-heading text-4xl font-black leading-[0.95] text-ink sm:text-6xl lg:text-7xl">
+            {pessoal.nome}
+          </h1>
+          <p className="mt-5 max-w-2xl break-words font-heading text-lg font-bold leading-tight text-primary sm:text-3xl">
             {pessoal.headline}
-          </motion.h1>
-
-          <motion.p
-            variants={item}
-            className="mt-6 max-w-2xl text-lg leading-relaxed text-on-dark-muted md:text-xl"
-          >
+          </p>
+          <p className="mt-5 max-w-xl break-words text-sm leading-relaxed text-muted-foreground sm:max-w-2xl sm:text-lg">
             {pessoal.subheadline}
-          </motion.p>
+          </p>
 
-          <motion.div
-            variants={item}
-            className="mt-9 flex flex-col gap-3 sm:flex-row"
-          >
-            <Button
-              className="h-12 gap-2 bg-accent px-7 text-base font-semibold text-white shadow-lg shadow-accent/25 hover:bg-accent/90"
-              onClick={() => scrollToSection("#contato")}
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a
+              href="#cases"
+              className={cn(
+                buttonVariants({ variant: "default" }),
+                "h-12 w-full gap-2 rounded-md bg-ink px-6 text-base font-semibold text-white hover:bg-ink/90 sm:w-auto",
+              )}
             >
               {hero.ctaPrimario}
               <ArrowRight className="size-4" aria-hidden />
-            </Button>
-            <Button
-              className="h-12 gap-2 border border-white/25 bg-white/5 px-7 text-base font-medium text-white backdrop-blur-sm hover:bg-white/10 hover:text-white"
-              onClick={() => scrollToSection("#cases")}
+            </a>
+            <a
+              href="#contato"
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "h-12 w-full gap-2 rounded-md border-border bg-card/70 px-6 text-base font-semibold text-ink hover:bg-card sm:w-auto",
+              )}
             >
-              <ArrowDown className="size-4" aria-hidden />
+              <Mail className="size-4" aria-hidden />
               {hero.ctaSecundario}
-            </Button>
-          </motion.div>
+            </a>
+          </div>
 
-          <motion.div
-            variants={item}
-            className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-on-dark-muted"
-          >
-            {!pessoal.linkedin.startsWith("[") ? (
-              <a
-                href={pessoal.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 transition-colors hover:text-white"
-              >
-                <LinkIcon className="size-4" aria-hidden />
-                LinkedIn
-              </a>
-            ) : null}
-            {!pessoal.email.startsWith("[") ? (
-              <a
-                href={`mailto:${pessoal.email}`}
-                className="inline-flex items-center gap-2 transition-colors hover:text-white"
-              >
-                <Mail className="size-4" aria-hidden />
-                {pessoal.email}
-              </a>
-            ) : null}
-          </motion.div>
-        </motion.div>
+          <div className="mt-12 grid grid-cols-1 gap-4 border-t border-border pt-6 sm:grid-cols-3">
+            {hero.provas.map((prova) => (
+              <div key={prova.valor}>
+                <p className="font-heading text-3xl font-black text-ink">
+                  {prova.valor}
+                </p>
+                <p className="mt-1 text-sm leading-snug text-muted-foreground">
+                  {prova.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
 
-        {/* Barra de provas — âncora inferior do hero */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="grid grid-cols-1 divide-y divide-white/10 border-t border-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
-        >
-          <p className="col-span-full pt-6 pb-4 text-xs font-semibold uppercase tracking-widest text-on-dark-accent/80 sm:hidden">
-            {hero.provasTitulo}
-          </p>
-          {hero.provas.map((prova) => (
-            <div key={prova.valor} className="px-0 py-5 sm:px-6 sm:py-8">
-              <p className="font-heading text-3xl font-bold text-white lg:text-4xl">
-                {prova.valor}
-              </p>
-              <p className="mt-1.5 text-sm leading-snug text-slate-400">
-                {prova.label}
-              </p>
-            </div>
-          ))}
-        </motion.div>
+        <aside className="w-full min-w-0 max-w-full overflow-hidden rounded-xl bg-surface-dark p-5 text-white shadow-2xl shadow-ink/15 lg:p-7">
+          <div className="rounded-lg border border-white/10 bg-white/[0.035] p-5">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-on-dark-accent">
+              {careerTarget.eyebrow}
+            </p>
+            <h2 className="mt-3 break-words font-heading text-xl font-bold leading-tight text-white sm:text-2xl">
+              {careerTarget.titulo}
+            </h2>
+            <p className="mt-4 break-words text-sm leading-relaxed text-on-dark-muted">
+              {careerTarget.resumo}
+            </p>
+          </div>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            {proofStats.slice(0, 4).map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-lg border border-white/10 bg-white/[0.045] p-4"
+              >
+                <p className="font-heading text-2xl font-black text-white">
+                  {stat.valor}
+                </p>
+                <p className="mt-1 text-sm font-semibold text-on-dark-accent">
+                  {stat.label}
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-on-dark-muted">
+                  {stat.detalhe}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-5 flex flex-col gap-2 border-t border-white/10 pt-5 text-sm text-on-dark-muted">
+            <a
+              href={pessoal.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-between gap-3 rounded-md border border-white/10 px-3 py-2 transition-colors hover:bg-white/10 hover:text-white"
+            >
+              {contactLinks.linkedinLabel}
+              <ExternalLink className="size-4" aria-hidden />
+            </a>
+            <a
+              href={`mailto:${pessoal.email}`}
+              className="inline-flex items-center justify-between gap-3 rounded-md border border-white/10 px-3 py-2 transition-colors hover:bg-white/10 hover:text-white"
+            >
+              {contactLinks.emailLabel}
+              <Mail className="size-4" aria-hidden />
+            </a>
+          </div>
+        </aside>
       </div>
-    </DarkSection>
+    </section>
   );
 }

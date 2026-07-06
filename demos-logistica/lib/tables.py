@@ -48,7 +48,8 @@ def currency_column(label: str | None = None, decimals: int = 2) -> st.column_co
 
 def percent_column(label: str | None = None, signed: bool = False, decimals: int = 1) -> st.column_config.NumberColumn:
     """Coluna de porcentagem."""
-    fmt = f"{'+' if signed else ''}%%,.{decimals}f%%"
+    sign = "+" if signed else ""
+    fmt = f"{sign}%,.{decimals}f%%"
     return st.column_config.NumberColumn(label=label, format=fmt, alignment="right")
 
 

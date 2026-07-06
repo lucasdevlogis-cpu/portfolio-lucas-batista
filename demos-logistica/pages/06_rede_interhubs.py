@@ -148,7 +148,7 @@ with tab_analise:
             annotation_position="top right",
         )
         fig.update_layout(
-            height=brand.CHART_HALF_HEIGHT,
+            height=ui.chart_height(brand.CHART_HALF_HEIGHT),
             yaxis_title="",
             xaxis_title="R$/ton",
             coloraxis_showscale=False,
@@ -184,7 +184,7 @@ with tab_analise:
                 ]
             )
         )
-        fig2.update_layout(height=brand.CHART_HALF_HEIGHT)
+        fig2.update_layout(height=ui.chart_height(brand.CHART_HALF_HEIGHT))
         ui.plot(fig2, width="stretch")
 
     st.divider()

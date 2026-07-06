@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 
-import { DarkSection } from "@/components/DarkSection";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CONTENT } from "@/data/content";
+import { DarkSection } from "./DarkSection";
 
 export function Metodo() {
   const { secoes, metodo } = CONTENT;

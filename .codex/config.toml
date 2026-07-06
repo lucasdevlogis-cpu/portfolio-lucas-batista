@@ -1,0 +1,11 @@
+# Portfolio Lucas Batista — configuração Codex (projeto)
+# Carregado quando o projeto está trusted (~/.codex/config.toml).
+# Docs: https://developers.openai.com/codex/config-advanced
+
+project_doc_fallback_filenames = [".cursorrules"]
+
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+
+[features]
+skills = true

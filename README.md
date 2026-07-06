@@ -1,15 +1,14 @@
 # Portfólio Lucas Batista
 
-Landing page profissional — inteligência operacional para logística, transporte, varejo e e-commerce.
+Dossiê profissional — operações, dados e inteligência logística. **Executive Proof System** para headhunters e lideranças que avaliam fit técnico.
 
 ## Posicionamento
 
-**Tese central:** transformo dados espalhados, processos manuais e decisões lentas em clareza, controle e soluções digitais enxutas para operações de logística, transporte, varejo e e-commerce.
+- **Público:** headhunters, recrutadores e lideranças de operações/dados.
+- **Prova:** 10 demos navegáveis (3 âncora + biblioteca) com contexto de negócio, métrica e limitação declarada.
+- **Contato:** LinkedIn, email e GitHub — sem formulário como foco.
 
-- **Público:** pequenas e médias empresas com operação rodando e dores de frete, SLA, last mile, ocorrências ou indicadores inconsistentes.
-- **Escada de ofertas:** do diagnóstico rápido ao piloto com IA — o cliente começa comprando clareza, não um projeto grande.
-- **Prova:** 10 cases demonstráveis com dados sintéticos, cada um respondendo a uma pergunta real de negócio.
-- **Ética de dados:** dados públicos, sintéticos, anonimizados ou fornecidos pelo cliente com finalidade definida; limitação declarada em cada case.
+Landing comercial anterior (Dores, Serviços, etc.) shelved em [`components/archive/consultoria/`](components/archive/consultoria/).
 
 ## Stack
 
@@ -35,7 +34,8 @@ Copie `.env.example` para `.env.local`:
 |----------|-----------|
 | `NEXT_PUBLIC_SITE_URL` | URL pública do site (Vercel) |
 | `NEXT_PUBLIC_DEMOS_BASE_URL` | URL base do Streamlit Cloud (**obrigatória no build** para links de demo) |
-| `NEXT_PUBLIC_FORMSPREE_FORM_ID` | ID do formulário Formspree (opcional) |
+
+Sync com a Vercel: `npx vercel env pull .env.local`. Detalhes: [`docs/VERCEL.md`](docs/VERCEL.md).
 
 ## Demos Streamlit
 
@@ -47,7 +47,7 @@ A landing embute **10 demos** via modal (`DemoModal` + iframe `?embed=true`). Ma
 cd demos-logistica
 pip install -r requirements.txt
 python scripts/build_datasets.py
-python scripts/smoke_test.py   # 12/12 pages OK
+python scripts/smoke_test.py   # 13 checagens (12 scripts + 1 borda torre)
 streamlit run app.py
 ```
 
@@ -64,13 +64,17 @@ Guia completo: [`docs/DEPLOY.md`](docs/DEPLOY.md)
 
 ## Documentação
 
-Documentação enxuta — apenas o essencial. Conteúdo do site vive em [`data/content.ts`](data/content.ts) (fonte única, sem hardcode nos componentes).
+Conteúdo do site: [`data/content.ts`](data/content.ts). Spec ativa: [`design/design.md`](design/design.md). Estado: [`docs/AVALIACAO.md`](docs/AVALIACAO.md).
 
 | Doc | Conteúdo |
 |-----|----------|
-| [`docs/AVALIACAO.md`](docs/AVALIACAO.md) | Estado atual, pendências e próximos passos |
-| [`docs/DEPLOY.md`](docs/DEPLOY.md) | Guia de deploy (Vercel + Streamlit) |
-| [`design/design.md`](design/design.md) | Decisões visuais e de layout |
+| [`docs/AVALIACAO.md`](docs/AVALIACAO.md) | Estado atual, bloqueadores e fases |
+| [`docs/VERCEL.md`](docs/VERCEL.md) | Auditoria Vercel, env vars, MCP |
+| [`docs/DEPLOY.md`](docs/DEPLOY.md) | Deploy Vercel + Streamlit |
+| [`docs/OPORTUNIDADES_DEMOS.md`](docs/OPORTUNIDADES_DEMOS.md) | Backlog visual/UX das demos |
+| [`design/design.md`](design/design.md) | Spec visual ativa (Executive Proof System) |
+| [`design/archive/`](design/archive/) | Planos e specs shelved |
+| [`AGENTS.md`](AGENTS.md) | Guia para agentes de código |
 
 ## Licença
 

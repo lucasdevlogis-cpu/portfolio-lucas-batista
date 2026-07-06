@@ -85,7 +85,11 @@ st.divider()
 
 # Mapa com Folium -------------------------------------------------------------
 ui.section("Mapa de status por região")
-m = folium_maps.base_map(center=(-15, -50), zoom=4, height=ui.map_height(460))
+m = folium_maps.base_map(
+    center=(-15, -50),
+    zoom=4,
+    height=ui.map_height(brand.MAP_FULL_HEIGHT),
+)
 m = folium_maps.add_points(
     m,
     f,
@@ -97,7 +101,11 @@ m = folium_maps.add_points(
     cluster=len(f) > 40,
     tooltip_field="pedido",
 )
-folium_maps.render(m, height=ui.map_height(460), key="torre_mapa")
+folium_maps.render(
+    m,
+    height=ui.map_height(brand.MAP_FULL_HEIGHT),
+    key="torre_mapa",
+)
 st.caption(
     "Cores dos marcadores indicam status operacional. "
     "Coordenadas aproximadas por região; não são posições de rastreamento ao vivo."
@@ -134,7 +142,7 @@ with col1:
     )
     fig.update_layout(
         barmode="group",
-        height=brand.CHART_HALF_HEIGHT,
+        height=ui.chart_height(brand.CHART_HALF_HEIGHT),
         xaxis_title="",
         yaxis_title="",
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
@@ -159,7 +167,7 @@ with col2:
         )
     )
     fig2.update_layout(
-        height=brand.CHART_HALF_HEIGHT,
+        height=ui.chart_height(brand.CHART_HALF_HEIGHT),
         margin=dict(t=10, b=80, l=10, r=10),
         legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5),
     )

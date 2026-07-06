@@ -8,11 +8,11 @@
 
 ## Contexto
 
-- Portfólio profissional de Lucas Batista, especialista autônomo em inteligência operacional para logística, transporte, varejo e e-commerce no Brasil.
-- Site: landing page one-page (home) construída com Next.js 16, Tailwind CSS v4, TypeScript e shadcn/ui.
-- Objetivo: gerar leads de consultoria — o visitante deve entender em 30 segundos qual problema resolve, para quem, e como contratar.
-- Todos os textos do site vêm de `data/content.ts`. Nunca hardcode textos diretamente nos componentes — sempre importar do arquivo de dados.
-- Isso facilita edições futuras via vibecoding: basta editar o arquivo de dados, não o componente.
+- Portfólio profissional de Lucas Batista — operações, dados e inteligência logística (logística, transporte, varejo e e-commerce no Brasil).
+- Site: landing one-page (home) com Next.js 16, Tailwind CSS v4, TypeScript e shadcn/ui.
+- Objetivo (**Executive Proof System**): dossiê profissional para headhunters — em 60 segundos entender fit, senioridade, provas técnicas, stack e contato.
+- Todos os textos do site vêm de `data/content.ts`. Nunca hardcode textos nos componentes.
+- Spec visual: `design/design.md` + tokens em `app/globals.css` (sem Figma no fluxo)
 
 ---
 
@@ -30,35 +30,32 @@
 
 - Tailwind v4 usa configuração CSS-based em `app/globals.css`, não `tailwind.config.ts`.
 - O arquivo `globals.css` deve ter: `@import "tailwindcss"` e bloco `@theme` com as variáveis CSS.
-- Cores customizadas são definidas como variáveis CSS em `@theme`, ex: `--color-primary: #1e3a5f`.
+- Cores customizadas são definidas como variáveis CSS em `@theme` (ver tokens em `:root`).
 - Não criar `tailwind.config.ts` — isso é v3.
 
 ---
 
 ## Design
 
-- Estética profissional, limpa, confiável
-- Cores: primary `#1e3a5f`, accent `#0d9488`, background `#f8fafc`, card `#ffffff`, text `#0f172a`, muted `#64748b`, border `#e2e8f0`
-- Tipografia: Inter (Google Fonts) para headings, Geist Sans para body
-- Layout: mobile-first, responsivo
+- Cores (tokens em `app/globals.css`): editorial `#f6f1e8`, card `#fffdf8`, ink `#111827`, primary `#17324d`, accent `#0f766e`, warm-accent `#9a6a2f`, surface-dark `#102033`
+- Tipografia: system stack (`font-heading` / `font-sans`); preferir `next/font` quando adicionar Inter/Geist
+- Layout: mobile-first, responsivo; whitespace generoso, estética editorial (não SaaS genérico)
 - Scroll suave: `scroll-behavior: smooth` no CSS global
-- Animações sutis com Framer Motion (fade-in, slide-up)
-- Cards: `rounded-xl`, `shadow-sm`, hover com `shadow-md` e `scale-[1.02]`
+- Motion discreto; conteúdo essencial não pode depender de animação para ser visível
+- Cards: `rounded-xl`, borda editorial, hover sutil (`border-primary/40`)
 
 ---
 
 ## Estrutura de Seções (ordem final)
 
-1. **Header/Nav** — logo + links + CTA "Falar sobre minha operação"
-2. **Hero** — headline + subheadline + 2 CTAs
-3. **Dores** — 8 cards de dores logísticas
-4. **Serviços** — 5 níveis de contratação (escada)
-5. **Cases** — grid de **10 cases demonstráveis** + filtro por categoria; `06-kpis-cd` fica em "Próximas análises"
-6. **Método** — 5 passos do processo
-7. **Sobre** — bio + ferramentas
-8. **IA/Vibecoding** — uso de IA como acelerador
-9. **Contato** — formulário + CTA
-10. **Footer** — copyright + links + declaração ética
+1. **Header/Nav** — nome + links (Perfil, Provas, Trajetória, Contato) + CTA "Contato profissional"
+2. **Hero** — briefing executivo 2 col (nome, posicionamento, provas + aside career target)
+3. **ProfileBrief** — fit em 60s (`#perfil`) + trajetória/stack (`#trajetoria`)
+4. **Cases** — 3 cases âncora + biblioteca filtrável + roadmap (`06-kpis-cd`)
+5. **Contato** — LinkedIn, email, GitHub, CV (sem formulário)
+6. **Footer** — links, declaração ética, voltar ao topo
+
+Seções comerciais shelved: `components/archive/consultoria/` (Dores, Serviços, Método, Sobre, IA).
 
 ---
 
@@ -67,7 +64,7 @@
 - Todos os componentes: React function components com TypeScript.
 - Use `interface` ou `type` para tipagem. Evite `any`.
 - Use Tailwind classes utilitárias. Não criar CSS custom a menos que necessário.
-- Componentes reutilizáveis: `SectionHeader`, `CaseCard`, `ServiceCard`, `PainPointCard`, `DemoModal`.
+- Componentes reutilizáveis: `CaseCard`, `CaseDemoLauncher`, `CaseLibraryInteractive`, `ProfileBrief`, `DemoModal`, `SectionHeader`.
 - Imagens: usar placeholders, ícones Lucide, ou componentes SVG. Nunca imagens genéricas de stock.
 - Textos: sempre em português do Brasil. Nunca hardcode — importar de `data/content.ts`.
 - SEO: meta tags, Open Graph, title, description em `layout.tsx`.
@@ -88,7 +85,7 @@
 - A demo abre em modal ao clicar, não em nova página (exceto link explícito no header).
 - Em mobile, o iframe deve ter altura reduzida (500px).
 - Demos Streamlit: 11 pages em `demos-logistica/pages/`; UX padronizado via `lib/ui.py`.
-- Verificação: `python scripts/smoke_test.py` (meta 12/12).
+- Verificação: `python scripts/smoke_test.py` (meta **13 checagens**: 12 scripts + 1 borda torre)
 
 ---
 
@@ -97,7 +94,7 @@
 - Target: Vercel (gratuito) — Next.js nativo, **sem** `output: 'export'`
 - Output Directory no painel: **vazio**, overrides desligados (ver `docs/DEPLOY.md`)
 - Demos: Streamlit Cloud; env `NEXT_PUBLIC_DEMOS_BASE_URL` no build
-- Guia completo: `docs/DEPLOY.md` · Avaliação: `docs/AVALIACAO.md`
+- Guia completo: `docs/DEPLOY.md` · Vercel: `docs/VERCEL.md` · Avaliação: `docs/AVALIACAO.md`
 
 ---
 

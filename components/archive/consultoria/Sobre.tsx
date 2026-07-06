@@ -72,7 +72,7 @@ export function Sobre() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <h2 className="font-heading text-3xl font-bold tracking-tight text-primary md:text-4xl">
+          <h2 className="font-heading text-3xl font-bold text-primary md:text-4xl">
             {sobre.titulo}
           </h2>
 

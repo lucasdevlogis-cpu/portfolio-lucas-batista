@@ -25,13 +25,15 @@ def base_map(
     height: int = brand.MAP_FULL_HEIGHT,
 ) -> folium.Map:
     """Cria mapa Folium com tiles limpos e controle de zoom."""
-    return folium.Map(
+    m = folium.Map(
         location=center,
         zoom_start=zoom,
         tiles=tiles,
         height=height,
         control_scale=True,
+        zoom_control=True,
     )
+    return m
 
 
 def _icon_for(tipo: str) -> folium.Icon:
@@ -81,6 +83,8 @@ def add_points(
     for _, row in df.iterrows():
         tipo_val = str(row[tipo]).lower() if tipo and tipo in row else ""
         icon = _icon_for(tipo_val)
+        popup = _popup(row, popup_fields or [])
+        tooltip = str(row[tooltip_field]) if tooltip_field and tooltip_field in row else None
         if color_by and color_by in row:
             # Aceita tanto status operacional ("Atrasado", "No prazo") quanto níveis
             # de severidade ("Alta", "Crítico") — antes só o segundo mapa era
@@ -91,13 +95,21 @@ def add_points(
                 or brand.SEVERITY_COLORS.get(key)
                 or brand.PRIMARY
             )
-            icon_name = icon.options.get("icon", "circle")
-            icon = folium.Icon(prefix="fa", icon=icon_name, color="white", icon_color=cor)
-        popup = _popup(row, popup_fields or [])
-        tooltip = str(row[tooltip_field]) if tooltip_field and tooltip_field in row else None
+            folium.CircleMarker(
+                location=[float(row[lat]), float(row[lon])],
+                radius=7,
+                color="white",
+                weight=2,
+                fill=True,
+                fill_color=cor,
+                fill_opacity=0.92,
+                popup=folium.Popup(popup, max_width=280) if popup else None,
+                tooltip=tooltip,
+            ).add_to(target)
+            continue
         folium.Marker(
             location=[float(row[lat]), float(row[lon])],
-            popup=folium.Popup(popup, max_width=250) if popup else None,
+            popup=folium.Popup(popup, max_width=280) if popup else None,
             tooltip=tooltip,
             icon=icon,
         ).add_to(target)
@@ -123,8 +135,8 @@ def add_numbered_markers(
                     f"background:{color};color:white;"
                     f"border-radius:50%;width:22px;height:22px;"
                     f"display:flex;align-items:center;justify-content:center;"
-                    f"font-size:11px;font-weight:700;border:2px solid white;"
-                    f"box-shadow:0 1px 3px rgba(0,0,0,0.3);'>"
+                    f"font-size:11px;font-weight:800;border:2px solid white;"
+                    f"box-shadow:0 4px 10px rgba(17,24,39,0.28);'>"
                     f"{label}</div>"
                 ),
             ),
@@ -145,13 +157,13 @@ def add_routes(
     """
     for i, r in enumerate(routes):
         coords = r["coords"]
-        color = r.get("color", brand.SEQ[i % len(brand.SEQ)])
+        color = r.get("color", brand.ROUTE_COLORS[i % len(brand.ROUTE_COLORS)])
         if len(coords) > 1:
             route_line = folium.PolyLine(
                 coords,
                 color=color,
-                weight=4,
-                opacity=0.85,
+                weight=3.5,
+                opacity=0.82,
                 popup=r.get("label"),
             ).add_to(m)
             if show_arrows:
@@ -173,6 +185,18 @@ def add_routes(
                 labels=[str(j + 1) for j in range(len(coords) - 2 if depot and len(coords) > 2 else len(coords))],
                 color=color,
             )
+        else:
+            compact_coords = coords[1:-1] if depot and len(coords) > 2 else coords
+            for lat, lon in compact_coords:
+                folium.CircleMarker(
+                    location=[lat, lon],
+                    radius=4,
+                    color="white",
+                    weight=1.5,
+                    fill=True,
+                    fill_color=color,
+                    fill_opacity=0.92,
+                ).add_to(m)
     if depot:
         folium.Marker(
             location=depot,
@@ -198,16 +222,21 @@ def add_network(
         line_weight = 1 + 5 * (w / max_width)
         folium.PolyLine(
             [a, b],
-            color=brand.ACCENT,
+            color=brand.PRIMARY,
             weight=line_weight,
-            opacity=0.75,
+            opacity=0.66,
             popup=e.get("label", ""),
         ).add_to(m)
     for _, row in nodes.iterrows():
-        folium.Marker(
+        folium.CircleMarker(
             location=[float(row[lat]), float(row[lon])],
             tooltip=str(row[label]),
-            icon=_icon_for("hub"),
+            radius=7,
+            color="white",
+            weight=2,
+            fill=True,
+            fill_color=brand.ACCENT,
+            fill_opacity=0.95,
         ).add_to(m)
     return m
 
@@ -226,7 +255,7 @@ def add_flows(
     tipo_colors = {
         "CD": brand.PRIMARY,
         "Loja": brand.ACCENT,
-        "Hub": brand.WARNING,
+        "Hub": brand.WARM_ACCENT,
     }
     for tipo in df[color_by].unique():
         sub = df[df[color_by] == tipo]
@@ -239,9 +268,9 @@ def add_flows(
             folium.PolyLine(
                 [orig, dest],
                 color=color,
-                weight=2,
-                opacity=0.7,
-                popup=folium.Popup(popup, max_width=250) if popup else None,
+                weight=2.5,
+                opacity=0.72,
+                popup=folium.Popup(popup, max_width=280) if popup else None,
             ).add_to(group)
     folium.LayerControl().add_to(m)
     return m

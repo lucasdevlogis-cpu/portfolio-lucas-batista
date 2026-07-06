@@ -1,6 +1,6 @@
 # Referências editoriais — pass Hero / Cases / Modal
 
-> Artefato da Fase 0. Fonte para frames Figma v3 e implementação React. **Não** substitui `design.md` (atualizado na Fase 5).
+> Artefato histórico da Fase 0 (mood board editorial v3, shelved). **Não** substitui `design/design.md`.
 
 ## Referências analisadas
 

@@ -45,7 +45,7 @@ demos-logistica/
   pages/                 # 11 demos
   scripts/
     build_datasets.py    # gera CSVs com seed fixa
-    smoke_test.py        # testa 12/12 pages (AppTest)
+    smoke_test.py        # 13 checagens (12 scripts + 1 borda torre)
   .streamlit/config.toml # tema marca + toolbarMode minimal
 ```
 
@@ -68,7 +68,7 @@ demos-logistica/
 cd demos-logistica
 pip install -r requirements.txt
 python scripts/build_datasets.py
-python scripts/smoke_test.py   # meta: 12/12 pages OK
+python scripts/smoke_test.py   # meta: 13 checagens
 streamlit run app.py
 ```
 

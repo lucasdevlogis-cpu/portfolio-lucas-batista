@@ -102,7 +102,12 @@ tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exp
 
 with tab_visao:
     ui.section("Rotas por veículo")
-    m = folium_maps.base_map(center=DEPOT, zoom=10, height=ui.map_height(520))
+    map_detail = not ui.is_embed()
+    m = folium_maps.base_map(
+        center=DEPOT,
+        zoom=10,
+        height=ui.map_height(brand.MAP_FULL_HEIGHT),
+    )
 
     rotas_viz = []
     for i, r in enumerate(rotas):
@@ -110,15 +115,29 @@ with tab_visao:
             {
                 "coords": r["coords"],
                 "label": f"V{r['veiculo']} · {r['carga_kg']:.0f} kg · {r['distancia_km']:.1f} km",
-                "color": brand.SEQ[i % len(brand.SEQ)],
+                "color": brand.ROUTE_COLORS[i % len(brand.ROUTE_COLORS)],
             }
         )
-    m = folium_maps.add_routes(m, rotas_viz, depot=DEPOT, show_numbers=True, show_arrows=True)
+    m = folium_maps.add_routes(
+        m,
+        rotas_viz,
+        depot=DEPOT,
+        show_numbers=map_detail,
+        show_arrows=map_detail,
+    )
 
-    folium_maps.render(m, height=ui.map_height(520), key="cvrp_rotas")
+    folium_maps.render(
+        m,
+        height=ui.map_height(brand.MAP_FULL_HEIGHT),
+        key="cvrp_rotas",
+    )
     st.caption(
         "Linhas retas entre paradas (geodésicas), não rotas rodoviárias reais. "
-        "Setas indicam sentido de visita e números marcam a sequência de paradas."
+        + (
+            "Abra a demo em nova aba para ver setas e sequência numerada."
+            if ui.is_embed()
+            else "Setas indicam sentido de visita e números marcam a sequência de paradas."
+        )
     )
 
 with tab_analise:
@@ -148,7 +167,7 @@ with tab_analise:
                 [("Veículo", "%{x}"), ("Distância", "%{y:,.1f} km")]
             )
         )
-        fig.update_layout(showlegend=False, height=brand.CHART_HALF_HEIGHT, xaxis_title="", yaxis_title="km")
+        fig.update_layout(showlegend=False, height=ui.chart_height(brand.CHART_HALF_HEIGHT), xaxis_title="", yaxis_title="km")
         fig = viz.add_reference_line(fig, y=media_km, label="média", color=brand.WARNING)
         ui.plot(fig, width="stretch")
 
@@ -174,7 +193,7 @@ with tab_analise:
                 [("Veículo", "%{x}"), ("Ocupação", "%{y:.1f}%")]
             )
         )
-        fig2.update_layout(height=brand.CHART_HALF_HEIGHT, xaxis_title="", yaxis_title="% capacidade")
+        fig2.update_layout(height=ui.chart_height(brand.CHART_HALF_HEIGHT), xaxis_title="", yaxis_title="% capacidade")
         fig2 = viz.add_reference_line(fig2, y=100, label="capacidade máxima", color=brand.DANGER)
         ui.plot(fig2, width="stretch")
 

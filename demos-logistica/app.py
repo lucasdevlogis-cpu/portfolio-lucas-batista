@@ -1,4 +1,4 @@
-"""Home das Demos Interativas — Inteligência Logística (Lucas Batista)."""
+"""Home das Demos Interativas — Executive Proof System."""
 
 import pandas as pd
 import streamlit as st
@@ -90,22 +90,50 @@ def render_cards(demos: list[tuple]) -> None:
     for inicio in range(0, len(demos), por_linha):
         linha = demos[inicio : inicio + por_linha]
         cols = st.columns(por_linha)
-        for col, (path, num, titulo, pergunta, icon) in zip(cols, linha):
+        for col, (path, num, titulo, pergunta, _icon) in zip(cols, linha):
             with col.container(border=True):
-                st.markdown(f"**{num} · {titulo}**")
+                st.markdown(
+                    f"<p style='margin:0;color:{brand.WARM_ACCENT};font-size:.72rem;"
+                    f"font-weight:850;letter-spacing:.12em;text-transform:uppercase;'>"
+                    f"Prova {num}</p>",
+                    unsafe_allow_html=True,
+                )
+                st.markdown(f"**{titulo}**")
                 st.caption(pergunta)
-                ui.nav_link(path, "Abrir demo", icon=icon)
+                ui.nav_link(path, "Abrir prova técnica")
 
 
-st.title("Demos Interativas — Inteligência Logística")
-ui.framework_badges(["PyVRP", "OSMnx", "OR-Tools", "Fleetbase", "H3"])
-st.markdown(
-    "Cada demo parte de uma **pergunta de negócio**, mostra a **decisão** que apoia e "
-    "o **ganho** estimado. Amostras curadas do Brasil; resultados demonstrativos."
+ui.breadcrumb("Portfólio técnico · <b>Demos navegáveis</b>")
+ui.hero(
+    "Demos Interativas — Inteligência Logística",
+    "Como avaliar raciocínio operacional, modelagem analítica e capacidade de prototipagem em problemas reais de logística?",
+    frameworks=["PyVRP", "OSMnx", "OR-Tools", "Fleetbase", "H3"],
+    selo=brand.maturidade(
+        metodo="amostras sintéticas/curadas", producao="dados reais + integração TMS/WMS"
+    ),
+    metric={
+        "label": "Provas navegáveis",
+        "value": "10 demos",
+        "delta": "frete, SLA, last mile, roteirização, rede e IA supervisionada",
+        "help": "Cada demo explicita pergunta, decisão, métrica e limitação.",
+    },
+)
+
+ui.kpi_grid(
+    [
+        {"label": "Profundas", "value": str(len(PROFUNDAS))},
+        {"label": "Pontuais", "value": str(len(PONTUAIS))},
+        {"label": "Stack", "value": "Python · Plotly · Folium"},
+        {"label": "Uso", "value": "Headhunter proof"},
+    ]
 )
 
 # Mapa herói: rede de corredores inter-hubs BR.
 try:
+    ui.section(
+        "Corredores logísticos como prova visual",
+        "Rede sintética para demonstrar leitura territorial, hubs e volume entre origens e destinos.",
+    )
     corr = pd.read_csv(DATA_DIR / "corredores_geo.csv")
     nodes = {}
     for _, r in corr.iterrows():
@@ -137,12 +165,12 @@ except FileNotFoundError:
     st.info("Rode `python scripts/build_datasets.py` para gerar os dados das demos.")
 
 ui.section(
-    "Profundas",
-    "Frente de consultoria: frete, roteirização, estratégia e abastecimento.",
+    "Provas profundas",
+    "Casos com mais camadas de decisão: custo, roteirização, rede e origem ótima.",
 )
 render_cards(PROFUNDAS)
 
-ui.section("Pontuais", "Análises objetivas de apoio à operação.")
+ui.section("Provas pontuais", "Análises objetivas para evidenciar repertório e execução.")
 render_cards(PONTUAIS)
 
 st.divider()
@@ -157,10 +185,9 @@ with col_fw:
     )
 with col_prov:
     ui.section("Transparência")
-    ui.nav_link("pages/11_sobre_dados_metodos.py", "Dados e métodos", icon="📚")
+    ui.nav_link("pages/11_sobre_dados_metodos.py", "Dados e métodos")
 
 st.info(
-    "**Limitação:** dados sintéticos/curados para demonstração. Para decisão real, "
-    "validar premissas com a base do cliente."
+    "**Limitação:** dados sintéticos/curados para demonstração. Para decisão real, validar premissas, integração e governança da operação."
 )
 ui.footer()

@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import { Brain, Check, Shield, X, Zap } from "lucide-react";
 
-import { DarkSection } from "@/components/DarkSection";
 import { CONTENT } from "@/data/content";
+import { DarkSection } from "./DarkSection";
 
 const iconCards = [
   { icon: Brain, label: "Análise assistida" },
@@ -28,7 +28,7 @@ export function IASection() {
             <span className="h-px w-6 bg-accent" aria-hidden />
             {ia.eyebrow}
           </span>
-          <h2 className="font-heading text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
+          <h2 className="font-heading text-3xl font-bold text-white md:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
             {ia.titulo}
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-on-dark-muted">

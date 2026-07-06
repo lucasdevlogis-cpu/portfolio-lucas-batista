@@ -148,10 +148,10 @@ with tab_visao:
             label = f"{r['origin_uf']}→{r['destination_uf']}: {fmt.fmt_currency(r['frete_total'], decimals=0)}"
             edges.append({"from": o, "to": d, "label": label, "width": w})
 
-        m = folium_maps.base_map(center=(-18, -47), zoom=4, height=ui.map_height(brand.CHART_FULL_HEIGHT))
+        m = folium_maps.base_map(center=(-18, -47), zoom=4, height=ui.map_height(brand.MAP_FULL_HEIGHT))
         if edges:
             m = folium_maps.add_network(m, nodes, edges, lat="lat", lon="lon", label="uf")
-        folium_maps.render(m, height=ui.map_height(brand.CHART_FULL_HEIGHT), key="frete_fluxos")
+        folium_maps.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="frete_fluxos")
         st.caption(
             "Espessura da linha ∝ frete total no corredor UF→UF. "
             "Linhas retas entre centroides, não rotas rodoviárias reais."
@@ -177,7 +177,7 @@ with tab_visao:
             )
         )
         wf.update_layout(
-            height=brand.CHART_FULL_HEIGHT,
+            height=ui.chart_height(brand.CHART_FULL_HEIGHT),
             margin=dict(t=10, b=10, l=10, r=10),
             yaxis_title="R$",
         )
@@ -215,13 +215,19 @@ with tab_analise:
     )
     comp_fig.update_layout(
         barmode="group",
-        height=brand.CHART_HALF_HEIGHT,
+        height=ui.chart_height(brand.CHART_HALF_HEIGHT),
         xaxis_title="",
         yaxis_title="R$",
         xaxis_tickangle=-30,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
-    comp_fig = viz.add_reference_line(comp_fig, y=piso_total / len(top), label="média piso", color=brand.WARNING)
+    media_piso_top = top["piso_antt"].mean()
+    comp_fig = viz.add_reference_line(
+        comp_fig,
+        y=media_piso_top,
+        label="média piso top 15",
+        color=brand.WARNING,
+    )
     ui.plot(comp_fig, width="stretch")
     st.caption("Top 15 embarques por frete total estimado.")
 
@@ -253,7 +259,7 @@ with tab_analise:
         )
     )
     sens = viz.add_reference_line(sens, x=diesel, label="diesel atual", color=brand.DANGER)
-    sens.update_layout(height=brand.CHART_HALF_HEIGHT)
+    sens.update_layout(height=ui.chart_height(brand.CHART_HALF_HEIGHT))
     ui.plot(sens, width="stretch")
 
 with tab_exportar:

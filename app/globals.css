@@ -7,10 +7,14 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-inter);
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --font-heading: ui-sans-serif, system-ui, sans-serif;
   --color-accent-contrast: var(--accent-contrast);
+  --color-editorial: var(--editorial);
+  --color-editorial-2: var(--editorial-2);
+  --color-ink: var(--ink);
+  --color-warm-accent: var(--warm-accent);
   --color-surface-dark: var(--surface-dark);
   --color-surface-dark-2: var(--surface-dark-2);
   --color-surface-dark-3: var(--surface-dark-3);
@@ -56,39 +60,41 @@
 }
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
+  --background: #f6f1e8;
+  --foreground: #111827;
+  --card: #fffdf8;
+  --card-foreground: #111827;
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #1e3a5f;
+  --popover-foreground: #111827;
+  --primary: #17324d;
   --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #475569;
-  --accent: #0d9488;
-  --accent-contrast: #0a7369;
+  --secondary: #ebe4d8;
+  --secondary-foreground: #111827;
+  --muted: #ebe4d8;
+  --muted-foreground: #4b5563;
+  --accent: #0f766e;
+  --accent-contrast: #0f766e;
   --accent-foreground: #ffffff;
-  --surface-dark: #122845;
-  --surface-dark-2: #16304f;
-  --surface-dark-3: #0f2038;
+  --editorial: #f6f1e8;
+  --editorial-2: #efe7da;
+  --ink: #111827;
+  --warm-accent: #9a6a2f;
+  --surface-dark: #102033;
+  --surface-dark-2: #17324d;
+  --surface-dark-3: #111827;
   --text-on-dark: #ffffff;
-  --text-on-dark-muted: #cbd5e1;
+  --text-on-dark-muted: #d1d5db;
   --text-on-dark-accent: #5eead4;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #0d9488;
+  --border: #d8cfbf;
+  --input: #d8cfbf;
+  --ring: #0f766e;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --prose-width: 42rem;
-  --brief-width: 22rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -109,10 +115,11 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: clip;
   }
   ::selection {
     color: var(--primary);
-    background-color: color-mix(in srgb, #0d9488 25%, transparent);
+    background-color: color-mix(in srgb, #0f766e 25%, transparent);
   }
   h1,
   h2,
@@ -120,7 +127,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-inter), var(--font-geist-sans), sans-serif;
+    font-family: ui-sans-serif, system-ui, sans-serif;
   }
 }
 
@@ -131,28 +138,5 @@
   }
   .bg-accent-contrast {
     background-color: var(--accent-contrast);
-  }
-
-  /* Editorial pass — tipografia e larguras de coluna */
-  .text-eyebrow {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .text-display {
-    font-size: clamp(2.25rem, 4.5vw, 3.75rem);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-  }
-  .text-lede {
-    font-size: 1.125rem;
-    line-height: 1.6;
-  }
-  .max-prose {
-    max-width: var(--prose-width);
-  }
-  .max-brief {
-    max-width: var(--brief-width);
   }
 }

@@ -48,7 +48,7 @@ O Streamlit Cloud redeploya automaticamente após o push.
 cd demos-logistica
 pip install -r requirements.txt
 python scripts/build_datasets.py
-python scripts/smoke_test.py   # meta: 12/12 pages OK
+python scripts/smoke_test.py   # meta: 13 checagens (12 scripts + 1 borda torre)
 streamlit run app.py
 ```
 
@@ -72,25 +72,27 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 2. **Framework Preset:** Next.js (detecção automática).
 3. **Build command:** deixe em branco (usa `npm run build`, que roda `prebuild` → `npm run validate` antes; um desync de cases/slug falha o deploy).
 4. **Output Directory:** deixe em branco — **não** preencha `dist`, `out` nem `.next`.
-5. **Environment variables:**
+5. **Environment variables** (obrigatórias em **Production, Preview e Development**):
 
 | Nome | Valor |
 |------|-------|
 | `NEXT_PUBLIC_SITE_URL` | `https://portfolio-lucas-batista-murex.vercel.app` |
-| `NEXT_PUBLIC_DEMOS_BASE_URL` | URL do Streamlit Cloud (já deployada) |
-| `NEXT_PUBLIC_FORMSPREE_FORM_ID` | ID Formspree (opcional) |
+| `NEXT_PUBLIC_DEMOS_BASE_URL` | URL do Streamlit Cloud |
 
-6. Deploy.
+> **Preview sem env** = PR deploya com links de demo vazios. Ver matriz completa em [`docs/VERCEL.md`](VERCEL.md).
+
+1. Deploy.
 
 > **URLs de demo:** `linkDemo` em `data/content.ts` é calculado **no build**. Slugs seguem a URL Streamlit (sem prefixo numérico: `08_ship_from_store.py` → `/ship_from_store`). Após alterar `NEXT_PUBLIC_DEMOS_BASE_URL` ou `CASE_DEMO_SLUGS`, faça **Redeploy** na Vercel.
 
-**Produção atual:**
+**Produção atual** (verificar commit via `npx vercel inspect` ou MCP `list_deployments`):
 
 | Serviço | URL |
 |---------|-----|
 | Landing | <https://portfolio-lucas-batista-murex.vercel.app> |
 | Demos | <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app> |
 
+Auditoria Vercel, env vars, MCP e troubleshooting: [`docs/VERCEL.md`](VERCEL.md).
 **Importante — toggles de override no painel:** em cada campo (Framework, Build Command, Output Directory, Install Command), o toggle **Override deve estar DESLIGADO** (usar padrão). Não basta deixar o campo vazio com override ligado — isso grava `outputDirectory: ""` e faz a Vercel pular o build do Next.js (site vazio / 404).
 
 ### Erro `routes-manifest.json` ou output `dist` não encontrado
@@ -116,31 +118,19 @@ npx vercel --prod
 
 ---
 
-## 3. Formspree (formulário de contato)
+## 3. Contato (layout atual)
 
-1. Crie conta em [formspree.io](https://formspree.io).
-2. Novo form → copie o ID (ex: `abcxyzde`).
-3. Adicione `NEXT_PUBLIC_FORMSPREE_FORM_ID=abcxyzde` na Vercel e faça **Redeploy**.
-4. Sem ID configurado, o form abre um `mailto` pré-preenchido para o e-mail do `data/content.ts` (o lead não se perde).
+A seção `Contato` usa **links diretos** (LinkedIn, email, GitHub, CV). Não há formulário na homepage Executive Proof.
 
 ---
 
 ## 4. Checklist pós-deploy
 
 - [ ] Site abre na URL Vercel
-- [ ] **10 cases** aparecem na grade com filtro por categoria
+- [ ] **3 cases âncora** + biblioteca filtrável + roadmap visíveis
 - [ ] Demos abrem no modal (iframe) com contexto de negócio
 - [ ] Link "Abrir em nova aba" no modal funciona
-- [ ] Formulário envia (Formspree) ou abre `mailto`
-- [ ] `robots.txt` e `sitemap.xml` acessíveis
-- [ ] `og-image.png` aparece no preview de link (LinkedIn/WhatsApp)
-- [ ] email, LinkedIn, GitHub preenchidos em `data/content.ts`
-- [ ] Footer: links rápidos com `underline` + ícone `ArrowUpRight`
-- [ ] Lighthouse ≥ 90 em mobile
-- [ ] **10 cases** aparecem na grade com filtro por categoria
-- [ ] Demos abrem no modal (iframe) com contexto de negócio
-- [ ] Link "Abrir em nova aba" no modal funciona
-- [ ] Formulário envia (Formspree) ou abre `mailto`
+- [ ] LinkedIn, email e GitHub funcionam na seção Contato
 - [ ] `robots.txt` e `sitemap.xml` acessíveis
 - [ ] `og-image.png` aparece no preview de link (LinkedIn/WhatsApp)
 - [ ] email, LinkedIn, GitHub preenchidos em `data/content.ts`

@@ -6,11 +6,43 @@
  * Falha com código 1 e mensagem clara em qualquer inconsistência.
  */
 
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import {
+import type { Case } from "../data/content";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = resolve(__dirname, "..");
+const PAGES_DIR = join(ROOT, "demos-logistica", "pages");
+
+function loadLocalEnv(fileName: string): void {
+  const envPath = join(ROOT, fileName);
+  if (!existsSync(envPath)) {
+    return;
+  }
+
+  for (const rawLine of readFileSync(envPath, "utf8").split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) {
+      continue;
+    }
+
+    const match = line.match(/^([A-Za-z_][A-Za-z0-9_]*)=(.*)$/);
+    if (!match || process.env[match[1]] !== undefined) {
+      continue;
+    }
+
+    process.env[match[1]] = match[2].trim().replace(/^["']|["']$/g, "");
+  }
+}
+
+loadLocalEnv(".env.local");
+loadLocalEnv(".env");
+
+const require = createRequire(import.meta.url);
+const {
   CASE_DEMO_SLUGS,
   CASES_DEMONSTRAVEIS,
   CASES_ROADMAP,
@@ -18,12 +50,7 @@ import {
   DEMOS_BASE_URL,
   demoUrl,
   LUCIDE_ICON_NAMES,
-  type Case,
-} from "../data/content";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, "..");
-const PAGES_DIR = join(ROOT, "demos-logistica", "pages");
+} = require("../data/content") as typeof import("../data/content");
 
 const EXPECTED_DEMO_COUNT = 10;
 const EXPECTED_ROADMAP_IDS = ["06-kpis-cd"];
@@ -39,6 +66,15 @@ const REQUIRED_MODAL_FIELDS: (keyof Case)[] = [
   "limitacao",
 ];
 
+const REQUIRED_CONTENT_KEYS = [
+  "careerTarget",
+  "proofStats",
+  "recruiterBrief",
+  "featuredProofCases",
+  "experienceSignals",
+  "contactLinks",
+] as const;
+
 const errors: string[] = [];
 const warnings: string[] = [];
 
@@ -52,6 +88,25 @@ function warn(msg: string): void {
 
 const caseById = new Map(CONTENT.cases.map((c) => [c.id, c]));
 const demoIds = Object.keys(CASE_DEMO_SLUGS);
+
+// 0. Conteúdo headhunter-first obrigatório para o Executive Proof System.
+const contentRecord = CONTENT as unknown as Record<string, unknown>;
+for (const key of REQUIRED_CONTENT_KEYS) {
+  if (!(key in contentRecord)) {
+    fail(`CONTENT não tem o bloco headhunter obrigatório: "${key}".`);
+  }
+}
+
+const featuredProofCases = contentRecord.featuredProofCases;
+if (
+  Array.isArray(featuredProofCases) &&
+  (featuredProofCases.length !== 3 ||
+    featuredProofCases.some((id) => typeof id !== "string" || !caseById.has(id)))
+) {
+  fail(
+    "featuredProofCases deve conter exatamente 3 ids existentes em CONTENT.cases.",
+  );
+}
 
 // 1. Contagem de cases demonstráveis.
 if (demoIds.length !== EXPECTED_DEMO_COUNT) {

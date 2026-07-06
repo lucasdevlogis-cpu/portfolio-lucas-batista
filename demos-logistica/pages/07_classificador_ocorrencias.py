@@ -186,7 +186,7 @@ with col1:
         color_discrete_sequence=brand.SEQ,
     )
     fig.update_layout(
-        height=brand.CHART_HALF_HEIGHT,
+        height=ui.chart_height(brand.CHART_HALF_HEIGHT),
         showlegend=False,
         xaxis_title="",
         yaxis_title="",
@@ -211,7 +211,7 @@ with col2:
         hovertemplate=fmt.fmt_hover([("Prioridade", "%{label}"), ("Ocorrências", "%{value}")])
     )
     fig2.update_layout(
-        height=brand.CHART_HALF_HEIGHT,
+        height=ui.chart_height(brand.CHART_HALF_HEIGHT),
         margin=dict(t=10, b=80, l=10, r=10),
         legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5),
     )

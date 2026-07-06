@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 
 import { SectionHeader } from "@/components/SectionHeader";
-import { ServiceCard } from "@/components/ServiceCard";
 import { CONTENT } from "@/data/content";
+import { ServiceCard } from "./ServiceCard";
 
 export function Servicos() {
   const { secoes, servicos } = CONTENT;

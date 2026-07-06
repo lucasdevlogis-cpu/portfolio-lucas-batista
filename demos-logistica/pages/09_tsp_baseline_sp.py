@@ -92,7 +92,13 @@ comp = pd.DataFrame(
 tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
 
 with tab_visao:
-    ui.section("Rota otimizada", "Marcadores numerados e setas de direção.")
+    map_detail = not ui.is_embed()
+    ui.section(
+        "Rota otimizada",
+        "Marcadores numerados e setas de direção."
+        if map_detail
+        else "Rota compacta para leitura no modal da landing.",
+    )
     map_height = ui.map_height(brand.MAP_FULL_HEIGHT)
     m = fm.base_map(
         (depot_row["lat"], depot_row["lon"]),
@@ -109,11 +115,14 @@ with tab_visao:
             }
         ],
         depot=(depot_row["lat"], depot_row["lon"]),
-        show_numbers=True,
-        show_arrows=True,
+        show_numbers=map_detail,
+        show_arrows=map_detail,
     )
     fm.render(m, height=map_height, key="tsp_mapa")
-    st.caption("Linhas retas entre pontos (geodésicas), não rotas rodoviárias reais.")
+    st.caption(
+        "Linhas retas entre pontos (geodésicas), não rotas rodoviárias reais. "
+        + ("Abra em nova aba para sequência numerada." if ui.is_embed() else "")
+    )
 
 with tab_analise:
     col1, col2 = st.columns([1, 1])
@@ -149,7 +158,7 @@ with tab_analise:
         )
         fig.update_layout(
             showlegend=False,
-            height=brand.CHART_HALF_HEIGHT,
+            height=ui.chart_height(brand.CHART_HALF_HEIGHT),
             xaxis_title="",
             yaxis_title="km",
         )

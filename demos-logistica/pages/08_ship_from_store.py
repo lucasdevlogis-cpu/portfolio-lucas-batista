@@ -184,7 +184,7 @@ with tab_analise:
             color_discrete_map=tipo_colors,
         )
         fig2.update_layout(
-            height=brand.CHART_HALF_HEIGHT, xaxis_title="", yaxis_title="pedidos"
+            height=ui.chart_height(brand.CHART_HALF_HEIGHT), xaxis_title="", yaxis_title="pedidos"
         )
         fig2.update_traces(
             hovertemplate=fmt.fmt_hover(
@@ -202,7 +202,7 @@ with tab_analise:
             color_discrete_sequence=[brand.ACCENT],
         )
         fig3.update_layout(
-            height=brand.CHART_HALF_HEIGHT, xaxis_title="", yaxis_title="R$"
+            height=ui.chart_height(brand.CHART_HALF_HEIGHT), xaxis_title="", yaxis_title="R$"
         )
         fig3.update_traces(
             hovertemplate=fmt.fmt_hover(

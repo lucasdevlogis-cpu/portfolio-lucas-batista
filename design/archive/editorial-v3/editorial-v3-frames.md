@@ -1,4 +1,4 @@
-# Figma v3 — frames editoriais (spec de implementação)
+# Editorial v3 — frames (spec histórica)
 
 > Spec high-fidelity para Hero, Cases e DemoModal. Referências em `references-editorial.md`.
 > Nodes v2 herdados: `2:31` CaseCard, `2:38` ProfileStrip, `3:15` DemoModal.

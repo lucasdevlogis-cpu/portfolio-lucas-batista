@@ -118,18 +118,27 @@ with tab_visao:
 
     st.divider()
 
-    ui.section("Rota planejada", "Sequência EDF com paradas numeradas e setas de direção")
+    map_detail = not ui.is_embed()
+    ui.section(
+        "Rota planejada",
+        "Sequência EDF com paradas numeradas e setas de direção"
+        if map_detail
+        else "Rota EDF compacta para leitura no modal da landing",
+    )
     coords = [DEPOT] + [(r["lat"], r["lon"]) for _, r in sched_edf.iterrows()] + [DEPOT]
     m = fmap.base_map(center=DEPOT, zoom=11, height=ui.map_height(brand.MAP_FULL_HEIGHT))
     m = fmap.add_routes(
         m,
         routes=[{"coords": coords, "label": "Rota EDF", "color": brand.PRIMARY}],
         depot=DEPOT,
-        show_numbers=True,
-        show_arrows=True,
+        show_numbers=map_detail,
+        show_arrows=map_detail,
     )
     fmap.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="vrptw_mapa")
-    st.caption("Linhas retas entre paradas (geodésicas), não rotas rodoviárias reais.")
+    st.caption(
+        "Linhas retas entre paradas (geodésicas), não rotas rodoviárias reais. "
+        + ("Abra em nova aba para sequência numerada." if ui.is_embed() else "")
+    )
 
     if viol_edf:
         st.divider()
@@ -168,7 +177,7 @@ with tab_analise:
     tickvals = list(range(6 * 60, 22 * 60 + 1, 120))
     fig = viz.add_reference_line(fig, x=deadline_medio, label="Deadline médio", color=brand.WARNING)
     fig.update_layout(
-        height=max(brand.CHART_HALF_HEIGHT, 40 * len(sched_edf)),
+        height=ui.chart_height(max(brand.CHART_HALF_HEIGHT, 40 * len(sched_edf))),
         xaxis=dict(
             title="Horário", tickvals=tickvals, ticktext=[hhmm(t) for t in tickvals]
         ),
@@ -208,7 +217,7 @@ with tab_analise:
     )
     fig2.update_layout(
         barmode="stack",
-        height=brand.CHART_HALF_HEIGHT,
+        height=ui.chart_height(brand.CHART_HALF_HEIGHT),
         xaxis_title="",
         yaxis_title="Paradas",
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),

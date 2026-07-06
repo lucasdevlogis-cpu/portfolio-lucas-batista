@@ -146,7 +146,7 @@ with tab_analise:
                 "prazo_medio_dias": "Prazo médio (dias)",
                 "taxa_insucesso_pct": "Taxa de insucesso (%)",
             },
-            height=brand.CHART_HALF_HEIGHT,
+            height=ui.chart_height(brand.CHART_HALF_HEIGHT),
         )
         fig = viz.add_reference_line(fig, x=prazo_max, label="Prazo máximo filtrado", color=brand.DANGER)
         fig = viz.add_reference_line(fig, y=insucesso_medio, label="Média de insucesso", color=brand.WARNING)
@@ -179,7 +179,7 @@ with tab_analise:
             color="regiao",
             color_discrete_sequence=brand.SEQ,
             labels={"custo_medio_frete": "Custo médio (R$)", "regiao": ""},
-            height=brand.CHART_HALF_HEIGHT,
+            height=ui.chart_height(brand.CHART_HALF_HEIGHT),
         )
         fig2 = viz.add_reference_line(fig2, y=custo_medio, label="Custo médio geral", color=brand.WARNING)
         fig2.update_layout(showlegend=False)

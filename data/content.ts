@@ -152,6 +152,65 @@ export interface HeroConteudo {
   provas: HeroProva[];
 }
 
+export interface CareerTargetConteudo {
+  eyebrow: string;
+  titulo: string;
+  resumo: string;
+  papeisAlvo: string[];
+  senioridade: string;
+  disponibilidade: string;
+  modeloAtuacao: string;
+  ctaPrimario: string;
+  ctaSecundario: string;
+}
+
+export interface ProofStat {
+  valor: string;
+  label: string;
+  detalhe: string;
+}
+
+export interface RecruiterBriefItem {
+  titulo: string;
+  descricao: string;
+}
+
+export interface RecruiterBriefConteudo {
+  eyebrow: string;
+  titulo: string;
+  resumo: string;
+  itens: RecruiterBriefItem[];
+}
+
+export interface ExperienceSignal {
+  titulo: string;
+  descricao: string;
+}
+
+export interface ExperienceSignalsConteudo {
+  eyebrow: string;
+  titulo: string;
+  resumo: string;
+  trajetoria: ExperienceSignal[];
+  stackTitulo: string;
+  stackGrupos: { grupo: string; itens: string[] }[];
+  dominiosTitulo: string;
+  dominios: string[];
+}
+
+export interface ContactLinksConteudo {
+  eyebrow: string;
+  titulo: string;
+  descricao: string;
+  primaryLabel: string;
+  linkedinLabel: string;
+  emailLabel: string;
+  githubLabel: string;
+  cvLabel: string;
+  cvUrl: string;
+  nota: string;
+}
+
 export interface SobreConteudo {
   titulo: string;
   paragrafos: string[];
@@ -169,6 +228,21 @@ export interface SecoesCopy {
   cases: SecaoCopy;
   casesBiblioteca: SecaoCopy;
   casesRoadmap: SecaoCopy;
+  caseDemoLabel: string;
+  caseDemoUnavailableLabel: string;
+  caseCodeLabel: string;
+  demoOpenExternalLabel: string;
+  demoFullscreenLabel: string;
+  demoLoadInlineLabel: string;
+  demoMobileHint: string;
+  demoContextLabels: {
+    pergunta: string;
+    decisao: string;
+    metrica: string;
+    limitacao: string;
+    temas: string;
+    contextoMobile: string;
+  };
   metodo: SecaoCopy;
   contatoBeneficio: string;
   demoIndisponivel: string;
@@ -179,6 +253,12 @@ export interface SecoesCopy {
 export interface Content {
   pessoal: Pessoal;
   hero: HeroConteudo;
+  careerTarget: CareerTargetConteudo;
+  proofStats: ProofStat[];
+  recruiterBrief: RecruiterBriefConteudo;
+  featuredProofCases: string[];
+  experienceSignals: ExperienceSignalsConteudo;
+  contactLinks: ContactLinksConteudo;
   sobre: SobreConteudo;
   secoes: SecoesCopy;
   nav: NavLink[];
@@ -227,30 +307,163 @@ export const CONTENT: Content = {
   pessoal: {
     nome: "Lucas Batista",
     titulo: "Especialista em Inteligência Operacional para Logística",
-    headline: "Clareza para decidir custo, prazo e frete na sua operação",
+    headline: "Operações logísticas com dados, produto interno e IA aplicada",
     subheadline:
-      "Ajudo operações de logística, transporte, varejo e e-commerce a enxergar gargalos e decidir com segurança — do diagnóstico rápido ao painel e ao piloto com IA.",
+      "Perfil para transformar rotina logística em indicadores, automações e ferramentas de decisão.",
     email: "lucas.farias.log@outlook.com",
     linkedin: "https://linkedin.com/in/lucasfariaslog",
     github: GITHUB_PROFILE_URL,
   },
 
   hero: {
-    badge: "Consultor em Inteligência Logística",
-    ctaPrimario: "Quero uma leitura inicial",
-    ctaSecundario: "Ver cases demonstráveis",
-    provasTitulo: "Por onde eu atuo",
+    badge: "Headhunter intelligence brief",
+    ctaPrimario: "Ver prova técnica",
+    ctaSecundario: "Contato profissional",
+    provasTitulo: "Sinais rápidos",
     provas: [
       {
-        valor: "4 setores",
-        label: "logística, transporte, varejo e e-commerce",
+        valor: "+10 anos",
+        label: "vivência em operações logísticas",
       },
-      { valor: "5 níveis", label: "do diagnóstico rápido ao piloto com IA" },
+      { valor: "4 setores", label: "transporte, varejo, e-commerce e indústria" },
       {
         valor: "10 demos",
-        label: "com dados sintéticos inspirados em operação real",
+        label: "provas navegáveis de raciocínio operacional",
       },
     ],
+  },
+
+  careerTarget: {
+    eyebrow: "Direção de carreira",
+    titulo: "Perfil híbrido para operações, analytics e produto interno",
+    resumo:
+      "Atuo na interseção entre logística, dados e tecnologia. O melhor fit está em posições que precisam conectar problema operacional, análise estruturada, prototipagem e comunicação executiva.",
+    papeisAlvo: [
+      "Operations Analytics",
+      "Supply Chain Analytics",
+      "Logistics Intelligence",
+      "Product Ops / Internal Tools",
+      "BI e automação operacional",
+    ],
+    senioridade: "Profissional com +10 anos de operação e portfólio técnico demonstrável",
+    disponibilidade:
+      "Aberto a conversas com headhunters, recrutadores e lideranças de operações orientadas por dados",
+    modeloAtuacao:
+      "Preferência por ambientes onde dados, processo e execução operacional precisam conversar",
+    ctaPrimario: "Avaliar cases âncora",
+    ctaSecundario: "Falar com Lucas",
+  },
+
+  proofStats: [
+    {
+      valor: "+10",
+      label: "anos em operação",
+      detalhe: "Base prática para entender gargalos, rotina, exceções e trade-offs logísticos.",
+    },
+    {
+      valor: "10",
+      label: "demos navegáveis",
+      detalhe: "Cases com dados sintéticos para demonstrar raciocínio, stack e comunicação.",
+    },
+    {
+      valor: "4",
+      label: "setores",
+      detalhe: "Transporte, varejo, e-commerce e indústria conectados por problemas operacionais.",
+    },
+    {
+      valor: "5",
+      label: "frentes de fit",
+      detalhe: "Frete, SLA, last mile, CD e automação com IA supervisionada.",
+    },
+  ],
+
+  recruiterBrief: {
+    eyebrow: "Perfil em 60 segundos",
+    titulo: "O que um headhunter precisa entender rápido",
+    resumo:
+      "Este portfólio foi reorganizado para leitura de fit: não é uma vitrine de páginas bonitas, é um conjunto de evidências sobre julgamento operacional, clareza analítica e capacidade de construir ferramentas úteis.",
+    itens: [
+      {
+        titulo: "Raciocínio operacional",
+        descricao:
+          "Parte de perguntas reais de custo, prazo, SLA, origem, rota e risco antes de escolher tecnologia.",
+      },
+      {
+        titulo: "Entrega demonstrável",
+        descricao:
+          "Transforma hipóteses em demos, painéis e simuladores navegáveis, com limites declarados.",
+      },
+      {
+        titulo: "Comunicação executiva",
+        descricao:
+          "Explica decisão, métrica, trade-off e próxima ação sem esconder premissas técnicas.",
+      },
+      {
+        titulo: "Stack pragmática",
+        descricao:
+          "Usa Python, SQL, BI, Streamlit, Next.js e IA aplicada para reduzir distância entre análise e uso.",
+      },
+    ],
+  },
+
+  featuredProofCases: [
+    "01-precificacao-frete",
+    "02-torre-controle",
+    "08-cvrp-urbano",
+  ],
+
+  experienceSignals: {
+    eyebrow: "Trajetória e stack",
+    titulo: "Senioridade construída na rotina operacional",
+    resumo:
+      "O diferencial do perfil é combinar chão de operação, leitura de dados e prototipagem. A página deve permitir que recrutadores avaliem fit sem depender de uma conversa inicial longa.",
+    trajetoria: [
+      {
+        titulo: "+10 anos em operações logísticas",
+        descricao:
+          "Vivência com transporte, varejo, e-commerce e indústria, conectando execução diária a indicadores e decisões.",
+      },
+      {
+        titulo: "Transição para inteligência operacional",
+        descricao:
+          "Uso de dados, automação e produtos internos para reduzir ambiguidade em frete, SLA, roteirização e visibilidade.",
+      },
+      {
+        titulo: "Portfólio com prova navegável",
+        descricao:
+          "10 cases publicados em Streamlit, com contexto de negócio, métrica principal, decisão apoiada e limitações.",
+      },
+    ],
+    stackTitulo: "Stack por tipo de contribuição",
+    stackGrupos: [
+      { grupo: "Dados", itens: ["Python", "SQL", "Pandas", "modelagem analítica"] },
+      { grupo: "BI e decisão", itens: ["Power BI", "Excel avançado", "KPIs", "storytelling executivo"] },
+      { grupo: "Produto interno", itens: ["Streamlit", "Next.js", "TypeScript", "prototipagem"] },
+      { grupo: "IA aplicada", itens: ["LLMs", "classificação de textos", "documentação", "assistentes supervisionados"] },
+    ],
+    dominiosTitulo: "Domínios de negócio",
+    dominios: [
+      "Frete e composição de custo",
+      "SLA, OTD e torre de controle",
+      "Last mile e promessa por CEP",
+      "Roteirização urbana e dimensionamento de frota",
+      "Operação de CD e integração WMS/TMS",
+    ],
+  },
+
+  contactLinks: {
+    eyebrow: "Contato",
+    titulo: "Contato profissional direto",
+    descricao:
+      "Para oportunidades, triagem de perfil ou conversas com liderança de operações e dados, use LinkedIn ou email direto.",
+    primaryLabel: "Conversar no LinkedIn",
+    linkedinLabel: "LinkedIn",
+    emailLabel: "Email",
+    githubLabel: "GitHub",
+    cvLabel: "CV em PDF",
+    cvUrl: "",
+    nota:
+      "CV em PDF será habilitado quando o arquivo oficial estiver no repositório. Até lá, LinkedIn, GitHub e email são os canais principais.",
   },
 
   sobre: {
@@ -296,20 +509,36 @@ export const CONTENT: Content = {
         "Do diagnóstico rápido ao piloto com IA. Escolha o nível de contratação que faz sentido para o seu momento.",
     },
     cases: {
-      eyebrow: "Prova de trabalho",
-      title: "Cases em destaque",
+      eyebrow: "Prova técnica",
+      title: "Cases âncora para avaliação profissional",
       subtitle:
-        "Três análises que mostram bem o tipo de decisão que eu ajudo a destravar. Dados sintéticos inspirados em problemas reais de operação.",
+        "Três provas navegáveis para avaliar raciocínio operacional, modelagem analítica, comunicação executiva e capacidade de transformar problema em ferramenta.",
     },
     casesBiblioteca: {
-      title: "Biblioteca de análises",
+      title: "Biblioteca complementar de evidências",
       subtitle:
-        "Mais análises interativas por tema. Filtre por categoria para encontrar a mais próxima da sua operação.",
+        "Mais demos por domínio logístico. A biblioteca amplia a leitura de stack, repertório e profundidade técnica.",
     },
     casesRoadmap: {
-      title: "Próximas análises",
+      title: "Prova em preparação",
       subtitle:
-        "Cases em desenvolvimento. A demo interativa entra assim que a análise é validada.",
+        "Análise ainda sem demo publicada. Mantida como sinal de continuidade do portfólio.",
+    },
+    caseDemoLabel: "Abrir demo e leitura",
+    caseDemoUnavailableLabel: "Demo em preparação",
+    caseCodeLabel: "Ver repositório",
+    demoOpenExternalLabel: "Abrir demo em nova aba",
+    demoFullscreenLabel: "Abrir demo em tela cheia",
+    demoLoadInlineLabel: "Carregar demo aqui",
+    demoMobileHint:
+      "A demo interativa pode ficar apertada no celular. Abra em tela cheia ou carregue dentro do modal.",
+    demoContextLabels: {
+      pergunta: "Pergunta de negócio",
+      decisao: "Decisão apoiada",
+      metrica: "Métrica principal",
+      limitacao: "Limitação declarada",
+      temas: "Stack e temas",
+      contextoMobile: "Contexto da análise",
     },
     metodo: {
       eyebrow: "Como conduzo",
@@ -327,14 +556,12 @@ export const CONTENT: Content = {
   },
 
   nav: [
-    { label: "Dores", href: "#dores" },
-    { label: "Serviços", href: "#servicos" },
-    { label: "Cases", href: "#cases" },
-    { label: "Método", href: "#metodo" },
-    { label: "Sobre", href: "#sobre" },
+    { label: "Perfil", href: "#perfil" },
+    { label: "Provas", href: "#cases" },
+    { label: "Trajetória", href: "#trajetoria" },
     { label: "Contato", href: "#contato" },
   ],
-  navCta: "Falar sobre minha operação",
+  navCta: "Contato profissional",
 
   dores: [
     { icon: "Truck", title: "Frete caro sem explicação clara" },
@@ -736,15 +963,15 @@ export const CONTENT: Content = {
   },
 
   contato: {
-    titulo: "Vamos dar uma primeira leitura na sua operação?",
+    titulo: "Contato profissional direto",
     descricao:
-      "Me conte qual problema mais pesa hoje — frete, atraso, relatório manual, indicador inconsistente ou falta de visibilidade. A partir daí, eu mostro o próximo passo mais lógico.",
-    ctaBotao: "Solicitar leitura inicial",
+      "Para conversas sobre posições, entrevistas ou avaliação de fit profissional, prefira LinkedIn ou email. O retorno traz contexto, disponibilidade e próximos passos.",
+    ctaBotao: "Enviar contato profissional",
     microcopy:
-      "Resposta em até 1 dia útil. Sem compromisso e sem custo inicial.",
-    tituloSucesso: "Mensagem recebida!",
+      "Resposta em até 1 dia útil quando houver alinhamento com posições, projetos ou entrevistas.",
+    tituloSucesso: "Contato recebido.",
     mensagemSucesso:
-      "Obrigado pelo contato. Retorno em breve para alinhar a leitura inicial da sua operação.",
+      "Obrigado pelo contato. Retorno em breve com contexto profissional e próximos passos.",
     mensagemErro:
       "Não foi possível enviar agora. Tente o email direto abaixo ou tente novamente.",
     enviandoLabel: "Enviando…",
@@ -781,9 +1008,9 @@ export const CONTENT: Content = {
   footer: {
     copyright: "© 2026 Lucas Batista. Todos os direitos reservados.",
     declaracaoLimitacao:
-      "Trabalho com dados públicos, sintéticos, anonimizados ou fornecidos pelo cliente com finalidade definida. Dados sensíveis, bases restritas, credenciais e informações pessoais são tratados com cuidado, acesso controlado e validação de uso.",
+      "Portfólio profissional com dados sintéticos, públicos ou anonimizados. As demos demonstram raciocínio, método e capacidade de prototipagem; decisões reais exigem validação com dados, contexto e governança da operação.",
     voltarTopo: "Voltar ao topo",
-    badgeCases: "10 cases demonstráveis",
+    badgeCases: "10 provas navegáveis",
     linksRapidosTitulo: "Links rápidos",
   },
 };
@@ -810,11 +1037,7 @@ export const CASES_DEMONSTRAVEIS = CONTENT.cases.filter((c) =>
  * Escolhidos por cobrirem decisões distintas: custo de frete, visibilidade/SLA
  * e roteirização.
  */
-export const CASE_DESTAQUE_IDS = [
-  "01-precificacao-frete",
-  "02-torre-controle",
-  "08-cvrp-urbano",
-] as const;
+export const CASE_DESTAQUE_IDS = CONTENT.featuredProofCases;
 
 export function caseEhDestaque(id: string): boolean {
   return (CASE_DESTAQUE_IDS as readonly string[]).includes(id);

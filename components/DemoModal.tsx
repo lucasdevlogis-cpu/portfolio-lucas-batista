@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink } from "lucide-react";
+import { ChevronDown, ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import {
@@ -10,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { CONTENT, type Case } from "@/data/content";
 import { cn } from "@/lib/utils";
@@ -29,39 +28,100 @@ function DemoSkeleton() {
 
   return (
     <div className="flex w-full max-w-xl flex-col gap-4">
-      {/* Header simulado */}
       <div className="flex items-center gap-3">
         <div className="h-8 w-8 rounded-md bg-muted motion-reduce:animate-none animate-pulse" />
         <div className={cn(bar, "h-5 w-1/2")} />
       </div>
-
-      {/* Cards de métricas */}
       <div className="grid grid-cols-3 gap-3">
         <div className={cn(card, "h-16")} />
         <div className={cn(card, "h-16")} />
         <div className={cn(card, "h-16")} />
       </div>
-
-      {/* Gráfico principal */}
       <div className={cn(card, "h-40")} />
-
-      {/* Tabela / lista */}
       <div className={cn(card, "h-28")} />
-
-      {/* Barra inferior */}
       <div className={cn(bar, "w-3/4")} />
     </div>
   );
 }
 
+function CaseContext({
+  caseItem,
+  collapsible,
+}: {
+  caseItem: Case;
+  collapsible: boolean;
+}) {
+  const labels = CONTENT.secoes.demoContextLabels;
+  const body = (
+    <>
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent">
+            {labels.pergunta}
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-ink">
+            {caseItem.perguntaNegocio}
+          </p>
+        </div>
+        <div>
+          <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent">
+            {labels.decisao}
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-ink">
+            {caseItem.decisaoApoiada}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-5 border-t border-border pt-5">
+        <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent">
+          {labels.metrica}
+        </p>
+        <p className="mt-2 font-heading text-2xl font-black leading-tight text-primary">
+          {caseItem.metricaPrincipal}
+        </p>
+      </div>
+
+      <div className="mt-5 flex flex-wrap gap-2">
+        {caseItem.tags.map((tag) => (
+          <span
+            key={tag}
+            className="rounded-full border border-border bg-card px-3 py-1 text-xs font-bold text-muted-foreground"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      <p className="mt-5 border-t border-border pt-4 text-xs leading-relaxed text-muted-foreground">
+        <span className="font-bold text-ink">{labels.limitacao}: </span>
+        {caseItem.limitacao}
+      </p>
+    </>
+  );
+
+  if (!collapsible) {
+    return <div className="border-b bg-editorial px-5 py-5 sm:px-6">{body}</div>;
+  }
+
+  return (
+    <details className="group border-b bg-editorial">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 text-sm font-bold text-ink sm:px-6 [&::-webkit-details-marker]:hidden">
+        {labels.contextoMobile}
+        <ChevronDown
+          className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180"
+          aria-hidden
+        />
+      </summary>
+      <div className="px-5 pb-5 sm:px-6">{body}</div>
+    </details>
+  );
+}
+
 export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
   const [isMobile, setIsMobile] = useState(false);
-  // Status derivado da URL carregada/em erro: troca de demo volta a "loading"
-  // automaticamente, sem effect de reset.
   const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
   const [errorUrl, setErrorUrl] = useState<string | null>(null);
-  // No mobile o iframe carrega sob demanda: guardamos qual URL o usuário pediu.
-  // Trocar de case muda `embedUrl`, então volta ao estado "não carregado" sem effect.
   const [loadRequestedUrl, setLoadRequestedUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -84,95 +144,48 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
         ? "ready"
         : "loading";
 
-  // Desktop carrega direto; mobile só depois do clique em "Carregar demo aqui".
   const shouldMountIframe = !isMobile || loadRequestedUrl === embedUrl;
-
-  const abrirNovaAba = demoUrl ? (
-    <a
-      href={demoUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-accent-contrast hover:underline"
-    >
-      <ExternalLink className="h-3.5 w-3.5" aria-hidden />
-      Abrir em nova aba
-    </a>
-  ) : null;
+  const labels = CONTENT.secoes;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="max-h-[90vh] max-w-4xl gap-0 overflow-y-auto p-0 sm:max-w-4xl"
+        className="max-h-[90vh] max-w-5xl gap-0 overflow-y-auto rounded-xl border-border bg-card p-0 sm:max-w-5xl"
         showCloseButton
       >
-        <DialogHeader className="border-b px-4 py-3">
+        <DialogHeader className="border-b border-border px-5 py-4 sm:px-6">
           <div className="flex items-center justify-between gap-3 pr-6">
-            <DialogTitle>{caseItem?.titulo ?? ""}</DialogTitle>
-            {abrirNovaAba}
+            <div>
+              <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent">
+                {caseItem?.categoria ?? ""}
+              </p>
+              <DialogTitle className="mt-1 font-heading text-xl font-black text-ink">
+                {caseItem?.titulo ?? ""}
+              </DialogTitle>
+            </div>
+            {demoUrl ? (
+              <a
+                href={demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex shrink-0 items-center gap-1 text-xs font-bold text-accent-contrast hover:underline"
+              >
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+                {labels.demoOpenExternalLabel}
+              </a>
+            ) : null}
           </div>
           <DialogDescription className="sr-only">
-            {caseItem?.perguntaNegocio ?? "Demonstração interativa da análise."}
+            {caseItem?.perguntaNegocio ?? CONTENT.secoes.demoIndisponivel}
           </DialogDescription>
         </DialogHeader>
 
         {caseItem ? (
-          <div className="grid gap-4 border-b bg-muted/50 px-4 py-4 sm:grid-cols-2">
-            <div>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent-contrast">
-                Pergunta de negócio
-              </p>
-              <p className="mt-0.5 text-sm text-foreground">
-                {caseItem.perguntaNegocio}
-              </p>
-            </div>
-            <div>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent-contrast">
-                Decisão apoiada
-              </p>
-              <p className="mt-0.5 text-sm text-foreground">
-                {caseItem.decisaoApoiada}
-              </p>
-            </div>
-            <div>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent-contrast">
-                Métrica principal
-              </p>
-              <p className="mt-0.5 text-sm text-foreground">
-                {caseItem.metricaPrincipal}
-              </p>
-            </div>
-            <div>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-muted-foreground">
-                Limitação
-              </p>
-              <p className="mt-0.5 text-sm text-muted-foreground">
-                {caseItem.limitacao}
-              </p>
-            </div>
-            {caseItem.tags.length > 0 ? (
-              <div className="sm:col-span-2">
-                <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent-contrast">
-                  Stack e temas
-                </p>
-                <div className="mt-1.5 flex flex-wrap gap-1.5">
-                  {caseItem.tags.map((tag) => (
-                    <Badge
-                      key={tag}
-                      variant="secondary"
-                      className="bg-secondary px-2 py-0.5 text-xs text-secondary-foreground"
-                    >
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </div>
+          <CaseContext caseItem={caseItem} collapsible={isMobile} />
         ) : null}
 
-        {/* No mobile, o iframe é apertado: destacamos abrir em nova aba. */}
         {isMobile && demoUrl ? (
-          <div className="border-b bg-accent/5 px-4 py-3">
+          <div className="border-b border-border bg-accent/5 px-5 py-3">
             <a
               href={demoUrl}
               target="_blank"
@@ -180,24 +193,23 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
               className={cn(buttonVariants({ variant: "default" }), "w-full")}
             >
               <ExternalLink className="size-4" aria-hidden />
-              Abrir demo em tela cheia
+              {labels.demoFullscreenLabel}
             </a>
           </div>
         ) : null}
 
-        <div className="relative bg-muted/30">
+        <div className="relative bg-card">
           {embedUrl && !shouldMountIframe ? (
             <div className="flex flex-col items-center gap-3 px-6 py-10 text-center">
               <p className="max-w-sm text-sm text-muted-foreground">
-                A demo interativa carrega dentro deste modal. No celular ela fica
-                apertada — carregue aqui ou abra em tela cheia.
+                {labels.demoMobileHint}
               </p>
               <button
                 type="button"
                 onClick={() => setLoadRequestedUrl(embedUrl)}
                 className={cn(buttonVariants({ variant: "default" }), "w-full")}
               >
-                Carregar demo aqui
+                {labels.demoLoadInlineLabel}
               </button>
             </div>
           ) : embedUrl ? (
@@ -205,7 +217,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
               {status !== "ready" ? (
                 <div
                   className={cn(
-                    "absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-background/80 px-6 text-center",
+                    "absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-background/90 px-6 text-center",
                     status === "error" && "bg-background",
                   )}
                 >
@@ -225,13 +237,15 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
               ) : null}
               <iframe
                 src={embedUrl}
-                title={caseItem?.titulo ?? "Demo"}
+                title={caseItem?.titulo ?? CONTENT.secoes.demoIndisponivel}
                 loading="lazy"
                 onLoad={() => setLoadedUrl(embedUrl)}
                 onError={() => setErrorUrl(embedUrl)}
                 className={cn(
                   "w-full border-0",
-                  isMobile ? "h-[60vh] min-h-[300px] max-h-[500px]" : "h-[700px]",
+                  isMobile
+                    ? "h-[60vh] min-h-[300px] max-h-[500px]"
+                    : "h-[700px]",
                 )}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               />

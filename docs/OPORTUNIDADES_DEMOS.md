@@ -1,11 +1,13 @@
 # Oportunidades de Melhoria — Demos Visuais
 
-> **Data:** 05/07/2026  
-> **Contexto:** Análise pós-deploy das demos Streamlit com foco em **desktop-first**. As demos atualmente são embedadas via iframe (`?embed=true`) no modal da landing, mas o formato de consumo principal é **navegador desktop em tela cheia** (usuário clicando "Abrir em nova aba").
+> **Backlog** — não reflete o estado atual da landing. Estado do projeto: [`docs/AVALIACAO.md`](AVALIACAO.md).
+>
+> **Data:** 05/07/2026
+> **Contexto:** Análise pós-deploy das demos Streamlit com foco em **desktop-first**.
 >
 > **Premissa:** O Streamlit é excelente para protótipos rápidos e validação de conceito, mas **não é uma plataforma de visualização de dados premium**. Este documento propõe alternativas e melhorias para elevar a percepção de valor das demos.
 >
-> **Status de implementação (05/07/2026):** As Fases 1, 2 e 3 foram aplicadas ao `demos-logistica/`. Mapas migrados para Folium (`CartoDB positron`, clustering, ícones FontAwesome, marcadores numerados, setas de rota), gráficos padronizados com cores semânticas, linhas de referência e hovertemplates customizados, tabelas formatadas com `st.column_config`, layout com `st.tabs`, KPIs coloridos e CTA final. A Fase 4 (protótipos ECharts/AgGrid e avaliação de Next.js híbrido) ainda não foi iniciada.
+> **Status de implementação (atualizado 06/07/2026):** Fases 1–3 **concluídas** — Folium, tabs, KPIs coloridos, `kpi_grid` embed, `filter_container`, formatação de tabelas, CTA final. Deps `streamlit-echarts` e `streamlit-aggrid` **removidas** (não adotadas). Fase 4 (protótipo Next.js híbrido) não iniciada.
 
 ---
 
@@ -26,6 +28,7 @@
 ### 1.2 Problemas Visuais Específicos (constatados)
 
 #### Mapas
+
 - **Linhas retas (Haversine)** entre pontos: visualmente "plano" e técnicamente incorreto para apresentação. No Brasil, as rotas reais seguem rodovias — linhas retas cortam o relevo, rios, cidades.
 - **Sem setas de direção** em rotas CVRP/TSP: impossível saber a sequência de visitas apenas olhando o mapa.
 - **Marcadores idênticos** para todos os pontos: sem diferenciação visual entre CD, entrega, hub, loja.
@@ -33,6 +36,7 @@
 - **Legendas horizontais no topo** competem com o título da seção por espaço vertical.
 
 #### Gráficos
+
 - **Cores contínuas em bar charts** (ranking de custo/ton): o gradiente verde→vermelho confunde mais do que ajuda; categorias discretas (verde/amarelo/vermelho) seriam melhores.
 - **Donut chart na torre de controle**: donut é pior que barra para comparação de categorias. Olhos humanos comparam comprimentos melhor do que ângulos.
 - **Falta de linhas de referência**: frete vs piso ANTT sem linha de "100%"; ocupação vs capacidade sem linha de "100%".
@@ -40,12 +44,14 @@
 - **Altura inconsistente** entre gráficos (340px vs 420px vs 460px): quebra o ritmo visual da page.
 
 #### Tabelas
+
 - **Sem formatação condicional**: `st.dataframe` puro não destaca status crítico, valores acima do limite, ou scores baixos.
 - **Números sem formatação**: `1234.5` em vez de `R$ 1.234,50`; `15.3` em vez de `+15,3%`.
 - **Alinhamento à esquerda** para todos os valores: dificulta comparação visual de números.
 - **Sem ícones de status**: texto "Atrasado" em vez de 🔴 "Atrasado" ou barra de progresso para score de confiança.
 
 #### Layout Geral
+
 - **Scroll infinito**: todas as pages são uma longa página sem quebras visuais. Não há "capítulos" ou seções separadas.
 - **Sem tabs/steps**: demos profundas (precificação, CVRP, rede) poderiam ser organizadas em "Visão Geral → Análise → Detalhe" mas são empilhadas linearmente.
 - **KPIs neutros**: `st.metric` não usa cores para sinalizar severidade (verde=OK, amarelo=atenção, vermelho=critico).
@@ -68,6 +74,7 @@
 | 7 | **Tiles customizados** | Mapa visualmente mais limpo (CartoDB, Stamen) | Baixo | Folium `tiles="CartoDB positron"` |
 
 **Recomendação:** Migrar mapas de Plotly `Scattermap` para **Folium + Leaflet** ou **Deck.gl (via PyDeck)**. Isso permite:
+
 - Tiles customizados (visual mais limpo)
 - Clustering nativo
 - Ícones customizados (FontAwesome/Material)
@@ -103,6 +110,7 @@
 | 8 | **Ordenação padrão inteligente** | Tabela já vem ordenada por relevância | Baixo | `.sort_values()` antes do `st.dataframe` |
 
 **Recomendação:** Maximizar `st.column_config` (recurso relativamente novo do Streamlit, 1.28+). Para tabelas muito ricas, considerar **ag-grid (streamlit-aggrid)** que permite:
+
 - Formatação condicional avançada
 - Edição inline
 - Grupamento
@@ -125,9 +133,11 @@
 ### 2.5 Alternativas de Framework (além do Streamlit puro)
 
 #### Opção A: Manter Streamlit, mas elevar o nível
+
 **Premissa:** Streamlit ainda é o motor, mas com componentes custom, CSS avançado, e bibliotecas visuais premium.
 
 **Adições:**
+
 - `streamlit-echarts` — gráficos interativos premium (sankey, sunburst, gauge, heatmap)
 - `streamlit-folium` — mapas Leaflet com clustering, tiles custom, ícones
 - `streamlit-aggrid` — tabelas avançadas com formatação condicional
@@ -138,9 +148,11 @@
 **Contras:** Ainda limitado pela arquitetura top-down do Streamlit; "maquiagem" sobre framework limitado.
 
 #### Opção B: Next.js como Frontend das Demos
+
 **Premissa:** Criar uma camada de visualização em Next.js (mesmo projeto da landing) que consome APIs/JSON das análises Python.
 
 **Arquitetura:**
+
 - Python (Streamlit ou FastAPI) → gera JSON/CSV com resultados da análise
 - Next.js → consome o JSON e renderiza visualizações premium com:
   - **Recharts / D3** — gráficos customizados
@@ -153,6 +165,7 @@
 **Contras:** Esforço alto (novo frontend), manutenção de duas bases de código, necessidade de API entre Python e Next.js.
 
 #### Opção C: Frameworks Python Alternativos
+
 | Framework | Diferencial | Adequado para |
 |-----------|-------------|---------------|
 | **Dash (Plotly)** | Layout declarativo (HTML-like), mais controle de posicionamento | Dashboards complexos, múltiplas páginas |
@@ -164,9 +177,11 @@
 **Recomendação:** Para o portfólio de logística, **Dash** ou **Panel** seriam mais adequados que Streamlit para dashboards de monitoramento. Mas o esforço de migração é alto.
 
 #### Opção D: "Visualização como Serviço" (Híbrida)
+
 **Premissa:** Manter Streamlit para a lógica/análise, mas gerar artefatos visuais premium (imagens/JSON) que são consumidos pela landing.
 
 **Exemplo:**
+
 - Análise CVRP roda no Streamlit, mas gera:
   - JSON com rotas otimizadas
   - Imagem PNG do mapa (Folium + selenium/playwright)
@@ -181,6 +196,7 @@
 ## 3. Recomendação Estratégica
 
 ### Caminho 1: Elevação do Streamlit (Curto Prazo — 1-2 semanas)
+
 Manter Streamlit, mas aplicar todas as melhorias de baixo esforço:
 
 1. **Mapas:** Migrar de `Scattermap` para `Folium` (`streamlit-folium`) com:
@@ -213,6 +229,7 @@ Manter Streamlit, mas aplicar todas as melhorias de baixo esforço:
    - Footer mais limpo
 
 ### Caminho 2: Next.js como Visualização (Médio Prazo — 1-2 meses)
+
 Criar uma rota `/demo/[slug]` na landing que consome JSON da análise e renderiza visual premium:
 
 1. **API bridge:** Streamlit gera JSON + CSV a cada execução; salva em cache
@@ -225,7 +242,9 @@ Criar uma rota `/demo/[slug]` na landing que consome JSON da análise e renderiz
 4. **SEO:** demos indexáveis, com meta description e OG image
 
 ### Caminho 3: Dashboard Framework (Longo Prazo — 3+ meses)
+
 Migrar para **Dash** ou **Panel** para dashboards de monitoramento real:
+
 - Layout declarativo, mais controle
 - Suporte nativo a múltiplas páginas
 - Integração com WebSocket para dados real-time
@@ -236,6 +255,7 @@ Migrar para **Dash** ou **Panel** para dashboards de monitoramento real:
 ## 4. Roadmap Prioritizado
 
 ### Fase 1: Quick Wins (Semana 1) — ✅ Concluída
+
 - [x] Padronizar altura dos gráficos (`CHART_HALF_HEIGHT=360`, `CHART_FULL_HEIGHT=480`)
 - [x] Adicionar linhas de referência (piso ANTT, capacidade 100%, prazo máximo)
 - [x] Tooltips customizados nos gráficos Plotly (`lib.format.fmt_hover`)
@@ -245,6 +265,7 @@ Migrar para **Dash** ou **Panel** para dashboards de monitoramento real:
 - [x] Remover legendas redundantes dos mapas (`showlegend=False`)
 
 ### Fase 2: Mapas Premium (Semana 2) — ✅ Concluída
+
 - [x] Migrar mapas para `streamlit-folium` (`lib.folium_maps`)
 - [x] Tiles `CartoDB positron`
 - [x] Clustering com `MarkerCluster`
@@ -253,6 +274,7 @@ Migrar para **Dash** ou **Panel** para dashboards de monitoramento real:
 - [x] Mapa de calor para promessa CEP
 
 ### Fase 3: Tabelas e Layout (Semana 3) — ✅ Concluída
+
 - [x] `st.column_config` completo: `ProgressColumn`, `NumberColumn`, `TextColumn` com ícones (`lib.tables`)
 - [x] Resumo executivo (top 5 / KPIs) antes da tabela completa
 - [x] `st.tabs` para demos profundas (`["Visão Geral", "Análise", "Exportar"]`)
@@ -260,6 +282,7 @@ Migrar para **Dash** ou **Panel** para dashboards de monitoramento real:
 - [x] CTA final em cada demo (`ui.demo_cta`)
 
 ### Fase 4: Visual Premium (Semana 4-6) — 🟡 Não iniciada
+
 - [ ] Avaliar `streamlit-echarts` para gráficos avançados (sankey, sunburst, gauge)
 - [ ] Avaliar `streamlit-aggrid` para tabelas premium
 - [ ] Protótipo de Next.js consumindo JSON das análises
@@ -267,6 +290,7 @@ Migrar para **Dash** ou **Panel** para dashboards de monitoramento real:
 - [ ] Avaliar `streamlit-elements` para dashboard tipo grid
 
 ### Fase 5: Arquitetura Híbrida (Mês 2)
+
 - [ ] API bridge: Streamlit gera JSON/CSV cacheado
 - [ ] Rota `/demo/[slug]` na landing Next.js
 - [ ] Mapa `react-leaflet`, gráficos `recharts`, tabelas `tanstack-table`
@@ -310,6 +334,7 @@ Migrar para **Dash** ou **Panel** para dashboards de monitoramento real:
 O Streamlit cumpre seu papel como **protótipo rápido e validação de conceito**, mas não é uma plataforma de visualização premium. Para o portfólio de Lucas Batista, que precisa comunicar **inteligência operacional** e **tomada de decisão**, a percepção visual é tão importante quanto a precisão técnica.
 
 **Recomendação tática:**
+
 1. **Curto prazo:** Aplicar todos os quick wins (Fase 1) e elevar os mapas com Folium (Fase 2). Isso já separa o portfólio de 90% dos protótipos Streamlit genéricos.
 2. **Médio prazo:** Avaliar a arquitetura híbrida (Next.js + JSON) para 2-3 demos mais importantes. Se o impacto for positivo, expandir para todas.
 3. **Longo prazo:** Considerar Dash ou Panel para dashboards de monitoramento real (se o portfólio evoluir para produto/SaaS).
