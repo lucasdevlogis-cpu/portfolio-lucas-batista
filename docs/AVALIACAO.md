@@ -36,37 +36,24 @@
 
 | # | Ação | Onde | Status |
 |---|------|------|--------|
-| 1 | Re-medir Lighthouse (paleta editorial) | Local/prod | 🟡 Pendente |
-| 2 | Atualizar `og-image.png` para posicionamento headhunter | `public/` | 🟡 Pendente |
-| 3 | CV em PDF (`contactLinks.cvUrl`) | `data/content.ts` | 🟡 Placeholder vazio |
-| 4 | Sync demos Streamlit → repo deploy | `demos-logistica-deploy` | 🟡 Pendente |
+| — | *(nenhum bloqueador crítico)* | — | ✅ |
+
+Itens de polimento opcional: CV oficial substituir PDF gerado; re-auditar Lighthouse após mudanças visuais pesadas.
 
 ---
 
-## Resumo executivo
+## Performance (Lighthouse) — Executive Proof
 
-| Área | Status | Nota |
-|------|--------|------|
-| Landing | ✅ Completa | Executive Proof; build + lint OK |
-| Cases | ✅ Completo | 3 âncora + biblioteca + 1 roadmap |
-| Demos Streamlit | ✅ Completa | 11 pages; smoke **13/13**; rebrand editorial |
-| Deploy produção | ✅ | Layout `0ff7aa3` · docs `9dd9cf4` live |
-| Lighthouse | 🟡 Revalidar | Baseline layout antigo: desktop 97 / mobile 93 |
-
-**Veredicto:** linha oficial em produção. Próximo marco: OG image, Lighthouse pós-pivot, sync demos Streamlit.
-
----
-
-## Performance (Lighthouse) — baseline anterior
-
-Scores do layout comercial (`caa057f`). **Re-medir após deploy** do Executive Proof.
+Scores pós-pivot (`next start` local, 2026-07-06):
 
 | | Desktop | Mobile |
 |---|--------:|-------:|
-| Performance | 97 | 93 |
-| Acessibilidade | 100 | 100 |
+| Performance | **100** | **98** |
+| Acessibilidade | **96** | **96** |
+| Best Practices | 96 | 96 |
+| SEO | 100 | 100 |
 
-Audit detalhado: [`design/archive/lighthouse-2026-07-05.md`](../design/archive/lighthouse-2026-07-05.md).
+Audit detalhado: [`design/archive/lighthouse-2026-07-06.md`](../design/archive/lighthouse-2026-07-06.md).
 
 ---
 
@@ -86,10 +73,10 @@ Audit detalhado: [`design/archive/lighthouse-2026-07-05.md`](../design/archive/l
 |------|-----------|------------|
 | 0 Setup | ✅ 100% | — |
 | 1 Landing Executive Proof | ✅ 100% | — |
-| 2 Demos | ✅ 100% | Sync deploy Streamlit |
+| 2 Demos | ✅ 100% | — |
 | 3 GitHub | 🟡 ~40% | READMEs por case |
 | 4 Deploy | ✅ 100% | — |
-| 5 Lançamento | 🟡 | OG, Lighthouse, CV PDF |
+| 5 Lançamento | ✅ | OG, Lighthouse, CV PDF, sync demos |
 
 ---
 
@@ -144,6 +131,8 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 ### Executive Proof System — 06/07/2026
 
 Pivot oficial: homepage headhunter-first, paleta editorial, cases âncora + biblioteca, contato direto, demos alinhadas. Landing comercial arquivada em `components/archive/consultoria/`. Figma removido do fluxo de design.
+
+**Marco lançamento (06/07 tarde):** OG image Executive Proof, CV PDF (`/lucas-batista-cv.pdf`), Lighthouse revalidado (desktop 100 / mobile 98 perf), sync demos Streamlit `7202473`.
 
 ### Passes anteriores (06–05/07)
 

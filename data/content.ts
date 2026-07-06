@@ -461,9 +461,9 @@ export const CONTENT: Content = {
     emailLabel: "Email",
     githubLabel: "GitHub",
     cvLabel: "CV em PDF",
-    cvUrl: "",
+    cvUrl: "/lucas-batista-cv.pdf",
     nota:
-      "CV em PDF será habilitado quando o arquivo oficial estiver no repositório. Até lá, LinkedIn, GitHub e email são os canais principais.",
+      "CV executivo em PDF alinhado ao portfólio. Para detalhes completos de trajetória, use LinkedIn ou os cases demonstráveis.",
   },
 
   sobre: {

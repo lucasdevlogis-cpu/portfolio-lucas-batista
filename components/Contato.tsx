@@ -77,6 +77,7 @@ export function Contato() {
             {hasCv ? (
               <a
                 href={contactLinks.cvUrl}
+                download
                 className={cn(
                   buttonVariants({ variant: "outline" }),
                   "h-12 justify-between rounded-md border-white/15 bg-transparent text-white hover:bg-white/10 hover:text-white",
