@@ -2,7 +2,38 @@
 
 > **Uso:** Snapshot de saúde do portfólio antes dos próximos passos. Consulte após cada fase ou deploy significativo.
 >
-> **Última atualização:** 06/07/2026 — **Continuação Fase 3** (propagação embed Streamlit, polish landing, docs, FigJam, QA). Pass anterior: elevação de design B2B + headhunter.
+> **Última atualização:** 06/07/2026 — **Pass editorial v3** (Hero, Cases, DemoModal). Pass anterior: Continuação Fase 3 embed Streamlit.
+
+---
+
+## Pass editorial v3 — 06/07/2026 (Hero, Cases, DemoModal)
+
+Execução do plano "Refatoração visual editorial". North star: **briefing de operações** — tipografia forte, layout assimétrico, sensação de relatório executivo (não landing template).
+
+### Referências e spec
+
+- **`design/references-editorial.md`:** Stripe Press, Linear, padrões usar/evitar.
+- **`design/figma-v3-editorial-frames.md`:** spec high-fidelity (Hero 1440, Case briefing `2:31`, Cases section, DemoModal `3:15`).
+
+### Landing — componentes editoriais
+
+- **`components/editorial/`:** `EditorialHero`, `BriefStrip`, `SectionLead`, `BriefingCaseCard`, `CaseBriefingGrid`, `CaseLibraryRow`, `CategoryTabs`, `DemoBriefingModal`.
+- **Hero:** 2 colunas desktop (narrativa + brief strip); mobile stack headhunter 60s; **sem grade decorativa**, **sem pill blur**, eyebrow tipográfico.
+- **Cases:** destaques assimétricos (1 featured + 2 compact); biblioteca em **lista editorial**; filtros **tabs underline**; roadmap em lista simples.
+- **DemoModal:** faixa 2 colunas pergunta/decisão; métrica tipográfica; contexto colapsável no mobile; iframe lazy preservado.
+- **Tokens:** `--prose-width`, `--brief-width`, utilities `.text-display`, `.text-lede`, `.text-eyebrow` em `globals.css`.
+- **`CaseCard`:** wrapper deprecated sobre `BriefingCaseCard`.
+
+### QA
+
+- **Build:** `npm run lint && npm run build` OK (local).
+- **Lighthouse mobile:** não re-medido neste pass (CLI EPERM no ambiente); baseline produção **93** performance — sem `backdrop-blur` novo no hero editorial.
+- **Diff visual 3 vias:** pendente pós-deploy (prod vs local vs spec Figma).
+
+### Próximo passo
+
+- Deploy Vercel + re-medir Lighthouse mobile (meta ≥ 94).
+- Screenshot diff Hero/Cases/Modal após preview local ou produção.
 
 ---
 

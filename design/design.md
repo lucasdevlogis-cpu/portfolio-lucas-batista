@@ -12,7 +12,7 @@ Ordem vertical das seções (IDs para navegação):
 | # | Seção | ID | Propósito |
 |---|--------|-----|-----------|
 | 1 | Header | — | Nav fixo, logo, links, CTA principal |
-| 2 | Hero | — | Proposta de valor em 30s + card de provas |
+| 2 | Hero | — | Proposta de valor em 30s + brief strip (stats + contato) |
 | 3 | Dores | `dores` | 8 cards — problemas que o visitante reconhece |
 | 4 | Serviços | `servicos` | Escada de 5 níveis de contratação |
 | 5 | Cases | `cases` | Grid de **10 cases demonstráveis** + filtro por categoria + lista "Próximas análises" |
@@ -70,7 +70,9 @@ O gradiente radial (glow teal + navy) e a grade sutil ficam encapsulados em `Dar
 | KPI row embed | — | `kpi_grid()` 2×2 quando `?embed=true` |
 | Filtros embed | — | `filter_container()` expander no topo |
 
-**Figma v2 (spec):** [Portfolio Lucas — Design System v2](https://www.figma.com/design/857tvb7je0mJctJWYujqG7) — coleção `Tokens` (23 variáveis) + frames de referência (CaseCard slim, ProfileStrip, KPI row, DemoModal).
+**Figma v2 (spec base):** [Portfolio Lucas — Design System v2](https://www.figma.com/design/857tvb7je0mJctJWYujqG7) — coleção `Tokens` + nodes `2:31`, `2:38`, `3:15`.
+
+**Pass editorial v3:** spec de frames em `design/figma-v3-editorial-frames.md` · referências em `design/references-editorial.md`.
 
 **FigJam (jornadas):** [Headhunter 60s](https://www.figma.com/board/oo6IohJkFVx2jYnenXMlC5) · [Embed demo](https://www.figma.com/board/iOesutJfRKn3HxB4Mm5lc3).
 
@@ -78,7 +80,22 @@ O gradiente radial (glow teal + navy) e a grade sutil ficam encapsulados em `Dar
 
 - **Headings:** Inter (Google Fonts), bold, `tracking-tight`
 - **Body:** Geist Sans (Next.js default), normal
-- **Escala:** Hero `text-4xl md:text-6xl`, seções `text-3xl`, cards `text-xl`, body `text-base`
+- **Escala editorial** (`globals.css` utilities): `.text-display` (hero), `.text-lede` (subheadline), `.text-eyebrow` (11px uppercase)
+- **Larguras de coluna:** `--prose-width` (42rem narrativa), `--brief-width` (22rem brief strip)
+
+### Tokens editoriais (pass v3)
+
+| Token / utility | Valor | Uso |
+|-----------------|-------|-----|
+| `--prose-width` | 42rem | Coluna narrativa (hero, SectionLead) |
+| `--brief-width` | 22rem | Brief strip stats/contato |
+| `.text-display` | clamp(2.25rem → 3.75rem) | Headline hero |
+| `.text-lede` | 1.125rem / 1.6 | Subheadline |
+| `.text-eyebrow` | 11px / 0.06em tracking | Categoria, labels de modal |
+
+### Escala legado (seções não refatoradas)
+
+- Hero display via `.text-display`; seções `text-3xl`, cards `text-xl`, body `text-base`
 
 ### Espaçamento
 
@@ -92,29 +109,44 @@ O gradiente radial (glow teal + navy) e a grade sutil ficam encapsulados em `Dar
 
 Mobile-first. Breakpoints Tailwind padrão:
 
-| Breakpoint | Grid Dores | Grid Cases | Nav |
-|------------|------------|------------|-----|
-| `< md` | 1 coluna | 1 coluna | Sheet (hamburger) |
-| `md` | 2 colunas | 2 colunas | Links visíveis |
-| `lg` | 4 colunas | **3 colunas** | Links + CTA |
+| Breakpoint | Grid Dores | Cases (destaques) | Cases (biblioteca) | Nav |
+|------------|------------|-------------------|--------------------|-----|
+| `< md` | 1 coluna | 1 coluna (stack) | lista vertical | Sheet |
+| `md` | 2 colunas | 1 coluna | lista vertical | Links visíveis |
+| `lg` | 4 colunas | **assimétrico** (1 featured + 2 compact) | lista + tabs underline | Links + CTA |
 
-Hero: botões empilham (`flex-col`) em mobile, lado a lado em `sm+`.
+Hero: **2 colunas** em `lg+` (narrativa + brief strip); mobile stack nome → headline → stats → CTAs → contato. Sem grade decorativa no hero editorial.
 
 ---
 
 ## 4. Componentes Reutilizáveis
 
+### Camada editorial (`components/editorial/`)
+
 | Componente | Responsabilidade |
 |------------|------------------|
-| `SectionHeader` | Título + subtítulo de seção, alinhamento configurável |
+| `EditorialHero` | Hero 2 colunas: lede + display headline + CTAs; `BriefStrip` stats/contato |
+| `BriefStrip` | Stats + LinkedIn/email (sidebar desktop, inline mobile) |
+| `SectionLead` | Cabeçalho editorial sem risquinho teal repetido |
+| `BriefingCaseCard` | Card briefing executivo (eyebrow, pull quote métrica, rule + pergunta, CTA) |
+| `CaseBriefingGrid` | Destaques assimétricos: 1 featured + 2 compact |
+| `CaseLibraryRow` | Linha da biblioteca filtrável |
+| `CategoryTabs` | Filtros underline (não pills) |
+| `DemoBriefingModal` | Modal 2 colunas pergunta/decisão + métrica tipográfica + iframe |
+
+Wrappers de compatibilidade: `Hero` → `EditorialHero`; `DemoModal` → `DemoBriefingModal`; `CaseCard` → `BriefingCaseCard` (deprecated).
+
+### Demais moléculas
+
+| Componente | Responsabilidade |
+|------------|------------------|
+| `SectionHeader` | Título + subtítulo (seções ainda não migradas) |
 | `PainPointCard` | Card de dor com ícone Lucide + badge numérico |
 | `ServiceCard` | Card de serviço com borda lateral colorida + entregas |
-| `CaseCard` | Card de case: ícone, prioridade, pergunta de negócio (destaque), métrica, tags, botões demo/código |
-| `DemoModal` | Dialog shadcn: contexto de negócio + iframe Streamlit (`?embed=true`) + link "Abrir em nova aba" |
 | `Header` | Nav fixo, scroll suave, menu mobile (Sheet) |
 | `Footer` | Copyright, links sociais, declaração ética |
 
-Seções de página: `Hero` (com card de provas), `Dores`, `Servicos`, `Cases` (grid de demonstráveis + lista de roadmap), `Metodo`, `Sobre`, `IASection`, `Contato`.
+Seções: `Hero` (editorial), `Dores`, `Servicos`, `Cases` (destaques assimétricos + biblioteca lista + roadmap), `Metodo`, `Sobre`, `IASection`, `Contato`.
 
 Distinção de cases: um case é "demonstrável" quando tem slug em `CASE_DEMO_SLUGS` (`data/content.ts`). Os demais aparecem na lista compacta "Próximas análises" — sem botões desabilitados.
 
@@ -139,12 +171,12 @@ CTA fixo: **"Falar sobre minha operação"** → scroll para `#contato`
 
 ## 6. Animações (Framer Motion)
 
-| Elemento | Animação | Parâmetros |
-|----------|----------|------------|
-| Seções | fade-in + slide-up | `opacity 0→1`, `y 20→0`, `duration 0.5s` |
-| Cards em grid | stagger | `0.1s` entre filhos |
-| Hover cards | scale + shadow | `scale-[1.02]`, `shadow-md`, `transition 0.2s` |
-| Hero | stagger children | badge → título → subtítulo → CTAs |
+| Elemento | Animação | Notas |
+|----------|----------|-------|
+| Hero editorial | estático | Sem stagger Framer; reduz custo e monotonia |
+| Seções legado | fade-in + slide-up | `Dores`, `Servicos` etc. |
+| Cards legado | hover scale + shadow | Editorial cards **sem** scale hover |
+| Filtro cases | instantâneo | Lista editorial sem AnimatePresence |
 
 `prefers-reduced-motion` é respeitado globalmente via `<MotionConfig reducedMotion="user">` em `HomePage`.
 
@@ -179,13 +211,12 @@ CTA fixo: **"Falar sobre minha operação"** → scroll para `#contato`
 
 ## 9. Modal de Demo (Streamlit)
 
-- Componente: `DemoModal` (shadcn Dialog), recebe o `Case` selecionado
+- Componente: `DemoBriefingModal` (exportado como `DemoModal`)
 - Header: título + link **"Abrir em nova aba"** (URL sem `?embed=true`)
-- Topo: contexto de negócio (pergunta, decisão apoiada, métrica principal, limitação)
-- Abaixo: iframe `{demoUrl}?embed=true`
-- Desktop: iframe `height: 700px` · Mobile: `height: 500px`
-- Container: `max-h-[90vh] overflow-y-auto` (contexto + iframe cabem na viewport)
-- Fechar: X do Dialog ou clique fora
+- Contexto: faixa **2 colunas** (pergunta | decisão) + métrica em destaque tipográfico + tags inline + limitação footnote
+- Mobile: contexto colapsável (`details`); iframe **sob demanda** (botão "Carregar demo aqui")
+- Iframe: `{demoUrl}?embed=true` — desktop 700px, mobile até 500px
+- Sem grid 2×2 de labels no topo (padrão banido no pass editorial)
 
 ### Demos Streamlit (UX interno)
 

@@ -58,7 +58,9 @@ demos-logistica/   → app Streamlit (11 pages + lib/ compartilhada)
 
 ## Componentes implementados
 
-`SectionHeader`, `PainPointCard`, `ServiceCard`, `CaseCard`, `DemoModal`, `Header`, `Footer`, `Hero`, `Dores`, `Servicos`, `Cases`, `Metodo`, `Sobre`, `IASection`, `Contato`, `HomePage`, `LucideIconByName`
+`SectionHeader`, `PainPointCard`, `ServiceCard`, `CaseCard` (deprecated), `DemoModal`, `Header`, `Footer`, `Hero`, `Dores`, `Servicos`, `Cases`, `Metodo`, `Sobre`, `IASection`, `Contato`, `HomePage`, `LucideIconByName`
+
+Camada editorial: `EditorialHero`, `BriefStrip`, `SectionLead`, `BriefingCaseCard`, `CaseBriefingGrid`, `CaseLibraryRow`, `CategoryTabs`, `DemoBriefingModal` (`components/editorial/`).
 
 ## Regras críticas
 

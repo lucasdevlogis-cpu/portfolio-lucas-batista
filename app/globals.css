@@ -87,6 +87,8 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
+  --prose-width: 42rem;
+  --brief-width: 22rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -129,5 +131,28 @@
   }
   .bg-accent-contrast {
     background-color: var(--accent-contrast);
+  }
+
+  /* Editorial pass — tipografia e larguras de coluna */
+  .text-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .text-display {
+    font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .text-lede {
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+  .max-prose {
+    max-width: var(--prose-width);
+  }
+  .max-brief {
+    max-width: var(--brief-width);
   }
 }
