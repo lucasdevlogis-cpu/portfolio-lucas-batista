@@ -36,7 +36,11 @@ Execução do plano "Refatoração visual editorial". North star: **briefing de 
 - Re-medir Lighthouse mobile (meta ≥ 94) — PageSpeed API quota esgotada no ambiente do agente.
 - Screenshot diff Hero/Cases/Modal após revisão visual no browser.
 
-### Deploy e QA pós-push — pass editorial v3 (06/07/2026)
+### Revert pass editorial v3 — 06/07/2026
+
+O pass editorial (`1f71590`) **regrediu o layout** em produção (hero, cases assimétricos, biblioteca em lista). **Revertido** para `Hero`, `Cases`, `CaseCard` e `DemoModal` do commit `12d3873`. A pasta `components/editorial/` permanece no repo mas **não está em uso** até nova spec visual aprovada.
+
+---
 
 - **Landing:** push `1f71590` → `origin/main` → Vercel `dpl_HXuLvrkzW82bYY4jMcxvC7eTPFkY` **READY**.
 - **Smoke HTTP:** produção retorna hero editorial (brief strip, eyebrow tipográfico), cases assimétricos e biblioteca em lista.
