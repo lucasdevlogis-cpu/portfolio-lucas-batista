@@ -32,8 +32,15 @@ Execução do plano "Refatoração visual editorial". North star: **briefing de 
 
 ### Próximo passo
 
-- Deploy Vercel + re-medir Lighthouse mobile (meta ≥ 94).
-- Screenshot diff Hero/Cases/Modal após preview local ou produção.
+- ~~Deploy Vercel~~ ✅ commit `1f71590` → produção **READY** em `portfolio-lucas-batista-murex.vercel.app` (06/07/2026).
+- Re-medir Lighthouse mobile (meta ≥ 94) — PageSpeed API quota esgotada no ambiente do agente.
+- Screenshot diff Hero/Cases/Modal após revisão visual no browser.
+
+### Deploy e QA pós-push — pass editorial v3 (06/07/2026)
+
+- **Landing:** push `1f71590` → `origin/main` → Vercel `dpl_HXuLvrkzW82bYY4jMcxvC7eTPFkY` **READY**.
+- **Smoke HTTP:** produção retorna hero editorial (brief strip, eyebrow tipográfico), cases assimétricos e biblioteca em lista.
+- **Lighthouse:** não re-medido (quota PageSpeed API); baseline anterior mobile **93** performance.
 
 ---
 
