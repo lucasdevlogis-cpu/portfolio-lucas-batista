@@ -13,7 +13,7 @@
 | **Layout oficial** | Executive Proof System — dossiê profissional para headhunters |
 | **Spec visual** | [`design/design.md`](../design/design.md) + tokens em `app/globals.css` |
 | **URL** | <https://portfolio-lucas-batista-murex.vercel.app> |
-| **Deploy Vercel** | ✅ `0ff7aa3` em produção | [`docs/VERCEL.md`](VERCEL.md) |
+| **Deploy Vercel** | ✅ `e2516a7` (docs) · layout `0ff7aa3` | [`docs/VERCEL.md`](VERCEL.md) |
 
 ### Homepage (ordem)
 
@@ -36,10 +36,10 @@
 
 | # | Ação | Onde | Status |
 |---|------|------|--------|
-| 1 | **Deploy** push Executive Proof para `main` | GitHub → Vercel auto | 🟡 Pendente |
-| 2 | Re-medir Lighthouse (paleta editorial) | Local/prod | 🟡 Pendente |
-| 3 | Atualizar `og-image.png` para posicionamento headhunter | `public/` | 🟡 Pendente |
-| 4 | CV em PDF (`contactLinks.cvUrl`) | `data/content.ts` | 🟡 Placeholder vazio |
+| 1 | Re-medir Lighthouse (paleta editorial) | Local/prod | 🟡 Pendente |
+| 2 | Atualizar `og-image.png` para posicionamento headhunter | `public/` | 🟡 Pendente |
+| 3 | CV em PDF (`contactLinks.cvUrl`) | `data/content.ts` | 🟡 Placeholder vazio |
+| 4 | Sync demos Streamlit → repo deploy | `demos-logistica-deploy` | 🟡 Pendente |
 
 ---
 
@@ -50,7 +50,7 @@
 | Landing | ✅ Completa | Executive Proof; build + lint OK |
 | Cases | ✅ Completo | 3 âncora + biblioteca + 1 roadmap |
 | Demos Streamlit | ✅ Completa | 11 pages; smoke **13/13**; rebrand editorial |
-| Deploy produção | ✅ | `0ff7aa3` — Executive Proof live |
+| Deploy produção | ✅ | Layout `0ff7aa3` · docs `e2516a7` live |
 | Lighthouse | 🟡 Revalidar | Baseline layout antigo: desktop 97 / mobile 93 |
 
 **Veredicto:** linha oficial em produção. Próximo marco: OG image, Lighthouse pós-pivot, sync demos Streamlit.

@@ -76,8 +76,9 @@ npx vercel env pull .env.local
 
 | Item | Valor |
 |------|-------|
-| **Commit** | `0ff7aa3` — Executive Proof System |
-| **Deploy** | `dpl_4gRmUfAxLrE7H4iTPH4Lhv7DitAm` — **READY** |
+| **Commit (layout)** | `0ff7aa3` — Executive Proof System |
+| **Commit (docs)** | `e2516a7` — sync pós-deploy |
+| **Deploy layout** | `dpl_4gRmUfAxLrE7H4iTPH4Lhv7DitAm` — **READY** |
 | **Layout** | Hero editorial · ProfileBrief · Cases âncora · Contato direto |
 | **Runtime errors** | Nenhum (MCP) |
 
@@ -129,7 +130,8 @@ npx vercel inspect <deployment-url> --logs
 
 ## Checklist pós-deploy (Executive Proof)
 
-- [x] Deploy `READY` com commit `0ff7aa3`
+- [x] Deploy layout `READY` (`0ff7aa3`)
+- [x] Docs sincronizados (`e2516a7`)
 - [ ] Homepage: Hero editorial + `#perfil` + cases âncora
 - [ ] Homepage: Hero editorial + `#perfil` + cases âncora
 - [ ] Nav: Perfil · Provas · Trajetória · Contato
