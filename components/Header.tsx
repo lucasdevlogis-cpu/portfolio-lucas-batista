@@ -25,7 +25,11 @@ function subscribeNoop() {
 
 export function Header({ activeSection = "" }: HeaderProps) {
   const [open, setOpen] = useState(false);
-  const mounted = useSyncExternalStore(subscribeNoop, () => true, () => false);
+  const mounted = useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false,
+  );
 
   const handleNavClick = useCallback((href: string) => {
     scrollToSection(href);
@@ -72,7 +76,7 @@ export function Header({ activeSection = "" }: HeaderProps) {
 
         <div className="flex items-center gap-2">
           <Button
-            className="hidden bg-primary text-primary-foreground hover:bg-primary/90 md:inline-flex"
+            className="hidden h-10 px-5 font-medium bg-primary text-primary-foreground hover:bg-primary/90 md:inline-flex"
             onClick={() => handleNavClick("#contato")}
           >
             {CONTENT.navCta}

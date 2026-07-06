@@ -15,39 +15,64 @@ export function IASection() {
   const { ia } = CONTENT;
 
   return (
-    <section id="ia" className="scroll-mt-20 bg-background py-20">
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
+    <section
+      id="ia"
+      className="relative scroll-mt-20 overflow-hidden bg-[#122845] py-24 text-white"
+    >
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(80% 60% at 0% 0%, rgba(13,148,136,0.18) 0%, transparent 55%),
+            linear-gradient(200deg, #16304f 0%, #122845 55%, #0f2038 100%)
+          `,
+        }}
+        aria-hidden
+      />
+      <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="font-heading text-3xl font-bold tracking-tight text-primary md:text-4xl">
+          <span className="mb-3 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-teal-300">
+            <span className="h-px w-6 bg-accent" aria-hidden />
+            {ia.eyebrow}
+          </span>
+          <h2 className="font-heading text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
             {ia.titulo}
           </h2>
-          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+          <p className="mt-5 text-lg leading-relaxed text-slate-300">
             {ia.descricao}
           </p>
-          <div className="mt-8 rounded-xl border border-accent/30 bg-white p-6">
-            <p className="text-sm font-semibold text-accent-contrast">
+
+          <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-teal-300">
               Exemplos seguros
             </p>
-            <ul className="mt-3 space-y-2 text-sm text-foreground">
+            <ul className="mt-3 grid gap-2 text-sm text-slate-200 sm:grid-cols-2">
               {ia.exemplosSeguros.map((item) => (
                 <li key={item} className="flex items-start gap-2">
-                  <Check className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden />
+                  <Check
+                    className="mt-0.5 size-4 shrink-0 text-accent"
+                    aria-hidden
+                  />
                   {item}
                 </li>
               ))}
             </ul>
-            <p className="mt-6 text-sm font-semibold text-destructive">
+            <div className="my-5 h-px bg-white/10" aria-hidden />
+            <p className="text-sm font-semibold text-rose-300">
               O que não prometo
             </p>
-            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+            <ul className="mt-3 space-y-2 text-sm text-slate-400">
               {ia.naoPrometer.map((item) => (
                 <li key={item} className="flex items-start gap-2">
-                  <X className="mt-0.5 size-4 shrink-0 text-destructive" aria-hidden />
+                  <X
+                    className="mt-0.5 size-4 shrink-0 text-rose-400/80"
+                    aria-hidden
+                  />
                   {item}
                 </li>
               ))}
@@ -55,16 +80,16 @@ export function IASection() {
           </div>
         </motion.div>
 
-        <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-3">
           {iconCards.map(({ icon: Icon, label }) => (
             <div
               key={label}
-              className="flex flex-col items-center rounded-xl border bg-card p-6 text-center shadow-sm transition-all hover:shadow-md hover:border-accent/30 hover:-translate-y-1"
+              className="flex flex-col items-center rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-accent/40 hover:bg-white/[0.07]"
             >
-              <div className="flex size-14 items-center justify-center rounded-full bg-accent/10 text-accent">
+              <div className="flex size-14 items-center justify-center rounded-full bg-accent/15 text-teal-300">
                 <Icon className="size-7" aria-hidden />
               </div>
-              <p className="mt-3 text-sm font-medium text-primary">{label}</p>
+              <p className="mt-3 text-sm font-medium text-white">{label}</p>
             </div>
           ))}
         </div>

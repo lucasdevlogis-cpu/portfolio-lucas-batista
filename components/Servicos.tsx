@@ -13,6 +13,7 @@ export function Servicos() {
     <section id="servicos" className="scroll-mt-20 bg-white py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
+          eyebrow={secoes.servicos.eyebrow}
           title={secoes.servicos.title}
           subtitle={secoes.servicos.subtitle}
         />

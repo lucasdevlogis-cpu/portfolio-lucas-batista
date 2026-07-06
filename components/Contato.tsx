@@ -1,15 +1,15 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { Link, Mail } from "lucide-react";
 import { FormEvent, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
+import { LucideIconByName } from "@/components/LucideIconByName";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CONTENT, type CampoFormulario } from "@/data/content";
-import { LucideIconByName } from "@/components/LucideIconByName";
 
 type FormFieldName = "nome" | "email" | "empresa" | "desafio";
 
@@ -64,7 +64,8 @@ function validateField(name: FormFieldName, value: string): string {
   switch (name) {
     case "nome":
       if (!value.trim()) return "Nome é obrigatório";
-      if (value.trim().length < 2) return "Nome deve ter pelo menos 2 caracteres";
+      if (value.trim().length < 2)
+        return "Nome deve ter pelo menos 2 caracteres";
       return "";
     case "email":
       if (!value.trim()) return "Email é obrigatório";
@@ -95,7 +96,8 @@ function getFieldBorderClass(
 export function Contato() {
   const { pessoal, contato, secoes } = CONTENT;
   const [form, setForm] = useState<FormState>(initialForm);
-  const [touched, setTouched] = useState<Record<FormFieldName, boolean>>(initialTouched);
+  const [touched, setTouched] =
+    useState<Record<FormFieldName, boolean>>(initialTouched);
   const [enviado, setEnviado] = useState(false);
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -173,18 +175,31 @@ export function Contato() {
   }
 
   return (
-    <section id="contato" className="scroll-mt-20 bg-white py-20">
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+    <section
+      id="contato"
+      className="scroll-mt-20 bg-gradient-to-b from-secondary/60 to-white py-24"
+    >
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-8">
         <div>
-          <h2 className="font-heading text-3xl font-bold tracking-tight text-primary md:text-4xl">
+          <span className="mb-3 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-accent-contrast">
+            <span className="h-px w-6 bg-accent" aria-hidden />
+            Contato
+          </span>
+          <h2 className="font-heading text-3xl font-bold tracking-tight text-primary md:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
             {contato.titulo}
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
+          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
             {contato.descricao}
           </p>
-          <p className="mt-4 text-base text-foreground">
-            {secoes.contatoBeneficio}
-          </p>
+          <div className="mt-6 flex items-start gap-3 rounded-xl border border-accent/20 bg-accent/5 p-4">
+            <LucideIconByName
+              name="CheckCircle2"
+              className="mt-0.5 size-5 shrink-0 text-accent"
+            />
+            <p className="text-base text-foreground">
+              {secoes.contatoBeneficio}
+            </p>
+          </div>
         </div>
 
         <div>
@@ -229,7 +244,7 @@ export function Contato() {
                 initial={{ opacity: 1 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="space-y-4 rounded-xl border bg-card p-6 shadow-sm"
+                className="space-y-4 rounded-2xl border bg-card p-6 shadow-lg sm:p-8"
                 noValidate
               >
                 {contato.camposFormulario.map((campo) => {
@@ -240,14 +255,13 @@ export function Contato() {
                     fieldName && touched[fieldName]
                       ? validateField(fieldName, form[fieldName])
                       : "";
-                  const borderClass =
-                    fieldName
-                      ? getFieldBorderClass(
-                          fieldName,
-                          form[fieldName],
-                          touched[fieldName],
-                        )
-                      : "";
+                  const borderClass = fieldName
+                    ? getFieldBorderClass(
+                        fieldName,
+                        form[fieldName],
+                        touched[fieldName],
+                      )
+                    : "";
 
                   return (
                     <div key={campo.nome} className="space-y-2">
@@ -256,7 +270,11 @@ export function Contato() {
                         {fieldName && (
                           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                             <LucideIconByName
-                              name={fieldIcons[fieldName] as import("@/data/content").LucideIconName}
+                              name={
+                                fieldIcons[
+                                  fieldName
+                                ] as import("@/data/content").LucideIconName
+                              }
                               className="size-4 text-muted-foreground"
                             />
                           </div>
@@ -306,10 +324,13 @@ export function Contato() {
                 <Button
                   type="submit"
                   disabled={enviando}
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  className="h-12 w-full bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90"
                 >
                   {enviando ? contato.enviandoLabel : contato.ctaBotao}
                 </Button>
+                <p className="text-center text-xs text-muted-foreground">
+                  {contato.microcopy}
+                </p>
                 {erro ? (
                   <p className="text-sm text-destructive" role="alert">
                     {erro}

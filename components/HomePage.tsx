@@ -59,13 +59,9 @@ export function HomePage() {
       <Servicos />
       <SectionDivider from="white" to="background" />
       <Cases />
-      <SectionDivider from="background" to="white" />
       <Metodo />
-      <SectionDivider from="white" to="white" withBrandLine />
       <Sobre />
-      <SectionDivider from="white" to="background" />
       <IASection />
-      <SectionDivider from="background" to="white" />
       <Contato />
       <Footer />
     </MotionConfig>

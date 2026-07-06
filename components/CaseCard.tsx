@@ -1,26 +1,18 @@
 "use client";
 
-import { ExternalLink, PlayCircle, Star, Target, Zap } from "lucide-react";
+import { ExternalLink, PlayCircle, Sparkles, Target, TrendingUp } from "lucide-react";
 
 import { LucideIconByName } from "@/components/LucideIconByName";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import type { Case, CasePrioridade } from "@/data/content";
+import type { Case } from "@/data/content";
 import { cn } from "@/lib/utils";
 
 interface CaseCardProps extends Case {
   onOpenDemo: () => void;
+  destaque?: boolean;
 }
-
-const prioridadeStyles: Record<
-  CasePrioridade,
-  { badge: string; label: string; border: string; icon: typeof Star }
-> = {
-  P0: { badge: "bg-accent-contrast text-white", label: "Essencial", border: "border-l-accent", icon: Star },
-  P1: { badge: "bg-primary/20 text-primary border border-primary/20", label: "Forte", border: "border-l-primary", icon: Zap },
-  P2: { badge: "bg-primary/10 text-primary border border-primary/20", label: "Complementar", border: "border-l-slate-300", icon: Zap },
-};
 
 export function CaseCard({
   titulo,
@@ -30,20 +22,21 @@ export function CaseCard({
   tags,
   linkDemo,
   linkGitHub,
-  prioridade,
   perguntaNegocio,
   metricaPrincipal,
+  decisaoApoiada,
   onOpenDemo,
+  destaque = false,
 }: CaseCardProps) {
-  const prio = prioridadeStyles[prioridade];
   const hasDemo = Boolean(linkDemo);
-  const PrioIcon = prio.icon;
 
   return (
     <Card
       className={cn(
         "flex h-full flex-col rounded-xl border bg-card shadow-sm transition-all hover:shadow-md border-l-4",
-        prio.border,
+        destaque
+          ? "border-l-accent bg-gradient-to-b from-accent/[0.05] to-card shadow-lg ring-1 ring-accent/15"
+          : "border-l-primary/25",
         hasDemo && "hover:scale-[1.02]",
       )}
     >
@@ -52,13 +45,17 @@ export function CaseCard({
           <div className="flex size-12 items-center justify-center rounded-lg bg-primary/5 text-primary">
             <LucideIconByName name={icone} className="size-6" />
           </div>
-          <Badge
-            className={cn("shrink-0 gap-1", prio.badge)}
-            title={`${prioridade} = ${prio.label}: ${prioridade === "P0" ? "Case essencial com demo interativa" : prioridade === "P1" ? "Case forte com impacto comprovado" : "Case complementar ao portfólio"}`}
-          >
-            <PrioIcon className="size-3" aria-hidden />
-            {prioridade} · {prio.label}
-          </Badge>
+          {destaque ? (
+            <Badge className="shrink-0 gap-1 bg-accent-contrast text-white">
+              <Sparkles className="size-3" aria-hidden />
+              Destaque
+            </Badge>
+          ) : hasDemo ? (
+            <Badge className="shrink-0 gap-1 bg-accent/10 text-accent-contrast hover:bg-accent/10">
+              <PlayCircle className="size-3" aria-hidden />
+              Demo interativa
+            </Badge>
+          ) : null}
         </div>
         <p className="text-xs font-medium uppercase tracking-wide text-accent-contrast">
           {categoria}
@@ -89,6 +86,21 @@ export function CaseCard({
             {metricaPrincipal}
           </span>
         </div>
+
+        {destaque ? (
+          <div className="mt-3 flex items-start gap-2 text-xs text-muted-foreground">
+            <TrendingUp
+              className="mt-0.5 size-3.5 shrink-0 text-primary"
+              aria-hidden
+            />
+            <span>
+              <span className="font-medium text-foreground">
+                Decisão apoiada:{" "}
+              </span>
+              {decisaoApoiada}
+            </span>
+          </div>
+        ) : null}
       </CardContent>
       <CardFooter className="flex flex-col gap-3 border-t p-4">
         <div className="flex flex-wrap gap-1.5">
@@ -104,7 +116,7 @@ export function CaseCard({
         </div>
         <div className="flex w-full flex-col gap-2 sm:flex-row">
           <Button
-            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 sm:flex-1"
+            className="h-10 w-full bg-primary font-medium text-primary-foreground hover:bg-primary/90 sm:flex-1"
             onClick={onOpenDemo}
             disabled={!hasDemo}
           >
@@ -118,14 +130,18 @@ export function CaseCard({
               rel="noopener noreferrer"
               className={cn(
                 buttonVariants({ variant: "outline" }),
-                "w-full sm:w-auto",
+                "h-10 w-full sm:w-auto",
               )}
             >
               <ExternalLink className="size-4" aria-hidden />
               Ver código
             </a>
           ) : (
-            <Button variant="outline" className="w-full sm:w-auto" disabled>
+            <Button
+              variant="outline"
+              className="h-10 w-full sm:w-auto"
+              disabled
+            >
               <ExternalLink className="size-4" aria-hidden />
               Ver código
             </Button>

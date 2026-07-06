@@ -1,131 +1,129 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowRight, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { CONTENT } from "@/data/content";
 import { scrollToSection } from "@/lib/scroll";
 
-// Mantém opacidade 1 no estado inicial para o texto (LCP) pintar sem depender
-// da hidratação; o movimento de entrada fica só no deslocamento vertical.
 const container = {
   hidden: { opacity: 1 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    transition: { staggerChildren: 0.08 },
   },
 };
 
 const item = {
-  hidden: { opacity: 1, y: 16 },
+  hidden: { opacity: 0, y: 16 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
-
-function ProofCard() {
-  const { hero } = CONTENT;
-
-  return (
-    <div className="rounded-2xl border border-border/60 bg-white p-6 shadow-xl">
-      <p className="text-xs font-semibold uppercase tracking-wide text-accent-contrast">
-        {hero.provasTitulo}
-      </p>
-      <div className="mt-4 flex flex-col gap-4">
-        {hero.provas.map((prova, index) => (
-          <motion.div
-            key={prova.valor}
-            className="flex items-baseline gap-3 border-b border-border/60 pb-4 last:border-0 last:pb-0"
-            initial={{ opacity: 0, x: 12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.5 + index * 0.12 }}
-          >
-            <span className="font-heading text-2xl font-bold text-primary">
-              {prova.valor}
-            </span>
-            <span className="text-sm leading-snug text-muted-foreground">
-              {prova.label}
-            </span>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export function Hero() {
   const { pessoal, hero } = CONTENT;
 
   return (
-    <section className="relative min-h-[90vh] overflow-hidden bg-gradient-to-b from-secondary/50 to-background">
-      {/* Mesh gradient sutil — primary + accent em ~5% opacidade */}
+    <section className="relative overflow-hidden bg-[#122845] text-white">
+      {/* Camada de gradiente radial (glow accent + primary) */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background: `
-            radial-gradient(at 40% 20%, color-mix(in oklab, var(--color-primary) 8%, transparent) 0px, transparent 50%),
-            radial-gradient(at 80% 0%, color-mix(in oklab, var(--color-accent) 6%, transparent) 0px, transparent 50%),
-            radial-gradient(at 0% 50%, color-mix(in oklab, var(--color-primary) 5%, transparent) 0px, transparent 50%),
-            radial-gradient(at 80% 50%, color-mix(in oklab, var(--color-accent) 4%, transparent) 0px, transparent 50%),
-            radial-gradient(at 0% 100%, color-mix(in oklab, var(--color-primary) 7%, transparent) 0px, transparent 50%)
+            radial-gradient(120% 90% at 85% 0%, rgba(13,148,136,0.28) 0%, transparent 55%),
+            radial-gradient(90% 80% at 0% 100%, rgba(30,58,95,0.85) 0%, transparent 60%),
+            linear-gradient(160deg, #16304f 0%, #122845 45%, #0f2038 100%)
           `,
         }}
         aria-hidden
       />
-      <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col items-center justify-center gap-8 px-4 py-20 sm:px-6 lg:flex-row lg:justify-between lg:gap-10 lg:px-8">
+      {/* Grade sutil com máscara de fade */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.5]"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)
+          `,
+          backgroundSize: "56px 56px",
+          maskImage:
+            "radial-gradient(100% 70% at 70% 20%, black 0%, transparent 75%)",
+          WebkitMaskImage:
+            "radial-gradient(100% 70% at 70% 20%, black 0%, transparent 75%)",
+        }}
+        aria-hidden
+      />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          className="max-w-2xl text-center lg:text-left"
+          className="max-w-3xl pt-24 pb-14 md:pt-32 md:pb-20"
           variants={container}
           initial="hidden"
           animate="show"
         >
           <motion.span
             variants={item}
-            className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-sm font-medium text-accent-contrast"
+            className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-teal-200 backdrop-blur-sm"
           >
             <Sparkles className="size-4" aria-hidden />
             {hero.badge}
           </motion.span>
+
           <motion.h1
             variants={item}
-            className="mt-4 font-heading text-4xl font-bold tracking-tight text-primary md:text-6xl"
+            className="mt-6 font-heading text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl"
           >
             {pessoal.headline}
           </motion.h1>
+
           <motion.p
             variants={item}
-            className="mt-4 text-lg text-muted-foreground md:text-xl"
+            className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl"
           >
             {pessoal.subheadline}
           </motion.p>
+
           <motion.div
             variants={item}
-            className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start"
+            className="mt-9 flex flex-col gap-3 sm:flex-row"
           >
             <Button
-              size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              className="h-12 gap-2 bg-accent px-7 text-base font-semibold text-white shadow-lg shadow-accent/25 hover:bg-accent/90"
               onClick={() => scrollToSection("#contato")}
             >
               {hero.ctaPrimario}
+              <ArrowRight className="size-4" aria-hidden />
             </Button>
             <Button
-              size="lg"
-              variant="outline"
-              className="border-primary/30"
+              className="h-12 gap-2 border border-white/25 bg-white/5 px-7 text-base font-medium text-white backdrop-blur-sm hover:bg-white/10 hover:text-white"
               onClick={() => scrollToSection("#cases")}
             >
-              <ArrowDown className="mr-2 size-4" aria-hidden />
+              <ArrowDown className="size-4" aria-hidden />
               {hero.ctaSecundario}
             </Button>
           </motion.div>
         </motion.div>
+
+        {/* Barra de provas — âncora inferior do hero */}
         <motion.div
-          className="w-full max-w-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="grid grid-cols-1 divide-y divide-white/10 border-t border-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
         >
-          <ProofCard />
+          <p className="col-span-full pt-6 pb-4 text-xs font-semibold uppercase tracking-widest text-teal-300/80 sm:hidden">
+            {hero.provasTitulo}
+          </p>
+          {hero.provas.map((prova) => (
+            <div key={prova.valor} className="px-0 py-5 sm:px-6 sm:py-8">
+              <p className="font-heading text-3xl font-bold text-white lg:text-4xl">
+                {prova.valor}
+              </p>
+              <p className="mt-1.5 text-sm leading-snug text-slate-400">
+                {prova.label}
+              </p>
+            </div>
+          ))}
         </motion.div>
       </div>
     </section>

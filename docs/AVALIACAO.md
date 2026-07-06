@@ -2,7 +2,35 @@
 
 > **Uso:** Snapshot de saúde do portfólio antes dos próximos passos. Consulte após cada fase ou deploy significativo.
 >
-> **Última atualização:** 05/07/2026 — **Footer atualizado** (`underline` + `ArrowUpRight` nos links rápidos); hero e Sobre com ícones Lucide.
+> **Última atualização:** 05/07/2026 (noite) — **Redesign visual desktop-first + revisão de conteúdo/conversão** (hero escuro, seções Método e IA escuras, cases com destaque, serviços como ofertas, honestidade de dados). Detalhes abaixo.
+
+---
+
+## Pass de melhoria — 05/07/2026 (redesign desktop-first + conversão)
+
+Revisão pedida como "revisor sênior de UX/UI, marketing B2B e portfólio". Foco: impacto no navegador (desktop), clareza, conversão e honestidade. **Sem `output: export`; deploy Vercel nativo.**
+
+### Conteúdo / conversão (`data/content.ts`)
+
+- **Honestidade de dados:** removida a inconsistência "dados reais" na seção Sobre → **"dados sintéticos inspirados em problemas reais de operação"**. Padronizado em hero, Sobre e subtítulo de cases.
+- **Hero mais direto:** headline "Clareza para decidir custo, prazo e frete na sua operação"; subheadline curta e escaneável.
+- **Cases reorganizados:** 3 **cases em destaque** (`CASE_DESTAQUE_IDS`: frete, torre/SLA, CVRP) + **Biblioteca de análises** filtrável com os demais 7; roadmap mantido. Removido o jargão `P0/P1/P2` dos badges → `Destaque` / `Demo interativa`.
+- **Serviços como ofertas compráveis:** interface `Servico` agora tem `paraQuem`, `quandoContratar`, `entregas`, `exemplo`; copy reescrita nos 5 níveis.
+- **CTA final:** microcopy de baixo atrito (`Resposta em até 1 dia útil. Sem compromisso e sem custo inicial.`); título/descrição enxutos; benefício em caixa accent.
+- Eyebrows por seção (`SecaoCopy.eyebrow`, `IaConteudo.eyebrow`).
+
+### Visual / design (desktop-first)
+
+- **Hero escuro** (`Hero.tsx`): fundo navy com gradiente + glow teal + grade sutil mascarada; headline branca grande; CTAs grandes (primário teal); **barra de provas** integrada na base (fim do layout que deixava metade direita vazia < 1024px).
+- **Contraste de página:** **Método** e **IA** viraram faixas escuras navy (quebram a monotonia branca). `SectionDivider` removido ao redor dessas faixas escuras.
+- **SectionHeader:** eyebrow com risco accent + títulos maiores; suporte a `tone="dark"`.
+- **Cards:** destaque com gradiente/ring/shadow + bloco "Decisão apoiada"; `PainPointCard` com hover lift + barra accent; botões maiores (hero, header, cases, contato).
+
+### Infra
+
+- **ESLint:** `demos-logistica/**` adicionado a `globalIgnores` (o `.venv` empacota JS gigante que estourava a memória do lint). `npm run lint` volta a passar (~7s).
+
+**Build:** `npm run build` OK; TypeScript limpo. **Lint:** OK. **Validate:** 10 demonstráveis + 1 roadmap.
 
 ---
 

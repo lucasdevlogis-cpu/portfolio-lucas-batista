@@ -9,7 +9,8 @@ import { LucideIconByName } from "@/components/LucideIconByName";
 import { SectionHeader } from "@/components/SectionHeader";
 import {
   CASE_CATEGORIAS,
-  CASES_DEMONSTRAVEIS,
+  CASES_BIBLIOTECA,
+  CASES_DESTAQUE,
   CASES_ROADMAP,
   CONTENT,
   type Case,
@@ -24,72 +25,97 @@ export function Cases() {
   const [demoCase, setDemoCase] = useState<Case | null>(null);
 
   const casesFiltrados = useMemo(() => {
-    if (filtroAtivo === "Todos") return CASES_DEMONSTRAVEIS;
-    return CASES_DEMONSTRAVEIS.filter((c) => c.categoria === filtroAtivo);
+    if (filtroAtivo === "Todos") return CASES_BIBLIOTECA;
+    return CASES_BIBLIOTECA.filter((c) => c.categoria === filtroAtivo);
   }, [filtroAtivo]);
 
   return (
     <section id="cases" className="scroll-mt-20 bg-background py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
+          eyebrow={secoes.cases.eyebrow}
           title={secoes.cases.title}
           subtitle={secoes.cases.subtitle}
         />
 
-        <div
-          role="group"
-          aria-label="Filtrar cases por categoria"
-          className="mb-8 flex flex-wrap justify-center gap-2"
-        >
-          {CASE_CATEGORIAS.map((categoria) => {
-            const ativo = filtroAtivo === categoria;
-            return (
-              <button
-                key={categoria}
-                type="button"
-                aria-pressed={ativo}
-                onClick={() => setFiltroAtivo(categoria)}
-                className={cn(
-                  "rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
-                  ativo
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-                )}
-              >
-                {categoria}
-              </button>
-            );
-          })}
+        {/* Cases em destaque */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {CASES_DESTAQUE.map((caseItem) => (
+            <CaseCard
+              key={caseItem.id}
+              {...caseItem}
+              destaque
+              onOpenDemo={() => setDemoCase(caseItem)}
+            />
+          ))}
         </div>
 
-        <motion.div
-          layout
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          <AnimatePresence mode="popLayout">
-            {casesFiltrados.map((caseItem) => (
-              <motion.div
-                key={caseItem.id}
-                layout
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.25 }}
-              >
-                <CaseCard
-                  {...caseItem}
-                  onOpenDemo={() => setDemoCase(caseItem)}
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* Biblioteca secundária filtrável */}
+        <div className="mt-20">
+          <div className="mb-8 text-center">
+            <h3 className="font-heading text-2xl font-bold tracking-tight text-primary">
+              {secoes.casesBiblioteca.title}
+            </h3>
+            <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">
+              {secoes.casesBiblioteca.subtitle}
+            </p>
+          </div>
 
-        {casesFiltrados.length === 0 ? (
-          <p className="py-12 text-center text-sm text-muted-foreground">
-            Nenhum case nesta categoria por enquanto.
-          </p>
-        ) : null}
+          <div
+            role="group"
+            aria-label="Filtrar análises por categoria"
+            className="mb-8 flex flex-wrap justify-center gap-2"
+          >
+            {CASE_CATEGORIAS.map((categoria) => {
+              const ativo = filtroAtivo === categoria;
+              return (
+                <button
+                  key={categoria}
+                  type="button"
+                  aria-pressed={ativo}
+                  onClick={() => setFiltroAtivo(categoria)}
+                  className={cn(
+                    "rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
+                    ativo
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+                  )}
+                >
+                  {categoria}
+                </button>
+              );
+            })}
+          </div>
+
+          <motion.div
+            layout
+            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            <AnimatePresence mode="popLayout">
+              {casesFiltrados.map((caseItem) => (
+                <motion.div
+                  key={caseItem.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  <CaseCard
+                    {...caseItem}
+                    onOpenDemo={() => setDemoCase(caseItem)}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {casesFiltrados.length === 0 ? (
+            <p className="py-12 text-center text-sm text-muted-foreground">
+              Nenhuma análise nesta categoria por enquanto.
+            </p>
+          ) : null}
+        </div>
 
         {CASES_ROADMAP.length > 0 ? (
           <div className="mt-16">

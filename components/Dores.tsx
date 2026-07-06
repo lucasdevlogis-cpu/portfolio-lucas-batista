@@ -26,6 +26,7 @@ export function Dores() {
     <section id="dores" className="scroll-mt-20 bg-background py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
+          eyebrow={secoes.dores.eyebrow}
           title={secoes.dores.title}
           subtitle={secoes.dores.subtitle}
         />

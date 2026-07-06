@@ -59,8 +59,10 @@ export interface Dor {
 export interface Servico {
   numero: number;
   titulo: string;
-  descricao: string;
+  paraQuem: string;
+  quandoContratar: string;
   entregas: string[];
+  exemplo: string;
   corBorda: string;
 }
 
@@ -87,6 +89,7 @@ export interface MetodoPasso {
 }
 
 export interface IaConteudo {
+  eyebrow: string;
   titulo: string;
   descricao: string;
   exemplosSeguros: string[];
@@ -105,6 +108,7 @@ export interface Contato {
   titulo: string;
   descricao: string;
   ctaBotao: string;
+  microcopy: string;
   camposFormulario: CampoFormulario[];
   tituloSucesso: string;
   mensagemSucesso: string;
@@ -128,6 +132,7 @@ export interface NavLink {
 export interface SecaoCopy {
   title: string;
   subtitle: string;
+  eyebrow?: string;
 }
 
 export interface HeroProva {
@@ -155,6 +160,7 @@ export interface SecoesCopy {
   dores: SecaoCopy;
   servicos: SecaoCopy;
   cases: SecaoCopy;
+  casesBiblioteca: SecaoCopy;
   casesRoadmap: SecaoCopy;
   metodo: SecaoCopy;
   contatoBeneficio: string;
@@ -214,10 +220,9 @@ export const CONTENT: Content = {
   pessoal: {
     nome: "Lucas Batista",
     titulo: "Especialista em Inteligência Operacional para Logística",
-    headline:
-      "Transformo dados e rotinas logísticas em clareza para decidir melhor",
+    headline: "Clareza para decidir custo, prazo e frete na sua operação",
     subheadline:
-      "Diagnósticos, análises, automações, painéis e protótipos digitais para operações de transporte, varejo e e-commerce que precisam enxergar custo, prazo, frete, gargalos e performance com mais segurança.",
+      "Ajudo operações de logística, transporte, varejo e e-commerce a enxergar gargalos e decidir com segurança — do diagnóstico rápido ao painel e ao piloto com IA.",
     email: "lucas.farias.log@outlook.com",
     linkedin: "https://linkedin.com/in/lucasfariaslog",
     github: GITHUB_PROFILE_URL,
@@ -236,7 +241,7 @@ export const CONTENT: Content = {
       { valor: "5 níveis", label: "do diagnóstico rápido ao piloto com IA" },
       {
         valor: "10 demos",
-        label: "análises interativas com dados sintéticos",
+        label: "com dados sintéticos inspirados em operação real",
       },
     ],
   },
@@ -250,8 +255,15 @@ export const CONTENT: Content = {
     ],
     miniTimeline: [
       { icon: "Clock", texto: "+10 anos em operações logísticas" },
-      { icon: "BarChart3", texto: "4 setores: transporte, varejo, e-commerce, indústria" },
-      { icon: "FileSpreadsheet", texto: "10+ cases demonstráveis com dados reais" },
+      {
+        icon: "BarChart3",
+        texto: "4 setores: transporte, varejo, e-commerce, indústria",
+      },
+      {
+        icon: "FileSpreadsheet",
+        texto:
+          "10 cases demonstráveis com dados sintéticos inspirados em problemas reais",
+      },
     ],
     ferramentasTitulo: "Ferramentas que uso",
     ferramentas: [
@@ -268,19 +280,27 @@ export const CONTENT: Content = {
 
   secoes: {
     dores: {
+      eyebrow: "O problema",
       title: "Dores que resolvo",
       subtitle:
-        "Problemas comuns em operações logísticas que já encontrei e sei como endereçar",
+        "Problemas comuns em operações logísticas que já encontrei e sei como endereçar.",
     },
     servicos: {
+      eyebrow: "Como trabalho",
       title: "Como posso ajudar",
       subtitle:
-        "Escada de contratação: do diagnóstico rápido ao produto com IA",
+        "Do diagnóstico rápido ao piloto com IA. Escolha o nível de contratação que faz sentido para o seu momento.",
     },
     cases: {
-      title: "Cases demonstráveis",
+      eyebrow: "Prova de trabalho",
+      title: "Cases em destaque",
       subtitle:
-        "Biblioteca prática de análises logísticas com dados sintéticos. Cada case responde a uma pergunta real de negócio.",
+        "Três análises que mostram bem o tipo de decisão que eu ajudo a destravar. Dados sintéticos inspirados em problemas reais de operação.",
+    },
+    casesBiblioteca: {
+      title: "Biblioteca de análises",
+      subtitle:
+        "Mais análises interativas por tema. Filtre por categoria para encontrar a mais próxima da sua operação.",
     },
     casesRoadmap: {
       title: "Próximas análises",
@@ -288,8 +308,9 @@ export const CONTENT: Content = {
         "Cases em desenvolvimento. A demo interativa entra assim que a análise é validada.",
     },
     metodo: {
+      eyebrow: "Como conduzo",
       title: "Meu método",
-      subtitle: "Processo simples e validado em operações reais",
+      subtitle: "Processo simples e validado em operações reais.",
     },
     contatoBeneficio:
       "Uma leitura inicial ajuda a identificar se faz sentido avançar — sem compromisso de projeto grande.",
@@ -344,65 +365,81 @@ export const CONTENT: Content = {
     {
       numero: 1,
       titulo: "Diagnóstico de Clareza Operacional",
-      descricao:
-        "Para empresa com dor, mas sem clareza sobre causa e prioridade.",
+      paraQuem:
+        "Operações com dor difusa, sem clareza sobre onde está o maior problema.",
+      quandoContratar:
+        "Quando algo custa caro ou atrasa, mas você não sabe por onde começar.",
       entregas: [
-        "Checklist de maturidade",
-        "Mapa de dores",
-        "Matriz impacto x esforço",
-        "Recomendação de próximos passos",
+        "Mapa de dores da operação",
+        "Matriz impacto × esforço",
+        "Recomendação de próximos passos priorizada",
       ],
+      exemplo:
+        "Um transporte que sabe que o frete está alto, mas não sabe qual região ou transportadora puxa o custo.",
       corBorda: "border-slate-400",
     },
     {
       numero: 2,
       titulo: "Estudo Pontual",
-      descricao:
-        "Análise estruturada de uma pergunta específica (frete, SLA, região, rota).",
+      paraQuem:
+        "Quem tem uma pergunta específica e precisa de resposta com método.",
+      quandoContratar:
+        "Quando há uma decisão concreta esperando um número confiável.",
       entregas: [
-        "Leitura de dados",
+        "Leitura dos dados disponíveis",
         "Análise com premissas documentadas",
-        "Relatório executivo",
-        "Limitações declaradas",
+        "Relatório executivo com limitações declaradas",
       ],
+      exemplo:
+        "Avaliar se vale abrir um hub em determinada região antes de investir.",
       corBorda: "border-blue-400",
     },
     {
       numero: 3,
       titulo: "Painel, Automação ou Simulador Enxuto",
-      descricao: "Mini torre de controle, painel de frete, simulador de custo.",
+      paraQuem:
+        "Times que repetem relatórios manuais ou decidem sem conseguir simular cenários.",
+      quandoContratar:
+        "Quando a informação existe, mas está espalhada e chega tarde.",
       entregas: [
-        "Ferramenta navegável",
-        "Dados sintéticos ou do cliente",
-        "Documentação de uso",
-        "Treinamento simples",
+        "Ferramenta navegável (painel, automação ou simulador)",
+        "Dados do cliente ou sintéticos",
+        "Documentação de uso e treinamento simples",
       ],
+      exemplo:
+        "Uma mini torre de controle que mostra as entregas críticas do dia em uma só tela.",
       corBorda: "border-teal-400",
     },
     {
       numero: 4,
       titulo: "Acompanhamento Recorrente",
-      descricao:
-        "Leitura mensal de KPIs, atualização de painel, identificação de desvios.",
+      paraQuem:
+        "Operações que já têm indicadores, mas não têm ritmo de leitura.",
+      quandoContratar:
+        "Quando você quer acompanhar KPIs e desvios sem montar um time interno.",
       entregas: [
-        "Ritual de acompanhamento",
-        "Alertas",
-        "Revisão semanal/mensal",
-        "Evolução do painel",
+        "Ritual de acompanhamento periódico",
+        "Alertas de desvio",
+        "Evolução contínua do painel",
       ],
+      exemplo:
+        "Leitura mensal de SLA e frete com destaque para o que saiu da curva.",
       corBorda: "border-amber-400",
     },
     {
       numero: 5,
       titulo: "Produto Interno ou Piloto com IA",
-      descricao:
-        "Assistente de consulta, triagem de ocorrências, cockpit operacional.",
+      paraQuem:
+        "Quem quer testar uma ideia de produto ou automação antes de escalar.",
+      quandoContratar:
+        "Quando há um processo repetitivo que pede um protótipo real para validar.",
       entregas: [
         "Protótipo funcional",
-        "Validação com usuário",
-        "Documentação",
-        "Plano de evolução",
+        "Validação com usuário real",
+        "Documentação e plano de evolução",
       ],
+      exemplo:
+        "Um triador de ocorrências que organiza chamados por tipo, sempre com validação humana.",
       corBorda: "border-purple-400",
     },
   ],
@@ -660,6 +697,7 @@ export const CONTENT: Content = {
   ],
 
   ia: {
+    eyebrow: "Uso responsável de IA",
     titulo: "IA como acelerador, não como atalho cego",
     descricao:
       "Uso IA e vibecoding para acelerar análise, automação, documentação e prototipagem. Isso reduz o tempo entre diagnóstico e primeira entrega útil. Mas a decisão continua dependendo de contexto, dados confiáveis, validação humana e entendimento do impacto no negócio.",
@@ -682,10 +720,12 @@ export const CONTENT: Content = {
   },
 
   contato: {
-    titulo: "Vamos começar por uma leitura simples da sua operação?",
+    titulo: "Vamos dar uma primeira leitura na sua operação?",
     descricao:
-      "Me conte qual problema mais pesa hoje: frete, atraso, reentrega, relatório manual, indicador inconsistente, promessa de entrega ou falta de visibilidade. A partir disso, eu te mostro o próximo passo mais lógico.",
+      "Me conte qual problema mais pesa hoje — frete, atraso, relatório manual, indicador inconsistente ou falta de visibilidade. A partir daí, eu mostro o próximo passo mais lógico.",
     ctaBotao: "Solicitar leitura inicial",
+    microcopy:
+      "Resposta em até 1 dia útil. Sem compromisso e sem custo inicial.",
     tituloSucesso: "Mensagem recebida!",
     mensagemSucesso:
       "Obrigado pelo contato. Retorno em breve para alinhar a leitura inicial da sua operação.",
@@ -744,16 +784,41 @@ for (const c of CONTENT.cases) {
   c.linkDemo = slug ? demoUrl(slug) : "";
 }
 
-/** Cases com demo interativa — destaque da seção Cases. */
+/** Cases com demo interativa. */
 export const CASES_DEMONSTRAVEIS = CONTENT.cases.filter((c) =>
   caseTemDemo(c.id),
+);
+
+/**
+ * Três cases principais — abrem a seção Cases com cards ricos.
+ * Escolhidos por cobrirem decisões distintas: custo de frete, visibilidade/SLA
+ * e roteirização.
+ */
+export const CASE_DESTAQUE_IDS = [
+  "01-precificacao-frete",
+  "02-torre-controle",
+  "08-cvrp-urbano",
+] as const;
+
+export function caseEhDestaque(id: string): boolean {
+  return (CASE_DESTAQUE_IDS as readonly string[]).includes(id);
+}
+
+/** Cases em destaque (ordem fixa de `CASE_DESTAQUE_IDS`). */
+export const CASES_DESTAQUE = CASE_DESTAQUE_IDS.map(
+  (id) => CASES_DEMONSTRAVEIS.find((c) => c.id === id)!,
+).filter(Boolean);
+
+/** Demais cases demonstráveis — biblioteca secundária filtrável. */
+export const CASES_BIBLIOTECA = CASES_DEMONSTRAVEIS.filter(
+  (c) => !caseEhDestaque(c.id),
 );
 
 /** Cases em desenvolvimento (sem demo) — lista compacta de roadmap. */
 export const CASES_ROADMAP = CONTENT.cases.filter((c) => !caseTemDemo(c.id));
 
-/** Categorias únicas para filtro (apenas cases demonstráveis). */
+/** Categorias únicas para filtro (apenas biblioteca). */
 export const CASE_CATEGORIAS = [
   "Todos",
-  ...Array.from(new Set(CASES_DEMONSTRAVEIS.map((c) => c.categoria))),
+  ...Array.from(new Set(CASES_BIBLIOTECA.map((c) => c.categoria))),
 ] as const;
