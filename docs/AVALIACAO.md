@@ -34,6 +34,16 @@ Itens pendentes do plano de elevação de design executados nesta sessão:
 - **Smoke demos:** 13/13.
 - **Lighthouse produção (pré-deploy deste pass):** Desktop **100/100/100/100** em `portfolio-lucas-batista-murex.vercel.app`. Mobile não re-medido neste pass (recomendado pós-deploy com as mudanças locais).
 
+### Deploy e QA pós-push — 06/07/2026
+
+- **Landing:** push `caa057f` → `origin/main` → Vercel produção OK (conteúdo novo visível: triagem `categoria · métrica`, Sobre enxuto, selo Serviços).
+- **Demos:** sync → `lucasdevlogis-cpu/demos-logistica` commit `2476cd4` (Streamlit Cloud redeploy).
+- **Testes locais:** `npm run lint` OK · `npm run build` OK · `validate-cases` 10+1 OK · smoke demos **13/13**.
+- **Lighthouse produção pós-deploy:**
+  - Desktop: **97 / 100 / 100 / 100**
+  - Mobile: **93 / 100 / 100 / 100** (LCP **2,9 s** — meta performance ≥ 94: **1 ponto abaixo**)
+- **HTTP smoke URLs:** landing + 3 demos destaque (`?embed=true`) → **200 OK**.
+
 ---
 
 ## Pass de elevação de design — 06/07/2026 (B2B + headhunter, Figma como spec)
@@ -383,11 +393,11 @@ NEXT_PUBLIC_FORMSPREE_FORM_ID=   # opcional até criar conta Formspree
 
 ## Próximos passos sugeridos
 
-1. **Deploy:** commit + push landing (Vercel) e demos (Streamlit Cloud) com as mudanças deste pass
-2. **Lighthouse mobile** pós-deploy (meta ≥ 94 performance)
+1. **Deploy:** commit + push landing (Vercel) e demos (Streamlit Cloud) com as mudanças deste pass — **concluído** (`caa057f` + `2476cd4`)
+2. **Lighthouse mobile** pós-deploy — **93** performance (meta ≥ 94; LCP 2,9 s). Opcional: micro-otimização de LCP se quiser recuperar 1 ponto
 3. Configurar **Formspree** (`NEXT_PUBLIC_FORMSPREE_FORM_ID`) → redeploy
-4. Teste manual: DemoModal iframe on-demand no iPhone/Android; embed `?embed=true` nas 3 demos destaque
-5. Push demos para repo `demos-logistica` no GitHub
+4. Teste manual: DemoModal iframe on-demand no iPhone/Android; embed `?embed=true` nas 3 demos destaque (HTTP 200; validar visual após redeploy Streamlit ~2 min)
+5. Push demos para repo `demos-logistica` no GitHub — **concluído**
 
 ---
 
