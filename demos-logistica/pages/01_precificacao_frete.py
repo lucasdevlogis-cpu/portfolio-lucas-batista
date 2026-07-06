@@ -34,7 +34,7 @@ ui.sidebar_brand()
 
 df = ui.load_csv("frete_embarques.csv")
 
-with st.sidebar:
+with ui.filter_container("Parâmetros globais"):
     st.header("Parâmetros globais")
     diesel = st.slider("Preço do diesel (R$/L)", 4.5, 8.5, frete.DIESEL_REF_BRL, 0.05)
     with st.expander("Premissas de tarifa (avançado)"):
@@ -86,6 +86,8 @@ piso_total = calc["piso_antt"].sum()
 acima_pct = (frete_total / piso_total - 1) * 100 if piso_total else 0
 custo_kg = frete_total / max(calc["peso_taxavel_kg"].sum(), 1)
 
+ui.breadcrumb("Case: Precificação de Frete · <b>Demo interativa</b>")
+
 ui.hero(
     "01. Precificação de Frete Rodoviário BR",
     "Onde o frete pesa na composição de custo e quanto isso fica acima do piso ANTT?",
@@ -102,20 +104,22 @@ ui.hero(
 )
 
 # KPIs com severidade ---------------------------------------------------------
-kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
-with kpi_col1:
-    ui.kpi_metric("Embarques", fmt.fmt_number(len(calc)))
-with kpi_col2:
-    ui.kpi_metric("Custo médio por kg", fmt.fmt_currency(custo_kg))
-with kpi_col3:
-    ui.kpi_metric("Piso ANTT (carteira)", fmt.fmt_currency(piso_total, decimals=0))
-with kpi_col4:
-    diesel_severity = "danger" if diesel > 7.0 else "warning" if diesel > 6.5 else "success"
-    ui.kpi_metric(
-        "Ajuste diesel",
-        fmt.fmt_currency(calc["ajuste_diesel"].sum(), decimals=0),
-        severity=diesel_severity,
-    )
+diesel_severity = "danger" if diesel > 7.0 else "warning" if diesel > 6.5 else "success"
+ui.kpi_grid(
+    [
+        {"label": "Embarques", "value": fmt.fmt_number(len(calc))},
+        {"label": "Custo médio por kg", "value": fmt.fmt_currency(custo_kg)},
+        {
+            "label": "Piso ANTT (carteira)",
+            "value": fmt.fmt_currency(piso_total, decimals=0),
+        },
+        {
+            "label": "Ajuste diesel",
+            "value": fmt.fmt_currency(calc["ajuste_diesel"].sum(), decimals=0),
+            "severity": diesel_severity,
+        },
+    ]
+)
 
 st.divider()
 

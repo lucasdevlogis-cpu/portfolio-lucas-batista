@@ -82,7 +82,15 @@ def add_points(
         tipo_val = str(row[tipo]).lower() if tipo and tipo in row else ""
         icon = _icon_for(tipo_val)
         if color_by and color_by in row:
-            cor = brand.SEVERITY_COLORS.get(str(row[color_by]), brand.PRIMARY)
+            # Aceita tanto status operacional ("Atrasado", "No prazo") quanto níveis
+            # de severidade ("Alta", "Crítico") — antes só o segundo mapa era
+            # consultado, então o mapa da torre caía tudo para o navy padrão.
+            key = str(row[color_by])
+            cor = (
+                brand.STATUS_COLORS.get(key)
+                or brand.SEVERITY_COLORS.get(key)
+                or brand.PRIMARY
+            )
             icon_name = icon.options.get("icon", "circle")
             icon = folium.Icon(prefix="fa", icon=icon_name, color="white", icon_color=cor)
         popup = _popup(row, popup_fields or [])

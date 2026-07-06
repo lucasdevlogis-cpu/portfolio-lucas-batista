@@ -69,6 +69,8 @@ aptos = int((aud["nivel_confianca"] == "Alta").sum())
 revisar = int((aud["nivel_confianca"] == "Média").sum())
 bloqueados = int((aud["nivel_confianca"] == "Baixa").sum())
 
+ui.breadcrumb("Case: Auditoria de Endereço · <b>Demo interativa</b>")
+
 ui.hero(
     "10. Auditoria de Endereço / Geocoding BR",
     "Quais endereços têm confiança suficiente para prometer e rotear?",
@@ -90,15 +92,14 @@ overview_tab, analysis_tab, export_tab = st.tabs(
 )
 
 with overview_tab:
-    kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
-    with kpi_col1:
-        ui.kpi_metric("Total auditado", f"{len(aud)}")
-    with kpi_col2:
-        ui.kpi_metric("Aptos", f"{aptos}", severity="success")
-    with kpi_col3:
-        ui.kpi_metric("Revisar", f"{revisar}", severity="warning")
-    with kpi_col4:
-        ui.kpi_metric("Bloqueados", f"{bloqueados}", severity="danger")
+    ui.kpi_grid(
+        [
+            {"label": "Total auditado", "value": f"{len(aud)}"},
+            {"label": "Aptos", "value": f"{aptos}", "severity": "success"},
+            {"label": "Revisar", "value": f"{revisar}", "severity": "warning"},
+            {"label": "Bloqueados", "value": f"{bloqueados}", "severity": "danger"},
+        ]
+    )
 
     st.divider()
 

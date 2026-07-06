@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { CONTENT, type Case } from "@/data/content";
 import { cn } from "@/lib/utils";
@@ -59,6 +60,9 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
   // automaticamente, sem effect de reset.
   const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
   const [errorUrl, setErrorUrl] = useState<string | null>(null);
+  // No mobile o iframe carrega sob demanda: guardamos qual URL o usuário pediu.
+  // Trocar de case muda `embedUrl`, então volta ao estado "não carregado" sem effect.
+  const [loadRequestedUrl, setLoadRequestedUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
@@ -79,6 +83,9 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
       : loadedUrl === embedUrl && embedUrl
         ? "ready"
         : "loading";
+
+  // Desktop carrega direto; mobile só depois do clique em "Carregar demo aqui".
+  const shouldMountIframe = !isMobile || loadRequestedUrl === embedUrl;
 
   const abrirNovaAba = demoUrl ? (
     <a
@@ -142,6 +149,24 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
                 {caseItem.limitacao}
               </p>
             </div>
+            {caseItem.tags.length > 0 ? (
+              <div className="sm:col-span-2">
+                <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-accent-contrast">
+                  Stack e temas
+                </p>
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                  {caseItem.tags.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="bg-secondary px-2 py-0.5 text-xs text-secondary-foreground"
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         ) : null}
 
@@ -161,7 +186,21 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
         ) : null}
 
         <div className="relative bg-muted/30">
-          {embedUrl ? (
+          {embedUrl && !shouldMountIframe ? (
+            <div className="flex flex-col items-center gap-3 px-6 py-10 text-center">
+              <p className="max-w-sm text-sm text-muted-foreground">
+                A demo interativa carrega dentro deste modal. No celular ela fica
+                apertada — carregue aqui ou abra em tela cheia.
+              </p>
+              <button
+                type="button"
+                onClick={() => setLoadRequestedUrl(embedUrl)}
+                className={cn(buttonVariants({ variant: "default" }), "w-full")}
+              >
+                Carregar demo aqui
+              </button>
+            </div>
+          ) : embedUrl ? (
             <>
               {status !== "ready" ? (
                 <div

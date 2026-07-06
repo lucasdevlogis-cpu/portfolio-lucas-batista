@@ -1,5 +1,8 @@
 {
   "plugins": {
+    "figma": {
+      "enabled": true
+    },
     "vercel": {
       "enabled": true
     }

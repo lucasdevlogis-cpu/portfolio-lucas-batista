@@ -20,7 +20,7 @@ ui.sidebar_brand()
 
 df = ui.load_csv("cvrp_entregas.csv")
 
-with st.sidebar:
+with ui.filter_container("Parâmetros da operação"):
     st.header("Parâmetros da operação")
     n_entregas = st.slider("Número de entregas", 5, len(df), min(24, len(df)))
     capacidade = st.slider("Capacidade do veículo (kg)", 100, 2000, 500, 50)
@@ -29,7 +29,10 @@ with st.sidebar:
 base = df.head(n_entregas).copy()
 stops = base.rename(columns={"lat": "lat", "lon": "lon"}).to_dict("records")
 
-rotas, nao_atendidas = geo.cvrp_nearest_neighbor(stops, DEPOT, capacidade, max_veiculos)
+with st.spinner("Otimizando rotas (nearest-neighbor com capacidade)…"):
+    rotas, nao_atendidas = geo.cvrp_nearest_neighbor(
+        stops, DEPOT, capacidade, max_veiculos
+    )
 
 
 def baseline_distance(stops_list: list[dict]) -> float:
@@ -55,6 +58,8 @@ economia_pct = (1 - dist_otimizada / dist_baseline) * 100 if dist_baseline else 
 tempo_h = dist_otimizada / VELOCIDADE_KMH
 atendidas = sum(len(r["paradas"]) for r in rotas)
 
+ui.breadcrumb("Case: Roteirização Urbana (CVRP) · <b>Demo interativa</b>")
+
 ui.hero(
     "03. Roteirização Urbana SP — CVRP",
     "Quantos veículos atendem as entregas e quanta distância dá para economizar?",
@@ -69,20 +74,21 @@ ui.hero(
 )
 
 # KPIs com severidade ---------------------------------------------------------
-kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
-with kpi_col1:
-    ui.kpi_metric("Veículos usados", fmt.fmt_number(len(rotas)))
-with kpi_col2:
-    ui.kpi_metric("Entregas atendidas", f"{atendidas}/{len(base)}")
-with kpi_col3:
-    ui.kpi_metric("Tempo estimado", f"{tempo_h:.1f} h")
-with kpi_col4:
-    economia_severity = "success" if economia_pct > 15 else "warning" if economia_pct > 5 else None
-    ui.kpi_metric(
-        "Economia",
-        f"{dist_baseline - dist_otimizada:,.1f} km",
-        severity=economia_severity,
-    )
+economia_severity = (
+    "success" if economia_pct > 15 else "warning" if economia_pct > 5 else None
+)
+ui.kpi_grid(
+    [
+        {"label": "Veículos usados", "value": fmt.fmt_number(len(rotas))},
+        {"label": "Entregas atendidas", "value": f"{atendidas}/{len(base)}"},
+        {"label": "Tempo estimado", "value": f"{tempo_h:.1f} h"},
+        {
+            "label": "Economia",
+            "value": f"{dist_baseline - dist_otimizada:,.1f} km",
+            "severity": economia_severity,
+        },
+    ]
+)
 
 st.divider()
 

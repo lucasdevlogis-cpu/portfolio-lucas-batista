@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Lightbulb } from "lucide-react";
+import { Check, Lightbulb, Star } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,7 @@ interface ServiceCardProps {
   entregas: string[];
   exemplo: string;
   corBorda: string;
+  recomendado?: boolean;
 }
 
 export function ServiceCard({
@@ -23,6 +24,7 @@ export function ServiceCard({
   entregas,
   exemplo,
   corBorda,
+  recomendado = false,
 }: ServiceCardProps) {
   const borderClass = corBorda.replace(/^border-/, "border-l-");
 
@@ -31,18 +33,35 @@ export function ServiceCard({
       className={cn(
         "rounded-xl border bg-card shadow-sm transition-all hover:shadow-md hover:scale-[1.01]",
         "border-l-4",
-        borderClass,
+        recomendado
+          ? "border-l-accent ring-1 ring-accent/25 shadow-md"
+          : borderClass,
       )}
     >
       <CardContent className="p-6">
         <div className="flex gap-4">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+          <div
+            className={cn(
+              "flex size-10 shrink-0 items-center justify-center rounded-full text-sm font-bold ring-4 ring-white",
+              recomendado
+                ? "bg-accent text-white"
+                : "bg-primary text-primary-foreground",
+            )}
+          >
             {numero}
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="font-heading text-xl font-semibold text-primary">
-              {titulo}
-            </h3>
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="font-heading text-xl font-semibold text-primary">
+                {titulo}
+              </h3>
+              {recomendado ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-semibold text-accent-contrast">
+                  <Star className="size-3" aria-hidden />
+                  Porta de entrada mais procurada
+                </span>
+              ) : null}
+            </div>
 
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <div>

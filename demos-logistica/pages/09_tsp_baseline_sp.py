@@ -18,8 +18,7 @@ ui.sidebar_brand()
 
 df = ui.load_csv("tsp_visits.csv")
 
-with st.sidebar:
-    st.header("Parâmetros")
+with ui.filter_container("Parâmetros"):
     aplicar_2opt = st.checkbox("Aplicar melhoria 2-opt", value=True)
 
 depot_row = df[df["role"] == "depot"].iloc[0]
@@ -40,6 +39,8 @@ d_final = geo.path_length(ordem_final, dm, closed=True)
 economia_pct = (1 - d_final / d_cadastro) * 100 if d_cadastro else 0
 tempo_min = d_final / VELOCIDADE_KMH * 60 + visitas["service_time_min"].sum()
 
+ui.breadcrumb("Case: TSP Baseline SP · <b>Demo interativa</b>")
+
 ui.hero(
     "09. TSP Baseline SP — Sequência de Visitas",
     "Qual a melhor sequência para visitar os pontos a partir do CD?",
@@ -58,15 +59,17 @@ ui.hero(
     },
 )
 
-kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
-with kpi_col1:
-    ui.kpi_metric("Pontos de visita", f"{len(visitas)}")
-with kpi_col2:
-    ui.kpi_metric("Tempo estimado", f"{tempo_min / 60:.1f} h")
-with kpi_col3:
-    ui.kpi_metric("Nearest-neighbor", f"{format.fmt_number(d_nn, decimals=1)} km")
-with kpi_col4:
-    ui.kpi_metric("Ganho 2-opt", f"{format.fmt_number(d_nn - d_final, decimals=1)} km")
+ui.kpi_grid(
+    [
+        {"label": "Pontos de visita", "value": f"{len(visitas)}"},
+        {"label": "Tempo estimado", "value": f"{tempo_min / 60:.1f} h"},
+        {"label": "Nearest-neighbor", "value": f"{format.fmt_number(d_nn, decimals=1)} km"},
+        {
+            "label": "Ganho 2-opt",
+            "value": f"{format.fmt_number(d_nn - d_final, decimals=1)} km",
+        },
+    ]
+)
 
 route_coords = [coords[i] for i in ordem_final] + [coords[ordem_final[0]]]
 route_labels = [nomes[i] for i in ordem_final] + [nomes[ordem_final[0]]]

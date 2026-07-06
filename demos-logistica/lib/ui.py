@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Sequence
+from contextlib import contextmanager
+from typing import Iterator, Sequence
 
 import pandas as pd
 import streamlit as st
@@ -61,6 +62,8 @@ def _inject_css(embed: bool = False) -> None:
     embed_css = (
         """
           header[data-testid="stHeader"] { display:none; }
+          /* No embed a navegação multipage confunde: escondemos a lista de pages. */
+          div[data-testid="stSidebarNav"] { display:none; }
           div[data-testid="stAppViewContainer"] > .main .block-container {
             padding-top: 1rem;
           }
@@ -71,7 +74,9 @@ def _inject_css(embed: bool = False) -> None:
     st.markdown(
         f"""
         <style>
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
           {embed_css}
+          html, body, .stApp {{ font-family: {brand.FONT_FAMILY}; }}
           .stApp h1, .stApp h2, .stApp h3 {{ color: {brand.PRIMARY}; }}
           div[data-testid="stMetricValue"] {{ color: {brand.PRIMARY}; font-weight:700; }}
           /* KPIs como cartões */
@@ -91,6 +96,11 @@ def _inject_css(embed: bool = False) -> None:
             font-size:0.78rem; font-weight:600;
           }}
           .demo-pergunta {{ font-size:1.05rem; color:{brand.FOREGROUND}; margin:.4rem 0; }}
+          .demo-breadcrumb {{
+            font-size:0.78rem; font-weight:600; color:{brand.MUTED};
+            text-transform:uppercase; letter-spacing:0.04em; margin-bottom:.35rem;
+          }}
+          .demo-breadcrumb b {{ color:{brand.ACCENT}; }}
           .demo-sidebar-brand {{
             font-weight:700; color:{brand.PRIMARY}; font-size:1rem; line-height:1.1;
           }}
@@ -129,6 +139,27 @@ def sidebar_brand() -> None:
         )
         nav_link("app.py", "Todas as demos", icon="🏠")
         st.divider()
+
+
+@contextmanager
+def filter_container(label: str = "Filtros") -> Iterator[None]:
+    """Container de filtros ciente do embed.
+
+    Fora do embed usa a sidebar (comportamento padrão). No embed a sidebar fica
+    colapsada e escondida, então os filtros iriam sumir — aqui eles aparecem num
+    `st.expander` aberto no topo do corpo, a 1 clique da primeira interação.
+    """
+    if is_embed():
+        with st.expander(label, expanded=True):
+            yield
+    else:
+        with st.sidebar:
+            yield
+
+
+def breadcrumb(texto: str) -> None:
+    """Trilha compacta de contexto (ex.: 'Case: Precificação de Frete · Demo')."""
+    st.markdown(f"<div class='demo-breadcrumb'>{texto}</div>", unsafe_allow_html=True)
 
 
 def nav_link(path: str, label: str, icon: str | None = None) -> None:
@@ -228,19 +259,56 @@ def impact_metric(
     st.metric(label, value, delta=delta, help=help, delta_color=delta_color)
 
 
-def kpi_row(items: list[tuple[str, str]] | list[dict]) -> None:
-    """Linha de KPIs. Aceita tuplas (label, value) ou dicts com delta/help."""
-    cols = st.columns(len(items))
-    for col, item in zip(cols, items):
-        if isinstance(item, dict):
-            col.metric(
-                item["label"],
-                item["value"],
-                delta=item.get("delta"),
-                help=item.get("help"),
-            )
-        else:
-            col.metric(item[0], item[1])
+def _render_metric(col, item: tuple[str, str] | dict) -> None:
+    if isinstance(item, dict):
+        col.metric(
+            item["label"],
+            item["value"],
+            delta=item.get("delta"),
+            help=item.get("help"),
+        )
+    else:
+        col.metric(item[0], item[1])
+
+
+def kpi_row(
+    items: list[tuple[str, str]] | list[dict], columns: int | None = None
+) -> None:
+    """Linha de KPIs. Aceita tuplas (label, value) ou dicts com delta/help.
+
+    No embed (iframe estreito do modal) mais de 2 colunas ficam espremidas, então
+    caímos para uma grade 2×2. `columns` força um número específico se preciso.
+    """
+    n = len(items)
+    if n == 0:
+        return
+    if columns is None:
+        columns = 2 if (is_embed() and n > 2) else n
+    columns = max(1, min(columns, n))
+    for start in range(0, n, columns):
+        cols = st.columns(columns)
+        for offset, item in enumerate(items[start : start + columns]):
+            _render_metric(cols[offset], item)
+
+
+def kpi_grid(items: list[dict], columns: int | None = None) -> None:
+    """Grade de KPIs com borda por severidade, responsiva no embed (2×2).
+
+    Cada item: dict com `label`, `value` e opcional `severity`
+    (success/warning/danger). Substitui blocos manuais de `st.columns(4)`
+    que espremem no iframe do modal.
+    """
+    n = len(items)
+    if n == 0:
+        return
+    if columns is None:
+        columns = 2 if (is_embed() and n > 2) else n
+    columns = max(1, min(columns, n))
+    for start in range(0, n, columns):
+        cols = st.columns(columns)
+        for offset, item in enumerate(items[start : start + columns]):
+            with cols[offset]:
+                kpi_metric(item["label"], item["value"], item.get("severity"))
 
 
 def kpi_metric(label: str, value: str, severity: str | None = None) -> None:

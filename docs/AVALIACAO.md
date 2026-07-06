@@ -2,7 +2,66 @@
 
 > **Uso:** Snapshot de saúde do portfólio antes dos próximos passos. Consulte após cada fase ou deploy significativo.
 >
-> **Última atualização:** 05/07/2026 (noite) — **Redesign visual desktop-first + revisão de conteúdo/conversão** (hero escuro, seções Método e IA escuras, cases com destaque, serviços como ofertas, honestidade de dados). Detalhes abaixo.
+> **Última atualização:** 06/07/2026 — **Continuação Fase 3** (propagação embed Streamlit, polish landing, docs, FigJam, QA). Pass anterior: elevação de design B2B + headhunter.
+
+---
+
+## Continuação Fase 3 — 06/07/2026
+
+Itens pendentes do plano de elevação de design executados nesta sessão:
+
+### Streamlit — embed em todas as pages
+
+- **`filter_container()` + `breadcrumb()`** propagados às pages **04–09** (antes só 01–03). Pages **07, 10, 11** receberam breadcrumb (sem filtros sidebar).
+- **`kpi_grid()`** propagado às pages **04–10** (grade 2×2 no embed; antes só 01–03).
+- **VRPTW (05):** `st.spinner("Simulando rotas e janelas...")` no solver, alinhado ao CVRP.
+
+### Landing — polish
+
+- **Hero:** badge com ícone `Route` (logística) em vez de `Sparkles`.
+- **`CaseCard`:** linha de triagem `{categoria} · {metricaResumo}`; categoria duplicada removida.
+- **Sobre:** parágrafo intermediário removido (menos densidade).
+
+### Documentação
+
+- **`design/design.md`:** matriz de paridade landing ↔ Streamlit + link Figma v2.
+- **`AGENTS.md`:** link Figma v2 + referência a `.cursor/rules/figma-mcp.mdc`.
+- **FigJam:** jornadas criadas — [Jornada headhunter 60s](https://www.figma.com/board/oo6IohJkFVx2jYnenXMlC5) · [Jornada embed demo](https://www.figma.com/board/iOesutJfRKn3HxB4Mm5lc3).
+
+### QA
+
+- **Build:** `npm run lint && npm run build` OK.
+- **Smoke demos:** 13/13.
+- **Lighthouse produção (pré-deploy deste pass):** Desktop **100/100/100/100** em `portfolio-lucas-batista-murex.vercel.app`. Mobile não re-medido neste pass (recomendado pós-deploy com as mudanças locais).
+
+---
+
+## Pass de elevação de design — 06/07/2026 (B2B + headhunter, Figma como spec)
+
+Execução do "Plano de Elevação de Design". Direção: evoluir a identidade navy/teal (sem rebrand), servindo **dois públicos** — decisor B2B e headhunter em triagem rápida. Figma usado como spec visual (arquivo `Portfolio Lucas — Design System v2`, key `857tvb7je0mJctJWYujqG7`): coleção `Tokens` (23 variáveis com code syntax WEB) + frames de referência (paleta, CaseCard slim, ProfileStrip headhunter, KPI row Streamlit, DemoModal).
+
+### Landing Next.js
+
+- **Tokens de seção escura** (`app/globals.css`): `--surface-dark`, `--surface-dark-2/3`, `--text-on-dark`, `--text-on-dark-muted`, `--text-on-dark-accent`. Novo componente **`DarkSection`** encapsula fundo navy + glow radial + grade — fonte única para Hero/Método/IA. Removido todo hex hardcoded (`#122845`, `#16304f`, `#0f2038`, `text-teal-200/300`).
+- **`CaseCard` slim:** densidade reduzida — categoria, título, **linha de triagem `domínio · métrica`** (novo campo `metricaResumo` em `data/content.ts`) e pergunta de negócio; descrição, decisão, métrica longa e tags migraram para o `DemoModal`.
+- **Escada de Serviços:** conector alinhado aos números; nível recomendado (`recomendado` em `Servico`) com anel accent, número teal e selo "Porta de entrada mais procurada".
+- **Camada headhunter:** Hero com identidade (nome + título) e contato (LinkedIn/email) acima da dobra; `Sobre` escaneável (ferramentas agrupadas em Dados/Análise/Apps/IA via `ferramentasGrupos`, selo de `disponibilidade`, LinkedIn/email diretos); LinkedIn no Header (desktop + mobile).
+- **A11y:** skip link em `layout.tsx`; `aria-current="page"` no nav ativo; `aria-invalid`/`aria-describedby` no formulário; animações de `Dores`/`Servicos` corrigidas (fade real no `initial`).
+- **DemoModal:** no mobile o iframe carrega **sob demanda** (botão "Carregar demo aqui") — contexto de negócio primeiro, menos scroll-in-scroll.
+
+### Demos Streamlit
+
+- **UX de embed** (`lib/ui.py`): `filter_container()` move filtros para um `st.expander` aberto no topo quando `?embed=true` (a sidebar fica escondida no iframe); nav multipage ocultada no embed; `breadcrumb()` de contexto; `kpi_grid()`/`kpi_row()` responsivos em 2×2 no embed.
+- **Bugs:** `folium_maps.add_points` agora consulta `STATUS_COLORS` **e** `SEVERITY_COLORS` (mapa da torre voltou a colorir por status); fonte **Inter** carregada via `@import` no CSS; `config.toml` `primaryColor` alinhado ao navy `#1e3a5f`; deps mortas removidas (`streamlit-echarts`, `streamlit-aggrid`).
+- **3 demos destaque** (01 frete, 02 torre, 03 CVRP) adotam os helpers; CVRP com `st.spinner` no solver (percepção de produto).
+- **Nota POC:** em vez de adicionar `streamlit-facade` (nova dependência que duplicaria `brand.py` e arriscaria o smoke), o preset navy-teal foi mantido nativo em `brand.py` — o objetivo do POC (tokens consistentes cross-surface) já está atendido.
+
+### Documentação e regras
+
+- `.cursor/rules/figma-mcp.mdc` (alwaysApply) com mapa de tokens Figma→CSS/Python e fluxo por componente.
+- `design/design.md` §2 atualizado com os tokens de seção escura.
+
+**Build:** `npm run build` OK; TypeScript limpo; `npm run lint` OK. **Smoke demos:** 13/13. **Lighthouse:** não re-rodado neste pass (mudanças sem `backdrop-blur` novo nem assets pesados; recomendado re-medir pós-deploy).
 
 ---
 
@@ -150,7 +209,7 @@ Teste automatizado dos 10 modais de demo via Kimi WebBridge.
 - **`lib/tables.py`:** emojis para `Crítico`, `Atenção`, `OK`, `Violou SLA`; colunas de texto com `width` padrão; `format_dataframe()` usa `width="stretch"`.
 - **Padronização cross-page:** KPIs fora das tabs (page 04); method/provenance/CTA fora das tabs (pages 06, 09); KPI rows convertidos para cards (`kpi_metric`); alturas de mapas/gráficos alinhadas; margens de donuts ajustadas; Gantt com altura dinâmica; tabela de exportação da page 10 reduzida para menos scroll horizontal.
 
-**Build:** `npm run build` OK; lint OK (escopo do projeto).  
+**Build:** `npm run build` OK; lint OK (escopo do projeto).
 **Smoke test demos:** 13/13 OK.
 
 ---
@@ -324,9 +383,11 @@ NEXT_PUBLIC_FORMSPREE_FORM_ID=   # opcional até criar conta Formspree
 
 ## Próximos passos sugeridos
 
-1. Configurar Formspree → redeploy
-2. Rodar Lighthouse na URL de produção após deploy para confirmar scores
-3. Push demos para repo `demos-logistica` no GitHub
+1. **Deploy:** commit + push landing (Vercel) e demos (Streamlit Cloud) com as mudanças deste pass
+2. **Lighthouse mobile** pós-deploy (meta ≥ 94 performance)
+3. Configurar **Formspree** (`NEXT_PUBLIC_FORMSPREE_FORM_ID`) → redeploy
+4. Teste manual: DemoModal iframe on-demand no iPhone/Android; embed `?embed=true` nas 3 demos destaque
+5. Push demos para repo `demos-logistica` no GitHub
 
 ---
 

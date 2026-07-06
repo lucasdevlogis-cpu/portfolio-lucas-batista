@@ -15,8 +15,7 @@ ui.sidebar_brand()
 
 df = ui.load_csv("corredores_geo.csv")
 
-with st.sidebar:
-    st.header("Premissas de custo")
+with ui.filter_container("Premissas de custo"):
     rate_km = st.slider("Custo por km (R$)", 1.0, 10.0, 4.5, 0.5)
     ton_km = st.slider("Custo por ton·km (R$)", 0.0, 1.0, 0.35, 0.05)
     niveis = st.multiselect(
@@ -36,6 +35,8 @@ base = base.sort_values("custo_por_ton")
 melhor = base.iloc[0]
 media_ton = base["custo_por_ton"].mean()
 
+ui.breadcrumb("Case: Rede Inter-hubs · <b>Demo interativa</b>")
+
 ui.hero(
     "06. Rede Inter-hubs / Corredores",
     "Qual corredor tem melhor custo por tonelada e onde priorizar consolidação?",
@@ -54,15 +55,23 @@ ui.hero(
     },
 )
 
-kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
-with kpi_col1:
-    ui.kpi_metric("Corredores", f"{len(base)}")
-with kpi_col2:
-    ui.kpi_metric("Volume total", f"{format.fmt_number(base['volume_ton'].sum(), decimals=0)} t")
-with kpi_col3:
-    ui.kpi_metric("Custo total", format.fmt_currency(base['custo_total'].sum(), decimals=0))
-with kpi_col4:
-    ui.kpi_metric("Custo médio/ton", format.fmt_currency(media_ton, decimals=0))
+ui.kpi_grid(
+    [
+        {"label": "Corredores", "value": f"{len(base)}"},
+        {
+            "label": "Volume total",
+            "value": f"{format.fmt_number(base['volume_ton'].sum(), decimals=0)} t",
+        },
+        {
+            "label": "Custo total",
+            "value": format.fmt_currency(base["custo_total"].sum(), decimals=0),
+        },
+        {
+            "label": "Custo médio/ton",
+            "value": format.fmt_currency(media_ton, decimals=0),
+        },
+    ]
+)
 
 nodes = {}
 for _, r in base.iterrows():

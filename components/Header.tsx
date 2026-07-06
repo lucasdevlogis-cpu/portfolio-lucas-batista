@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { Link as LinkIcon, Menu } from "lucide-react";
 import { useCallback, useState, useSyncExternalStore } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -60,6 +60,7 @@ export function Header({ activeSection = "" }: HeaderProps) {
               <button
                 key={link.href}
                 type="button"
+                aria-current={isActive ? "page" : undefined}
                 onClick={() => handleNavClick(link.href)}
                 className={cn(
                   "rounded-md px-3 py-2 text-sm font-medium transition-colors",
@@ -75,6 +76,17 @@ export function Header({ activeSection = "" }: HeaderProps) {
         </nav>
 
         <div className="flex items-center gap-2">
+          {!CONTENT.pessoal.linkedin.startsWith("[") ? (
+            <a
+              href={CONTENT.pessoal.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn de Lucas Batista"
+              className="hidden size-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-primary md:inline-flex"
+            >
+              <LinkIcon className="size-5" aria-hidden />
+            </a>
+          ) : null}
           <Button
             className="hidden h-10 px-5 font-medium bg-primary text-primary-foreground hover:bg-primary/90 md:inline-flex"
             onClick={() => handleNavClick("#contato")}
@@ -107,6 +119,7 @@ export function Header({ activeSection = "" }: HeaderProps) {
                     <button
                       key={link.href}
                       type="button"
+                      aria-current={isActive ? "page" : undefined}
                       onClick={() => handleNavClick(link.href)}
                       className={cn(
                         "rounded-md px-3 py-3 text-left text-base font-medium transition-colors",
@@ -125,6 +138,17 @@ export function Header({ activeSection = "" }: HeaderProps) {
                 >
                   {CONTENT.navCta}
                 </Button>
+                {!CONTENT.pessoal.linkedin.startsWith("[") ? (
+                  <a
+                    href={CONTENT.pessoal.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-flex items-center gap-2 rounded-md px-3 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
+                  >
+                    <LinkIcon className="size-5" aria-hidden />
+                    LinkedIn
+                  </a>
+                ) : null}
               </nav>
             </SheetContent>
           </Sheet>

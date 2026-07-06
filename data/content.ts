@@ -64,6 +64,8 @@ export interface Servico {
   entregas: string[];
   exemplo: string;
   corBorda: string;
+  /** Nível recomendado como porta de entrada — recebe destaque visual na escada. */
+  recomendado?: boolean;
 }
 
 export interface Case {
@@ -78,6 +80,8 @@ export interface Case {
   prioridade: CasePrioridade;
   perguntaNegocio: string;
   metricaPrincipal: string;
+  /** Métrica curta para a linha de triagem do card (ex.: "distância e frota otimizadas"). */
+  metricaResumo: string;
   decisaoApoiada: string;
   limitacao: string;
 }
@@ -153,7 +157,10 @@ export interface SobreConteudo {
   paragrafos: string[];
   miniTimeline: { icon: LucideIconName; texto: string }[];
   ferramentasTitulo: string;
-  ferramentas: string[];
+  /** Ferramentas agrupadas por área — leitura escaneável para triagem técnica. */
+  ferramentasGrupos: { grupo: string; itens: string[] }[];
+  /** Modelo de engajamento e disponibilidade — sinal rápido para recrutadores. */
+  disponibilidade: string;
 }
 
 export interface SecoesCopy {
@@ -250,7 +257,6 @@ export const CONTENT: Content = {
     titulo: "Quem está por trás",
     paragrafos: [
       "Sou o Lucas, especialista autônomo em inteligência operacional para logística, transporte, varejo e e-commerce. Trabalho na fronteira entre operação, dados e tecnologia.",
-      "Conheço de perto a rotina de planilhas espalhadas, indicadores que mudam de valor e decisões tomadas no escuro. Hoje ajudo operações a enxergar custo, prazo, frete e gargalos com clareza — do diagnóstico rápido ao protótipo com IA.",
       "Meu foco é entregar a menor peça útil primeiro: algo que já ajuda a decidir melhor, sempre com premissas e limitações declaradas.",
     ],
     miniTimeline: [
@@ -266,16 +272,14 @@ export const CONTENT: Content = {
       },
     ],
     ferramentasTitulo: "Ferramentas que uso",
-    ferramentas: [
-      "Python",
-      "SQL",
-      "Pandas",
-      "Streamlit",
-      "Power BI",
-      "Excel avançado",
-      "IA / LLMs",
-      "Next.js",
+    ferramentasGrupos: [
+      { grupo: "Dados", itens: ["Python", "SQL", "Pandas"] },
+      { grupo: "Análise e BI", itens: ["Power BI", "Excel avançado"] },
+      { grupo: "Apps e produto", itens: ["Streamlit", "Next.js"] },
+      { grupo: "IA aplicada", itens: ["IA / LLMs"] },
     ],
+    disponibilidade:
+      "Consultoria autônoma · aberto a conversas de projeto e colaboração",
   },
 
   secoes: {
@@ -409,6 +413,7 @@ export const CONTENT: Content = {
       exemplo:
         "Uma mini torre de controle que mostra as entregas críticas do dia em uma só tela.",
       corBorda: "border-teal-400",
+      recomendado: true,
     },
     {
       numero: 4,
@@ -458,6 +463,7 @@ export const CONTENT: Content = {
       prioridade: "P0",
       perguntaNegocio: "Qual região concentra maior custo por entrega?",
       metricaPrincipal: "Custo por kg, custo por entrega, composição de frete",
+      metricaResumo: "custo por kg e por entrega",
       decisaoApoiada:
         "Entender composição e pressão de custo para priorizar negociações",
       limitacao:
@@ -477,6 +483,7 @@ export const CONTENT: Content = {
       perguntaNegocio: "Quais entregas exigem ação imediata?",
       metricaPrincipal:
         "SLA, OTD, tempo de resposta, ocorrências por transportadora",
+      metricaResumo: "SLA, OTD e follow-up priorizado",
       decisaoApoiada: "Priorizar entregas críticas e follow-ups",
       limitacao:
         "Não substitui TMS completo. Dados de entrada dependem da integração disponível.",
@@ -496,6 +503,7 @@ export const CONTENT: Content = {
         "Qual CEP ou praça tem maior risco de atraso ou insucesso?",
       metricaPrincipal:
         "Taxa de insucesso, prazo médio por CEP, risco territorial",
+      metricaResumo: "risco e prazo por CEP",
       decisaoApoiada: "Ajustar prazo, risco e modalidade por região",
       limitacao:
         "CEP e geocoding são apoio, não verdade absoluta. Precisa validar com dados reais do cliente.",
@@ -514,6 +522,7 @@ export const CONTENT: Content = {
       perguntaNegocio: "Qual origem atende melhor: CD, loja, hub ou parceiro?",
       metricaPrincipal:
         "Custo por origem, prazo por origem, ocupação de estoque",
+      metricaResumo: "custo e prazo por origem",
       decisaoApoiada:
         "Escolher origem considerando prazo, custo, estoque e capacidade",
       limitacao:
@@ -534,6 +543,7 @@ export const CONTENT: Content = {
         "Quais endereços precisam de revisão antes da decisão logística?",
       metricaPrincipal:
         "Score de qualidade de endereço, taxa de geocoding bem-sucedido",
+      metricaResumo: "score de qualidade de endereço",
       decisaoApoiada: "Bloquear, revisar ou aceitar endereço para análise",
       limitacao:
         "Geocoding depende de APIs externas (OpenStreetMap, Google). Endereços brasileiros têm variação de qualidade.",
@@ -553,6 +563,7 @@ export const CONTENT: Content = {
         "O atraso de entrega começa no picking, na ocupação ou na expedição?",
       metricaPrincipal:
         "Ocupação, produtividade de picking, tempo de expedição, backlog",
+      metricaResumo: "ocupação, picking e expedição",
       decisaoApoiada:
         "Identificar endereços críticos, ocupação e risco de expedição",
       limitacao:
@@ -573,6 +584,7 @@ export const CONTENT: Content = {
         "Como transformar mensagens, chamados e justificativas em categorias acionáveis?",
       metricaPrincipal:
         "Precisão de classificação, tempo de triagem, categorias mais frequentes",
+      metricaResumo: "triagem de ocorrências por NLP",
       decisaoApoiada:
         "Organizar textos soltos em categorias, prioridades e resumos com validação humana",
       limitacao:
@@ -593,6 +605,7 @@ export const CONTENT: Content = {
         "Quantos veículos atendem as entregas e quanta distância dá para economizar?",
       metricaPrincipal:
         "Distância total, veículos usados, economia vs ordem de cadastro",
+      metricaResumo: "distância e frota otimizadas",
       decisaoApoiada:
         "Dimensionar frota e sequenciar entregas respeitando a capacidade",
       limitacao:
@@ -613,6 +626,7 @@ export const CONTENT: Content = {
         "A sequência de entregas respeita as janelas prometidas ao cliente?",
       metricaPrincipal:
         "Violações de SLA, tempo de espera, horário da última entrega",
+      metricaResumo: "violações de janela (SLA)",
       decisaoApoiada:
         "Ordenar entregas por prazo para reduzir violações de janela",
       limitacao:
@@ -639,6 +653,7 @@ export const CONTENT: Content = {
         "Qual corredor tem melhor custo por tonelada e onde priorizar consolidação?",
       metricaPrincipal:
         "Custo por tonelada por lane, volume por corredor, custo total",
+      metricaResumo: "custo por tonelada por lane",
       decisaoApoiada:
         "Priorizar consolidação e negociação nas lanes de maior impacto",
       limitacao:
@@ -658,6 +673,7 @@ export const CONTENT: Content = {
       perguntaNegocio:
         "Qual a melhor sequência para visitar os pontos a partir do CD?",
       metricaPrincipal: "Distância da rota, ganho do 2-opt, tempo estimado",
+      metricaResumo: "distância e ganho do 2-opt",
       decisaoApoiada:
         "Definir a ordem de visitas que reduz distância e tempo total",
       limitacao:

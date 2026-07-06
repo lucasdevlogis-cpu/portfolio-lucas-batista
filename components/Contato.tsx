@@ -263,6 +263,9 @@ export function Contato() {
                       )
                     : "";
 
+                  const errorId = `${campo.nome}-erro`;
+                  const isInvalid = Boolean(errorMsg);
+
                   return (
                     <div key={campo.nome} className="space-y-2">
                       <Label htmlFor={campo.nome}>{fieldLabel(campo)}</Label>
@@ -287,6 +290,8 @@ export function Contato() {
                             required={campo.obrigatorio}
                             value={form.desafio}
                             placeholder={campo.placeholder}
+                            aria-invalid={isInvalid || undefined}
+                            aria-describedby={isInvalid ? errorId : undefined}
                             onChange={(e) =>
                               updateField(campo.nome, e.target.value)
                             }
@@ -305,6 +310,8 @@ export function Contato() {
                                 : ""
                             }
                             placeholder={campo.placeholder}
+                            aria-invalid={isInvalid || undefined}
+                            aria-describedby={isInvalid ? errorId : undefined}
                             onChange={(e) =>
                               updateField(campo.nome, e.target.value)
                             }
@@ -314,7 +321,11 @@ export function Contato() {
                         )}
                       </div>
                       {errorMsg ? (
-                        <p className="text-sm text-red-500" role="alert">
+                        <p
+                          id={errorId}
+                          className="text-sm text-red-500"
+                          role="alert"
+                        >
                           {errorMsg}
                         </p>
                       ) : null}

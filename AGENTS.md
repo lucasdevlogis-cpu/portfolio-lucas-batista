@@ -8,6 +8,7 @@ Guia para agentes de código (Cursor, Kimi Code, etc.) trabalhando neste reposit
 2. Leia `docs/AVALIACAO.md` para estado atual, bloqueadores e próximos passos.
 3. Deploy: `docs/DEPLOY.md`. Decisões visuais: `design/design.md`.
 4. Textos do site: `data/content.ts` é a fonte única (nunca hardcode nos componentes).
+5. Spec visual Figma v2: [Portfolio Lucas — Design System v2](https://www.figma.com/design/857tvb7je0mJctJWYujqG7) (key `857tvb7je0mJctJWYujqG7`). Regras Figma→código: `.cursor/rules/figma-mcp.mdc`.
 
 ## Stack
 

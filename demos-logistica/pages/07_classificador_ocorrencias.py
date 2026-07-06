@@ -110,6 +110,8 @@ alta = int((classificado["prioridade_prevista"] == "Alta").sum())
 media = int((classificado["prioridade_prevista"] == "Média").sum())
 baixa = int((classificado["prioridade_prevista"] == "Baixa").sum())
 
+ui.breadcrumb("Case: Classificador de Ocorrências · <b>Demo interativa</b>")
+
 ui.hero(
     "07. Classificador de Ocorrências Operacionais",
     "Como triar automaticamente os textos de ocorrência da operação?",
@@ -126,15 +128,26 @@ ui.hero(
 )
 
 # KPIs com severidade ---------------------------------------------------------
-kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
-with kpi_col1:
-    ui.kpi_metric("Amostra", fmt.fmt_number(len(classificado)))
-with kpi_col2:
-    ui.kpi_metric("Alta", fmt.fmt_number(alta), severity="danger" if alta > 0 else "success")
-with kpi_col3:
-    ui.kpi_metric("Média", fmt.fmt_number(media), severity="warning" if media > 0 else None)
-with kpi_col4:
-    ui.kpi_metric("Baixa", fmt.fmt_number(baixa), severity="success" if baixa > 0 else None)
+ui.kpi_grid(
+    [
+        {"label": "Amostra", "value": fmt.fmt_number(len(classificado))},
+        {
+            "label": "Alta",
+            "value": fmt.fmt_number(alta),
+            "severity": "danger" if alta > 0 else "success",
+        },
+        {
+            "label": "Média",
+            "value": fmt.fmt_number(media),
+            "severity": "warning" if media > 0 else None,
+        },
+        {
+            "label": "Baixa",
+            "value": fmt.fmt_number(baixa),
+            "severity": "success" if baixa > 0 else None,
+        },
+    ]
+)
 
 st.divider()
 
@@ -147,15 +160,14 @@ if st.button("Classificar", type="primary"):
 if "ultimo" in st.session_state:
     r = st.session_state["ultimo"]
     severity = {"Alta": "danger", "Média": "warning", "Baixa": "success"}.get(r["prioridade"])
-    kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
-    with kpi_col1:
-        ui.kpi_metric("Categoria", r["categoria"])
-    with kpi_col2:
-        ui.kpi_metric("Prioridade", r["prioridade"], severity=severity)
-    with kpi_col3:
-        ui.kpi_metric("Causa provável", r["causa"])
-    with kpi_col4:
-        ui.kpi_metric("Ação sugerida", r["acao"])
+    ui.kpi_grid(
+        [
+            {"label": "Categoria", "value": r["categoria"]},
+            {"label": "Prioridade", "value": r["prioridade"], "severity": severity},
+            {"label": "Causa provável", "value": r["causa"]},
+            {"label": "Ação sugerida", "value": r["acao"]},
+        ]
+    )
     st.progress(r["confianca"], text=f"Confiança: {r['confianca']:.0%}")
 
 st.divider()

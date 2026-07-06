@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Brain, Check, Shield, X, Zap } from "lucide-react";
 
+import { DarkSection } from "@/components/DarkSection";
 import { CONTENT } from "@/data/content";
 
 const iconCards = [
@@ -15,20 +16,7 @@ export function IASection() {
   const { ia } = CONTENT;
 
   return (
-    <section
-      id="ia"
-      className="relative scroll-mt-20 overflow-hidden bg-[#122845] py-24 text-white"
-    >
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: `
-            radial-gradient(80% 60% at 0% 0%, rgba(13,148,136,0.18) 0%, transparent 55%),
-            linear-gradient(200deg, #16304f 0%, #122845 55%, #0f2038 100%)
-          `,
-        }}
-        aria-hidden
-      />
+    <DarkSection id="ia" glow="top-left" className="scroll-mt-20 py-24">
       <div className="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -36,19 +24,19 @@ export function IASection() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
         >
-          <span className="mb-3 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-teal-300">
+          <span className="mb-3 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-on-dark-accent">
             <span className="h-px w-6 bg-accent" aria-hidden />
             {ia.eyebrow}
           </span>
           <h2 className="font-heading text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
             {ia.titulo}
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-slate-300">
+          <p className="mt-5 text-lg leading-relaxed text-on-dark-muted">
             {ia.descricao}
           </p>
 
           <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-teal-300">
+            <p className="text-sm font-semibold text-on-dark-accent">
               Exemplos seguros
             </p>
             <ul className="mt-3 grid gap-2 text-sm text-slate-200 sm:grid-cols-2">
@@ -86,7 +74,7 @@ export function IASection() {
               key={label}
               className="flex flex-col items-center rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-accent/40 hover:bg-white/[0.07]"
             >
-              <div className="flex size-14 items-center justify-center rounded-full bg-accent/15 text-teal-300">
+              <div className="flex size-14 items-center justify-center rounded-full bg-accent/15 text-on-dark-accent">
                 <Icon className="size-7" aria-hidden />
               </div>
               <p className="mt-3 text-sm font-medium text-white">{label}</p>
@@ -94,6 +82,6 @@ export function IASection() {
           ))}
         </div>
       </div>
-    </section>
+    </DarkSection>
   );
 }

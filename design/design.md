@@ -40,6 +40,40 @@ Ordem vertical das seções (IDs para navegação):
 | Border | `#e2e8f0` | Bordas de cards |
 | Card | `#ffffff` | Cards, modais |
 
+### Tokens de seção escura (`DarkSection`)
+
+Faixas escuras (Hero, Método, IA) usam tokens únicos em vez de gradientes hardcoded. Definidos em `globals.css` e consumidos pelo componente `DarkSection`.
+
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `--surface-dark` | `#122845` | Fundo base das faixas escuras |
+| `--surface-dark-2` | `#16304f` | Topo do gradiente navy |
+| `--surface-dark-3` | `#0f2038` | Base do gradiente navy |
+| `--text-on-dark` | `#ffffff` | Texto principal sobre navy |
+| `--text-on-dark-muted` | `#cbd5e1` | Texto secundário sobre navy |
+
+O gradiente radial (glow teal + navy) e a grade sutil ficam encapsulados em `DarkSection`, com prop `glow` para variar a origem do brilho por seção. Espelhados na coleção `Tokens` do Figma v2 (`color/surface-dark*`, `color/text-on-dark*`).
+
+### Paridade landing ↔ Streamlit
+
+| Elemento | Landing (`globals.css`) | Streamlit (`lib/brand.py` + `ui.py`) |
+|----------|-------------------------|--------------------------------------|
+| Primary | `#1e3a5f` / `--color-primary` | `PRIMARY` / `config.toml` primaryColor |
+| Accent | `#0d9488` / `--color-accent` | `ACCENT` |
+| Background | `#f8fafc` | `BG` |
+| Card | `#ffffff` | `CARD` |
+| Muted | `#64748b` | `MUTED` |
+| Border | `#e2e8f0` | `BORDER` |
+| Surface dark | `--surface-dark*` | Hero navy via CSS injetado |
+| Fonte headings | Inter (Google Fonts) | Inter via `@import` no CSS |
+| Radius cards | `rounded-xl` (12px) | `RADIUS = "12px"` |
+| KPI row embed | — | `kpi_grid()` 2×2 quando `?embed=true` |
+| Filtros embed | — | `filter_container()` expander no topo |
+
+**Figma v2 (spec):** [Portfolio Lucas — Design System v2](https://www.figma.com/design/857tvb7je0mJctJWYujqG7) — coleção `Tokens` (23 variáveis) + frames de referência (CaseCard slim, ProfileStrip, KPI row, DemoModal).
+
+**FigJam (jornadas):** [Headhunter 60s](https://www.figma.com/board/oo6IohJkFVx2jYnenXMlC5) · [Embed demo](https://www.figma.com/board/iOesutJfRKn3HxB4Mm5lc3).
+
 ### Tipografia
 
 - **Headings:** Inter (Google Fonts), bold, `tracking-tight`

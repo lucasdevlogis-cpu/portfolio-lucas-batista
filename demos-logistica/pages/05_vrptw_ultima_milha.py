@@ -25,8 +25,7 @@ ui.sidebar_brand()
 
 df = ui.load_csv("vrptw_paradas.csv")
 
-with st.sidebar:
-    st.header("Parâmetros")
+with ui.filter_container("Parâmetros"):
     n = st.slider("Número de paradas", 3, len(df), min(8, len(df)))
     inicio = st.slider("Início da jornada (h)", 6, 12, 8)
     velocidade = st.slider("Velocidade média (km/h)", 12, 40, 22)
@@ -65,18 +64,21 @@ def simular(order: list[dict]) -> pd.DataFrame:
     return pd.DataFrame(linhas)
 
 
-ordem_cadastro = list(base)
-ordem_edf = sorted(base, key=lambda p: p["window_end_min"])
+with st.spinner("Simulando rotas e janelas..."):
+    ordem_cadastro = list(base)
+    ordem_edf = sorted(base, key=lambda p: p["window_end_min"])
 
-sched_base = simular(ordem_cadastro)
-sched_edf = simular(ordem_edf)
+    sched_base = simular(ordem_cadastro)
+    sched_edf = simular(ordem_edf)
 
-viol_base = int((sched_base["status"] == "Violou SLA").sum())
-viol_edf = int((sched_edf["status"] == "Violou SLA").sum())
+    viol_base = int((sched_base["status"] == "Violou SLA").sum())
+    viol_edf = int((sched_edf["status"] == "Violou SLA").sum())
 
-espera_total = sched_edf["espera_min"].sum()
-ultima_entrega = sched_edf["chegada_min"].iloc[-1] if len(sched_edf) else 0
-deadline_medio = sched_edf["window_end_min"].mean()
+    espera_total = sched_edf["espera_min"].sum()
+    ultima_entrega = sched_edf["chegada_min"].iloc[-1] if len(sched_edf) else 0
+    deadline_medio = sched_edf["window_end_min"].mean()
+
+ui.breadcrumb("Case: VRPTW Última Milha · <b>Demo interativa</b>")
 
 ui.hero(
     "05. VRPTW — Última Milha com Janelas de Tempo",
@@ -97,23 +99,22 @@ ui.hero(
 tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
 
 with tab_visao:
-    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
-    with kpi1:
-        ui.kpi_metric("Paradas", format.fmt_number(n))
-    with kpi2:
-        ui.kpi_metric(
-            "No prazo (otimizado)",
-            f"{n - viol_edf}/{n}",
-            severity="success" if viol_edf == 0 else "warning" if viol_edf == 1 else "danger",
-        )
-    with kpi3:
-        ui.kpi_metric(
-            "Espera total",
-            f"{espera_total:.0f} min",
-            severity="warning" if espera_total > 60 else None,
-        )
-    with kpi4:
-        ui.kpi_metric("Última entrega", hhmm(ultima_entrega))
+    ui.kpi_grid(
+        [
+            {"label": "Paradas", "value": format.fmt_number(n)},
+            {
+                "label": "No prazo (otimizado)",
+                "value": f"{n - viol_edf}/{n}",
+                "severity": "success" if viol_edf == 0 else "warning" if viol_edf == 1 else "danger",
+            },
+            {
+                "label": "Espera total",
+                "value": f"{espera_total:.0f} min",
+                "severity": "warning" if espera_total > 60 else None,
+            },
+            {"label": "Última entrega", "value": hhmm(ultima_entrega)},
+        ]
+    )
 
     st.divider()
 

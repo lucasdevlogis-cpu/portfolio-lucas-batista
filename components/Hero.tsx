@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowRight, Link as LinkIcon, Mail, Route } from "lucide-react";
 
+import { DarkSection } from "@/components/DarkSection";
 import { Button } from "@/components/ui/button";
 import { CONTENT } from "@/data/content";
 import { scrollToSection } from "@/lib/scroll";
@@ -24,36 +25,7 @@ export function Hero() {
   const { pessoal, hero } = CONTENT;
 
   return (
-    <section className="relative overflow-hidden bg-[#122845] text-white">
-      {/* Camada de gradiente radial (glow accent + primary) */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: `
-            radial-gradient(120% 90% at 85% 0%, rgba(13,148,136,0.28) 0%, transparent 55%),
-            radial-gradient(90% 80% at 0% 100%, rgba(30,58,95,0.85) 0%, transparent 60%),
-            linear-gradient(160deg, #16304f 0%, #122845 45%, #0f2038 100%)
-          `,
-        }}
-        aria-hidden
-      />
-      {/* Grade sutil com máscara de fade */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.5]"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)
-          `,
-          backgroundSize: "56px 56px",
-          maskImage:
-            "radial-gradient(100% 70% at 70% 20%, black 0%, transparent 75%)",
-          WebkitMaskImage:
-            "radial-gradient(100% 70% at 70% 20%, black 0%, transparent 75%)",
-        }}
-        aria-hidden
-      />
-
+    <DarkSection glow="hero" grid>
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           className="max-w-3xl pt-24 pb-14 md:pt-32 md:pb-20"
@@ -61,11 +33,20 @@ export function Hero() {
           initial="hidden"
           animate="show"
         >
+          <motion.p
+            variants={item}
+            className="text-sm font-medium text-on-dark-muted"
+          >
+            <span className="font-semibold text-white">{pessoal.nome}</span>
+            {" · "}
+            {pessoal.titulo}
+          </motion.p>
+
           <motion.span
             variants={item}
-            className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-teal-200 backdrop-blur-sm"
+            className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-on-dark-accent backdrop-blur-sm"
           >
-            <Sparkles className="size-4" aria-hidden />
+            <Route className="size-4" aria-hidden />
             {hero.badge}
           </motion.span>
 
@@ -78,7 +59,7 @@ export function Hero() {
 
           <motion.p
             variants={item}
-            className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl"
+            className="mt-6 max-w-2xl text-lg leading-relaxed text-on-dark-muted md:text-xl"
           >
             {pessoal.subheadline}
           </motion.p>
@@ -102,6 +83,32 @@ export function Hero() {
               {hero.ctaSecundario}
             </Button>
           </motion.div>
+
+          <motion.div
+            variants={item}
+            className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-on-dark-muted"
+          >
+            {!pessoal.linkedin.startsWith("[") ? (
+              <a
+                href={pessoal.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 transition-colors hover:text-white"
+              >
+                <LinkIcon className="size-4" aria-hidden />
+                LinkedIn
+              </a>
+            ) : null}
+            {!pessoal.email.startsWith("[") ? (
+              <a
+                href={`mailto:${pessoal.email}`}
+                className="inline-flex items-center gap-2 transition-colors hover:text-white"
+              >
+                <Mail className="size-4" aria-hidden />
+                {pessoal.email}
+              </a>
+            ) : null}
+          </motion.div>
         </motion.div>
 
         {/* Barra de provas — âncora inferior do hero */}
@@ -111,7 +118,7 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="grid grid-cols-1 divide-y divide-white/10 border-t border-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
         >
-          <p className="col-span-full pt-6 pb-4 text-xs font-semibold uppercase tracking-widest text-teal-300/80 sm:hidden">
+          <p className="col-span-full pt-6 pb-4 text-xs font-semibold uppercase tracking-widest text-on-dark-accent/80 sm:hidden">
             {hero.provasTitulo}
           </p>
           {hero.provas.map((prova) => (
@@ -126,6 +133,6 @@ export function Hero() {
           ))}
         </motion.div>
       </div>
-    </section>
+    </DarkSection>
   );
 }

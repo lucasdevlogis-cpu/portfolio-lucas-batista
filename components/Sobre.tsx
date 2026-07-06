@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Link as LinkIcon, Mail } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { CONTENT } from "@/data/content";
@@ -36,6 +37,33 @@ export function Sobre() {
             {pessoal.nome}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">{pessoal.titulo}</p>
+
+          <p className="mt-4 rounded-lg bg-accent/5 px-3 py-2 text-xs font-medium text-accent-contrast">
+            {sobre.disponibilidade}
+          </p>
+
+          <div className="mt-4 flex flex-wrap justify-center gap-4 text-sm lg:justify-start">
+            {!pessoal.linkedin.startsWith("[") ? (
+              <a
+                href={pessoal.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+              >
+                <LinkIcon className="size-4" aria-hidden />
+                LinkedIn
+              </a>
+            ) : null}
+            {!pessoal.email.startsWith("[") ? (
+              <a
+                href={`mailto:${pessoal.email}`}
+                className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+              >
+                <Mail className="size-4" aria-hidden />
+                Email
+              </a>
+            ) : null}
+          </div>
         </motion.div>
 
         <motion.div
@@ -71,15 +99,24 @@ export function Sobre() {
             <p className="text-sm font-semibold text-primary">
               {sobre.ferramentasTitulo}
             </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {sobre.ferramentas.map((ferramenta) => (
-                <Badge
-                  key={ferramenta}
-                  variant="secondary"
-                  className="bg-secondary text-secondary-foreground"
-                >
-                  {ferramenta}
-                </Badge>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              {sobre.ferramentasGrupos.map((grupo) => (
+                <div key={grupo.grupo}>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-accent-contrast">
+                    {grupo.grupo}
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {grupo.itens.map((item) => (
+                      <Badge
+                        key={item}
+                        variant="secondary"
+                        className="bg-secondary text-secondary-foreground"
+                      >
+                        {item}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>

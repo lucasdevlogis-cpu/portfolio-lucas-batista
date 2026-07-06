@@ -9,6 +9,8 @@ ui.page_setup("11. Sobre os dados e métodos", icon="📚")
 
 ui.sidebar_brand()
 
+ui.breadcrumb("Portfólio · <b>Sobre os dados e métodos</b>")
+
 ui.hero(
     "11. Sobre os dados e métodos",
     "De onde vêm os dados de cada demo e qual seria o método em produção?",

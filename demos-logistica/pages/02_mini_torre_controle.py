@@ -15,7 +15,7 @@ ui.sidebar_brand()
 
 df = ui.load_csv("torre_entregas.csv")
 
-with st.sidebar:
+with ui.filter_container("Filtros"):
     st.header("Filtros")
     transportadora = st.multiselect(
         "Transportadora",
@@ -40,6 +40,8 @@ criticos = int(f["status"].isin(CRITICOS).sum())
 atraso_medio = f.loc[f["horas_atraso"] > 0, "horas_atraso"].mean()
 em_risco = int((f["status"] == "Em risco").sum())
 
+ui.breadcrumb("Case: Mini Torre de Controle · <b>Demo interativa</b>")
+
 ui.hero(
     "02. Mini Torre de Controle de Entregas",
     "Quais entregas exigem ação imediata agora?",
@@ -55,24 +57,29 @@ ui.hero(
 )
 
 # KPIs com severidade ---------------------------------------------------------
-kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
-with kpi_col1:
-    ui.kpi_metric("Monitoradas", fmt.fmt_number(len(f)))
-with kpi_col2:
-    ui.kpi_metric(
-        "Atraso médio",
-        f"{atraso_medio:.1f} h" if not np.isnan(atraso_medio) else "—",
-        severity="warning" if not np.isnan(atraso_medio) and atraso_medio > 4 else "success",
-    )
-with kpi_col3:
-    ui.kpi_metric(
-        "Com ocorrência",
-        fmt.fmt_number(int((f["ocorrencias"] > 0).sum())),
-        severity="danger" if int((f["ocorrencias"] > 0).sum()) > 0 else "success",
-    )
-with kpi_col4:
-    severity_risco = "danger" if em_risco > 3 else "warning" if em_risco > 0 else "success"
-    ui.kpi_metric("Em risco", fmt.fmt_number(em_risco), severity=severity_risco)
+com_ocorrencia = int((f["ocorrencias"] > 0).sum())
+atraso_ok = not np.isnan(atraso_medio)
+severity_risco = "danger" if em_risco > 3 else "warning" if em_risco > 0 else "success"
+ui.kpi_grid(
+    [
+        {"label": "Monitoradas", "value": fmt.fmt_number(len(f))},
+        {
+            "label": "Atraso médio",
+            "value": f"{atraso_medio:.1f} h" if atraso_ok else "—",
+            "severity": "warning" if atraso_ok and atraso_medio > 4 else "success",
+        },
+        {
+            "label": "Com ocorrência",
+            "value": fmt.fmt_number(com_ocorrencia),
+            "severity": "danger" if com_ocorrencia > 0 else "success",
+        },
+        {
+            "label": "Em risco",
+            "value": fmt.fmt_number(em_risco),
+            "severity": severity_risco,
+        },
+    ]
+)
 
 st.divider()
 

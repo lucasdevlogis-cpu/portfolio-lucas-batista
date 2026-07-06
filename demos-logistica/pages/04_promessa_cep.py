@@ -15,8 +15,7 @@ ui.sidebar_brand()
 
 df = ui.load_csv("promessa_cep.csv", dtype={"cep5": str})
 
-with st.sidebar:
-    st.header("Filtros")
+with ui.filter_container("Filtros"):
     regiao = st.multiselect(
         "Região", sorted(df["regiao"].unique()), default=sorted(df["regiao"].unique())
     )
@@ -63,6 +62,8 @@ insucesso_medio = f["taxa_insucesso_pct"].mean()
 prazo_medio = f["prazo_medio_dias"].mean()
 custo_medio = f["custo_medio_frete"].mean()
 
+ui.breadcrumb("Case: Promessa de Entrega por CEP · <b>Demo interativa</b>")
+
 ui.hero(
     "04. Promessa de Entrega por CEP",
     "Qual praça concentra risco de atraso e insucesso na promessa?",
@@ -79,27 +80,26 @@ ui.hero(
     },
 )
 
-kpi1, kpi2, kpi3, kpi4 = st.columns(4)
-with kpi1:
-    ui.kpi_metric("CEPs na análise", format.fmt_number(len(f)))
-with kpi2:
-    ui.kpi_metric(
-        "Insucesso médio",
-        format.fmt_percent(insucesso_medio),
-        severity="danger" if insucesso_medio > 8 else "warning" if insucesso_medio > 5 else "success",
-    )
-with kpi3:
-    ui.kpi_metric(
-        "Prazo médio",
-        f"{prazo_medio:.1f} dias",
-        severity="danger" if prazo_medio > 5 else "warning" if prazo_medio > 3 else "success",
-    )
-with kpi4:
-    ui.kpi_metric(
-        "Custo médio",
-        format.fmt_currency(custo_medio),
-        severity="danger" if custo_medio > 60 else "warning" if custo_medio > 45 else "success",
-    )
+ui.kpi_grid(
+    [
+        {"label": "CEPs na análise", "value": format.fmt_number(len(f))},
+        {
+            "label": "Insucesso médio",
+            "value": format.fmt_percent(insucesso_medio),
+            "severity": "danger" if insucesso_medio > 8 else "warning" if insucesso_medio > 5 else "success",
+        },
+        {
+            "label": "Prazo médio",
+            "value": f"{prazo_medio:.1f} dias",
+            "severity": "danger" if prazo_medio > 5 else "warning" if prazo_medio > 3 else "success",
+        },
+        {
+            "label": "Custo médio",
+            "value": format.fmt_currency(custo_medio),
+            "severity": "danger" if custo_medio > 60 else "warning" if custo_medio > 45 else "success",
+        },
+    ]
+)
 
 st.divider()
 

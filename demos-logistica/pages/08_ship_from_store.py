@@ -30,8 +30,7 @@ ui.sidebar_brand()
 origens = ui.load_csv("sfs_origens.csv")
 pedidos = ui.load_csv("sfs_pedidos.csv")
 
-with st.sidebar:
-    st.header("Política de alocação")
+with ui.filter_container("Política de alocação"):
     peso_prazo = st.slider("Peso do prazo no score (R$/dia)", 0.0, 50.0, 15.0, 1.0)
     rate_km = st.slider("Custo por km (R$)", 0.1, 3.0, 0.9, 0.1)
     handling = st.slider("Custo de manuseio por unidade (R$)", 0.0, 5.0, 1.5, 0.5)
@@ -98,6 +97,8 @@ economia_media = res["economia"].mean()
 reducao_media = res["reducao_prazo"].mean()
 pct_alternativa = (res["origem_tipo"] != "CD").mean() * 100
 
+ui.breadcrumb("Case: Ship-from-Store Brasil · <b>Demo interativa</b>")
+
 ui.hero(
     "08. Ship-from-Store Brasil",
     "Quando uma loja ou hub supera o CD como origem do pedido?",
@@ -114,26 +115,25 @@ ui.hero(
 )
 
 # KPIs com severidade ---------------------------------------------------------
-kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
-with kpi_col1:
-    ui.kpi_metric("Pedidos", fmt.fmt_number(len(res)))
-with kpi_col2:
-    ui.kpi_metric(
-        "Atendidos por loja/hub",
-        fmt.fmt_percent(pct_alternativa),
-        severity="success" if pct_alternativa > 20 else "warning",
-    )
-with kpi_col3:
-    ui.kpi_metric(
-        "Redução média de prazo",
-        f"{reducao_media:+.1f} dia",
-        severity="success" if reducao_media > 0 else "danger",
-    )
-with kpi_col4:
-    ui.kpi_metric(
-        "Distância média",
-        f"{res['distancia_km'].mean():.0f} km",
-    )
+ui.kpi_grid(
+    [
+        {"label": "Pedidos", "value": fmt.fmt_number(len(res))},
+        {
+            "label": "Atendidos por loja/hub",
+            "value": fmt.fmt_percent(pct_alternativa),
+            "severity": "success" if pct_alternativa > 20 else "warning",
+        },
+        {
+            "label": "Redução média de prazo",
+            "value": f"{reducao_media:+.1f} dia",
+            "severity": "success" if reducao_media > 0 else "danger",
+        },
+        {
+            "label": "Distância média",
+            "value": f"{res['distancia_km'].mean():.0f} km",
+        },
+    ]
+)
 
 st.divider()
 
