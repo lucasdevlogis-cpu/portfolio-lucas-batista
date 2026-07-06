@@ -54,3 +54,7 @@ __pycache__/
 # audit artifacts
 lighthouse-*.json
 wb-*.json
+
+# exceções ao gitignore global (*token* — secrets, não design docs)
+!design/tokens.md
+!design/archive/tokens-layout-comercial-2026-07.md

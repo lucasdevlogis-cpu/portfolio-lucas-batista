@@ -10,8 +10,8 @@ Guia para agentes de código (Cursor, Kimi Code, etc.) trabalhando neste reposit
 4. Spec visual: `design/design.md` (Executive Proof System).
 5. Tokens: `app/globals.css` (landing) e `demos-logistica/lib/brand.py` (Streamlit).
 6. Textos: `data/content.ts` é a fonte única — nunca hardcode nos componentes.
-6. Shelved: `design/archive/`, `components/archive/` — não remontar sem aprovação.
-7. Codex: `.codex/AGENTS.md` + `.codex/config.toml` (paridade com Cursor).
+7. Shelved: `design/archive/`, `components/archive/` — não remontar sem aprovação.
+8. Codex: `.codex/AGENTS.md` + `.codex/config.toml` (paridade com Cursor).
 
 ## Stack
 

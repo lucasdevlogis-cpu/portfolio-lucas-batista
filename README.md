@@ -73,6 +73,7 @@ Conteúdo do site: [`data/content.ts`](data/content.ts). Spec ativa: [`design/de
 | [`docs/DEPLOY.md`](docs/DEPLOY.md) | Deploy Vercel + Streamlit |
 | [`docs/OPORTUNIDADES_DEMOS.md`](docs/OPORTUNIDADES_DEMOS.md) | Backlog visual/UX das demos |
 | [`design/design.md`](design/design.md) | Spec visual ativa (Executive Proof System) |
+| [`design/tokens.md`](design/tokens.md) | Tokens CSS resumidos |
 | [`design/archive/`](design/archive/) | Planos e specs shelved |
 | [`AGENTS.md`](AGENTS.md) | Guia para agentes de código |
 

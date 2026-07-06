@@ -72,17 +72,16 @@ npx vercel env pull .env.local
 
 ---
 
-## Estado produção vs código local (06/07/2026)
+## Produção (06/07/2026)
 
-| Item | Produção (Vercel) | Repositório local |
-|------|-------------------|-------------------|
-| **Commit** | `4a7918e` | Working tree Executive Proof (**não pushado**) |
-| **Layout** | Comercial revertido (Hero escuro, 10 seções) | Executive Proof (6 blocos) |
-| **Meta/OG** | Título comercial antigo | Headhunter (`layout.tsx` local) |
-| **Runtime errors** | Nenhum (MCP 24h) | — |
-| **Demos no modal** | OK se env prod correta | OK com `.env.local` |
+| Item | Valor |
+|------|-------|
+| **Commit** | `0ff7aa3` — Executive Proof System |
+| **Deploy** | `dpl_4gRmUfAxLrE7H4iTPH4Lhv7DitAm` — **READY** |
+| **Layout** | Hero editorial · ProfileBrief · Cases âncora · Contato direto |
+| **Runtime errors** | Nenhum (MCP) |
 
-**Ação necessária:** commit + push `main` → Vercel redeploy automático.
+Inspector: <https://vercel.com/lucasdevlogis-5294s-projects/portfolio-lucas-batista/4gRmUfAxLrE7H4iTPH4Lhv7DitAm>
 
 ---
 
@@ -130,7 +129,8 @@ npx vercel inspect <deployment-url> --logs
 
 ## Checklist pós-deploy (Executive Proof)
 
-- [ ] Deploy `READY` com commit correto (não `4a7918e`)
+- [x] Deploy `READY` com commit `0ff7aa3`
+- [ ] Homepage: Hero editorial + `#perfil` + cases âncora
 - [ ] Homepage: Hero editorial + `#perfil` + cases âncora
 - [ ] Nav: Perfil · Provas · Trajetória · Contato
 - [ ] Modal demo carrega iframe `?embed=true`

@@ -13,7 +13,7 @@
 | **Layout oficial** | Executive Proof System — dossiê profissional para headhunters |
 | **Spec visual** | [`design/design.md`](../design/design.md) + tokens em `app/globals.css` |
 | **URL** | <https://portfolio-lucas-batista-murex.vercel.app> |
-| **Deploy Vercel** | 🟡 Prod em `4a7918e`; push pendente | Ver [`docs/VERCEL.md`](VERCEL.md) |
+| **Deploy Vercel** | ✅ `0ff7aa3` em produção | [`docs/VERCEL.md`](VERCEL.md) |
 
 ### Homepage (ordem)
 
@@ -50,10 +50,10 @@
 | Landing | ✅ Completa | Executive Proof; build + lint OK |
 | Cases | ✅ Completo | 3 âncora + biblioteca + 1 roadmap |
 | Demos Streamlit | ✅ Completa | 11 pages; smoke **13/13**; rebrand editorial |
-| Deploy produção | 🟡 | Código oficial local; Vercel aguarda push |
-| Lighthouse | 🟡 Revalidar | Baseline antigo: desktop 97 / mobile 93 |
+| Deploy produção | ✅ | `0ff7aa3` — Executive Proof live |
+| Lighthouse | 🟡 Revalidar | Baseline layout antigo: desktop 97 / mobile 93 |
 
-**Veredicto:** linha oficial definida e coerente no repositório. Próximo marco: deploy + OG + Lighthouse pós-pivot.
+**Veredicto:** linha oficial em produção. Próximo marco: OG image, Lighthouse pós-pivot, sync demos Streamlit.
 
 ---
 
@@ -85,10 +85,10 @@ Audit detalhado: [`design/archive/lighthouse-2026-07-05.md`](../design/archive/l
 | Fase | Progresso | Pendências |
 |------|-----------|------------|
 | 0 Setup | ✅ 100% | — |
-| 1 Landing Executive Proof | ✅ 100% | Deploy |
+| 1 Landing Executive Proof | ✅ 100% | — |
 | 2 Demos | ✅ 100% | Sync deploy Streamlit |
 | 3 GitHub | 🟡 ~40% | READMEs por case |
-| 4 Deploy | 🟡 ~90% | Push Vercel |
+| 4 Deploy | ✅ 100% | — |
 | 5 Lançamento | 🟡 | OG, Lighthouse, CV PDF |
 
 ---
@@ -129,6 +129,7 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 | Doc | Propósito |
 |-----|-----------|
 | `docs/AVALIACAO.md` | Este arquivo |
+| `design/tokens.md` | Tokens CSS resumidos |
 | `design/design.md` | Spec visual ativa |
 | `docs/VERCEL.md` | Auditoria Vercel, env, MCP |
 | `docs/DEPLOY.md` | Deploy Vercel + Streamlit |
