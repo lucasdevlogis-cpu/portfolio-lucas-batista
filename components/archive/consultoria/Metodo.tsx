@@ -2,12 +2,12 @@
 
 import { motion } from "framer-motion";
 
-import { SectionHeader } from "@/components/SectionHeader";
-import { CONTENT } from "@/data/content";
+import { SectionHeader } from "./SectionHeader";
+import { CONTENT_CONSULTORIA } from "@/data/archive/content-consultoria";
 import { DarkSection } from "./DarkSection";
 
 export function Metodo() {
-  const { secoes, metodo } = CONTENT;
+  const { secoes, metodo } = CONTENT_CONSULTORIA;
 
   return (
     <DarkSection id="metodo" glow="top-right" className="scroll-mt-20 py-24">

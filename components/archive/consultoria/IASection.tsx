@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Brain, Check, Shield, X, Zap } from "lucide-react";
 
-import { CONTENT } from "@/data/content";
+import { CONTENT_CONSULTORIA } from "@/data/archive/content-consultoria";
 import { DarkSection } from "./DarkSection";
 
 const iconCards = [
@@ -13,7 +13,7 @@ const iconCards = [
 ] as const;
 
 export function IASection() {
-  const { ia } = CONTENT;
+  const { ia } = CONTENT_CONSULTORIA;
 
   return (
     <DarkSection id="ia" glow="top-left" className="scroll-mt-20 py-24">

@@ -5,6 +5,7 @@ import { Link as LinkIcon, Mail } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { CONTENT } from "@/data/content";
+import { CONTENT_CONSULTORIA } from "@/data/archive/content-consultoria";
 import { LucideIconByName } from "@/components/LucideIconByName";
 
 function iniciais(nome: string): string {
@@ -18,7 +19,8 @@ function iniciais(nome: string): string {
 }
 
 export function Sobre() {
-  const { sobre, pessoal } = CONTENT;
+  const { sobre } = CONTENT_CONSULTORIA;
+  const { pessoal } = CONTENT;
 
   return (
     <section id="sobre" className="scroll-mt-20 bg-white py-20">

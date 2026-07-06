@@ -24,9 +24,9 @@
 | Best Practices | 96 | — | ✅ |
 | SEO | 100 | — | ✅ |
 
-**Data:** 2026-07-06  
-**URL auditada:** `http://localhost:3001` (build de produção local, commit Executive Proof)  
-**Ferramenta:** Lighthouse CLI v12.x, Chrome headless  
+**Data:** 2026-07-06
+**URL auditada:** `http://localhost:3001` (build de produção local, commit Executive Proof)
+**Ferramenta:** Lighthouse CLI v12.x, Chrome headless
 **Artefatos brutos:** `lighthouse-desktop-prod.json`, `lighthouse-mobile-prod.json` (raiz do repo, gitignored)
 
 ---

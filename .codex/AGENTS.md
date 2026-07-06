@@ -1,40 +1,37 @@
 # Portfolio Lucas Batista — Codex (projeto)
 
-> Instruções para Codex CLI neste repositório. Detalhes completos: [`AGENTS.md`](../AGENTS.md) e [`.cursorrules`](../.cursorrules).
+> Paridade com Cursor. **Entrada:** [`docs/CANON.md`](../docs/CANON.md).
 
 ## Norte
 
-**Executive Proof System** — dossiê profissional para headhunters. Layout oficial:
+**Executive Proof System** — dossiê headhunter-first.
 
-`Header` → `Hero` → `ProfileBrief` → `Cases` → `Contato` → `Footer`
+`Header` → `Hero` → `ProfileSection` → `Cases` → `TrajectorySection` → `Contato` → `Footer`
 
-- Copy: **somente** `data/content.ts`
-- Design: `design/design.md` + `app/globals.css` — **sem Figma**
-- Shelved: `components/archive/consultoria/`, `design/archive/` — não remontar sem aprovação
+- Copy ativo: `data/content.ts` · shelved: `data/archive/content-consultoria.ts`
+- Design: `design/design.md` + `app/globals.css` — sem Figma
+- Shelved: `components/archive/consultoria/`, `design/archive/`
 
-## Verificação (rodar antes de concluir tarefa)
+## Produção
+
+- Landing: <https://portfolio-lucas-batista-murex.vercel.app>
+- Demos: <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app>
+
+## Verificação
 
 ```bash
 npm run validate && npm run lint && npm run build
+npm run cv:generate
 
-cd demos-logistica
-python scripts/build_datasets.py
-python scripts/smoke_test.py
+cd demos-logistica && python scripts/smoke_test.py
 ```
-
-Meta demos: **13/13** checagens.
 
 ## Deploy
 
-- Landing: Vercel (Next.js nativo, Output Directory vazio)
-- Env obrigatórias: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_DEMOS_BASE_URL` (Production + Preview + Development)
-- Guia: `docs/DEPLOY.md`, auditoria: `docs/VERCEL.md`
-- Demos Streamlit: repo separado `lucasdevlogis-cpu/demos-logistica`
+- Env: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_DEMOS_BASE_URL`
+- Guias: `docs/DEPLOY.md`, `docs/VERCEL.md`
+- Estado: `docs/AVALIACAO.md`
 
-## Skills do repo
+## Skills
 
-- Demos Streamlit: `.agents/skills/portfolio-demos-viz/SKILL.md`
-
-## Estado
-
-Consulte `docs/AVALIACAO.md` antes de mudanças grandes.
+`.agents/skills/portfolio-demos-viz/SKILL.md`

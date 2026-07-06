@@ -7,6 +7,8 @@ description: Build and maintain premium Streamlit demos for the Lucas Batista lo
 
 Skill for consistent, premium visual upgrades of Streamlit demos in the Lucas Batista portfolio.
 
+> **Supersedes** height/layout recommendations in `docs/OPORTUNIDADES_DEMOS.md` (340/430/460 are canonical).
+
 ## When to use
 
 - Adding or editing pages in `demos-logistica/pages/`.

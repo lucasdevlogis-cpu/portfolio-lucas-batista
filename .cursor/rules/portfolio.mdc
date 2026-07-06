@@ -5,33 +5,32 @@ alwaysApply: true
 
 # Portfolio Lucas Batista
 
-Documentação enxuta em `docs/` (AVALIACAO.md, DEPLOY.md, VERCEL.md). Regras completas em `.cursorrules`. Codex: `.codex/AGENTS.md`.
+**Entrada:** [`docs/CANON.md`](../../docs/CANON.md). Regras completas: [`.cursorrules`](../../.cursorrules).
 
 ## Stack
 
-- Next.js 16 App Router, React 19, TypeScript
-- Tailwind CSS v4 (`app/globals.css` — sem `tailwind.config.ts`)
+- Next.js 16 App Router, React 19, TypeScript, Node 24.x
+- Tailwind CSS v4 (`app/globals.css`)
 - shadcn/ui, Lucide React
-- Demos: Streamlit (11 pages) em `demos-logistica/`; smoke **13 checagens**
+- Demos Streamlit: 11 pages; smoke **13/13**
 
 ## Conteúdo
 
-- Textos sempre de `data/content.ts` (fonte única)
-- Português do Brasil
-- 10 cases demonstráveis via `CASE_DEMO_SLUGS`; 1 no roadmap (`06-kpis-cd`)
+- Copy ativo: `data/content.ts`
+- Copy shelved: `data/archive/content-consultoria.ts`
+- 10 demos + 1 roadmap (`06-kpis-cd`)
 
-## Design (Executive Proof System)
+## Design (Executive Proof)
 
-- Tokens: editorial `#f6f1e8`, ink `#111827`, primary `#17324d`, accent `#0f766e`, warm-accent `#9a6a2f`
-- Spec completa: `design/design.md`
-- Fonte da verdade: `app/globals.css` — sem Figma no fluxo
+- Tokens: editorial `#f6f1e8`, ink `#111827`, primary `#17324d`, accent `#0f766e`, warm-accent `#9a6a2f`, surface-dark `#102033`
+- Spec: `design/design.md` · resumo: `design/tokens.md`
+- Sem Figma no fluxo
+
+## Seções (DOM = nav)
+
+Header → Hero → ProfileSection → Cases → TrajectorySection → Contato → Footer
 
 ## Deploy
 
-- Vercel: Next.js padrão (`next build` → `.next/`). Sem `output: 'export'`.
-- Demos: iframe `?embed=true` no `DemoModal`; link "Abrir em nova aba"
-- Redeploy após alterar `CASE_DEMO_SLUGS` ou `NEXT_PUBLIC_DEMOS_BASE_URL`
-
-## Seções (ordem)
-
-Header → Hero → ProfileBrief → Cases → Contato → Footer
+- Vercel Next.js nativo; env `NEXT_PUBLIC_*` obrigatórias
+- Ver `docs/DEPLOY.md`, `docs/VERCEL.md`

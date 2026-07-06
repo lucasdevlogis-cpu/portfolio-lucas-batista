@@ -1,20 +1,37 @@
-"""Generate executive CV PDF from portfolio content (Executive Proof System)."""
+"""Generate executive CV PDF from content.ts export (Executive Proof System)."""
 
 from __future__ import annotations
 
+import json
+import sys
 from pathlib import Path
 
 from fpdf import FPDF
 
 ROOT = Path(__file__).resolve().parents[1]
+EXPORT = ROOT / "public" / "cv-export.json"
 OUT = ROOT / "public" / "lucas-batista-cv.pdf"
-ARIAL = Path(r"C:\Windows\Fonts\arial.ttf")
-FONT = "Arial"
 
-PRIMARY = (23, 50, 77)  # #17324d
-INK = (17, 24, 39)  # #111827
-MUTED = (75, 85, 99)  # #4b5563
-ACCENT = (15, 118, 110)  # #0f766e
+PRIMARY = (23, 50, 77)
+INK = (17, 24, 39)
+MUTED = (75, 85, 99)
+ACCENT = (15, 118, 110)
+
+
+def find_font() -> Path:
+    candidates = [
+        ROOT / "scripts" / "assets" / "DejaVuSans.ttf",
+        Path(r"C:\Windows\Fonts\arial.ttf"),
+        Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+        Path("/Library/Fonts/Arial.ttf"),
+    ]
+    for path in candidates:
+        if path.is_file():
+            return path
+    raise FileNotFoundError(
+        "Nenhuma fonte TTF encontrada. Coloque DejaVuSans.ttf em scripts/assets/ "
+        "ou instale Arial/DejaVu no sistema."
+    )
 
 
 class CvPdf(FPDF):
@@ -25,7 +42,11 @@ class CvPdf(FPDF):
         self.set_y(-12)
         self.set_font(FONT, "", 8)
         self.set_text_color(*MUTED)
-        self.cell(0, 8, "Lucas Batista — CV executivo | portfolio-lucas-batista.vercel.app", align="C")
+        site = self._site_label
+        self.cell(0, 8, f"Lucas Batista — CV executivo | {site}", align="C")
+
+
+FONT = "CvFont"
 
 
 def section_title(pdf: CvPdf, title: str) -> None:
@@ -46,29 +67,36 @@ def bullet(pdf: CvPdf, text: str) -> None:
 
 
 def main() -> None:
+    if not EXPORT.is_file():
+        print(
+            "[generate-cv-pdf] cv-export.json ausente. Rode: npm run cv:export",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    data = json.loads(EXPORT.read_text(encoding="utf-8"))
+    font_path = find_font()
+
     pdf = CvPdf()
-    pdf.add_font(FONT, "", str(ARIAL))
+    pdf._site_label = data["siteUrl"].replace("https://", "").replace("http://", "")
+    pdf.add_font(FONT, "", str(font_path))
     pdf.set_auto_page_break(auto=True, margin=16)
     pdf.add_page()
     pdf.set_margins(18, 18, 18)
 
+    width = pdf.w - pdf.l_margin - pdf.r_margin
+
     pdf.set_font(FONT, "", 22)
     pdf.set_text_color(*INK)
-    pdf.cell(0, 10, "Lucas Batista", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 10, data["nome"], new_x="LMARGIN", new_y="NEXT")
 
     pdf.set_font(FONT, "", 12)
     pdf.set_text_color(*PRIMARY)
-    pdf.cell(0, 7, "Operações, Dados e Inteligência Logística", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 7, data["titulo"], new_x="LMARGIN", new_y="NEXT")
 
     pdf.set_font(FONT, "", 10)
     pdf.set_text_color(*MUTED)
-    width = pdf.w - pdf.l_margin - pdf.r_margin
-    pdf.multi_cell(
-        width,
-        5.5,
-        "Perfil híbrido para operações, analytics e produto interno. +10 anos em logística "
-        "com demos navegáveis de raciocínio operacional, frete, SLA, last mile e roteirização.",
-    )
+    pdf.multi_cell(width, 5.5, f"{data['headline']}. {data['subheadline']}")
 
     pdf.ln(2)
     pdf.set_font(FONT, "", 9)
@@ -76,57 +104,42 @@ def main() -> None:
     pdf.cell(
         0,
         5,
-        "lucas.farias.log@outlook.com  |  linkedin.com/in/lucasfariaslog  |  github.com/lucasdevlogis-cpu",
+        f"{data['email']}  |  {data['linkedin']}  |  {data['github']}",
         new_x="LMARGIN",
         new_y="NEXT",
     )
 
     section_title(pdf, "Posições-alvo")
-    for role in [
-        "Operations Analytics",
-        "Supply Chain Analytics",
-        "Logistics Intelligence",
-        "Product Ops / Internal Tools",
-        "BI e automação operacional",
-    ]:
+    for role in data["papeisAlvo"]:
         bullet(pdf, role)
 
     section_title(pdf, "Sinais de senioridade")
-    bullet(pdf, "+10 anos em operações logísticas (transporte, varejo, e-commerce, indústria)")
-    bullet(pdf, "Transição para inteligência operacional: dados, automação e produtos internos")
-    bullet(pdf, "10 demos navegáveis com contexto de negócio, métrica e limitação declarada")
-    bullet(pdf, "Comunicação executiva: decisão, trade-off e próxima ação sem esconder premissas")
+    bullet(pdf, data["senioridade"])
+    bullet(pdf, data["modeloAtuacao"])
+    for item in data["trajetoria"]:
+        bullet(pdf, item)
 
     section_title(pdf, "Domínios e frentes de fit")
-    for item in [
-        "Precificação e custo de frete (NTC, ANTT, ANP)",
-        "Torre de controle e visibilidade operacional (TMS/WMS)",
-        "Roteirização urbana e última milha (CVRP, VRPTW, OR-Tools, PyVRP)",
-        "Rede logística, promessa por CEP e ship-from-store",
-        "Classificação de ocorrências e auditoria de endereço (NLP, DNE/CNEFE)",
-    ]:
+    for item in data["dominios"]:
         bullet(pdf, item)
 
     section_title(pdf, "Stack")
-    bullet(pdf, "Python, SQL, BI, Streamlit, Next.js, Plotly, OR-Tools, PyVRP, NetworkX")
-    bullet(pdf, "IA aplicada com limites declarados; foco em ferramentas úteis para operação")
+    for grupo in data["stackGrupos"]:
+        bullet(pdf, f"{grupo['grupo']}: {', '.join(grupo['itens'])}")
 
     section_title(pdf, "Provas técnicas (portfólio)")
-    bullet(pdf, "Precificação de Frete BR — custo por rota e composição tarifária")
-    bullet(pdf, "Mini Torre de Controle — visibilidade de exceções e SLA")
-    bullet(pdf, "Roteirização Urbana CVRP — otimização com restrições reais")
+    for case in data["casesDestaque"]:
+        bullet(pdf, f"{case['titulo']} — {case['metrica']}")
     pdf.set_font(FONT, "", 9)
     pdf.set_text_color(*MUTED)
-    width = pdf.w - pdf.l_margin - pdf.r_margin
     pdf.multi_cell(
         width,
         5,
-        "Demais cases e demos interativas: portfolio-lucas-batista-murex.vercel.app#cases",
+        f"Demais cases: {data['siteUrl']}#cases",
     )
 
     section_title(pdf, "Disponibilidade")
-    bullet(pdf, "Aberto a conversas com headhunters, recrutadores e lideranças de operações orientadas por dados")
-    bullet(pdf, "Preferência por ambientes onde dados, processo e execução operacional precisam conversar")
+    bullet(pdf, data["disponibilidade"])
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     pdf.output(str(OUT))

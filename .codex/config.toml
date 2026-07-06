@@ -2,7 +2,7 @@
 # Carregado quando o projeto está trusted (~/.codex/config.toml).
 # Docs: https://developers.openai.com/codex/config-advanced
 
-project_doc_fallback_filenames = [".cursorrules"]
+project_doc_fallback_filenames = ["docs/CANON.md", "AGENTS.md", ".cursorrules"]
 
 sandbox_mode = "workspace-write"
 approval_policy = "on-request"

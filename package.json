@@ -11,7 +11,9 @@
     "prebuild": "tsx scripts/validate-cases.ts",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "cv:export": "tsx scripts/export-cv-content.ts",
+    "cv:generate": "npm run cv:export && python scripts/generate-cv-pdf.py"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

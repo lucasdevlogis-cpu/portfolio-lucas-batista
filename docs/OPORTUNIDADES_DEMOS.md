@@ -1,6 +1,8 @@
 # Oportunidades de Melhoria — Demos Visuais
 
-> **Backlog** — não reflete o estado atual da landing. Estado do projeto: [`docs/AVALIACAO.md`](AVALIACAO.md).
+> **Backlog histórico + roadmap** — não reflete estado da landing. **Padrões visuais atuais:** [`.agents/skills/portfolio-demos-viz/SKILL.md`](../.agents/skills/portfolio-demos-viz/SKILL.md) (supersedes alturas/recomendações deste doc).
+>
+> **Entrada canônica:** [`docs/CANON.md`](CANON.md).
 >
 > **Data:** 05/07/2026
 > **Contexto:** Análise pós-deploy das demos Streamlit com foco em **desktop-first**.
@@ -25,7 +27,9 @@
 | **Falta de animações/transições** | Sem `st.animation`, transições de estado são instantâneas e brutas | Troca de filtros recarrega tudo abruptamente |
 | **Fonte limitada** | `sans serif` genérico; não carrega Inter/Outfit do projeto | Streamlit não permite fontes custom via tema |
 
-### 1.2 Problemas Visuais Específicos (constatados)
+### 1.2 Problemas Visuais Específicos (snapshot 05/07 — **pré-Fase 1**)
+
+> **Histórico:** a maioria dos itens abaixo foi endereçada nas Fases 1–3 (tabs, KPIs, CTA, Folium). Consulte SKILL.md para padrões atuais.
 
 #### Mapas
 
@@ -91,7 +95,7 @@
 | 4 | **Tooltips customizados** | Informação acionável, não coordenadas | Médio | `hovertemplate` no Plotly |
 | 5 | **Pareto charts (80/20)** | "20% das lanes = 80% do custo" | Médio | Cumsum + dual axis no Plotly |
 | 6 | **Sparklines na tabela** | Tendência em linha (histórico de atraso) | Médio | Plotly `make_subplots` ou ag-grid |
-| 7 | **Altura padronizada** | Ritmo visual consistente | Baixo | `height=360` para meia coluna, `height=480` para full |
+| 7 | **Altura padronizada** | Ritmo visual consistente | Baixo | ~~360/480~~ → **340/430** (ver `brand.py` / SKILL) |
 | 8 | **Annotations em gráficos** | Destacar "ponto de inflexão" no diesel | Baixo | `add_annotation` no Plotly |
 
 **Recomendação:** Manter Plotly como motor, mas elevar o nível de customização. Não basta `px.bar` padrão — precisa de `update_traces`, `update_layout`, `hovertemplate`, `add_hline`. Considerar **ECharts (via streamlit-echarts)** para gráficos mais "premium" (sankey, sunburst, gauge).
@@ -209,7 +213,7 @@ Manter Streamlit, mas aplicar todas as melhorias de baixo esforço:
    - `color_discrete_map` semântico (🔴 vermelho=crítico, 🟡 amarelo=atenção, 🟢 verde=OK)
    - `hovertemplate` informativo
    - `add_hline`/`add_vline` para referências
-   - Altura padronizada: 360px (meia coluna), 480px (full)
+   - Altura padronizada: **340px** (meia coluna), **430px** (full) — ver `brand.py`
 
 3. **Tabelas:** Usar `st.column_config` ao máximo:
    - `NumberColumn` com formatos de moeda/porcentagem
@@ -256,7 +260,7 @@ Migrar para **Dash** ou **Panel** para dashboards de monitoramento real:
 
 ### Fase 1: Quick Wins (Semana 1) — ✅ Concluída
 
-- [x] Padronizar altura dos gráficos (`CHART_HALF_HEIGHT=360`, `CHART_FULL_HEIGHT=480`)
+- [x] Padronizar altura dos gráficos (`CHART_HALF_HEIGHT=340`, `CHART_FULL_HEIGHT=430`)
 - [x] Adicionar linhas de referência (piso ANTT, capacidade 100%, prazo máximo)
 - [x] Tooltips customizados nos gráficos Plotly (`lib.format.fmt_hover`)
 - [x] Formatação de moeda/porcentagem nas tabelas (`st.column_config` via `lib.tables`)

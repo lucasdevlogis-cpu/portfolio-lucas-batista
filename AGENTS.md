@@ -4,21 +4,20 @@ Guia para agentes de código (Cursor, Kimi Code, etc.) trabalhando neste reposit
 
 ## Entrada rápida
 
-1. Leia `.cursorrules` na raiz (contexto automático no Cursor).
-2. Leia `docs/AVALIACAO.md` para **estado atual**, bloqueadores e próximos passos.
-3. Deploy e Vercel: `docs/DEPLOY.md`, `docs/VERCEL.md`.
-4. Spec visual: `design/design.md` (Executive Proof System).
-5. Tokens: `app/globals.css` (landing) e `demos-logistica/lib/brand.py` (Streamlit).
-6. Textos: `data/content.ts` é a fonte única — nunca hardcode nos componentes.
-7. Shelved: `design/archive/`, `components/archive/` — não remontar sem aprovação.
-8. Codex: `.codex/AGENTS.md` + `.codex/config.toml` (paridade com Cursor).
+1. Leia **`docs/CANON.md`** — porta de entrada única (SSOT docs).
+2. Leia `docs/AVALIACAO.md` para estado, bloqueadores e fases.
+3. Regras Cursor: `.cursorrules` (auto-load).
+4. Spec visual: `design/design.md` + `app/globals.css`.
+5. Copy ativo: `data/content.ts` — shelved: `data/archive/content-consultoria.ts`.
+6. Deploy: `docs/DEPLOY.md`, `docs/VERCEL.md`.
+7. Codex: `.codex/AGENTS.md` + `.codex/config.toml`.
 
 ## Stack
 
 - Next.js 16 App Router, React 19, TypeScript, Node 24.x
 - Tailwind CSS v4 (`app/globals.css` — sem `tailwind.config.ts`)
 - shadcn/ui, Lucide React
-- Deploy Vercel: Next.js nativo (sem `output: 'export'`). Ver `docs/DEPLOY.md`.
+- Deploy Vercel: Next.js nativo (sem `output: 'export'`)
 
 ## Produção
 
@@ -27,45 +26,35 @@ Guia para agentes de código (Cursor, Kimi Code, etc.) trabalhando neste reposit
 - GitHub landing: `lucasdevlogis-cpu/portfolio-lucas-batista`
 - GitHub demos: `lucasdevlogis-cpu/demos-logistica`
 
-## Estrutura
+## Homepage (ordem DOM = nav)
 
-```
-app/                          → page.tsx, layout.tsx, globals.css
-components/                   → seções ativas + ui/ (shadcn)
-components/archive/consultoria/ → landing comercial shelved
-data/                         → content.ts (fonte única)
-design/                       → design.md (spec ativa) + archive/
-docs/                         → AVALIACAO.md, DEPLOY.md, VERCEL.md, OPORTUNIDADES_DEMOS.md
-demos-logistica/              → app Streamlit (11 pages + lib/)
-.agents/skills/               → portfolio-demos-viz
-```
+`Header` → `Hero` → `ProfileSection` → `Cases` → `TrajectorySection` → `Contato` → `Footer`
 
-## Demos e cases
-
-- **10 cases demonstráveis** (3 âncora + biblioteca filtrável).
-- **1 case no roadmap:** `06-kpis-cd` (sem demo Streamlit).
-- Mapeamento: `CASE_DEMO_SLUGS` em `data/content.ts`.
-
-## Homepage (ordem oficial)
-
-Header → Hero → ProfileBrief → Cases → Contato → Footer
+Nav: Perfil · Provas · Trajetória · Contato
 
 ## Componentes ativos
 
-`Header`, `Hero`, `ProfileBrief`, `Cases`, `CaseCard`, `CaseLibraryInteractive`, `CaseDemoLauncher`, `DemoModal`, `Contato`, `Footer`, `HomePage`, `LucideIconByName`, `SectionHeader`
+`Header`, `Hero`, `ProfileSection`, `TrajectorySection`, `Cases`, `CaseCard`, `CaseLibraryInteractive`, `CaseDemoLauncher`, `DemoModal`, `Contato`, `Footer`, `HomePage`, `LucideIconByName`
+
+## Demos e cases
+
+- **10 cases demonstráveis** (3 âncora + biblioteca filtrável)
+- **1 roadmap:** `06-kpis-cd`
+- Mapeamento: `CASE_DEMO_SLUGS` em `data/content.ts`
 
 ## Regras críticas
 
-- Português do Brasil em todo copy
-- Tokens: `app/globals.css` + `design/design.md` — **não usar Figma**
+- Português do Brasil em todo copy ativo
+- Tokens: `app/globals.css` + `design/design.md` — **sem Figma**
 - Demos: iframe `?embed=true` no `DemoModal`
 - `NEXT_PUBLIC_DEMOS_BASE_URL` no build
-- Não remontar `components/archive/consultoria/` nem `design/archive/editorial-v3/` sem aprovação
+- Não remontar archive sem aprovação
 
 ## Verificação rápida
 
 ```bash
 npm run validate && npm run lint && npm run build
+npm run cv:generate
 
 cd demos-logistica
 python scripts/build_datasets.py

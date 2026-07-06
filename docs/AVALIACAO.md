@@ -2,7 +2,9 @@
 
 > **Uso:** Snapshot de saúde do portfólio. Consulte após cada fase ou deploy significativo.
 >
-> **Última atualização:** 06/07/2026 — **Executive Proof System** é a linha oficial (landing + demos + docs).
+> **Entrada canônica:** [`docs/CANON.md`](CANON.md) — leia primeiro.
+>
+> **Última atualização:** 06/07/2026 — canonicalização Executive Proof System.
 
 ---
 
@@ -13,22 +15,37 @@
 | **Layout oficial** | Executive Proof System — dossiê profissional para headhunters |
 | **Spec visual** | [`design/design.md`](../design/design.md) + tokens em `app/globals.css` |
 | **URL** | <https://portfolio-lucas-batista-murex.vercel.app> |
-| **Deploy Vercel** | ✅ `9dd9cf4` (docs) · layout `0ff7aa3` | [`docs/VERCEL.md`](VERCEL.md) |
+| **Deploy Vercel** | Verificar via `npx vercel inspect` ou MCP — ver [`docs/VERCEL.md`](VERCEL.md) |
 
-### Homepage (ordem)
+### Homepage (ordem DOM = nav)
 
-`Header` → `Hero` → `ProfileBrief` → `Cases` → `Contato` → `Footer`
+`Header` → `Hero` → `ProfileSection` → `Cases` → `TrajectorySection` → `Contato` → `Footer`
 
 ### Componentes ativos
 
-`Hero`, `ProfileBrief`, `Cases`, `CaseCard`, `CaseLibraryInteractive`, `CaseDemoLauncher`, `DemoModal`, `Contato`, `Header`, `Footer`, `HomePage`, `LucideIconByName`, `SectionHeader`
+`Header`, `Hero`, `ProfileSection`, `Cases`, `CaseCard`, `CaseLibraryInteractive`, `CaseDemoLauncher`, `DemoModal`, `TrajectorySection`, `Contato`, `Footer`, `HomePage`, `LucideIconByName`
 
 ### Arquivado (não montar)
 
 | Pasta | Conteúdo |
 |-------|----------|
 | `components/archive/consultoria/` | Landing comercial (Dores, Serviços, Método, Sobre, IA) |
-| `design/archive/` | Planos e specs históricos (editorial v3, plan-ux, lighthouse) |
+| `data/archive/content-consultoria.ts` | Copy shelved da landing comercial |
+| `design/archive/` | Planos e specs históricos |
+
+---
+
+## Matriz de status (honesta)
+
+Ver tabela completa em [`docs/CANON.md`](CANON.md) §6. Resumo:
+
+| Área | Lançado | QA manual |
+|------|:-------:|:---------:|
+| Layout Executive Proof | ✅ | 🟡 |
+| Demos Streamlit | ✅ | 🟡 |
+| Deploy Vercel | ✅ | 🟡 |
+| OG + CV PDF | ✅ | 🟡 |
+| Lighthouse (local) | ✅ | 🟡 prod |
 
 ---
 
@@ -36,9 +53,9 @@
 
 | # | Ação | Onde | Status |
 |---|------|------|--------|
-| — | *(nenhum bloqueador crítico)* | — | ✅ |
-
-Itens de polimento opcional: CV oficial substituir PDF gerado; re-auditar Lighthouse após mudanças visuais pesadas.
+| 1 | QA manual pós-canonicalização (nav, scroll, modal, OG) | [`docs/VERCEL.md`](VERCEL.md) checklist | 🟡 Pendente |
+| 2 | CV oficial substituir PDF gerado | `public/lucas-batista-cv.pdf` | 🟡 Polimento |
+| 3 | READMEs por case no repo demos | Fase 3 | 🟡 ~40% |
 
 ---
 
@@ -59,8 +76,6 @@ Audit detalhado: [`design/archive/lighthouse-2026-07-06.md`](../design/archive/l
 
 ## Pendências desejáveis
 
-- READMEs por case no repo demos (Fase 3 ~40%)
-- Migrar Plotly `scattermapbox` → `scattermap`
 - Vercel Analytics + domínio custom
 - Backlog demos: [`docs/OPORTUNIDADES_DEMOS.md`](OPORTUNIDADES_DEMOS.md)
 - Carregar Inter via `next/font` (opcional)
@@ -71,12 +86,12 @@ Audit detalhado: [`design/archive/lighthouse-2026-07-06.md`](../design/archive/l
 
 | Fase | Progresso | Pendências |
 |------|-----------|------------|
-| 0 Setup | ✅ 100% | — |
-| 1 Landing Executive Proof | ✅ 100% | — |
-| 2 Demos | ✅ 100% | — |
+| 0 Setup | ✅ | — |
+| 1 Landing Executive Proof | ✅ | — |
+| 2 Demos | ✅ | — |
 | 3 GitHub | 🟡 ~40% | READMEs por case |
-| 4 Deploy | ✅ 100% | — |
-| 5 Lançamento | ✅ | OG, Lighthouse, CV PDF, sync demos |
+| 4 Deploy | ✅ | QA manual |
+| 5 Lançamento | 🟡 | QA checklist VERCEL; CV oficial opcional |
 
 ---
 
@@ -95,18 +110,11 @@ Audit detalhado: [`design/archive/lighthouse-2026-07-06.md`](../design/archive/l
 
 ```bash
 npm run validate && npm run lint && npm run build
-npm run dev
+npm run cv:generate
 
 cd demos-logistica
 python scripts/build_datasets.py
 python scripts/smoke_test.py   # 13 checagens
-```
-
-**Env local** (`.env.example`):
-
-```env
-NEXT_PUBLIC_SITE_URL=https://portfolio-lucas-batista-murex.vercel.app
-NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
 ```
 
 ---
@@ -115,28 +123,26 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 
 | Doc | Propósito |
 |-----|-----------|
+| [`docs/CANON.md`](CANON.md) | **Entrada única** — SSOT docs |
 | `docs/AVALIACAO.md` | Este arquivo |
-| `design/tokens.md` | Tokens CSS resumidos |
 | `design/design.md` | Spec visual ativa |
-| `docs/VERCEL.md` | Auditoria Vercel, env, MCP |
+| `design/tokens.md` | Tokens CSS resumidos |
+| `docs/VERCEL.md` | Vercel, env, checklist QA |
 | `docs/DEPLOY.md` | Deploy Vercel + Streamlit |
+| `docs/OPORTUNIDADES_DEMOS.md` | Backlog demos |
 | `AGENTS.md` | Guia para agentes |
-
-**Fonte da verdade visual:** código (`app/globals.css`, `demos-logistica/lib/brand.py`) — sem Figma no fluxo.
 
 ---
 
 ## Histórico
 
+### Canonicalização — 06/07/2026 (tarde)
+
+`docs/CANON.md` criado; ordem seções Perfil → Cases → Trajetória; copy comercial extraído para `data/archive/`; status honesto (Fase 5 🟡); agent docs alinhados.
+
 ### Executive Proof System — 06/07/2026
 
-Pivot oficial: homepage headhunter-first, paleta editorial, cases âncora + biblioteca, contato direto, demos alinhadas. Landing comercial arquivada em `components/archive/consultoria/`. Figma removido do fluxo de design.
-
-**Marco lançamento (06/07 tarde):** OG image Executive Proof, CV PDF (`/lucas-batista-cv.pdf`), Lighthouse revalidado (desktop 100 / mobile 98 perf), sync demos Streamlit `7202473`.
-
-### Passes anteriores (06–05/07)
-
-Elevação B2B, tentativa editorial v3 (revertida, spec em `design/archive/editorial-v3/`), redesign demos, Lighthouse ≥90 no layout anterior.
+Pivot headhunter-first; landing comercial arquivada; Figma removido do fluxo.
 
 ---
 

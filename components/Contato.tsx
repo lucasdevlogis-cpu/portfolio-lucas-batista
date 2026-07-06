@@ -9,7 +9,10 @@ export function Contato() {
   const hasCv = Boolean(contactLinks.cvUrl);
 
   return (
-    <section id="contato" className="scroll-mt-20 bg-surface-dark py-20 text-white">
+    <section
+      id="contato"
+      className="scroll-mt-20 bg-surface-dark py-20 text-white"
+    >
       <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:px-8">
         <div>
           <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-on-dark-accent">

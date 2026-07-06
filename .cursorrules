@@ -2,7 +2,7 @@
 
 > **Uso:** Este arquivo está na raiz do projeto. O Cursor (Kimi Code) lê este arquivo automaticamente para entender o contexto do projeto. Não é necessário copiar nada — o Cursor já tem acesso.
 >
-> **Workflow:** Leia → Edite conteúdo em `data/content.ts` → Teste → Itere. Todo o texto do site vive em `data/content.ts` (fonte única). Estado atual e pendências em `docs/AVALIACAO.md`.
+> **Workflow:** Leia [`docs/CANON.md`](docs/CANON.md) → edite `data/content.ts` → teste. Copy shelved: `data/archive/content-consultoria.ts`. Estado: `docs/AVALIACAO.md`.
 
 ---
 
@@ -23,8 +23,8 @@
 - TypeScript
 - Tailwind CSS v4 (CSS-based config, não tailwind.config.ts)
 - shadcn/ui (componentes UI — usar `npx shadcn@latest add <component>`)
-- Framer Motion (animações)
 - Lucide React (ícones)
+- Framer Motion: **apenas** em `components/archive/consultoria/` (shelved)
 
 ### Tailwind v4 — Regras Específicas
 
@@ -46,16 +46,17 @@
 
 ---
 
-## Estrutura de Seções (ordem final)
+## Estrutura de Seções (ordem DOM = nav)
 
-1. **Header/Nav** — nome + links (Perfil, Provas, Trajetória, Contato) + CTA "Contato profissional"
-2. **Hero** — briefing executivo 2 col (nome, posicionamento, provas + aside career target)
-3. **ProfileBrief** — fit em 60s (`#perfil`) + trajetória/stack (`#trajetoria`)
-4. **Cases** — 3 cases âncora + biblioteca filtrável + roadmap (`06-kpis-cd`)
-5. **Contato** — LinkedIn, email, GitHub, CV (sem formulário)
-6. **Footer** — links, declaração ética, voltar ao topo
+1. **Header/Nav** — links Perfil · Provas · Trajetória · Contato + CTA
+2. **Hero** — briefing executivo 2 col
+3. **ProfileSection** — fit em 60s (`#perfil`)
+4. **Cases** — 3 âncora + biblioteca + roadmap (`#cases`)
+5. **TrajectorySection** — stack e trajetória (`#trajetoria`)
+6. **Contato** — LinkedIn, email, GitHub, CV PDF (sem formulário)
+7. **Footer**
 
-Seções comerciais shelved: `components/archive/consultoria/` (Dores, Serviços, Método, Sobre, IA).
+Seções comerciais shelved: `components/archive/consultoria/` + `data/archive/content-consultoria.ts`.
 
 ---
 
@@ -64,7 +65,7 @@ Seções comerciais shelved: `components/archive/consultoria/` (Dores, Serviços
 - Todos os componentes: React function components com TypeScript.
 - Use `interface` ou `type` para tipagem. Evite `any`.
 - Use Tailwind classes utilitárias. Não criar CSS custom a menos que necessário.
-- Componentes reutilizáveis: `CaseCard`, `CaseDemoLauncher`, `CaseLibraryInteractive`, `ProfileBrief`, `DemoModal`, `SectionHeader`.
+- Componentes reutilizáveis: `CaseCard`, `CaseDemoLauncher`, `CaseLibraryInteractive`, `ProfileSection`, `TrajectorySection`, `DemoModal`.
 - Imagens: usar placeholders, ícones Lucide, ou componentes SVG. Nunca imagens genéricas de stock.
 - Textos: sempre em português do Brasil. Nunca hardcode — importar de `data/content.ts`.
 - SEO: meta tags, Open Graph, title, description em `layout.tsx`.

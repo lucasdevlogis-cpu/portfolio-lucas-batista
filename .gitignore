@@ -53,6 +53,8 @@ __pycache__/
 
 # audit artifacts
 lighthouse-*.json
+cv-export.json
+.tmp-lh/
 wb-*.json
 
 # exceções ao gitignore global (*token* — secrets, não design docs)

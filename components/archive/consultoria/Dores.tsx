@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 
-import { SectionHeader } from "@/components/SectionHeader";
-import { CONTENT } from "@/data/content";
+import { SectionHeader } from "./SectionHeader";
+import { CONTENT_CONSULTORIA } from "@/data/archive/content-consultoria";
 import { PainPointCard } from "./PainPointCard";
 
 const cardContainer = {
@@ -20,7 +20,7 @@ const cardItem = {
 };
 
 export function Dores() {
-  const { secoes, dores } = CONTENT;
+  const { secoes, dores } = CONTENT_CONSULTORIA;
 
   return (
     <section id="dores" className="scroll-mt-20 bg-background py-20">

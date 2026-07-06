@@ -72,17 +72,19 @@ npx vercel env pull .env.local
 
 ---
 
-## Produção (06/07/2026)
+## Produção
 
-| Item | Valor |
-|------|-------|
-| **Commit (layout)** | `0ff7aa3` — Executive Proof System |
-| **Commit (docs)** | `9dd9cf4` — bloqueadores pós-deploy |
-| **Deploy layout** | `dpl_4gRmUfAxLrE7H4iTPH4Lhv7DitAm` — **READY** |
-| **Layout** | Hero editorial · ProfileBrief · Cases âncora · Contato direto |
-| **Runtime errors** | Nenhum (MCP) |
+Verificar commit e estado via CLI ou MCP — **não** confiar em SHA fixo neste doc.
 
-Inspector: <https://vercel.com/lucasdevlogis-5294s-projects/portfolio-lucas-batista/4gRmUfAxLrE7H4iTPH4Lhv7DitAm>
+```bash
+npx vercel inspect portfolio-lucas-batista-murex.vercel.app
+```
+
+| Item | Referência |
+|------|------------|
+| **Layout** | Executive Proof — ver [`docs/CANON.md`](CANON.md) |
+| **Runtime errors** | MCP `get_runtime_errors` |
+| **Inspector** | [Vercel Dashboard](https://vercel.com/lucasdevlogis-5294s-projects/portfolio-lucas-batista) |
 
 ---
 
@@ -130,16 +132,18 @@ npx vercel inspect <deployment-url> --logs
 
 ## Checklist pós-deploy (Executive Proof)
 
-- [x] Deploy layout `READY` (`0ff7aa3`)
-- [x] Docs sincronizados (`9dd9cf4`)
-- [ ] Homepage: Hero editorial + `#perfil` + cases âncora
-- [ ] Homepage: Hero editorial + `#perfil` + cases âncora
+Sincronizado com [`docs/CANON.md`](CANON.md) §6 e [`docs/AVALIACAO.md`](AVALIACAO.md).
+
+- [x] Build `READY` (Next.js nativo, validate-cases no prebuild)
+- [x] Env `NEXT_PUBLIC_*` em Production, Preview e Development
+- [ ] Homepage: Hero + `#perfil` + `#cases` + `#trajetoria` (ordem scroll = nav)
 - [ ] Nav: Perfil · Provas · Trajetória · Contato
 - [ ] Modal demo carrega iframe `?embed=true`
 - [ ] `robots.txt` e `sitemap.xml` → 200
-- [ ] OG preview coerente (atualizar `og-image.png` se necessário)
-- [ ] Lighthouse mobile ≥ 90
+- [ ] OG preview coerente (`public/og-image.png`)
+- [ ] Lighthouse mobile ≥ 90 (baseline local 98 — revalidar em prod)
 - [ ] Preview de PR abre demos (env Preview configurada)
+- [ ] CV PDF em `/lucas-batista-cv.pdf` (gerado via `npm run cv:generate`)
 
 ---
 
@@ -151,7 +155,6 @@ npx vercel inspect <deployment-url> --logs
 | Speed Insights | Sem Web Vitals contínuos | Baixa |
 | Domínio custom | URL `*.vercel.app` provisória | Média |
 | Sitemap dinâmico via `NEXT_PUBLIC_SITE_URL` | URLs hardcoded em `public/` | Baixa |
-| OG image alinhada ao pivot | Preview social desatualizado | Alta |
 
 ---
 

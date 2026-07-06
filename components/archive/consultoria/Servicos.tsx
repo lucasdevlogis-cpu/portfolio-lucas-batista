@@ -2,12 +2,12 @@
 
 import { motion } from "framer-motion";
 
-import { SectionHeader } from "@/components/SectionHeader";
-import { CONTENT } from "@/data/content";
+import { SectionHeader } from "./SectionHeader";
+import { CONTENT_CONSULTORIA } from "@/data/archive/content-consultoria";
 import { ServiceCard } from "./ServiceCard";
 
 export function Servicos() {
-  const { secoes, servicos } = CONTENT;
+  const { secoes, servicos } = CONTENT_CONSULTORIA;
 
   return (
     <section id="servicos" className="scroll-mt-20 bg-white py-20">
