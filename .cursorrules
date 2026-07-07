@@ -38,7 +38,7 @@
 ## Design
 
 - Cores (tokens em `app/globals.css`): editorial `#f6f1e8`, card `#fffdf8`, ink `#111827`, primary `#17324d`, accent `#0f766e`, warm-accent `#9a6a2f`, surface-dark `#102033`
-- Tipografia: system stack (`font-heading` / `font-sans`); preferir `next/font` quando adicionar Inter/Geist
+- Tipografia: Inter (`next/font`, `font-heading`); body system stack (`font-sans`)
 - Layout: mobile-first, responsivo; whitespace generoso, estética editorial (não SaaS genérico)
 - Scroll suave: `scroll-behavior: smooth` no CSS global
 - Motion discreto; conteúdo essencial não pode depender de animação para ser visível

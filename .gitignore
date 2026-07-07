@@ -16,7 +16,6 @@
 # next.js
 /.next/
 /out/
-/out/
 /dist/
 
 # production
@@ -48,9 +47,6 @@ __pycache__/
 *.py[cod]
 .venv/
 
-.vercel
-.env*
-
 # audit artifacts
 lighthouse-*.json
 cv-export.json
@@ -60,3 +56,7 @@ wb-*.json
 # exceções ao gitignore global (*token* — secrets, não design docs)
 !design/tokens.md
 !design/archive/tokens-layout-comercial-2026-07.md
+.playwright-mcp/
+
+# screenshots QA
+view-*-desktop.png

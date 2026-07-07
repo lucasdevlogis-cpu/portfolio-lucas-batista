@@ -1,31 +1,28 @@
 import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+
+import { CONTENT } from "@/data/content";
+
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+  weight: ["700", "800", "900"],
+});
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
   "https://portfolio-lucas-batista-murex.vercel.app";
 
-const title = "Lucas Batista | Operações, Dados e Inteligência Logística";
-const description =
-  "Portfólio profissional para headhunters: operações logísticas, analytics, produto interno, IA aplicada e cases demonstráveis em frete, SLA, last mile e roteirização.";
+const { title, description, keywords, jobTitle } = CONTENT.siteMetadata;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title,
   description,
-  keywords: [
-    "logística",
-    "supply chain",
-    "análise de dados",
-    "frete",
-    "transporte",
-    "e-commerce",
-    "headhunter",
-    "recrutamento executivo",
-    "portfólio profissional",
-    "inteligência operacional",
-    "Brasil",
-  ],
+  keywords,
   robots: "index, follow",
   openGraph: {
     title,
@@ -33,13 +30,13 @@ export const metadata: Metadata = {
     type: "website",
     url: siteUrl,
     locale: "pt_BR",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: title }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: title }],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/og-image.png"],
+    images: ["/og-image.jpg"],
   },
 };
 
@@ -57,8 +54,8 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Lucas Batista",
-    jobTitle: "Profissional de Operações, Dados e Inteligência Logística",
+    name: CONTENT.pessoal.nome,
+    jobTitle,
     description,
     url: siteUrl,
     knowsAbout: [
@@ -71,10 +68,7 @@ export default function RootLayout({
   };
 
   return (
-    <html
-      lang="pt-BR"
-      className="h-full antialiased"
-    >
+    <html lang="pt-BR" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans">
         <script
           type="application/ld+json"
@@ -82,7 +76,7 @@ export default function RootLayout({
         />
         <a
           href="#conteudo"
-          className="sr-only rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50"
+          className="sr-only rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50"
         >
           Pular para o conteúdo
         </a>

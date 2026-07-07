@@ -3,11 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { CaseCard } from "@/components/CaseCard";
-import {
-  CASE_CATEGORIAS,
-  CASES_BIBLIOTECA,
-  CONTENT,
-} from "@/data/content";
+import { CASE_CATEGORIAS, CASES_BIBLIOTECA, CONTENT } from "@/data/content";
 import { cn } from "@/lib/utils";
 
 type FiltroCategoria = (typeof CASE_CATEGORIAS)[number];
@@ -47,10 +43,10 @@ export function CaseLibraryInteractive() {
                 aria-pressed={ativo}
                 onClick={() => setFiltroAtivo(categoria)}
                 className={cn(
-                  "rounded-full border px-4 py-2 text-sm font-bold transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
+                  "rounded-full border px-4 py-2 text-sm font-bold transition-all duration-normal ease-editorial focus-ring",
                   ativo
-                    ? "border-ink bg-ink text-white"
-                    : "border-border bg-card text-muted-foreground hover:text-ink",
+                    ? "border-ink bg-ink text-white shadow-editorial"
+                    : "border-border bg-editorial text-muted-foreground hover:border-primary/40 hover:text-ink",
                 )}
               >
                 {categoria}

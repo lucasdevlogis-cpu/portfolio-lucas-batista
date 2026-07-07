@@ -1,11 +1,12 @@
 """02. Mini Torre de Controle de Entregas — demo pontual."""
 
 import numpy as np
-import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from lib import brand, folium_maps, format as fmt, tables, ui
+
+from lib import brand, folium_maps, tables, ui
+from lib import format as fmt
 
 ui.page_setup("02. Mini Torre de Controle", icon="📡")
 
@@ -32,13 +33,13 @@ if so_criticos:
     f = f[f["status"].isin(CRITICOS + ["Em risco"])]
 
 if f.empty:
-    st.info("Nenhuma entrega com os filtros atuais. Ajuste transportadora ou região.")
-    ui.footer()
-    st.stop()
-
-criticos = int(f["status"].isin(CRITICOS).sum())
-atraso_medio = f.loc[f["horas_atraso"] > 0, "horas_atraso"].mean()
-em_risco = int((f["status"] == "Em risco").sum())
+    criticos = 0
+    atraso_medio = float("nan")
+    em_risco = 0
+else:
+    criticos = int(f["status"].isin(CRITICOS).sum())
+    atraso_medio = f.loc[f["horas_atraso"] > 0, "horas_atraso"].mean()
+    em_risco = int((f["status"] == "Em risco").sum())
 
 ui.breadcrumb("Case: Mini Torre de Controle · <b>Demo interativa</b>")
 
@@ -50,11 +51,21 @@ ui.hero(
     metric={
         "label": "Entregas em ação imediata",
         "value": f"{criticos}",
-        "delta": f"{criticos / max(len(f), 1) * 100:.0f}% da carteira monitorada",
+        "delta": f"{criticos / max(len(f), 1) * 100:.0f}% da carteira monitorada"
+        if len(f)
+        else "Ajuste os filtros para ver a carteira",
         "delta_color": "inverse",
         "help": "Atrasadas ou com ocorrência aberta.",
     },
 )
+
+if f.empty:
+    ui.insight(
+        "Nenhuma entrega com os filtros atuais. Ajuste transportadora ou região.",
+        icone="📡",
+    )
+    ui.footer()
+    st.stop()
 
 # KPIs com severidade ---------------------------------------------------------
 com_ocorrencia = int((f["ocorrencias"] > 0).sum())
@@ -81,8 +92,6 @@ ui.kpi_grid(
     ]
 )
 
-st.divider()
-
 # Mapa com Folium -------------------------------------------------------------
 ui.section("Mapa de status por região")
 m = folium_maps.base_map(
@@ -97,7 +106,14 @@ m = folium_maps.add_points(
     lon="lon",
     tipo="cliente",
     color_by="status",
-    popup_fields=["pedido", "transportadora", "regiao", "status", "horas_atraso", "ocorrencias"],
+    popup_fields=[
+        "pedido",
+        "transportadora",
+        "regiao",
+        "status",
+        "horas_atraso",
+        "ocorrencias",
+    ],
     cluster=len(f) > 40,
     tooltip_field="pedido",
 )
@@ -131,14 +147,14 @@ with col1:
         y=agg["atrasadas"],
         name="Atrasadas",
         marker_color=brand.DANGER,
-        hovertemplate="%{y} atrasadas<extra></extra>",
+        hovertemplate="<b>%{x}</b><br>Atrasadas: %{y}<extra></extra>",
     )
     fig.add_bar(
         x=agg["transportadora"],
         y=agg["ocorrencias"],
         name="Ocorrências",
         marker_color=brand.WARNING,
-        hovertemplate="%{y} ocorrências<extra></extra>",
+        hovertemplate="<b>%{x}</b><br>Ocorrências: %{y}<extra></extra>",
     )
     fig.update_layout(
         barmode="group",
@@ -153,23 +169,32 @@ with col2:
     ui.section("Distribuição de status")
     dist = f["status"].value_counts().reset_index()
     dist.columns = ["status", "qtd"]
-    fig2 = px.pie(
+    ordem_status = {
+        "Atrasado": 0,
+        "Ocorrencia aberta": 1,
+        "Em risco": 2,
+        "No prazo": 3,
+        "Entregue": 4,
+        "Em transito": 5,
+    }
+    dist["ordem"] = dist["status"].map(ordem_status)
+    dist = dist.sort_values("ordem", ascending=False)
+    fig2 = px.bar(
         dist,
-        names="status",
-        values="qtd",
-        hole=0.5,
+        x="qtd",
+        y="status",
+        orientation="h",
         color="status",
         color_discrete_map=brand.STATUS_COLORS,
     )
     fig2.update_traces(
-        hovertemplate=fmt.fmt_hover(
-            [("Status", "%{label}"), ("Entregas", "%{value}")]
-        )
+        hovertemplate=fmt.fmt_hover([("Status", "%{y}"), ("Entregas", "%{x}")])
     )
     fig2.update_layout(
         height=ui.chart_height(brand.CHART_HALF_HEIGHT),
-        margin=dict(t=10, b=80, l=10, r=10),
-        legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5),
+        showlegend=False,
+        xaxis_title="",
+        yaxis_title="",
     )
     ui.plot(fig2, width="stretch")
 
@@ -182,7 +207,14 @@ prioridade = f.sort_values(
 ).copy()
 prioridade["status_com_icone"] = prioridade["status"].apply(tables.status_text)
 tabela = prioridade[
-    ["pedido", "transportadora", "regiao", "status_com_icone", "horas_atraso", "ocorrencias"]
+    [
+        "pedido",
+        "transportadora",
+        "regiao",
+        "status_com_icone",
+        "horas_atraso",
+        "ocorrencias",
+    ]
 ].head(25)
 
 config = {
@@ -196,7 +228,9 @@ config = {
 tables.format_dataframe(tabela, config=config, hide_index=True)
 
 ui.download_csv_button(
-    prioridade[["pedido", "transportadora", "regiao", "status", "horas_atraso", "ocorrencias"]],
+    prioridade[
+        ["pedido", "transportadora", "regiao", "status", "horas_atraso", "ocorrencias"]
+    ],
     "torre_controle.csv",
 )
 

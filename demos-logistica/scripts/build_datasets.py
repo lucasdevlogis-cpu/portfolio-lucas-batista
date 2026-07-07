@@ -72,7 +72,7 @@ def _jitter(v: float, scale: float) -> float:
 
 
 def frete_embarques(n: int = 120) -> None:
-    base = pd.read_csv(RAW / "embarques.csv")
+    base = pd.read_csv(RAW / "embarques.csv", encoding="utf-8")
     rows = []
     for i in range(n):
         seed = base.iloc[i % len(base)]
@@ -108,11 +108,11 @@ def frete_embarques(n: int = 120) -> None:
                 "gris_profile": seed["gris_profile"],
             }
         )
-    pd.DataFrame(rows).to_csv(DATA / "frete_embarques.csv", index=False)
+    pd.DataFrame(rows).to_csv(DATA / "frete_embarques.csv", index=False, encoding="utf-8")
 
 
 def cvrp_entregas(n: int = 40) -> None:
-    base = pd.read_csv(RAW / "paradas_cvrp.csv")
+    base = pd.read_csv(RAW / "paradas_cvrp.csv", encoding="utf-8")
     rows = []
     for i in range(n):
         seed = base.iloc[i % len(base)]
@@ -127,11 +127,11 @@ def cvrp_entregas(n: int = 40) -> None:
                 "zone": seed["zone"],
             }
         )
-    pd.DataFrame(rows).to_csv(DATA / "cvrp_entregas.csv", index=False)
+    pd.DataFrame(rows).to_csv(DATA / "cvrp_entregas.csv", index=False, encoding="utf-8")
 
 
 def vrptw_paradas(n: int = 12) -> None:
-    base = pd.read_csv(RAW / "paradas_vrptw.csv")
+    base = pd.read_csv(RAW / "paradas_vrptw.csv", encoding="utf-8")
     rows = []
     for i in range(n):
         seed = base.iloc[i % len(base)]
@@ -147,11 +147,11 @@ def vrptw_paradas(n: int = 12) -> None:
                 "window_end_min": int(seed["window_end_min"]),
             }
         )
-    pd.DataFrame(rows).to_csv(DATA / "vrptw_paradas.csv", index=False)
+    pd.DataFrame(rows).to_csv(DATA / "vrptw_paradas.csv", index=False, encoding="utf-8")
 
 
 def corredores_geo() -> None:
-    base = pd.read_csv(RAW / "corredores.csv")
+    base = pd.read_csv(RAW / "corredores.csv", encoding="utf-8")
     rows = []
     for _, r in base.iterrows():
         o = CIDADES.get(r["origin"])
@@ -171,12 +171,12 @@ def corredores_geo() -> None:
                 "service_level": r["service_level"],
             }
         )
-    pd.DataFrame(rows).to_csv(DATA / "corredores_geo.csv", index=False)
+    pd.DataFrame(rows).to_csv(DATA / "corredores_geo.csv", index=False, encoding="utf-8")
 
 
 def ship_from_store(n_pedidos: int = 60) -> None:
-    origens = pd.read_csv(RAW / "origens_sfs.csv")
-    origens.to_csv(DATA / "sfs_origens.csv", index=False)
+    origens = pd.read_csv(RAW / "origens_sfs.csv", encoding="utf-8")
+    origens.to_csv(DATA / "sfs_origens.csv", index=False, encoding="utf-8")
 
     # Pedidos com destino proximo a grandes centros atendidos.
     centros = {
@@ -200,7 +200,7 @@ def ship_from_store(n_pedidos: int = 60) -> None:
                 "sla_prometido_dias": int(rng.integers(1, 4)),
             }
         )
-    pd.DataFrame(rows).to_csv(DATA / "sfs_pedidos.csv", index=False)
+    pd.DataFrame(rows).to_csv(DATA / "sfs_pedidos.csv", index=False, encoding="utf-8")
 
 
 def promessa_cep(n: int = 180) -> None:
@@ -231,12 +231,12 @@ def promessa_cep(n: int = 180) -> None:
                 "volume_entregas": int(rng.integers(20, 600)),
             }
         )
-    pd.DataFrame(rows).to_csv(DATA / "promessa_cep.csv", index=False)
+    pd.DataFrame(rows).to_csv(DATA / "promessa_cep.csv", index=False, encoding="utf-8")
 
 
 def enderecos(n: int = 60) -> None:
     # dtype=str preserva zeros à esquerda do CEP e defeitos do cadastro.
-    base = pd.read_csv(RAW / "enderecos.csv", dtype=str).fillna("")
+    base = pd.read_csv(RAW / "enderecos.csv", dtype=str, encoding="utf-8").fillna("")
     rows = []
     for i in range(n):
         seed = base.iloc[i % len(base)].to_dict()
@@ -247,13 +247,13 @@ def enderecos(n: int = 60) -> None:
             seed["lat"] = round(_jitter(lat, 0.01), 5)
             seed["lon"] = round(_jitter(float(seed["lon"]), 0.01), 5)
         rows.append(seed)
-    pd.DataFrame(rows).to_csv(DATA / "enderecos.csv", index=False)
+    pd.DataFrame(rows).to_csv(DATA / "enderecos.csv", index=False, encoding="utf-8")
 
 
 def tsp_visits() -> None:
-    base = pd.read_csv(RAW / "tsp_visits.csv")
+    base = pd.read_csv(RAW / "tsp_visits.csv", encoding="utf-8")
     base.rename(columns={"latitude": "lat", "longitude": "lon"}).to_csv(
-        DATA / "tsp_visits.csv", index=False
+        DATA / "tsp_visits.csv", index=False, encoding="utf-8"
     )
 
 
@@ -277,13 +277,13 @@ def torre_entregas(n: int = 140) -> None:
                 "ocorrencias": int(rng.integers(0, 4)),
             }
         )
-    pd.DataFrame(rows).to_csv(DATA / "torre_entregas.csv", index=False)
+    pd.DataFrame(rows).to_csv(DATA / "torre_entregas.csv", index=False, encoding="utf-8")
 
 
 def ocorrencias(n: int = 60) -> None:
-    base = pd.read_csv(RAW / "ocorrencias_exemplos.csv")
+    base = pd.read_csv(RAW / "ocorrencias_exemplos.csv", encoding="utf-8")
     idx = rng.integers(0, len(base), n)
-    base.iloc[idx].reset_index(drop=True).to_csv(DATA / "ocorrencias.csv", index=False)
+    base.iloc[idx].reset_index(drop=True).to_csv(DATA / "ocorrencias.csv", index=False, encoding="utf-8")
 
 
 def main() -> None:

@@ -4,7 +4,7 @@
 >
 > **Entrada canônica:** [`docs/CANON.md`](CANON.md) — leia primeiro.
 >
-> **Última atualização:** 06/07/2026 — canonicalização Executive Proof System.
+> **Última atualização:** 07/07/2026 — redesign premium + deploy.
 
 ---
 
@@ -15,7 +15,8 @@
 | **Layout oficial** | Executive Proof System — dossiê profissional para headhunters |
 | **Spec visual** | [`design/design.md`](../design/design.md) + tokens em `app/globals.css` |
 | **URL** | <https://portfolio-lucas-batista-murex.vercel.app> |
-| **Deploy Vercel** | Verificar via `npx vercel inspect` ou MCP — ver [`docs/VERCEL.md`](VERCEL.md) |
+| **Deploy Vercel** | Último deploy: 07/07/2026 às ~19:00 UTC-3 |
+| **Lighthouse prod (desktop)** | **100 / 96 / 100 / 100** |
 
 ### Homepage (ordem DOM = nav)
 
@@ -23,7 +24,7 @@
 
 ### Componentes ativos
 
-`Header`, `Hero`, `ProfileSection`, `Cases`, `CaseCard`, `CaseLibraryInteractive`, `CaseDemoLauncher`, `DemoModal`, `TrajectorySection`, `Contato`, `Footer`, `HomePage`, `LucideIconByName`
+`Header`, `Hero`, `ProfileSection`, `SectionHeader`, `EditorialDarkPanel`, `Cases`, `CaseCard`, `CaseLibraryInteractive`, `CaseDemoLauncher`, `DemoModal`, `TrajectorySection`, `Contato`, `Footer`, `HomePage`, `MobileNav`, `LucideIconByName`, `AnimatedSection`
 
 ### Arquivado (não montar)
 
@@ -37,15 +38,13 @@
 
 ## Matriz de status (honesta)
 
-Ver tabela completa em [`docs/CANON.md`](CANON.md) §6. Resumo:
-
 | Área | Lançado | QA manual |
 |------|:-------:|:---------:|
 | Layout Executive Proof | ✅ | ✅ |
-| Demos Streamlit | ✅ | ✅ |
+| Demos Streamlit | ✅ | ✅ 13/13 smoke tests |
 | Deploy Vercel | ✅ | ✅ |
 | OG + CV PDF | ✅ | ✅ |
-| Lighthouse | ✅ local | 🟡 prod opcional |
+| Lighthouse | ✅ | ✅ prod desktop 100/96/100/100 |
 
 ---
 
@@ -53,26 +52,49 @@ Ver tabela completa em [`docs/CANON.md`](CANON.md) §6. Resumo:
 
 | # | Ação | Onde | Status |
 |---|------|------|--------|
-| 1 | CV oficial substituir PDF gerado | `public/lucas-batista-cv.pdf` | 🟡 Polimento |
-| 2 | READMEs por case no repo demos | Fase 3 | 🟡 ~40% |
-| 3 | Lighthouse em produção (opcional) | Vercel / PSI | 🟡 Baseline local OK |
+| 1 | CV gerado de `content.ts` | `public/lucas-batista-cv.pdf` | ✅ `npm run cv:generate` |
+| 2 | READMEs por case no repo demos | Fase 3 | ✅ `demos-logistica/docs/cases/` |
+| 3 | Lighthouse em produção | Vercel | ✅ desktop **100/96/100/100** — 07/07 |
+| 4 | Refinamento UX/UI e build | Local | ✅ desktop **100/96/100/100** — 07/07 |
 
-Checklist QA manual: [`docs/VERCEL.md`](VERCEL.md) — **concluído** 06/07 (deploy `df2f8bb`).
+Checklist QA manual: [`docs/VERCEL.md`](VERCEL.md) — **concluído** 07/07.
 
 ---
 
-## Performance (Lighthouse) — Executive Proof
+## Performance (Lighthouse)
 
-Scores pós-pivot (`next start` local, 2026-07-06):
+Scores pós-refinamento premium (2026-07-07):
 
 | | Desktop | Mobile |
 |---|--------:|-------:|
-| Performance | **100** | **98** |
-| Acessibilidade | **96** | **96** |
-| Best Practices | 96 | 96 |
-| SEO | 100 | 100 |
+| **Local** (`next start`) | 100 / 96 / 100 / 100 | — |
+| **Prod** (Vercel URL) | **100 / 96 / 100 / 100** | — |
 
-Audit detalhado: [`design/archive/lighthouse-2026-07-06.md`](../design/archive/lighthouse-2026-07-06.md).
+Colunas: Performance / Acessibilidade / Best Practices / SEO. Meta lançamento: desktop Performance ≥ 90 ✅.
+
+---
+
+## Mudanças da última rodada (07/07/2026)
+
+### Landing page
+
+- **Hero redesenhado com fundo escuro** (`bg-surface-dark`) para alto impacto visual e contraste.
+- **Header fixo escuro translúcido** com texto branco e CTA em teal vibrante.
+- **Paleta premium atualizada**: teal `#14B8A6`, dourado `#D4A853`, navy `#0B1220`, fundo editorial `#F8F7F4`.
+- **Animações Framer Motion** em todas as seções: fade + slide up, stagger, hover lift, scale em cards e botões.
+- **Perfil**: layout denso sem lacunas — card de senioridade em destaque + grid 2×2 de diferenciais + faixa de credibilidade.
+- **Cases**: cards com cores de categoria, barra colorida no topo, ícones em gradiente, hover elevado.
+- **Trajetória**: timeline vertical conectada, cards de stack/dominios balanceados, experiências e formação em cards visuais.
+- **Contato**: mantido em superfície escura para consistência com o hero.
+- **Fundo com grid sutil** nas seções claras para textura e sofisticação.
+
+### Demos Streamlit
+
+- Tokens de cor alinhados à landing (teal/dourado/navy).
+- CSS premium em `lib/ui.py`: header escuro translúcido, KPI cards com hover, badges destacados, tabelas estilizadas.
+- `lib/viz.py` e `lib/folium_maps.py` ajustados para novas cores e hoverlabels escuros.
+- Páginas refinadas visualmente sem alterar lógica de negócio.
+- Smoke test: **13/13 OK**.
 
 ---
 
@@ -80,7 +102,7 @@ Audit detalhado: [`design/archive/lighthouse-2026-07-06.md`](../design/archive/l
 
 - Vercel Analytics + domínio custom
 - Backlog demos: [`docs/OPORTUNIDADES_DEMOS.md`](OPORTUNIDADES_DEMOS.md)
-- Carregar Inter via `next/font` (opcional)
+- Testes mobile automatizados após novas mudanças visuais
 
 ---
 
@@ -91,9 +113,9 @@ Audit detalhado: [`design/archive/lighthouse-2026-07-06.md`](../design/archive/l
 | 0 Setup | ✅ | — |
 | 1 Landing Executive Proof | ✅ | — |
 | 2 Demos | ✅ | — |
-| 3 GitHub | 🟡 ~40% | READMEs por case |
+| 3 GitHub | ✅ | READMEs em `demos-logistica/docs/cases/` |
 | 4 Deploy | ✅ | QA manual |
-| 5 Lançamento | 🟡 | CV oficial; READMEs por case |
+| 5 Lançamento | ✅ | CV gerado de content.ts |
 
 ---
 
@@ -111,7 +133,7 @@ Audit detalhado: [`design/archive/lighthouse-2026-07-06.md`](../design/archive/l
 ## Verificação
 
 ```bash
-npm run validate && npm run lint && npm run build
+npm run validate && npm run lint && npm run typecheck && npm run build
 npm run cv:generate
 
 cd demos-logistica
@@ -137,6 +159,10 @@ python scripts/smoke_test.py   # 13 checagens
 ---
 
 ## Histórico
+
+### Redesign Premium + Deploy — 07/07/2026
+
+Hero escuro, animações Framer Motion, paleta premium, grid denso no Perfil, timeline na Trajetória, cores por categoria nos Cases, demos Streamlit refinadas, deploy na Vercel com Lighthouse 100/96/100/100.
 
 ### Canonicalização — 06/07/2026 (tarde)
 

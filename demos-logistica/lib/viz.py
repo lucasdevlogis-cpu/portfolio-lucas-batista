@@ -31,7 +31,7 @@ def apply_theme() -> None:
     tmpl.layout.bargap = 0.18
     tmpl.layout.bargroupgap = 0.08
     tmpl.layout.legend = dict(
-        bgcolor="rgba(255,253,248,0.76)",
+        bgcolor="rgba(255,253,248,0.82)",
         bordercolor=brand.BORDER,
         borderwidth=1,
         font=dict(color=brand.MUTED, size=12),
@@ -58,6 +58,15 @@ def apply_theme() -> None:
         tickfont=dict(color=brand.MUTED),
         title=dict(font=dict(color=brand.MUTED)),
         automargin=True,
+    )
+    tmpl.layout.coloraxis = dict(
+        colorbar=dict(
+            bgcolor="rgba(255,253,248,0.82)",
+            bordercolor=brand.BORDER,
+            borderwidth=1,
+            tickfont=dict(color=brand.MUTED),
+            title=dict(font=dict(color=brand.INK)),
+        )
     )
     pio.templates[_THEME_NAME] = tmpl
     pio.templates.default = f"plotly_white+{_THEME_NAME}"
@@ -119,6 +128,15 @@ def polish(fig: go.Figure) -> go.Figure:
     return fig
 
 
+def _discrete_colors(color: str | None, color_discrete_map: dict[str, str] | None) -> dict:
+    kwargs: dict = {}
+    if color:
+        kwargs["color"] = color
+        if color_discrete_map is not None:
+            kwargs["color_discrete_map"] = color_discrete_map
+    return kwargs
+
+
 def map_points(
     df: pd.DataFrame,
     lat: str = "lat",
@@ -133,14 +151,11 @@ def map_points(
     color_discrete_map: dict[str, str] | None = None,
 ) -> go.Figure:
     """Mapa de pontos sobre OpenStreetMap (sem token)."""
-    color_kwargs = {}
-    if color:
-        color_kwargs["color_discrete_map"] = color_discrete_map or brand.STATUS_COLORS
+    color_kwargs = _discrete_colors(color, color_discrete_map or brand.STATUS_COLORS)
     fig = px.scatter_map(
         df,
         lat=lat,
         lon=lon,
-        color=color,
         size=size,
         hover_name=hover_name,
         hover_data=list(hover_data) if hover_data else None,

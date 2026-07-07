@@ -23,6 +23,7 @@ alwaysApply: true
 ## Design (Executive Proof)
 
 - Tokens: editorial `#f6f1e8`, ink `#111827`, primary `#17324d`, accent `#0f766e`, warm-accent `#9a6a2f`, surface-dark `#102033`
+- CTA sólido: `ink` (variant `executive`); headings: Inter via `next/font`
 - Spec: `design/design.md` · resumo: `design/tokens.md`
 - Sem Figma no fluxo
 

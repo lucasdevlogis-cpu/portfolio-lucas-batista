@@ -87,8 +87,7 @@ def add_points(
         tooltip = str(row[tooltip_field]) if tooltip_field and tooltip_field in row else None
         if color_by and color_by in row:
             # Aceita tanto status operacional ("Atrasado", "No prazo") quanto níveis
-            # de severidade ("Alta", "Crítico") — antes só o segundo mapa era
-            # consultado, então o mapa da torre caía tudo para o navy padrão.
+            # de severidade ("Alta", "Crítico").
             key = str(row[color_by])
             cor = (
                 brand.STATUS_COLORS.get(key)
@@ -97,7 +96,7 @@ def add_points(
             )
             folium.CircleMarker(
                 location=[float(row[lat]), float(row[lon])],
-                radius=7,
+                radius=8,
                 color="white",
                 weight=2,
                 fill=True,
@@ -128,14 +127,14 @@ def add_numbered_markers(
         folium.Marker(
             location=[lat, lon],
             icon=folium.DivIcon(
-                icon_size=(22, 22),
-                icon_anchor=(11, 11),
+                icon_size=(24, 24),
+                icon_anchor=(12, 12),
                 html=(
                     f"<div style='"
                     f"background:{color};color:white;"
-                    f"border-radius:50%;width:22px;height:22px;"
+                    f"border-radius:50%;width:24px;height:24px;"
                     f"display:flex;align-items:center;justify-content:center;"
-                    f"font-size:11px;font-weight:800;border:2px solid white;"
+                    f"font-size:11px;font-weight:900;border:2px solid white;"
                     f"box-shadow:0 4px 10px rgba(17,24,39,0.28);'>"
                     f"{label}</div>"
                 ),
@@ -162,8 +161,8 @@ def add_routes(
             route_line = folium.PolyLine(
                 coords,
                 color=color,
-                weight=3.5,
-                opacity=0.82,
+                weight=4,
+                opacity=0.85,
                 popup=r.get("label"),
             ).add_to(m)
             if show_arrows:
@@ -190,7 +189,7 @@ def add_routes(
             for lat, lon in compact_coords:
                 folium.CircleMarker(
                     location=[lat, lon],
-                    radius=4,
+                    radius=5,
                     color="white",
                     weight=1.5,
                     fill=True,
@@ -213,29 +212,31 @@ def add_network(
     lat: str = "lat",
     lon: str = "lon",
     label: str = "id",
+    edge_color: str | None = None,
 ) -> folium.Map:
     """Adiciona rede de nós e arestas (ex: corredores inter-hubs)."""
+    color = edge_color or brand.ACCENT
     max_width = max((e.get("width", 1) for e in edges), default=1)
     for e in edges:
         a, b = e["from"], e["to"]
         w = e.get("width", 1)
-        line_weight = 1 + 5 * (w / max_width)
+        line_weight = 1.5 + 5.5 * (w / max_width)
         folium.PolyLine(
             [a, b],
-            color=brand.PRIMARY,
+            color=color,
             weight=line_weight,
-            opacity=0.66,
+            opacity=0.72,
             popup=e.get("label", ""),
         ).add_to(m)
     for _, row in nodes.iterrows():
         folium.CircleMarker(
             location=[float(row[lat]), float(row[lon])],
             tooltip=str(row[label]),
-            radius=7,
+            radius=8,
             color="white",
             weight=2,
             fill=True,
-            fill_color=brand.ACCENT,
+            fill_color=brand.PRIMARY,
             fill_opacity=0.95,
         ).add_to(m)
     return m
@@ -250,6 +251,7 @@ def add_flows(
     dest_lon: str = "dest_lon",
     color_by: str = "origem_tipo",
     popup_fields: Sequence[str] | None = None,
+    layer_control: bool = True,
 ) -> folium.Map:
     """Adiciona fluxos origem→destino como polylines, agrupados por cor."""
     tipo_colors = {
@@ -272,7 +274,8 @@ def add_flows(
                 opacity=0.72,
                 popup=folium.Popup(popup, max_width=280) if popup else None,
             ).add_to(group)
-    folium.LayerControl().add_to(m)
+    if layer_control:
+        folium.LayerControl().add_to(m)
     return m
 
 

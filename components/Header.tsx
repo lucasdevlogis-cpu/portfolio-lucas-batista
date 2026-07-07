@@ -1,16 +1,27 @@
-import { Link as LinkIcon, Menu } from "lucide-react";
+"use client";
 
+import { motion } from "framer-motion";
+import { Link as LinkIcon } from "lucide-react";
+
+import { MobileNav } from "@/components/MobileNav";
+import { buttonVariants } from "@/components/ui/button";
 import { CONTENT } from "@/data/content";
+import { cn } from "@/lib/utils";
 
 export function Header() {
   const navLinks = CONTENT.nav;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-editorial/88 backdrop-blur-md">
+    <motion.header
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className="sticky top-0 z-40 border-b border-white/10 bg-surface-dark/92 backdrop-blur-md"
+    >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <a
           href="#conteudo"
-          className="font-heading text-lg font-black text-ink"
+          className="font-heading text-lg font-black text-white transition-colors hover:text-on-dark-accent"
         >
           {CONTENT.pessoal.nome}
         </a>
@@ -23,7 +34,7 @@ export function Header() {
             <a
               key={link.href}
               href={link.href}
-              className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-ink focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              className="rounded-md px-3 py-2 text-sm font-medium text-on-dark-muted transition-colors duration-normal ease-editorial hover:bg-white/10 hover:text-white focus-ring"
             >
               {link.label}
             </a>
@@ -37,59 +48,24 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn de Lucas Batista"
-              className="hidden size-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-card hover:text-ink md:inline-flex"
+              className="hidden size-10 items-center justify-center rounded-md text-on-dark-muted transition-all duration-normal ease-editorial hover:bg-white/10 hover:text-white hover:scale-110 focus-ring md:inline-flex"
             >
               <LinkIcon className="size-5" aria-hidden />
             </a>
           ) : null}
           <a
             href="#contato"
-            className="hidden h-10 items-center rounded-md bg-ink px-5 text-sm font-semibold text-white transition-colors hover:bg-ink/90 md:inline-flex"
+            className={cn(
+              buttonVariants({ variant: "executive" }),
+              "hidden h-10 rounded-lg bg-accent px-5 text-white transition-all duration-normal ease-editorial hover:-translate-y-0.5 hover:bg-accent-contrast hover:shadow-glow md:inline-flex",
+            )}
           >
             {CONTENT.navCta}
           </a>
 
-          <details className="relative md:hidden">
-            <summary
-              aria-label="Abrir menu"
-              className="flex size-10 list-none items-center justify-center rounded-md border border-border bg-card text-ink shadow-sm [&::-webkit-details-marker]:hidden"
-            >
-              <Menu className="size-5" aria-hidden />
-            </summary>
-            <nav
-              className="absolute right-0 mt-2 w-72 rounded-xl border border-border bg-card p-3 shadow-xl shadow-ink/10"
-              aria-label="Mobile"
-            >
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="block rounded-md px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-muted"
-                >
-                  {link.label}
-                </a>
-              ))}
-              <a
-                href="#contato"
-                className="mt-2 flex h-11 items-center justify-center rounded-md bg-ink px-4 text-sm font-semibold text-white"
-              >
-                {CONTENT.navCta}
-              </a>
-              {!CONTENT.pessoal.linkedin.startsWith("[") ? (
-                <a
-                  href={CONTENT.pessoal.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center gap-2 rounded-md px-3 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-ink"
-                >
-                  <LinkIcon className="size-5" aria-hidden />
-                  LinkedIn
-                </a>
-              ) : null}
-            </nav>
-          </details>
+          <MobileNav />
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }

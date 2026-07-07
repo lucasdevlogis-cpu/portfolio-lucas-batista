@@ -9,14 +9,15 @@ from urllib.parse import parse_qs, urlparse
 
 import pandas as pd
 import streamlit as st
+from paths import DATA_DIR
 
 from lib import brand
 from lib.viz import apply_theme, polish
-from paths import DATA_DIR
 
 
 def is_embed() -> bool:
     """True quando a page é carregada em iframe (`?embed=true`), como na landing."""
+
     def truthy(value: object) -> bool:
         if isinstance(value, (list, tuple)):
             return any(truthy(item) for item in value)
@@ -75,6 +76,7 @@ def load_csv(filename: str, **read_kwargs) -> pd.DataFrame:
     guard, cada page quebraria com um traceback cru.
     """
     path = DATA_DIR / filename
+    read_kwargs.setdefault("encoding", "utf-8")
     try:
         return pd.read_csv(path, **read_kwargs)
     except FileNotFoundError:
@@ -114,15 +116,14 @@ def _inject_css(embed: bool = False) -> None:
     st.markdown(
         f"""
         <style>
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
           html, body, .stApp {{
             font-family: {brand.FONT_FAMILY};
             color: {brand.FOREGROUND};
             background: {brand.BACKGROUND};
           }}
           .stApp {{
-            background:
-              radial-gradient(720px 360px at 92% 0%, rgba(15, 118, 110, .11), transparent 58%),
-              linear-gradient(180deg, {brand.EDITORIAL}, {brand.EDITORIAL_2});
+            background: linear-gradient(180deg, {brand.EDITORIAL}, {brand.EDITORIAL_2});
           }}
           div[data-testid="stMainBlockContainer"],
           div[data-testid="stAppViewContainer"] > .main .block-container {{
@@ -138,22 +139,26 @@ def _inject_css(embed: bool = False) -> None:
             display: none;
           }}
           section[data-testid="stSidebar"] a {{
-            border-radius: 8px;
+            border-radius: 10px;
             color: {brand.INK};
             font-weight: 650;
           }}
           section[data-testid="stSidebar"] a:hover {{
-            background: rgba(15,118,110,.08);
-            color: {brand.PRIMARY};
+            background: rgba(20,184,166,.10);
+            color: {brand.ACCENT_DARK};
           }}
           header[data-testid="stHeader"] {{
-            background: rgba(246, 241, 232, .72);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid {brand.BORDER};
+            background: rgba(11, 18, 32, .82);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,.10);
+          }}
+          header[data-testid="stHeader"] > div > div > div > div > p {{
+            color: white !important;
+            font-weight: 700;
           }}
           .stApp h1, .stApp h2, .stApp h3 {{
             color: {brand.INK};
-            letter-spacing: 0;
+            letter-spacing: -0.01em;
           }}
           .stApp h1 {{ font-weight: 800; }}
           .stApp h2, .stApp h3 {{ font-weight: 750; }}
@@ -161,20 +166,43 @@ def _inject_css(embed: bool = False) -> None:
             color: {brand.MUTED};
           }}
           div[data-testid="stMarkdownContainer"] a {{
-            color: {brand.PRIMARY};
+            color: {brand.ACCENT_DARK};
             font-weight: 650;
             text-underline-offset: 4px;
+          }}
+          div[data-baseweb="slider"] div[data-testid="stThumbValue"],
+          div[data-baseweb="slider"] div[data-testid="stTickBar"] {{
+            color: {brand.INK};
+            font-weight: 700;
+          }}
+          div[data-baseweb="slider"] > div > div > div {{
+            background: {brand.ACCENT} !important;
+          }}
+          div[data-baseweb="select"] > div,
+          div[data-baseweb="input"] > div {{
+            border-color: {brand.BORDER} !important;
+            border-radius: 10px !important;
+            background: {brand.CARD} !important;
+          }}
+          label[data-testid="stWidgetLabel"] p {{
+            color: {brand.INK} !important;
+            font-weight: 650 !important;
+          }}
+          .stMultiSelect div[data-baseweb="tag"] {{
+            background: rgba(20,184,166,.14) !important;
+            border: 1px solid rgba(20,184,166,.28) !important;
+            color: {brand.ACCENT_DARK} !important;
           }}
           div[data-testid="stVerticalBlockBorderWrapper"] {{
             border-color: {brand.BORDER} !important;
             border-radius: 14px !important;
             background: rgba(255, 253, 248, .72);
-            box-shadow: 0 10px 30px rgba(17, 24, 39, .045);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .045);
           }}
           div[data-testid="stMetricValue"] {{
             color: {brand.INK};
             font-weight: 800;
-            letter-spacing: 0;
+            letter-spacing: -0.01em;
           }}
           div[data-testid="stMetricLabel"] p {{
             color: {brand.MUTED};
@@ -185,35 +213,54 @@ def _inject_css(embed: bool = False) -> None:
             border:1px solid {brand.BORDER};
             border-radius:14px;
             padding:14px 16px;
-            box-shadow: 0 8px 24px rgba(17,24,39,.04);
+            box-shadow: 0 8px 24px rgba(15,23,42,.04);
           }}
-          button[kind="primary"], .stButton > button {{
-            border-radius: 8px !important;
+          .stButton > button {{
+            border-radius: 10px !important;
             font-weight: 750 !important;
             min-height: 2.55rem;
             border: 1px solid {brand.BORDER} !important;
             background: {brand.CARD} !important;
             color: {brand.INK} !important;
-            box-shadow: 0 8px 20px rgba(17,24,39,.04);
+            box-shadow: 0 8px 20px rgba(15,23,42,.04);
+            transition: all .15s ease;
           }}
-          button[kind="primary"]:hover, .stButton > button:hover {{
-            border-color: rgba(15,118,110,.34) !important;
-            color: {brand.PRIMARY} !important;
-            background: rgba(255,253,248,.88) !important;
+          .stButton > button:hover {{
+            border-color: rgba(20,184,166,.40) !important;
+            color: {brand.ACCENT_DARK} !important;
+            background: rgba(255,253,248,.92) !important;
+            box-shadow: 0 10px 24px rgba(20,184,166,.10);
+          }}
+          button[kind="primary"] {{
+            border-radius: 10px !important;
+            font-weight: 800 !important;
+            min-height: 2.55rem;
+            border: 1px solid {brand.ACCENT_DARK} !important;
+            background: linear-gradient(135deg, {brand.ACCENT}, {brand.ACCENT_DARK}) !important;
+            color: white !important;
+            box-shadow: 0 10px 24px rgba(20,184,166,.22);
+            transition: all .15s ease;
+          }}
+          button[kind="primary"]:hover {{
+            background: linear-gradient(135deg, {brand.ACCENT_DARK}, #0d5c52) !important;
+            color: white !important;
+            box-shadow: 0 12px 28px rgba(20,184,166,.30);
           }}
           .stDownloadButton > button {{
-            border-radius: 8px !important;
+            border-radius: 10px !important;
             min-height: 2.55rem;
-            border: 1px solid rgba(15,118,110,.25) !important;
+            border: 1px solid rgba(20,184,166,.30) !important;
             background: {brand.PRIMARY} !important;
             color: white !important;
             font-weight: 800 !important;
-            box-shadow: 0 10px 24px rgba(23,50,77,.14);
+            box-shadow: 0 10px 24px rgba(15,23,42,.14);
+            transition: all .15s ease;
           }}
           .stDownloadButton > button:hover {{
             background: {brand.SURFACE_DARK} !important;
             color: white !important;
             border-color: rgba(255,255,255,.18) !important;
+            box-shadow: 0 12px 28px rgba(15,23,42,.20);
           }}
           .stTabs [data-baseweb="tab-list"] {{
             width: fit-content;
@@ -226,15 +273,15 @@ def _inject_css(embed: bool = False) -> None:
           }}
           .stTabs [data-baseweb="tab"] {{
             height: auto;
-            padding: .45rem .7rem;
+            padding: .45rem .85rem;
             border-radius: 8px;
             color: {brand.MUTED};
             font-weight: 750;
           }}
           .stTabs [aria-selected="true"] {{
-            color: {brand.INK};
-            background: {brand.CARD};
-            box-shadow: inset 0 0 0 1px {brand.BORDER};
+            color: white;
+            background: linear-gradient(135deg, {brand.ACCENT}, {brand.ACCENT_DARK});
+            box-shadow: 0 4px 12px rgba(20,184,166,.22);
           }}
           .stTabs [data-baseweb="tab-highlight"] {{
             display: none;
@@ -246,24 +293,55 @@ def _inject_css(embed: bool = False) -> None:
             border: 1px solid {brand.BORDER};
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 10px 28px rgba(17,24,39,.045);
+            box-shadow: 0 10px 28px rgba(15,23,42,.045);
             background: {brand.CARD};
+          }}
+          div[data-testid="stDataFrame"] [role="columnheader"] {{
+            background: rgba(246,241,232,.85) !important;
+            color: {brand.INK} !important;
+            font-weight: 750 !important;
+          }}
+          div[data-testid="stDataFrame"] [role="gridcell"] {{
+            color: {brand.INK};
           }}
           div[data-testid="stAlert"] {{
             border-radius: 14px;
             border: 1px solid {brand.BORDER};
             background: rgba(255,253,248,.82);
-            box-shadow: 0 10px 28px rgba(17,24,39,.045);
+            box-shadow: 0 10px 28px rgba(15,23,42,.045);
           }}
           div[data-testid="stAlert"] p {{
             color: {brand.INK};
+            font-weight: 650;
+          }}
+          .insight-box {{
+            display: flex;
+            align-items: flex-start;
+            gap: .6rem;
+            padding: .9rem 1rem;
+            border: 1px solid {brand.BORDER};
+            border-left: 4px solid {brand.ACCENT};
+            border-radius: 12px;
+            background: rgba(255, 253, 248, .78);
+            box-shadow: 0 8px 20px rgba(15,23,42,.035);
+            margin: .5rem 0;
+          }}
+          .insight-icon {{
+            font-size: 1.1rem;
+            line-height: 1.4;
+            flex-shrink: 0;
+          }}
+          .insight-text {{
+            color: {brand.INK};
+            font-size: .93rem;
+            line-height: 1.5;
             font-weight: 650;
           }}
           div[data-testid="stExpander"] details {{
             border: 1px solid {brand.BORDER};
             border-radius: 14px;
             background: rgba(255,253,248,.76);
-            box-shadow: 0 10px 28px rgba(17,24,39,.04);
+            box-shadow: 0 10px 28px rgba(15,23,42,.04);
             overflow: hidden;
           }}
           div[data-testid="stExpander"] summary {{
@@ -280,12 +358,12 @@ def _inject_css(embed: bool = False) -> None:
             color: {brand.MUTED};
           }}
           .demo-hero {{
-            background: {brand.SURFACE_DARK};
+            background: linear-gradient(135deg, {brand.SURFACE_DARK}, {brand.PRIMARY});
             color: white;
-            border: 1px solid rgba(255,255,255,.12);
+            border: 1px solid rgba(255,255,255,.10);
             border-radius: 18px;
-            padding: 1.3rem;
-            box-shadow: 0 22px 52px rgba(17,24,39,.16);
+            padding: 1.35rem;
+            box-shadow: 0 24px 56px rgba(11,18,32,.18);
             margin-bottom: 1rem;
           }}
           .demo-hero-grid {{
@@ -300,7 +378,7 @@ def _inject_css(embed: bool = False) -> None:
             font-size: 2.15rem;
             line-height: 1.04;
             font-weight: 850;
-            letter-spacing: 0;
+            letter-spacing: -0.02em;
           }}
           .demo-hero .demo-hero-question {{
             color: {brand.TEXT_ON_DARK_MUTED} !important;
@@ -309,17 +387,17 @@ def _inject_css(embed: bool = False) -> None:
             margin: 0;
           }}
           .demo-hero .demo-hero-question b {{
-            color: white !important;
+            color: {brand.ACCENT_LIGHT} !important;
           }}
           .demo-hero-metric {{
-            background: rgba(255,255,255,.06);
+            background: rgba(255,255,255,.07);
             border: 1px solid rgba(255,255,255,.12);
             border-radius: 14px;
             padding: 1rem;
             min-height: 100%;
           }}
           .demo-hero-metric-label {{
-            color: #5eead4;
+            color: {brand.ACCENT_LIGHT};
             text-transform: uppercase;
             letter-spacing: .12em;
             font-size: .68rem;
@@ -333,16 +411,19 @@ def _inject_css(embed: bool = False) -> None:
             margin-top: .55rem;
           }}
           .demo-hero-metric-delta {{
-            color: #d1d5db;
+            color: #cbd5e1;
             font-size: .84rem;
             line-height: 1.45;
             margin-top: .55rem;
           }}
+          .demo-hero-metric-delta.inverse {{
+            color: #fca5a5;
+          }}
           .demo-badge {{
             display:inline-block;
-            background: rgba(15,118,110,.09);
-            color:{brand.ACCENT};
-            border:1px solid rgba(15,118,110,.2);
+            background: rgba(20,184,166,.10);
+            color:{brand.ACCENT_DARK};
+            border:1px solid rgba(20,184,166,.22);
             padding:4px 10px;
             border-radius:999px;
             font-size:0.72rem;
@@ -350,15 +431,15 @@ def _inject_css(embed: bool = False) -> None:
             margin:0 6px 6px 0;
           }}
           .demo-hero .demo-badge {{
-            background: rgba(255,255,255,.07);
-            color:#d1d5db;
-            border:1px solid rgba(255,255,255,.12);
+            background: rgba(255,255,255,.08);
+            color:{brand.ACCENT_LIGHT};
+            border:1px solid rgba(94,234,212,.18);
           }}
           .demo-selo {{
             display:inline-block;
-            background:rgba(15,118,110,.14);
-            color:{brand.ACCENT};
-            border:1px solid rgba(15,118,110,.24);
+            background:rgba(20,184,166,.12);
+            color:{brand.ACCENT_DARK};
+            border:1px solid rgba(20,184,166,.24);
             padding:5px 12px;
             border-radius:8px;
             font-size:0.76rem;
@@ -366,8 +447,9 @@ def _inject_css(embed: bool = False) -> None:
             margin-top: .8rem;
           }}
           .demo-hero .demo-selo {{
-            color:#99f6e4;
-            border-color:rgba(94,234,212,.24);
+            color:{brand.ACCENT_LIGHT};
+            background:rgba(94,234,212,.10);
+            border-color:rgba(94,234,212,.22);
           }}
           .demo-breadcrumb {{
             font-size:0.72rem;
@@ -377,13 +459,13 @@ def _inject_css(embed: bool = False) -> None:
             letter-spacing:0.12em;
             margin-bottom:.55rem;
           }}
-          .demo-breadcrumb b {{ color:{brand.ACCENT}; }}
+          .demo-breadcrumb b {{ color:{brand.ACCENT_DARK}; }}
           .demo-sidebar-brand {{
             font-weight:850; color:{brand.INK}; font-size:1rem; line-height:1.1;
           }}
           .demo-sidebar-brand span {{ display:block; color:{brand.MUTED}; font-weight:500; font-size:.72rem; }}
           .demo-sidebar-section {{
-            color:{brand.WARM_ACCENT};
+            color:{brand.WARM_ACCENT_DARK};
             font-size:.68rem;
             font-weight:850;
             letter-spacing:.12em;
@@ -402,7 +484,12 @@ def _inject_css(embed: bool = False) -> None:
             border-radius:14px;
             padding:14px 16px;
             margin-bottom:10px;
-            box-shadow:0 10px 26px rgba(17,24,39,.04);
+            box-shadow:0 10px 26px rgba(15,23,42,.04);
+            transition: transform .12s ease, box-shadow .12s ease;
+          }}
+          .kpi-card:hover {{
+            transform: translateY(-1px);
+            box-shadow:0 14px 32px rgba(15,23,42,.07);
           }}
           .kpi-card.success {{ border-top:4px solid {brand.SUCCESS}; }}
           .kpi-card.warning {{ border-top:4px solid {brand.WARNING}; }}
@@ -419,7 +506,7 @@ def _inject_css(embed: bool = False) -> None:
             line-height:1.08;
             color:{brand.INK};
             font-weight:850;
-            letter-spacing:0;
+            letter-spacing:-0.01em;
             margin-top:.25rem;
           }}
           .demo-section {{
@@ -430,7 +517,7 @@ def _inject_css(embed: bool = False) -> None:
             font-size:1.1rem;
             line-height:1.2;
             font-weight:850;
-            letter-spacing:0;
+            letter-spacing:-0.01em;
             margin:0;
           }}
           .demo-section-desc {{
@@ -445,7 +532,7 @@ def _inject_css(embed: bool = False) -> None:
             border-radius:16px;
             padding:18px;
             margin-top:1rem;
-            box-shadow:0 14px 34px rgba(17,24,39,.05);
+            box-shadow:0 14px 34px rgba(15,23,42,.05);
           }}
           footer {{ visibility:hidden; height:0; }}
           div[data-testid="stDecoration"] {{ display:none; }}
@@ -481,11 +568,16 @@ def sidebar_brand() -> None:
             unsafe_allow_html=True,
         )
         nav_link("app.py", "Visão geral das demos")
-        st.markdown("<div class='demo-sidebar-section'>Cases âncora</div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='demo-sidebar-section'>Cases âncora</div>",
+            unsafe_allow_html=True,
+        )
         nav_link("pages/01_precificacao_frete.py", "01 Frete e custo")
         nav_link("pages/02_mini_torre_controle.py", "02 Torre de controle")
         nav_link("pages/03_cvrp_urbano.py", "03 Roteirização CVRP")
-        st.markdown("<div class='demo-sidebar-section'>Biblioteca</div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='demo-sidebar-section'>Biblioteca</div>", unsafe_allow_html=True
+        )
         nav_link("pages/04_promessa_cep.py", "04 Promessa por CEP")
         nav_link("pages/05_vrptw_ultima_milha.py", "05 VRPTW última milha")
         nav_link("pages/06_rede_interhubs.py", "06 Rede inter-hubs")
@@ -493,7 +585,9 @@ def sidebar_brand() -> None:
         nav_link("pages/08_ship_from_store.py", "08 Ship-from-store")
         nav_link("pages/09_tsp_baseline_sp.py", "09 Sequência TSP")
         nav_link("pages/10_auditoria_endereco.py", "10 Auditoria endereço")
-        st.markdown("<div class='demo-sidebar-section'>Método</div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='demo-sidebar-section'>Método</div>", unsafe_allow_html=True
+        )
         nav_link("pages/11_sobre_dados_metodos.py", "Dados e métodos")
         st.divider()
 
@@ -533,11 +627,7 @@ def plot(fig, **kwargs) -> None:
 
 def section(titulo: str, descricao: str | None = None) -> None:
     """Cabeçalho de seção padronizado."""
-    desc = (
-        f"<p class='demo-section-desc'>{escape(descricao)}</p>"
-        if descricao
-        else ""
-    )
+    desc = f"<p class='demo-section-desc'>{escape(descricao)}</p>" if descricao else ""
     st.markdown(
         f"""
         <div class="demo-section">
@@ -573,12 +663,16 @@ def hero(
     if metric:
         metric_delta = metric.get("delta")
         metric_help = metric.get("help")
+        delta_tone = str(metric.get("delta_color", "normal"))
+        delta_class = "demo-hero-metric-delta"
+        if delta_tone == "inverse":
+            delta_class = "demo-hero-metric-delta inverse"
         metric_html = (
             "<aside class='demo-hero-metric'>"
             f"<div class='demo-hero-metric-label'>{escape(str(metric['label']))}</div>"
             f"<div class='demo-hero-metric-value'>{escape(str(metric['value']))}</div>"
             + (
-                f"<div class='demo-hero-metric-delta'>{escape(str(metric_delta))}</div>"
+                f"<div class='{delta_class}'>{escape(str(metric_delta))}</div>"
                 if metric_delta
                 else ""
             )
@@ -717,6 +811,40 @@ def kpi_metric(label: str, value: str, severity: str | None = None) -> None:
     )
 
 
+def insight(texto: str, icone: str = "💡") -> None:
+    """Bloco de insight padronizado para substituir `st.info` inline."""
+    st.markdown(
+        f"<div class='insight-box'>"
+        f"<span class='insight-icon'>{escape(icone)}</span>"
+        f"<span class='insight-text'>{escape(texto)}</span>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+
+
+def progress_bar(label: str, valor: float, maximo: float = 100.0, cor: str | None = None) -> None:
+    """Barra de progresso estilizada com a paleta da marca.
+
+    `valor` e `maximo` devem estar na mesma escala (padrão 0-100).
+    """
+    pct = max(0.0, min(1.0, float(valor) / float(maximo))) if maximo else 0.0
+    cor_hex = cor or brand.ACCENT
+    st.markdown(
+        f"""
+        <div style="margin:.35rem 0 .85rem 0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;">
+            <span style="font-size:.78rem;font-weight:750;color:{brand.INK};">{escape(label)}</span>
+            <span style="font-size:.78rem;font-weight:750;color:{brand.MUTED};">{valor:.1f}%</span>
+          </div>
+          <div style="height:8px;background:{brand.EDITORIAL_2};border-radius:999px;overflow:hidden;border:1px solid {brand.BORDER};">
+            <div style="width:{pct*100:.2f}%;height:100%;background:{cor_hex};border-radius:999px;transition:width .4s ease;"></div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def download_csv_button(
     df: pd.DataFrame, filename: str, label: str = "Baixar resultado (CSV)"
 ) -> None:
@@ -751,7 +879,9 @@ def provenance_expander(
         )
 
 
-def demo_cta(next_demo_path: str | None = None, next_label: str = "Ver próxima demo") -> None:
+def demo_cta(
+    next_demo_path: str | None = None, next_label: str = "Ver próxima demo"
+) -> None:
     """Container de CTA final das demos: próxima demo e contato."""
     st.markdown(
         "<div class='demo-cta'>"

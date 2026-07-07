@@ -97,7 +97,6 @@ export interface HeroConteudo {
   badge: string;
   ctaPrimario: string;
   ctaSecundario: string;
-  provasTitulo: string;
   provas: HeroProva[];
 }
 
@@ -105,12 +104,9 @@ export interface CareerTargetConteudo {
   eyebrow: string;
   titulo: string;
   resumo: string;
-  papeisAlvo: string[];
   senioridade: string;
   disponibilidade: string;
   modeloAtuacao: string;
-  ctaPrimario: string;
-  ctaSecundario: string;
 }
 
 export interface ProofStat {
@@ -136,6 +132,26 @@ export interface ExperienceSignal {
   descricao: string;
 }
 
+export interface Impacto {
+  valor: string;
+  label: string;
+  descricao: string;
+}
+
+export interface Experiencia {
+  cargo: string;
+  empresa: string;
+  periodo: string;
+  atribuicoes: string[];
+  destaques?: string[];
+}
+
+export interface Formacao {
+  titulo: string;
+  instituicao: string;
+  periodo: string;
+}
+
 export interface ExperienceSignalsConteudo {
   eyebrow: string;
   titulo: string;
@@ -145,6 +161,16 @@ export interface ExperienceSignalsConteudo {
   stackGrupos: { grupo: string; itens: string[] }[];
   dominiosTitulo: string;
   dominios: string[];
+  impactosTitulo: string;
+  impactos: Impacto[];
+  experienciasTitulo: string;
+  experiencias: Experiencia[];
+  formacaoTitulo: string;
+  formacao: Formacao[];
+  certificacoesTitulo: string;
+  certificacoes: string[];
+  idiomasTitulo: string;
+  idiomas: string[];
 }
 
 export interface ContactLinksConteudo {
@@ -158,6 +184,23 @@ export interface ContactLinksConteudo {
   cvLabel: string;
   cvUrl: string;
   nota: string;
+}
+
+export interface DialogCopy {
+  closeLabel: string;
+}
+
+export interface MobileNavCopy {
+  menuTitle: string;
+  openLabel: string;
+  closeLabel: string;
+}
+
+export interface SiteMetadata {
+  title: string;
+  description: string;
+  keywords: string[];
+  jobTitle: string;
 }
 
 export interface SecoesCopy {
@@ -176,7 +219,6 @@ export interface SecoesCopy {
     decisao: string;
     metrica: string;
     limitacao: string;
-    temas: string;
     contextoMobile: string;
   };
   demoIndisponivel: string;
@@ -198,6 +240,10 @@ export interface Content {
   navCta: string;
   cases: Case[];
   footer: FooterConteudo;
+  siteMetadata: SiteMetadata;
+  dialog: DialogCopy;
+  mobileNav: MobileNavCopy;
+  impactos: Impacto[];
 }
 
 /** URL pública do site — definir em `.env.local` ou na Vercel */
@@ -238,57 +284,48 @@ export const CASE_DEMO_SLUGS: Record<string, string> = {
 
 export const CONTENT: Content = {
   pessoal: {
-    nome: "Lucas Batista",
-    titulo: "Operações, Dados e Inteligência Logística",
-    headline: "Operações logísticas com dados, produto interno e IA aplicada",
+    nome: "Lucas Farias Batista",
+    titulo: "Analista de Transportes Sênior | Operações, Dados e IA Aplicada",
+    headline:
+      "Operações logísticas com dados, produto interno, IA aplicada e impacto mensurável",
     subheadline:
-      "Perfil para transformar rotina logística em indicadores, automações e ferramentas de decisão.",
+      "Mais de 10 anos conectando execução diária a indicadores, automações e decisões. Atua na interseção entre logística, analytics e tecnologia para reduzir custo, melhorar SLA e traduzir operação em resultado financeiro.",
     email: "lucas.farias.log@outlook.com",
     linkedin: "https://linkedin.com/in/lucasfariaslog",
     github: GITHUB_PROFILE_URL,
   },
 
   hero: {
-    badge: "Headhunter intelligence brief",
-    ctaPrimario: "Ver prova técnica",
+    badge: "Dossiê executivo",
+    ctaPrimario: "Ver provas técnicas",
     ctaSecundario: "Contato profissional",
-    provasTitulo: "Sinais rápidos",
     provas: [
       {
         valor: "+10 anos",
-        label: "vivência em operações logísticas",
+        label: "de operação em transporte, varejo, e-commerce e indústria",
       },
       {
-        valor: "4 setores",
-        label: "transporte, varejo, e-commerce e indústria",
+        valor: "+R$ 20M",
+        label: "em working capital liberado e recuperação tributária",
       },
       {
         valor: "10 demos",
-        label: "provas navegáveis de raciocínio operacional",
+        label: "navegáveis em frete, SLA, last mile e IA aplicada",
       },
     ],
   },
 
   careerTarget: {
     eyebrow: "Direção de carreira",
-    titulo: "Perfil híbrido para operações, analytics e produto interno",
+    titulo: "Perfil híbrido de operação, analytics e produto interno",
     resumo:
-      "Atuo na interseção entre logística, dados e tecnologia. O melhor fit está em posições que precisam conectar problema operacional, análise estruturada, prototipagem e comunicação executiva.",
-    papeisAlvo: [
-      "Operations Analytics",
-      "Supply Chain Analytics",
-      "Logistics Intelligence",
-      "Product Ops / Internal Tools",
-      "BI e automação operacional",
-    ],
+      "Atuo na interseção entre logística, dados e IA aplicada. O melhor fit está em posições que precisam conectar problema operacional, análise estruturada, prototipagem e comunicação executiva para diretoria.",
     senioridade:
-      "Profissional com +10 anos de operação e portfólio técnico demonstrável",
+      "Analista Sênior com +10 anos de operação e portfólio técnico demonstrável",
     disponibilidade:
-      "Aberto a conversas com headhunters, recrutadores e lideranças de operações orientadas por dados",
+      "São Paulo/SP — aberto a conversas com headhunters, recrutadores e lideranças de operações e dados",
     modeloAtuacao:
-      "Preferência por ambientes onde dados, processo e execução operacional precisam conversar",
-    ctaPrimario: "Avaliar cases âncora",
-    ctaSecundario: "Falar com Lucas",
+      "Ambientes onde execução, processo, dados e tecnologia precisam conversar de forma pragmática",
   },
 
   proofStats: [
@@ -296,24 +333,24 @@ export const CONTENT: Content = {
       valor: "+10",
       label: "anos em operação",
       detalhe:
-        "Base prática para entender gargalos, rotina, exceções e trade-offs logísticos.",
+        "Transporte, varejo, e-commerce, moda e indústria. Base prática para gargalos, exceções e trade-offs.",
+    },
+    {
+      valor: "+R$ 20M",
+      label: "impacto financeiro",
+      detalhe:
+        "Working capital liberado, recuperação tributária e redução de custos de frete mensuráveis.",
     },
     {
       valor: "10",
       label: "demos navegáveis",
       detalhe:
-        "Cases com dados sintéticos para demonstrar raciocínio, stack e comunicação.",
-    },
-    {
-      valor: "4",
-      label: "setores",
-      detalhe:
-        "Transporte, varejo, e-commerce e indústria conectados por problemas operacionais.",
+        "Cases em Streamlit com contexto de negócio, métrica, decisão e limitação declarada.",
     },
     {
       valor: "5",
-      label: "frentes de fit",
-      detalhe: "Frete, SLA, last mile, CD e automação com IA supervisionada.",
+      label: "frentes de atuação",
+      detalhe: "Frete, SLA/OTD, last mile, CD e IA supervisionada aplicada à operação.",
     },
   ],
 
@@ -321,27 +358,27 @@ export const CONTENT: Content = {
     eyebrow: "Perfil em 60 segundos",
     titulo: "O que um headhunter precisa entender rápido",
     resumo:
-      "Este portfólio foi reorganizado para leitura de fit: não é uma vitrine de páginas bonitas, é um conjunto de evidências sobre julgamento operacional, clareza analítica e capacidade de construir ferramentas úteis.",
+      "Portfólio reorganizado como dossiê de fit: evidências de julgamento operacional, clareza analítica, capacidade de prototipagem e comunicação com diretoria.",
     itens: [
       {
-        titulo: "Raciocínio operacional",
+        titulo: "Operação com resultado",
         descricao:
-          "Parte de perguntas reais de custo, prazo, SLA, origem, rota e risco antes de escolher tecnologia.",
+          "Histórico comprovado de redução de custos, melhoria de SLA e impacto direto em EBITDA e capital de giro.",
       },
       {
         titulo: "Entrega demonstrável",
         descricao:
-          "Transforma hipóteses em demos, painéis e simuladores navegáveis, com limites declarados.",
+          "Transforma hipóteses em dashboards, simuladores e demos navegáveis, com limites e premissas declarados.",
       },
       {
         titulo: "Comunicação executiva",
         descricao:
-          "Explica decisão, métrica, trade-off e próxima ação sem esconder premissas técnicas.",
+          "Storytelling de dados para liderança: traduz métricas operacionais em decisão financeira e próxima ação.",
       },
       {
         titulo: "Stack pragmática",
         descricao:
-          "Usa Python, SQL, BI, Streamlit, Next.js e IA aplicada para reduzir distância entre análise e uso.",
+          "Python, SQL, Power BI, Excel avançado, Power Automate, Streamlit, Next.js, TypeScript e IA aplicada.",
       },
     ],
   },
@@ -356,55 +393,196 @@ export const CONTENT: Content = {
     eyebrow: "Trajetória e stack",
     titulo: "Senioridade construída na rotina operacional",
     resumo:
-      "O diferencial do perfil é combinar chão de operação, leitura de dados e prototipagem. A página deve permitir que recrutadores avaliem fit sem depender de uma conversa inicial longa.",
+      "Perfil que combina chão de fábrica, leitura de dados e prototipagem. Recrutadores conseguem avaliar fit sem depender de uma conversa inicial longa.",
     trajetoria: [
       {
         titulo: "+10 anos em operações logísticas",
         descricao:
-          "Vivência com transporte, varejo, e-commerce e indústria, conectando execução diária a indicadores e decisões.",
+          "Transporte, varejo, e-commerce, moda e indústria. Conectando execução diária a indicadores e decisões.",
       },
       {
         titulo: "Transição para inteligência operacional",
         descricao:
-          "Uso de dados, automação e produtos internos para reduzir ambiguidade em frete, SLA, roteirização e visibilidade.",
+          "Dados, automação e produtos internos para reduzir ambiguidade em frete, SLA, roteirização, last mile e visibilidade.",
       },
       {
         titulo: "Portfólio com prova navegável",
         descricao:
-          "10 cases publicados em Streamlit, com contexto de negócio, métrica principal, decisão apoiada e limitações.",
+          "10 cases publicados em Streamlit com contexto de negócio, métrica principal, decisão apoiada e limitação declarada.",
       },
     ],
     stackTitulo: "Stack por tipo de contribuição",
     stackGrupos: [
       {
-        grupo: "Dados",
-        itens: ["Python", "SQL", "Pandas", "modelagem analítica"],
+        grupo: "Dados & Analytics",
+        itens: [
+          "Python",
+          "SQL Server",
+          "BigQuery",
+          "Pandas",
+          "modelagem analítica",
+        ],
       },
       {
         grupo: "BI e decisão",
-        itens: ["Power BI", "Excel avançado", "KPIs", "storytelling executivo"],
+        itens: [
+          "Power BI",
+          "DAX",
+          "Power Query M",
+          "Oracle Analytics",
+          "Excel avançado",
+          "KPIs",
+        ],
       },
       {
-        grupo: "Produto interno",
-        itens: ["Streamlit", "Next.js", "TypeScript", "prototipagem"],
+        grupo: "Automação & Produto",
+        itens: [
+          "Power Automate",
+          "Streamlit",
+          "Next.js",
+          "TypeScript",
+          "prototipagem",
+        ],
       },
       {
         grupo: "IA aplicada",
         itens: [
           "LLMs",
-          "classificação de textos",
-          "documentação",
+          "prompt engineering",
+          "classificação de textos (NLP)",
           "assistentes supervisionados",
+          "documentação técnica",
         ],
       },
     ],
     dominiosTitulo: "Domínios de negócio",
     dominios: [
       "Frete e composição de custo",
-      "SLA, OTD e torre de controle",
+      "SLA, OTD, OTIF e torre de controle",
       "Last mile e promessa por CEP",
       "Roteirização urbana e dimensionamento de frota",
       "Operação de CD e integração WMS/TMS",
+    ],
+    impactosTitulo: "Impactos quantificados",
+    impactos: [
+      {
+        valor: "+R$ 20M",
+        label: "Capital de giro liberado",
+        descricao: "Working capital +2 dias operacionais.",
+      },
+      {
+        valor: "-20%",
+        label: "Custo de frete cadeia fria",
+        descricao: "~R$ 150 mil mensais economizados.",
+      },
+      {
+        valor: "+R$ 600K",
+        label: "Recuperação de tributos",
+        descricao: "Identificação e revisão fiscal.",
+      },
+      {
+        valor: "-28%",
+        label: "Custo médio de frete",
+        descricao: "BID de última milha renegociado.",
+      },
+      {
+        valor: "-50%",
+        label: "Mudança de modal",
+        descricao: "Aéreo para rodoviário mantendo SLA.",
+      },
+    ],
+    experienciasTitulo: "Experiência profissional",
+    experiencias: [
+      {
+        cargo: "Analista de Transportes Sr — Processos & Dados",
+        empresa: "GRUPO SBF (Centauro e Nike)",
+        periodo: "Fev/2025 — Atual",
+        atribuicoes: [
+          "Análise de transporte e roteirização: eficiência de rotas (km/entrega, ocupação, custo por rota).",
+          "Monitoramento de SLA, OTD, OTIF e custo por entrega com planos de ação e ajustes de malha.",
+          "Dashboards e relatórios executivos com storytelling para liderança, integrando TMS, OMS e ERP.",
+          "Interface com Planejamento, Operações, Tecnologia e parceiros logísticos para visão única de performance.",
+        ],
+      },
+      {
+        cargo: "Analista de Supply Chain Sr — Performance & Torre de Controle",
+        empresa: "GRUPO NOS (Shell Select e OXXO)",
+        periodo: "Set/2022 — Jan/2025",
+        atribuicoes: [
+          "Gestão de KPIs de transporte e CDs (SLA, OTD, OTIF, custo/rota, CAPEX/OPEX).",
+          "Implantação de TMS (Performaxxi) e CRM (Zendesk) integrando controle de entrega e atendimento.",
+          "Dashboards em Power BI/Oracle Analytics e automações com Power Automate.",
+          "Control Tower na identificação de desvios (tempos de espera, recorrência, falhas) e ajuste de cercas geográficas.",
+        ],
+        destaques: [
+          "Redução de 20% no custo de frete cadeia fria (~R$ 150K/mês).",
+          "Liberação de +R$ 20M em Working Capital (+2 dias operacionais).",
+          "Recuperação de +R$ 600K em tributos.",
+        ],
+      },
+      {
+        cargo: "Especialista em Transportes B2C e Omnichannel",
+        empresa: "VESTE S.A",
+        periodo: "Jun/2022 — Ago/2022",
+        atribuicoes: [
+          "Estratégias de transporte omnichannel conectando e-commerce, lojas físicas e canais B2B.",
+          "Ajuste de regras do Linx OMS reduzindo conflitos de promessas de prazo.",
+          "Condução de BID de última milha (Loggi, DHL, Carbono Zero) reduzindo 28% o custo médio de frete.",
+          "Implementação de coletas ecológicas (Ship from Store) com economia de custo e prazo.",
+        ],
+      },
+      {
+        cargo: "Analista de Logística Omnichannel",
+        empresa: "AREZZO&CO (Azzas 2154)",
+        periodo: "Fev/2020 — Jun/2022",
+        atribuicoes: [
+          "Dashboards de transporte e nível de serviço por canal, região e transportadora.",
+          "Acompanhamento de KPIs (SLA, OTD, OTIF, lead time) e apresentações para diretoria.",
+          "Correção de desvios de prazo com transportadoras, CDs e lojas; apoio à gestão de fretes.",
+        ],
+      },
+      {
+        cargo: "Líder de Estoque — BU Schutz",
+        empresa: "AREZZO&CO",
+        periodo: "Jun/2016 — Fev/2020",
+        atribuicoes: [
+          "Liderança de equipe de estoque, inventários e rotinas operacionais.",
+          "Embaixador no projeto de RFID, aumentando acurácia e rastreabilidade dos produtos.",
+        ],
+      },
+    ],
+    formacaoTitulo: "Formação",
+    formacao: [
+      {
+        titulo: "MBA Data Science e Analytics",
+        instituicao: "USP/Esalq",
+        periodo: "2025-2026 (em andamento)",
+      },
+      {
+        titulo: "MBA Engenharia Logística",
+        instituicao: "UNIP",
+        periodo: "2019-2020",
+      },
+      {
+        titulo: "Gestão da Cadeia de Suprimentos",
+        instituicao: "UNIP",
+        periodo: "2017-2018",
+      },
+    ],
+    certificacoesTitulo: "Certificações",
+    certificacoes: [
+      "Power BI — Modelagem e Dashboards",
+      "SQL Server — Intermediário",
+      "Gestão e Análise de Dados",
+      "Power Automate",
+      "Excel Avançado",
+      "Gestão de Custos, Lean",
+    ],
+    idiomasTitulo: "Idiomas",
+    idiomas: [
+      "Português: Nativo",
+      "Inglês: Intermediário",
+      "Espanhol: Intermediário",
     ],
   },
 
@@ -452,7 +630,6 @@ export const CONTENT: Content = {
       decisao: "Decisão apoiada",
       metrica: "Métrica principal",
       limitacao: "Limitação declarada",
-      temas: "Stack e temas",
       contextoMobile: "Contexto da análise",
     },
     demoIndisponivel:
@@ -711,6 +888,64 @@ export const CONTENT: Content = {
     badgeCases: "10 provas navegáveis",
     linksRapidosTitulo: "Links rápidos",
   },
+
+  siteMetadata: {
+    title: "Lucas Batista | Operações, Dados e Inteligência Logística",
+    description:
+      "Portfólio profissional para headhunters: operações logísticas, analytics, produto interno, IA aplicada e cases demonstráveis em frete, SLA, last mile e roteirização.",
+    keywords: [
+      "logística",
+      "supply chain",
+      "análise de dados",
+      "frete",
+      "transporte",
+      "e-commerce",
+      "headhunter",
+      "recrutamento executivo",
+      "portfólio profissional",
+      "inteligência operacional",
+      "Brasil",
+    ],
+    jobTitle: "Analista de Transportes Sênior | Operações, Dados e IA Aplicada",
+  },
+
+  dialog: {
+    closeLabel: "Fechar",
+  },
+
+  mobileNav: {
+    menuTitle: "Menu",
+    openLabel: "Abrir menu de navegação",
+    closeLabel: "Fechar menu",
+  },
+
+  impactos: [
+    {
+      valor: "+R$ 20M",
+      label: "Capital de giro liberado",
+      descricao: "Working capital +2 dias operacionais.",
+    },
+    {
+      valor: "-20%",
+      label: "Custo de frete cadeia fria",
+      descricao: "~R$ 150 mil mensais economizados.",
+    },
+    {
+      valor: "+R$ 600K",
+      label: "Recuperação de tributos",
+      descricao: "Identificação e revisão fiscal.",
+    },
+    {
+      valor: "-28%",
+      label: "Custo médio de frete",
+      descricao: "BID de última milha renegociado.",
+    },
+    {
+      valor: "-50%",
+      label: "Mudança de modal",
+      descricao: "Aéreo para rodoviário mantendo SLA.",
+    },
+  ],
 };
 
 /** Um case é "demonstrável" quando tem uma demo Streamlit publicada. */
@@ -753,6 +988,9 @@ export const CASES_BIBLIOTECA = CASES_DEMONSTRAVEIS.filter(
 
 /** Cases em desenvolvimento (sem demo) — lista compacta de roadmap. */
 export const CASES_ROADMAP = CONTENT.cases.filter((c) => !caseTemDemo(c.id));
+
+/** Impactos financeiros/operacionais quantificados do currículo. */
+export const IMPACTOS = CONTENT.impactos;
 
 /** Categorias únicas para filtro (apenas biblioteca). */
 export const CASE_CATEGORIAS = [

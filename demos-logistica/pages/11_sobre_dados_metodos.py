@@ -95,9 +95,9 @@ proveniencia = pd.DataFrame(
 tables.format_dataframe(
     proveniencia,
     config={
-        "Demo": tables.text_column("Demo"),
+        "Demo": tables.text_column("Demo", width="small"),
         "Fonte da amostra": tables.text_column("Fonte da amostra", width="large"),
-        "Tipo de dado": tables.text_column("Tipo de dado"),
+        "Tipo de dado": tables.text_column("Tipo de dado", width="medium"),
         "Método em produção": tables.text_column("Método em produção", width="large"),
     },
     hide_index=True,
@@ -124,9 +124,10 @@ st.markdown(
 )
 
 ui.section("Princípio")
-st.info(
+ui.insight(
     "Ferramentas aceleram o diagnóstico; a decisão crítica (promessa, penalidade, "
-    "pagamento) permanece com validação humana e dados do cliente."
+    "pagamento) permanece com validação humana e dados do cliente.",
+    icone="🛡️",
 )
 
 ui.demo_cta(next_demo_path="pages/01_precificacao_frete.py")

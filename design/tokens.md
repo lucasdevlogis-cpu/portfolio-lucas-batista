@@ -8,7 +8,7 @@
 
 | Token | Hex | CSS / Python | Uso |
 |-------|-----|--------------|-----|
-| Editorial | `#f6f1e8` | `--editorial` / `EDITORIAL` | Fundo principal |
+| Editorial | `#f6f1e8` | `--background` / `EDITORIAL` | Fundo principal |
 | Card | `#fffdf8` | `--card` / `CARD` | Blocos claros |
 | Ink | `#111827` | `--ink` / `INK` | Texto forte, CTA |
 | Primary | `#17324d` | `--primary` / `PRIMARY` | Azul petróleo |
@@ -37,6 +37,21 @@
 ## Tipografia
 
 - Headings: `font-heading` · body: `font-sans` (system stack)
+- Eyebrow: `text-xs font-extrabold uppercase tracking-[0.18em]`
+- Section title: `font-heading text-4xl md:text-5xl font-black`
+- Section lead: `text-lg leading-relaxed text-muted-foreground`
+
+## Elevação e motion
+
+| Token | Valor | Uso |
+|-------|-------|-----|
+| `--shadow-editorial` | `0 1px 2px rgba(17,24,39,0.04)` | divisões sutis |
+| `--shadow-card` | `0 4px 20px rgba(17,24,39,0.06)` | cards padrão |
+| `--shadow-elevated` | `0 10px 30px rgba(17,24,39,0.08)` | hover/destaque |
+| `--ease-editorial` | `cubic-bezier(0.16, 1, 0.3, 1)` | transições |
+| `--duration-fast` | `120ms` | hover leve, cor |
+| `--duration-normal` | `200ms` | elevação, foco |
+| `--duration-slow` | `300ms` | reveals, modais |
 
 ## Chart heights (demos — canônico)
 

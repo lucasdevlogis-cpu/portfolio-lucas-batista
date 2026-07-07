@@ -162,7 +162,10 @@ try:
     folium_maps.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="home_rede_interhubs")
     st.caption("Corredores entre hubs. Linhas retas, não rotas rodoviárias reais.")
 except FileNotFoundError:
-    st.info("Rode `python scripts/build_datasets.py` para gerar os dados das demos.")
+    ui.insight(
+        "Rode `python scripts/build_datasets.py` para gerar os dados das demos.",
+        icone="📦",
+    )
 
 ui.section(
     "Provas profundas",
@@ -187,7 +190,8 @@ with col_prov:
     ui.section("Transparência")
     ui.nav_link("pages/11_sobre_dados_metodos.py", "Dados e métodos")
 
-st.info(
-    "**Limitação:** dados sintéticos/curados para demonstração. Para decisão real, validar premissas, integração e governança da operação."
+ui.insight(
+    "**Limitação:** dados sintéticos/curados para demonstração. Para decisão real, validar premissas, integração e governança da operação.",
+    icone="🛡️",
 )
 ui.footer()

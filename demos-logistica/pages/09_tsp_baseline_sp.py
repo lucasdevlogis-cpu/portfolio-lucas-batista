@@ -8,7 +8,7 @@ viária real (OSMnx/OSRM).
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from lib import brand, folium_maps as fm, format, geo, tables, ui
+from lib import brand, folium_maps as fm, format as fmt, geo, tables, ui
 
 ui.page_setup("09. TSP Baseline SP", icon="🧭")
 
@@ -50,10 +50,10 @@ ui.hero(
     ),
     metric={
         "label": "Distância otimizada",
-        "value": f"{format.fmt_number(d_final, decimals=1)} km",
+        "value": f"{fmt.fmt_number(d_final, decimals=1)} km",
         "delta": (
-            f"-{format.fmt_percent(economia_pct, decimals=0)} "
-            f"vs ordem de cadastro ({format.fmt_number(d_cadastro, decimals=1)} km)"
+            f"-{fmt.fmt_percent(economia_pct, decimals=0)} "
+            f"vs ordem de cadastro ({fmt.fmt_number(d_cadastro, decimals=1)} km)"
         ),
         "help": "Rota fechada saindo e voltando ao CD.",
     },
@@ -63,13 +63,33 @@ ui.kpi_grid(
     [
         {"label": "Pontos de visita", "value": f"{len(visitas)}"},
         {"label": "Tempo estimado", "value": f"{tempo_min / 60:.1f} h"},
-        {"label": "Nearest-neighbor", "value": f"{format.fmt_number(d_nn, decimals=1)} km"},
+        {"label": "Nearest-neighbor", "value": f"{fmt.fmt_number(d_nn, decimals=1)} km"},
         {
             "label": "Ganho 2-opt",
-            "value": f"{format.fmt_number(d_nn - d_final, decimals=1)} km",
+            "value": f"{fmt.fmt_number(d_nn - d_final, decimals=1)} km",
         },
     ]
 )
+
+col_a, col_b, col_c = st.columns(3)
+with col_a:
+    ui.kpi_metric(
+        "Economia vs cadastro",
+        fmt.fmt_percent(economia_pct, decimals=1),
+        severity="success",
+    )
+with col_b:
+    ui.kpi_metric(
+        "Ganho do 2-opt",
+        fmt.fmt_number(d_nn - d_final, decimals=1) + " km",
+        severity="success",
+    )
+with col_c:
+    ui.kpi_metric(
+        "Tempo estimado",
+        f"{tempo_min / 60:.1f} h",
+        severity="success",
+    )
 
 route_coords = [coords[i] for i in ordem_final] + [coords[ordem_final[0]]]
 route_labels = [nomes[i] for i in ordem_final] + [nomes[ordem_final[0]]]
@@ -142,7 +162,7 @@ with tab_analise:
             category_orders={"método": ["Ordem cadastro", "Nearest-neighbor", "NN + 2-opt"]},
         )
         fig.update_traces(
-            hovertemplate=format.fmt_hover(
+            hovertemplate=fmt.fmt_hover(
                 [
                     ("Método", "%{x}"),
                     ("Distância", "%{y:,.1f} km"),
@@ -171,28 +191,6 @@ with tab_analise:
             "ponto": tables.text_column("Ponto"),
         }
         tables.format_dataframe(seq, config)
-
-    st.divider()
-
-    col_a, col_b, col_c = st.columns(3)
-    with col_a:
-        ui.kpi_metric(
-            "Economia vs cadastro",
-            format.fmt_percent(economia_pct, decimals=1),
-            severity="success",
-        )
-    with col_b:
-        ui.kpi_metric(
-            "Ganho do 2-opt",
-            format.fmt_number(d_nn - d_final, decimals=1) + " km",
-            severity="success",
-        )
-    with col_c:
-        ui.kpi_metric(
-            "Tempo estimado",
-            f"{tempo_min / 60:.1f} h",
-            severity="success",
-        )
 
 with tab_exportar:
     ui.section("Exportar resultados")

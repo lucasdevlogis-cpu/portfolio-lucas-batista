@@ -6,7 +6,7 @@
  * Falha com código 1 e mensagem clara em qualquer inconsistência.
  */
 
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -108,6 +108,17 @@ if (
   );
 }
 
+// 0b. Cases âncora devem ser demonstráveis (ter demo Streamlit).
+if (Array.isArray(featuredProofCases)) {
+  for (const id of featuredProofCases) {
+    if (typeof id === "string" && !(id in CASE_DEMO_SLUGS)) {
+      fail(
+        `Case âncora "${id}" em featuredProofCases não está em CASE_DEMO_SLUGS (sem demo publicada).`,
+      );
+    }
+  }
+}
+
 // 1. Contagem de cases demonstráveis.
 if (demoIds.length !== EXPECTED_DEMO_COUNT) {
   fail(
@@ -160,6 +171,9 @@ for (const c of CASES_DEMONSTRAVEIS) {
 }
 
 // 6. Consistência linkDemo ↔ CASE_DEMO_SLUGS (só quando base URL está definida).
+const isCiOrProduction =
+  process.env.CI === "true" || process.env.NODE_ENV === "production";
+
 if (DEMOS_BASE_URL) {
   for (const c of CASES_DEMONSTRAVEIS) {
     const expected = demoUrl(CASE_DEMO_SLUGS[c.id] ?? "");
@@ -169,6 +183,10 @@ if (DEMOS_BASE_URL) {
       );
     }
   }
+} else if (isCiOrProduction) {
+  fail(
+    "NEXT_PUBLIC_DEMOS_BASE_URL não definida. Env obrigatória em CI/produção para links de demo funcionarem.",
+  );
 } else {
   warn(
     "NEXT_PUBLIC_DEMOS_BASE_URL não definida: pulando checagem de linkDemo. Defina no build para links de demo funcionarem.",
@@ -192,6 +210,30 @@ if (existsSync(PAGES_DIR)) {
   warn(
     `Diretório de pages não encontrado (${PAGES_DIR}): pulando checagem slug ↔ arquivo.`,
   );
+}
+
+// 8. CV freshness — garantir que PDF/JSON reflitam content.ts atual.
+const contentPath = join(ROOT, "data", "content.ts");
+const cvJsonPath = join(ROOT, "public", "cv-export.json");
+const cvPdfPath = join(ROOT, "public", "lucas-batista-cv.pdf");
+
+if (existsSync(contentPath)) {
+  const contentMtime = statSync(contentPath).mtimeMs;
+  for (const [label, path] of [
+    ["cv-export.json", cvJsonPath],
+    ["lucas-batista-cv.pdf", cvPdfPath],
+  ] as const) {
+    if (existsSync(path)) {
+      const assetMtime = statSync(path).mtimeMs;
+      if (assetMtime < contentMtime) {
+        warn(
+          `${label} está desatualizado em relação a data/content.ts. Rode \`npm run cv:generate\` antes do deploy.`,
+        );
+      }
+    } else {
+      warn(`${label} não encontrado em public/. Rode \`npm run cv:generate\`.`);
+    }
+  }
 }
 
 for (const w of warnings) {

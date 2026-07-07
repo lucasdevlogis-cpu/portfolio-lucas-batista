@@ -46,7 +46,31 @@ with ui.filter_container("Parâmetros globais"):
         default=sorted(df["origin_uf"].unique()),
     )
 
-base = df[df["origin_uf"].isin(ufs)].copy() if ufs else df.copy()
+base = df[df["origin_uf"].isin(ufs)].copy()
+
+ui.breadcrumb("Case: Precificação de Frete · <b>Demo interativa</b>")
+
+if base.empty:
+    ui.hero(
+        "01. Precificação de Frete Rodoviário BR",
+        "Onde o frete pesa na composição de custo e quanto isso fica acima do piso ANTT?",
+        frameworks=["NTC&Logística", "Piso mínimo ANTT", "Sensibilidade diesel (ANP)"],
+        selo=brand.maturidade(
+            metodo="coeficientes curados", producao="tabela contratada + ANTT vigente"
+        ),
+        metric={
+            "label": "Frete estimado da carteira",
+            "value": fmt.fmt_currency(0, decimals=0),
+            "delta": "Selecione pelo menos uma UF",
+            "help": "Soma do frete estimado dos embarques filtrados vs soma do piso mínimo ANTT.",
+        },
+    )
+    ui.insight(
+        "Nenhum embarque com os filtros atuais. Selecione pelo menos uma UF de origem.",
+        icone="🚚",
+    )
+    ui.footer()
+    st.stop()
 
 
 def calcular(row: pd.Series) -> pd.Series:
@@ -86,8 +110,6 @@ piso_total = calc["piso_antt"].sum()
 acima_pct = (frete_total / piso_total - 1) * 100 if piso_total else 0
 custo_kg = frete_total / max(calc["peso_taxavel_kg"].sum(), 1)
 
-ui.breadcrumb("Case: Precificação de Frete · <b>Demo interativa</b>")
-
 ui.hero(
     "01. Precificação de Frete Rodoviário BR",
     "Onde o frete pesa na composição de custo e quanto isso fica acima do piso ANTT?",
@@ -120,8 +142,6 @@ ui.kpi_grid(
         },
     ]
 )
-
-st.divider()
 
 # Tabs para demo profunda ------------------------------------------------------
 tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
@@ -170,9 +190,10 @@ with tab_visao:
                 measure=["relative"] * len(componentes) + ["total"],
                 x=componentes + ["Total"],
                 y=valores + [sum(valores)],
-                connector=dict(line=dict(color=brand.BORDER)),
+                connector=dict(line=dict(color=brand.BORDER, width=2)),
                 increasing=dict(marker=dict(color=brand.ACCENT)),
                 totals=dict(marker=dict(color=brand.PRIMARY)),
+                decreasing=dict(marker=dict(color=brand.DANGER)),
                 hovertemplate=hover_comp + "<extra></extra>",
             )
         )
@@ -180,6 +201,7 @@ with tab_visao:
             height=ui.chart_height(brand.CHART_FULL_HEIGHT),
             margin=dict(t=10, b=10, l=10, r=10),
             yaxis_title="R$",
+            showlegend=False,
         )
         ui.plot(wf, width="stretch")
 
@@ -211,7 +233,7 @@ with tab_analise:
         y=top["piso_antt"],
         name="Piso ANTT",
         marker_color=brand.ACCENT,
-        hovertemplate="Piso ANTT: %{y:,.2f}<extra></extra>",
+        hovertemplate="Piso ANTT: R$ %{y:,.2f}<extra></extra>",
     )
     comp_fig.update_layout(
         barmode="group",
@@ -277,9 +299,8 @@ with tab_exportar:
             "acima_piso_pct",
         ]
     ].round(2)
-    # Status de risco para formatação condicional
     tabela["status_piso"] = tabela["acima_piso_pct"].apply(
-        lambda x: "Apto" if x >= 0 else "Abaixo do piso"
+        lambda x: tables.status_text("Apto") if x >= 0 else tables.status_text("Abaixo do piso")
     )
 
     config = {

@@ -1,6 +1,14 @@
 "use client";
 
-import { ArrowUp, ArrowUpRight, Code2, Link, Mail, Star } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  ArrowUp,
+  ArrowUpRight,
+  Code2,
+  Link,
+  Mail,
+  Star,
+} from "lucide-react";
 
 import { CONTENT } from "@/data/content";
 
@@ -32,7 +40,7 @@ function SocialLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-ink"
+      className="group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-ink"
     >
       {children}
       <span className="sr-only">{label}</span>
@@ -41,10 +49,9 @@ function SocialLink({
 }
 
 export function Footer() {
-  const { pessoal, footer, nav } = CONTENT;
-  const emailHref = pessoal.email.startsWith("[")
-    ? "#"
-    : `mailto:${pessoal.email}`;
+  const { pessoal, footer, nav, contactLinks } = CONTENT;
+  const emailMissing = pessoal.email.startsWith("[");
+  const emailHref = emailMissing ? undefined : `mailto:${pessoal.email}`;
 
   const handleVoltarTopo = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -52,86 +59,96 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border bg-card">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-3 lg:px-8">
-        {/* Coluna 1 — Brand + social */}
-        <div>
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-3 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <p className="font-heading text-lg font-black text-ink">
             {pessoal.nome}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">{pessoal.titulo}</p>
 
-          {/* Badge prova social */}
-          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-bold text-accent-contrast">
+          <div className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-bold text-accent-contrast">
             <Star className="size-3.5" aria-hidden />
             {footer.badgeCases}
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-4">
+          <div className="mt-5 flex flex-wrap gap-5">
             <SocialLink
               href={pessoal.linkedin}
-              label="LinkedIn"
+              label={contactLinks.linkedinLabel}
               disabled={pessoal.linkedin.startsWith("[")}
             >
               <Link className="size-4" aria-hidden />
-              LinkedIn
+              {contactLinks.linkedinLabel}
             </SocialLink>
             <SocialLink
               href={pessoal.github}
-              label="GitHub"
+              label={contactLinks.githubLabel}
               disabled={pessoal.github.startsWith("[")}
             >
               <Code2 className="size-4" aria-hidden />
-              GitHub
+              {contactLinks.githubLabel}
             </SocialLink>
             <SocialLink
-              href={emailHref}
-              label="Email"
-              disabled={pessoal.email.startsWith("[")}
+              href={emailHref ?? "#"}
+              label={contactLinks.emailLabel}
+              disabled={emailMissing}
             >
               <Mail className="size-4" aria-hidden />
-              Email
+              {contactLinks.emailLabel}
             </SocialLink>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Coluna 2 — Links rápidos */}
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        >
           <p className="font-heading text-sm font-black text-ink">
             {footer.linksRapidosTitulo}
           </p>
-          <nav className="mt-4 flex flex-col gap-2" aria-label="Links rápidos do rodapé">
+          <nav className="mt-5 flex flex-col gap-2" aria-label="Links rápidos do rodapé">
             {nav.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="inline-flex items-center gap-1 text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-ink"
+                className="group inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors duration-normal ease-editorial hover:text-ink"
               >
                 {link.label}
-                <ArrowUpRight className="size-3.5" aria-hidden />
+                <ArrowUpRight className="size-3.5 opacity-0 transition-all duration-normal ease-editorial group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" aria-hidden />
               </a>
             ))}
           </nav>
-        </div>
+        </motion.div>
 
-        {/* Coluna 3 — Declaração */}
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        >
           <p className="text-sm leading-relaxed text-muted-foreground">
             {footer.declaracaoLimitacao}
           </p>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Copyright */}
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-border px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
         <p className="text-sm text-muted-foreground">
           {footer.copyright}
         </p>
         <button
           onClick={handleVoltarTopo}
-          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-bold text-muted-foreground transition-colors hover:bg-editorial hover:text-ink"
+          className="group inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-bold text-muted-foreground transition-all duration-normal ease-editorial hover:bg-editorial hover:text-ink focus-ring"
           aria-label={footer.voltarTopo}
         >
-          <ArrowUp className="size-4" aria-hidden />
+          <ArrowUp className="size-4 transition-transform group-hover:-translate-y-0.5" aria-hidden />
           {footer.voltarTopo}
         </button>
       </div>

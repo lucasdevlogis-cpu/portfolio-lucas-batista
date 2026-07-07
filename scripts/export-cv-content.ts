@@ -21,7 +21,6 @@ const payload = {
   email: pessoal.email,
   linkedin: pessoal.linkedin.replace(/^https?:\/\//, ""),
   github: pessoal.github.replace(/^https?:\/\//, ""),
-  papeisAlvo: careerTarget.papeisAlvo,
   senioridade: careerTarget.senioridade,
   disponibilidade: careerTarget.disponibilidade,
   modeloAtuacao: careerTarget.modeloAtuacao,

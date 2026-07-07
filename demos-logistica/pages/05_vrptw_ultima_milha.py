@@ -9,7 +9,7 @@ Produção usaria PyVRP (time windows).
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from lib import brand, folium_maps as fmap, format, geo, tables, ui, viz
+from lib import brand, folium_maps as fmap, format as fmt, geo, tables, ui, viz
 
 ui.page_setup("05. VRPTW — Última Milha", icon="⏱️")
 
@@ -96,28 +96,26 @@ ui.hero(
     },
 )
 
+ui.kpi_grid(
+    [
+        {"label": "Paradas", "value": fmt.fmt_number(n)},
+        {
+            "label": "No prazo (otimizado)",
+            "value": f"{n - viol_edf}/{n}",
+            "severity": "success" if viol_edf == 0 else "warning" if viol_edf == 1 else "danger",
+        },
+        {
+            "label": "Espera total",
+            "value": f"{espera_total:.0f} min",
+            "severity": "warning" if espera_total > 60 else None,
+        },
+        {"label": "Última entrega", "value": hhmm(ultima_entrega)},
+    ]
+)
+
 tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
 
 with tab_visao:
-    ui.kpi_grid(
-        [
-            {"label": "Paradas", "value": format.fmt_number(n)},
-            {
-                "label": "No prazo (otimizado)",
-                "value": f"{n - viol_edf}/{n}",
-                "severity": "success" if viol_edf == 0 else "warning" if viol_edf == 1 else "danger",
-            },
-            {
-                "label": "Espera total",
-                "value": f"{espera_total:.0f} min",
-                "severity": "warning" if espera_total > 60 else None,
-            },
-            {"label": "Última entrega", "value": hhmm(ultima_entrega)},
-        ]
-    )
-
-    st.divider()
-
     map_detail = not ui.is_embed()
     ui.section(
         "Rota planejada",

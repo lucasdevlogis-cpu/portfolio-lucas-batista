@@ -7,7 +7,6 @@ ordem de cadastro. Produção usaria PyVRP / OR-Tools.
 
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import streamlit as st
 from lib import brand, folium_maps, format as fmt, geo, tables, ui, viz
 
@@ -90,10 +89,8 @@ ui.kpi_grid(
     ]
 )
 
-st.divider()
-
 if not rotas:
-    st.info("Ajuste capacidade/veículos na barra lateral.")
+    ui.insight("Ajuste capacidade/veículos na barra lateral.", icone="🚚")
     ui.footer()
     st.stop()
 
@@ -159,8 +156,7 @@ with tab_analise:
             dist_v,
             x="veiculo",
             y="km",
-            color="veiculo",
-            color_discrete_sequence=brand.SEQ,
+            color_discrete_sequence=[brand.PRIMARY],
         )
         fig.update_traces(
             hovertemplate=fmt.fmt_hover(

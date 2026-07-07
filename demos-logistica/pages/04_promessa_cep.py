@@ -4,10 +4,11 @@ Adaptado do case `10-promessa-entrega-cep`. Análise territorial de prazo, custo
 e risco por CEP, com score demonstrativo, heatmap e cluster no mapa.
 """
 
-import pandas as pd
 import plotly.express as px
 import streamlit as st
-from lib import brand, folium_maps as fmap, format, tables, ui, viz
+
+from lib import brand, format as fmt, tables, ui, viz
+from lib import folium_maps as fmap
 
 ui.page_setup("04. Promessa por CEP", icon="📍")
 
@@ -51,16 +52,17 @@ f["severidade"] = f["score_risco"].apply(_severity)
 f["status"] = f["severidade"].apply(tables.status_text)
 
 if f.empty:
-    st.info("Nenhum CEP com os filtros atuais.")
-    ui.footer()
-    st.stop()
-
-pior_regiao = f.groupby("regiao")["score_risco"].mean().idxmax()
-score_max = f.groupby("regiao")["score_risco"].mean().max()
-
-insucesso_medio = f["taxa_insucesso_pct"].mean()
-prazo_medio = f["prazo_medio_dias"].mean()
-custo_medio = f["custo_medio_frete"].mean()
+    pior_regiao = "—"
+    score_max = 0.0
+    insucesso_medio = 0.0
+    prazo_medio = 0.0
+    custo_medio = 0.0
+else:
+    pior_regiao = f.groupby("regiao")["score_risco"].mean().idxmax()
+    score_max = f.groupby("regiao")["score_risco"].mean().max()
+    insucesso_medio = f["taxa_insucesso_pct"].mean()
+    prazo_medio = f["prazo_medio_dias"].mean()
+    custo_medio = f["custo_medio_frete"].mean()
 
 ui.breadcrumb("Case: Promessa de Entrega por CEP · <b>Demo interativa</b>")
 
@@ -74,59 +76,98 @@ ui.hero(
     metric={
         "label": "Região de maior risco",
         "value": pior_regiao,
-        "delta": f"score médio {score_max:.1f}",
+        "delta": f"score médio {score_max:.1f}" if len(f) else "Ajuste os filtros",
         "delta_color": "inverse",
         "help": "Combina insucesso, prazo e custo por CEP.",
     },
 )
 
+if f.empty:
+    ui.insight(
+        "Nenhum CEP com os filtros atuais. Selecione pelo menos uma região ou modalidade.",
+        icone="📍",
+    )
+    ui.footer()
+    st.stop()
+
+pior_regiao = f.groupby("regiao")["score_risco"].mean().idxmax()
+score_max = f.groupby("regiao")["score_risco"].mean().max()
+
+insucesso_medio = f["taxa_insucesso_pct"].mean()
+prazo_medio = f["prazo_medio_dias"].mean()
+custo_medio = f["custo_medio_frete"].mean()
+
 ui.kpi_grid(
     [
-        {"label": "CEPs na análise", "value": format.fmt_number(len(f))},
+        {"label": "CEPs na análise", "value": fmt.fmt_number(len(f))},
         {
             "label": "Insucesso médio",
-            "value": format.fmt_percent(insucesso_medio),
-            "severity": "danger" if insucesso_medio > 8 else "warning" if insucesso_medio > 5 else "success",
+            "value": fmt.fmt_percent(insucesso_medio),
+            "severity": "danger"
+            if insucesso_medio > 8
+            else "warning"
+            if insucesso_medio > 5
+            else "success",
         },
         {
             "label": "Prazo médio",
             "value": f"{prazo_medio:.1f} dias",
-            "severity": "danger" if prazo_medio > 5 else "warning" if prazo_medio > 3 else "success",
+            "severity": "danger"
+            if prazo_medio > 5
+            else "warning"
+            if prazo_medio > 3
+            else "success",
         },
         {
             "label": "Custo médio",
-            "value": format.fmt_currency(custo_medio),
-            "severity": "danger" if custo_medio > 60 else "warning" if custo_medio > 45 else "success",
+            "value": fmt.fmt_currency(custo_medio),
+            "severity": "danger"
+            if custo_medio > 60
+            else "warning"
+            if custo_medio > 45
+            else "success",
         },
     ]
 )
 
-st.divider()
-
 tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
 
 with tab_visao:
-    ui.section("Mapa de risco territorial", "Heatmap de score + CEPs agrupados por severidade")
-    m = fmap.base_map(center=(-15, -50), zoom=4, height=ui.map_height(brand.MAP_FULL_HEIGHT))
+    ui.section(
+        "Mapa de risco territorial", "Heatmap de score + CEPs agrupados por severidade"
+    )
+    m = fmap.base_map(
+        center=(-15, -50), zoom=4, height=ui.map_height(brand.MAP_FULL_HEIGHT)
+    )
     m = fmap.add_heatmap(m, f, value_field="score_risco", radius=18, blur=14)
     m = fmap.add_points(
         m,
         f,
         tipo="cliente",
         color_by="severidade",
-        popup_fields=["cep5", "regiao", "modalidade", "prazo_medio_dias", "taxa_insucesso_pct", "score_risco"],
-        cluster=True,
+        popup_fields=[
+            "cep5",
+            "regiao",
+            "modalidade",
+            "prazo_medio_dias",
+            "taxa_insucesso_pct",
+            "score_risco",
+        ],
+        cluster=len(f) > 40,
         tooltip_field="cep5",
     )
     fmap.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="promessa_mapa")
-    st.caption("Amostra sintética por CEP5. Heatmap indica concentração de risco; pontos agrupados mostram a severidade individual.")
+    st.caption(
+        "Amostra sintética por CEP5. Heatmap indica concentração de risco; pontos agrupados mostram a severidade individual."
+    )
 
     st.divider()
 
     ui.section("Insight")
-    st.info(
+    ui.insight(
         f"A região **{pior_regiao}** concentra o maior risco médio ({score_max:.1f}). "
-        "Praças com score alto pedem promessa mais conservadora, ponto de apoio ou troca de transportadora."
+        "Praças com score alto pedem promessa mais conservadora, ponto de apoio ou troca de transportadora.",
+        icone="🎯",
     )
 
 with tab_analise:
@@ -140,18 +181,28 @@ with tab_analise:
             color="severidade",
             size="volume_entregas",
             hover_name="cep5",
-            hover_data={"regiao": True, "modalidade": True, "prazo_medio_dias": False, "taxa_insucesso_pct": False},
+            hover_data={
+                "regiao": True,
+                "modalidade": True,
+                "prazo_medio_dias": False,
+                "taxa_insucesso_pct": False,
+            },
             color_discrete_map=brand.SEVERITY_COLORS,
+            category_orders={"severidade": ["OK", "Atenção", "Crítico"]},
             labels={
                 "prazo_medio_dias": "Prazo médio (dias)",
                 "taxa_insucesso_pct": "Taxa de insucesso (%)",
             },
             height=ui.chart_height(brand.CHART_HALF_HEIGHT),
         )
-        fig = viz.add_reference_line(fig, x=prazo_max, label="Prazo máximo filtrado", color=brand.DANGER)
-        fig = viz.add_reference_line(fig, y=insucesso_medio, label="Média de insucesso", color=brand.WARNING)
+        fig = viz.add_reference_line(
+            fig, x=prazo_max, label="Prazo máximo filtrado", color=brand.DANGER
+        )
+        fig = viz.add_reference_line(
+            fig, y=insucesso_medio, label="Média de insucesso", color=brand.WARNING
+        )
         fig.update_traces(
-            hovertemplate=format.fmt_hover(
+            hovertemplate=fmt.fmt_hover(
                 [
                     ("CEP5", "%{hovertext}"),
                     ("Região", "%{customdata[0]}"),
@@ -176,14 +227,17 @@ with tab_analise:
             custo,
             x="regiao",
             y="custo_medio_frete",
-            color="regiao",
-            color_discrete_sequence=brand.SEQ,
+            color_discrete_sequence=[brand.PRIMARY],
             labels={"custo_medio_frete": "Custo médio (R$)", "regiao": ""},
             height=ui.chart_height(brand.CHART_HALF_HEIGHT),
         )
-        fig2 = viz.add_reference_line(fig2, y=custo_medio, label="Custo médio geral", color=brand.WARNING)
+        fig2 = viz.add_reference_line(
+            fig2, y=custo_medio, label="Custo médio geral", color=brand.WARNING
+        )
         fig2.update_layout(showlegend=False)
-        fig2.update_traces(hovertemplate="<b>%{x}</b><br>Custo médio: R$ %{y:,.2f}<extra></extra>")
+        fig2.update_traces(
+            hovertemplate="<b>%{x}</b><br>Custo médio: R$ %{y:,.2f}<extra></extra>"
+        )
         ui.plot(fig2)
 
     st.divider()

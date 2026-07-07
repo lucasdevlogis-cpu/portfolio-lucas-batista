@@ -8,7 +8,6 @@ arquitetura: Fleetbase (LSOS) / OMS de fulfillment distribuído.
 import folium
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import streamlit as st
 from lib import brand, folium_maps as fmap, format as fmt, geo, tables, ui
 
@@ -135,8 +134,6 @@ ui.kpi_grid(
     ]
 )
 
-st.divider()
-
 # Tabs ------------------------------------------------------------------------
 tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
 
@@ -152,6 +149,7 @@ with tab_visao:
         dest_lon="dest_lon",
         color_by="origem_tipo",
         popup_fields=["pedido_id", "origem_escolhida", "origem_tipo", "distancia_km", "economia"],
+        layer_control=not ui.is_embed(),
     )
     # Origens
     for _, o in origens.iterrows():
@@ -175,7 +173,7 @@ with tab_analise:
             .size()
             .reset_index(name="pedidos")
         )
-        tipo_colors = {"CD": brand.PRIMARY, "Loja": brand.ACCENT, "Hub": brand.WARNING}
+        tipo_colors = {"CD": brand.PRIMARY, "Loja": brand.ACCENT, "Hub": brand.WARM_ACCENT}
         fig2 = px.bar(
             porig,
             x="origem_escolhida",
@@ -184,7 +182,10 @@ with tab_analise:
             color_discrete_map=tipo_colors,
         )
         fig2.update_layout(
-            height=ui.chart_height(brand.CHART_HALF_HEIGHT), xaxis_title="", yaxis_title="pedidos"
+            height=ui.chart_height(brand.CHART_HALF_HEIGHT),
+            xaxis_title="",
+            yaxis_title="pedidos",
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         )
         fig2.update_traces(
             hovertemplate=fmt.fmt_hover(

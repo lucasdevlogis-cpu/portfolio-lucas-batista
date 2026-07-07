@@ -42,12 +42,14 @@ export function CaseDemoLauncher({
   return (
     <>
       <Button
+        variant={hasDemo ? "executive" : "outline"}
         className={cn(
-          "h-10 flex-1 rounded-md bg-ink text-white hover:bg-ink/90",
+          "h-10 flex-1 rounded-lg",
+          !hasDemo && "cursor-not-allowed opacity-60",
           className,
         )}
         onClick={handleOpen}
-        disabled={!hasDemo}
+        aria-disabled={!hasDemo}
       >
         {icon}
         {hasDemo ? labels.caseDemoLabel : labels.caseDemoUnavailableLabel}

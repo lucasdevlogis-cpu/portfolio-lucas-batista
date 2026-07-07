@@ -23,6 +23,8 @@ def status_icon(status: str) -> str:
         "Crítico": "🔴",
         "Atenção": "🟡",
         "OK": "🟢",
+        "Apto": "🟢",
+        "Abaixo do piso": "🟡",
         "Violou SLA": "🔴",
         "Apto a prometer/rotear": "🟢",
         "Revisar antes de prometer": "🟡",

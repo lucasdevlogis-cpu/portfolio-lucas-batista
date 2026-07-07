@@ -1,7 +1,8 @@
 # Demos Logística — Streamlit Cloud
 
 Demos interativas embedadas no portfólio Lucas Batista via iframe (`?embed=true`).
-Adaptam cases de logística BR com amostras curadas, mapas Plotly e gráficos. Resultados demonstrativos.
+
+**READMEs por case:** [`docs/cases/README.md`](docs/cases/README.md) (10 cases demonstráveis).
 
 ## Pages (11)
 

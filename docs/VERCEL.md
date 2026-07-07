@@ -136,12 +136,12 @@ Sincronizado com [`docs/CANON.md`](CANON.md) §6 e [`docs/AVALIACAO.md`](AVALIAC
 
 - [x] Build `READY` (Next.js nativo, validate-cases no prebuild)
 - [x] Env `NEXT_PUBLIC_*` em Production, Preview e Development
-- [x] Homepage: Hero + `#perfil` + `#cases` + `#trajetoria` (ordem scroll = nav) — validado prod 06/07, deploy `df2f8bb`
+- [x] Homepage: Hero + `#perfil` + `#cases` + `#trajetoria` (ordem scroll = nav) — validado prod 06/07; revalidar após próximo deploy
 - [x] Nav: Perfil · Provas · Trajetória · Contato — validado prod 06/07
 - [x] Modal demo + iframe `?embed=true` — links de demo no build com env Production
 - [x] `robots.txt` e `sitemap.xml` → 200 — validado prod 06/07
-- [x] OG preview (`public/og-image.png`) — asset 200 em prod
-- [x] Lighthouse mobile ≥ 90 — baseline local **98** ([`lighthouse-2026-07-06.md`](../design/archive/lighthouse-2026-07-06.md)); prod não re-auditado
+- [x] OG preview (`public/og-image.jpg`) — asset 200 em prod
+- [x] Lighthouse mobile ≥ 90 — local **95** pós-refinamento ([`lighthouse-2026-07-07.md`](../design/archive/lighthouse-2026-07-07.md)); prod a revalidar
 - [x] Preview de PR — env Preview configurada 06/07 (herda `NEXT_PUBLIC_*`)
 - [x] CV PDF em `/lucas-batista-cv.pdf` — validado prod 06/07
 
@@ -154,7 +154,7 @@ Sincronizado com [`docs/CANON.md`](CANON.md) §6 e [`docs/AVALIACAO.md`](AVALIAC
 | Vercel Analytics | Sem métricas de visita | Baixa |
 | Speed Insights | Sem Web Vitals contínuos | Baixa |
 | Domínio custom | URL `*.vercel.app` provisória | Média |
-| Sitemap dinâmico via `NEXT_PUBLIC_SITE_URL` | URLs hardcoded em `public/` | Baixa |
+| Sitemap dinâmico via `NEXT_PUBLIC_SITE_URL` | ✅ `npm run seo:generate` | Baixa |
 
 ---
 

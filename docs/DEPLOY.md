@@ -132,7 +132,7 @@ A seção `Contato` usa **links diretos** (LinkedIn, email, GitHub, CV). Não h�
 - [ ] Link "Abrir em nova aba" no modal funciona
 - [ ] LinkedIn, email e GitHub funcionam na seção Contato
 - [ ] `robots.txt` e `sitemap.xml` acessíveis
-- [ ] `og-image.png` aparece no preview de link (LinkedIn/WhatsApp)
+- [ ] `og-image.jpg` aparece no preview de link (LinkedIn/WhatsApp)
 - [ ] email, LinkedIn, GitHub preenchidos em `data/content.ts`
 - [ ] Lighthouse ≥ 90 em mobile
 

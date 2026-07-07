@@ -7,6 +7,7 @@ geográfica, alertas e ação recomendada antes de prometer ou rotear.
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+
 from lib import brand, folium_maps, tables, ui
 
 ui.page_setup("10. Auditoria de Endereço", icon="✅")
@@ -87,22 +88,18 @@ ui.hero(
     },
 )
 
-overview_tab, analysis_tab, export_tab = st.tabs(
-    ["Visão Geral", "Análise", "Exportar"]
+ui.kpi_grid(
+    [
+        {"label": "Total auditado", "value": f"{len(aud)}"},
+        {"label": "Aptos", "value": f"{aptos}", "severity": "success"},
+        {"label": "Revisar", "value": f"{revisar}", "severity": "warning"},
+        {"label": "Bloqueados", "value": f"{bloqueados}", "severity": "danger"},
+    ]
 )
 
-with overview_tab:
-    ui.kpi_grid(
-        [
-            {"label": "Total auditado", "value": f"{len(aud)}"},
-            {"label": "Aptos", "value": f"{aptos}", "severity": "success"},
-            {"label": "Revisar", "value": f"{revisar}", "severity": "warning"},
-            {"label": "Bloqueados", "value": f"{bloqueados}", "severity": "danger"},
-        ]
-    )
+tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exportar"])
 
-    st.divider()
-
+with tab_visao:
     col_map, col_bar = st.columns([1.1, 1])
     with col_map:
         ui.section("Mapa por confiança")
@@ -134,15 +131,19 @@ with overview_tab:
                     "alertas",
                 ],
                 tooltip_field="pedido_id",
-                cluster=True,
+                cluster=len(validos) > 40,
             )
-            folium_maps.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="auditoria_mapa")
+            folium_maps.render(
+                m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="auditoria_mapa"
+            )
         fora = len(aud) - len(validos)
         if fora:
             st.caption(
                 f"{fora} endereço(s) com coordenada fora do Brasil não aparecem no mapa."
             )
-        st.caption("Marcadores agrupados por proximidade. Cores: verde=Alta, amarelo=Média, vermelho=Baixa.")
+        st.caption(
+            "Marcadores agrupados por proximidade. Cores: verde=Alta, amarelo=Média, vermelho=Baixa."
+        )
 
     with col_bar:
         ui.section("Alertas mais frequentes")
@@ -158,12 +159,16 @@ with overview_tab:
                 orientation="h",
                 color_discrete_sequence=[brand.DANGER],
             )
-            fig.update_layout(height=ui.chart_height(brand.CHART_FULL_HEIGHT), yaxis_title="", xaxis_title="ocorrências")
+            fig.update_layout(
+                height=ui.chart_height(brand.CHART_FULL_HEIGHT),
+                yaxis_title="",
+                xaxis_title="ocorrências",
+            )
             ui.plot(fig, width="stretch")
         else:
             st.success("Nenhum alerta na amostra.")
 
-with analysis_tab:
+with tab_analise:
     col_pizza, col_uf = st.columns(2)
     with col_pizza:
         ui.section("Distribuição de confiança")
@@ -185,7 +190,9 @@ with analysis_tab:
             color_discrete_map=cores,
             labels={"nivel_confianca": "Confiança", "qtd": "Endereços"},
         )
-        fig.update_layout(height=ui.chart_height(brand.CHART_HALF_HEIGHT), showlegend=False)
+        fig.update_layout(
+            height=ui.chart_height(brand.CHART_HALF_HEIGHT), showlegend=False
+        )
         ui.plot(fig, width="stretch")
 
     with col_uf:
@@ -207,7 +214,9 @@ with analysis_tab:
             labels={"score": "Score médio", "uf": "UF"},
         )
         fig.add_vline(x=80, line_dash="dash", line_color=brand.SUCCESS)
-        fig.update_layout(height=ui.chart_height(brand.CHART_HALF_HEIGHT), coloraxis_showscale=False)
+        fig.update_layout(
+            height=ui.chart_height(brand.CHART_HALF_HEIGHT), coloraxis_showscale=False
+        )
         ui.plot(fig, width="stretch")
 
     ui.section("Top 10 endereços com maior risco")
@@ -229,7 +238,7 @@ with analysis_tab:
         },
     )
 
-with export_tab:
+with tab_exportar:
     ui.section("Auditoria por endereço")
     tabela = aud[
         [

@@ -109,10 +109,6 @@ def main() -> None:
         new_y="NEXT",
     )
 
-    section_title(pdf, "Posições-alvo")
-    for role in data["papeisAlvo"]:
-        bullet(pdf, role)
-
     section_title(pdf, "Sinais de senioridade")
     bullet(pdf, data["senioridade"])
     bullet(pdf, data["modeloAtuacao"])

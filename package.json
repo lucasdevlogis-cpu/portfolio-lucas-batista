@@ -8,10 +8,12 @@
   "scripts": {
     "dev": "next dev",
     "validate": "tsx scripts/validate-cases.ts",
-    "prebuild": "tsx scripts/validate-cases.ts",
+    "prebuild": "npm run validate && npm run typecheck",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "seo:generate": "tsx scripts/generate-seo-files.ts",
     "cv:export": "tsx scripts/export-cv-content.ts",
     "cv:generate": "npm run cv:export && python scripts/generate-cv-pdf.py"
   },

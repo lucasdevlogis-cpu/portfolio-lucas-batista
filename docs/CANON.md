@@ -80,11 +80,11 @@ Validação: `npm run validate` (10 demos + slug ↔ `demos-logistica/pages/`)
 |------|:-------:|:---------:|:---------:|-------|
 | Layout Executive Proof | ✅ | ✅ | — | QA checklist 06/07 |
 | Demos Streamlit (11 pages) | ✅ | ✅ | — | smoke 13/13 |
-| Deploy Vercel | ✅ | ✅ | — | deploy `df2f8bb` |
+| Deploy Vercel | ✅ | ✅ | — | ver `npx vercel inspect` — não usar SHA fixo |
 | OG image | ✅ | ✅ | — | prod 200 |
 | CV PDF | ✅ | ✅ | CV oficial | `npm run cv:generate` |
-| Lighthouse | ✅ local | 🟡 prod | — | desktop 100 / mobile 98 local |
-| READMEs por case (Fase 3) | — | — | 🟡 | ~40% |
+| Lighthouse | ✅ local | ✅ prod | — | local 100/98; prod 89/97 (mobile meta OK) |
+| READMEs por case (Fase 3) | — | — | ✅ | `demos-logistica/docs/cases/` |
 | Domínio custom / Analytics | — | — | 🟡 | Backlog |
 
 **Regra:** "Lançado" = código em produção. "QA manual" = checklist em [`docs/VERCEL.md`](VERCEL.md) (concluído 06/07).

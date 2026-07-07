@@ -5,14 +5,23 @@ Streamlit pela velocidade de demo analítica, mas a camada visual deve esconder 
 "chrome" padrão e reforçar leitura editorial, contraste e proporção.
 """
 
+# Base editorial (papel envelhecido claro).
 EDITORIAL = "#f6f1e8"
-EDITORIAL_2 = "#efe7da"
+EDITORIAL_2 = "#efe7d8"
+
+# Tinta escura e navy da landing.
 INK = "#111827"
 PRIMARY = "#17324d"
-SURFACE_DARK = "#102033"
-TEXT_ON_DARK_MUTED = "#d1d5db"
-ACCENT = "#0f766e"
-WARM_ACCENT = "#9a6a2f"
+SURFACE_DARK = "#0b1220"
+TEXT_ON_DARK_MUTED = "#c8d2dc"
+
+# Cores de destaque vibrantes (landing redesign).
+ACCENT = "#14b8a6"
+ACCENT_DARK = "#0f766e"
+ACCENT_LIGHT = "#5eead4"
+WARM_ACCENT = "#d4a853"
+WARM_ACCENT_DARK = "#9a6a2f"
+
 BACKGROUND = EDITORIAL
 FOREGROUND = INK
 MUTED = "#4b5563"
@@ -24,12 +33,12 @@ WARNING = "#f59e0b"
 DANGER = "#dc2626"
 SUCCESS = "#16a34a"
 
-# Sequência categórica premium para gráficos (ink/primary/accent na frente).
+# Sequência categórica premium para gráficos (evitar arco-íris em categorias nominais).
 SEQ = [
-    INK,
     PRIMARY,
     ACCENT,
     WARM_ACCENT,
+    INK,
     WARNING,
     "#475569",
     DANGER,
@@ -55,6 +64,9 @@ STATUS_COLORS = {
     "Ocorrencia aberta": DANGER,
     "Entregue": SUCCESS,
     "Em transito": ACCENT,
+    "Apto": SUCCESS,
+    "Abaixo do piso": WARNING,
+    "Abaixo do piso ANTT": DANGER,
 }
 
 # Cores semânticas para níveis de confiança / severidade.
@@ -66,6 +78,7 @@ SEVERITY_COLORS = {
     "Crítico": DANGER,
     "Atenção": WARNING,
     "OK": SUCCESS,
+    "Alto": SUCCESS,
 }
 
 # Alturas padronizadas de gráficos e mapas.
