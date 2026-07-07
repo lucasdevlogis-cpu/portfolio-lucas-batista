@@ -15,9 +15,9 @@
 | **Layout oficial** | Executive Proof System — dossiê profissional para headhunters |
 | **Spec visual** | [`design/design.md`](../design/design.md) + tokens em `app/globals.css` |
 | **URL** | <https://portfolio-lucas-batista-murex.vercel.app> |
-| **Deploy Vercel** | Último deploy: 07/07/2026 — redesign premium desktop |
-| **Lighthouse prod (desktop)** | a revalidar após deploy |
-| **Lighthouse local (desktop)** | **100 / 96 / 100 / 100** |
+| **Deploy Vercel** | `dpl_AeSkethQEEq4UasUAQgVXhEXNUHV` — 07/07/2026 18:16 UTC-3 |
+| **Lighthouse prod (desktop)** | **100 / 96 / 100 / 100** |
+| **Lighthouse prod (mobile)** | **96 / 96 / 100 / 100** |
 
 ### Homepage (ordem DOM = nav)
 
@@ -41,11 +41,11 @@
 
 | Área | Lançado | QA manual |
 |------|:-------:|:---------:|
-| Layout Executive Proof (redesign premium) | ✅ | ✅ local |
+| Layout Executive Proof (redesign premium) | ✅ | ✅ prod |
 | Demos Streamlit | ✅ | ✅ 13/13 smoke tests |
-| Deploy Vercel | ✅ | ✅ a revalidar |
-| OG + CV PDF | ✅ | ✅ |
-| Lighthouse | ✅ local | ✅ prod a revalidar |
+| Deploy Vercel | ✅ | ✅ prod `dpl_AeSkethQEEq4UasUAQgVXhEXNUHV` |
+| OG + CV PDF | ✅ | ✅ prod |
+| Lighthouse | ✅ local | ✅ prod desktop 100/96/100/100, mobile 96/96/100/100 |
 
 ---
 
@@ -59,6 +59,7 @@
 | 4 | Refinamento UX/UI e build | Local | ✅ desktop **100/96/100/100** — 07/07 |
 | 5 | Arquivar componentes legados | Repo | ✅ movidos para `components/archive/legacy/` |
 | 6 | Mapeamento e docs | Repo | ✅ `docs/MAPEAMENTO.md` + docs atualizados |
+| 7 | Deploy + E2E prod | Vercel | ✅ deploy `dpl_AeSkethQEEq4UasUAQgVXhEXNUHV` |
 
 Checklist QA manual: [`docs/VERCEL.md`](VERCEL.md) — **concluído** 07/07.
 
@@ -71,7 +72,7 @@ Scores pós-refinamento premium (2026-07-07):
 | | Desktop | Mobile |
 |---|--------:|-------:|
 | **Local** (`next start`) | 100 / 96 / 100 / 100 | — |
-| **Prod** (Vercel URL) | a revalidar | — |
+| **Prod** (Vercel URL) | **100 / 96 / 100 / 100** | **96 / 96 / 100 / 100** |
 
 Colunas: Performance / Acessibilidade / Best Practices / SEO. Meta lançamento: desktop Performance ≥ 90 ✅.
 

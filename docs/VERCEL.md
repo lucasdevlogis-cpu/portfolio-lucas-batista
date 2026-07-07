@@ -74,7 +74,7 @@ npx vercel env pull .env.local
 
 ## Produção
 
-Verificar commit e estado via CLI ou MCP — **não** confiar em SHA fixo neste doc.
+Deploy atual: `dpl_AeSkethQEEq4UasUAQgVXhEXNUHV` (07/07/2026 18:16 UTC-3).
 
 ```bash
 npx vercel inspect portfolio-lucas-batista-murex.vercel.app
@@ -136,14 +136,14 @@ Sincronizado com [`docs/CANON.md`](CANON.md) §6 e [`docs/AVALIACAO.md`](AVALIAC
 
 - [x] Build `READY` (Next.js nativo, validate-cases no prebuild)
 - [x] Env `NEXT_PUBLIC_*` em Production, Preview e Development
-- [ ] Homepage: Hero + Evidence + `#perfil` + `#cases` + `#trajetoria` + `#contato` (ordem scroll = nav) — revalidar após deploy
-- [ ] Nav: Perfil · Provas · Trajetória · Contato — revalidar após deploy
-- [ ] Modal demo + iframe `?embed=true` — links de demo no build com env Production
-- [ ] `robots.txt` e `sitemap.xml` → 200
-- [ ] OG preview (`public/og-image.jpg`) — asset 200 em prod
-- [ ] Lighthouse mobile ≥ 90 — local **100/96/100/100** desktop; prod a revalidar
-- [ ] Preview de PR — env Preview configurada 06/07 (herda `NEXT_PUBLIC_*`)
-- [ ] CV PDF em `/lucas-batista-cv.pdf`
+- [x] Homepage: Hero + Evidence + `#perfil` + `#cases` + `#trajetoria` + `#contato` (ordem scroll = nav) — validado E2E 07/07
+- [x] Nav: Perfil · Provas · Trajetória · Contato — validado E2E 07/07
+- [x] Modal demo + iframe `?embed=true` — validado E2E 07/07
+- [x] `robots.txt` e `sitemap.xml` → 200 — validado E2E 07/07
+- [x] OG preview (`public/og-image.jpg`) — asset 200 em prod — validado E2E 07/07
+- [x] Lighthouse mobile ≥ 90 — prod **96/96/100/100** 07/07
+- [x] Preview de PR — env Preview configurada 06/07 (herda `NEXT_PUBLIC_*`)
+- [x] CV PDF em `/lucas-batista-cv.pdf` — validado E2E 07/07
 
 ---
 
