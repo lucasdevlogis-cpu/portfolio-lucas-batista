@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-import { CaseCard } from "@/components/CaseCard";
+import { CaseCard } from "@/components/archive/legacy/CaseCard";
 import { CASE_CATEGORIAS, CASES_BIBLIOTECA, CONTENT } from "@/data/content";
 import { cn } from "@/lib/utils";
 

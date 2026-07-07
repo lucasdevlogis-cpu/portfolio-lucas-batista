@@ -15,16 +15,17 @@
 | **Layout oficial** | Executive Proof System — dossiê profissional para headhunters |
 | **Spec visual** | [`design/design.md`](../design/design.md) + tokens em `app/globals.css` |
 | **URL** | <https://portfolio-lucas-batista-murex.vercel.app> |
-| **Deploy Vercel** | Último deploy: 07/07/2026 às ~19:00 UTC-3 |
-| **Lighthouse prod (desktop)** | **100 / 96 / 100 / 100** |
+| **Deploy Vercel** | Último deploy: 07/07/2026 — redesign premium desktop |
+| **Lighthouse prod (desktop)** | a revalidar após deploy |
+| **Lighthouse local (desktop)** | **100 / 96 / 100 / 100** |
 
 ### Homepage (ordem DOM = nav)
 
-`Header` → `Hero` → `ProfileSection` → `Cases` → `TrajectorySection` → `Contato` → `Footer`
+`Header` → `ExecutiveHero` → `EvidenceStrip` → `ProfileBrief` → `SignatureCases` → `TrajectoryBoard` → `ContactPanel` → `Footer`
 
 ### Componentes ativos
 
-`Header`, `Hero`, `ProfileSection`, `SectionHeader`, `EditorialDarkPanel`, `Cases`, `CaseCard`, `CaseLibraryInteractive`, `CaseDemoLauncher`, `DemoModal`, `TrajectorySection`, `Contato`, `Footer`, `HomePage`, `MobileNav`, `LucideIconByName`, `AnimatedSection`
+`Header`, `ExecutiveHero`, `EvidenceStrip`, `ProfileBrief`, `SignatureCases`, `CaseLibraryDesktop`, `CaseDemoLauncher`, `DemoModal`, `TrajectoryBoard`, `ContactPanel`, `Footer`, `HomePage`, `MobileNav`, `LucideIconByName`, `FadeIn`, `Stagger`, `GlassCard`, `PremiumCard`, `MetricPill`, `EditorialBadge`, `LogisticsIntelligenceCockpit`, `MotionProvider`
 
 ### Arquivado (não montar)
 
@@ -40,11 +41,11 @@
 
 | Área | Lançado | QA manual |
 |------|:-------:|:---------:|
-| Layout Executive Proof | ✅ | ✅ |
+| Layout Executive Proof (redesign premium) | ✅ | ✅ local |
 | Demos Streamlit | ✅ | ✅ 13/13 smoke tests |
-| Deploy Vercel | ✅ | ✅ |
+| Deploy Vercel | ✅ | ✅ a revalidar |
 | OG + CV PDF | ✅ | ✅ |
-| Lighthouse | ✅ | ✅ prod desktop 100/96/100/100 |
+| Lighthouse | ✅ local | ✅ prod a revalidar |
 
 ---
 
@@ -56,6 +57,8 @@
 | 2 | READMEs por case no repo demos | Fase 3 | ✅ `demos-logistica/docs/cases/` |
 | 3 | Lighthouse em produção | Vercel | ✅ desktop **100/96/100/100** — 07/07 |
 | 4 | Refinamento UX/UI e build | Local | ✅ desktop **100/96/100/100** — 07/07 |
+| 5 | Arquivar componentes legados | Repo | ✅ movidos para `components/archive/legacy/` |
+| 6 | Mapeamento e docs | Repo | ✅ `docs/MAPEAMENTO.md` + docs atualizados |
 
 Checklist QA manual: [`docs/VERCEL.md`](VERCEL.md) — **concluído** 07/07.
 
@@ -68,7 +71,7 @@ Scores pós-refinamento premium (2026-07-07):
 | | Desktop | Mobile |
 |---|--------:|-------:|
 | **Local** (`next start`) | 100 / 96 / 100 / 100 | — |
-| **Prod** (Vercel URL) | **100 / 96 / 100 / 100** | — |
+| **Prod** (Vercel URL) | a revalidar | — |
 
 Colunas: Performance / Acessibilidade / Best Practices / SEO. Meta lançamento: desktop Performance ≥ 90 ✅.
 
@@ -148,6 +151,7 @@ python scripts/smoke_test.py   # 13 checagens
 | Doc | Propósito |
 |-----|-----------|
 | [`docs/CANON.md`](CANON.md) | **Entrada única** — SSOT docs |
+| [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | Estado completo do repositório |
 | `docs/AVALIACAO.md` | Este arquivo |
 | `design/design.md` | Spec visual ativa |
 | `design/tokens.md` | Tokens CSS resumidos |

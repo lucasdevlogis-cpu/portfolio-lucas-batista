@@ -2,10 +2,10 @@
 
 import { motion } from "framer-motion";
 
-import { CaseCard } from "@/components/CaseCard";
-import { CaseLibraryInteractive } from "@/components/CaseLibraryInteractive";
+import { CaseCard } from "@/components/archive/legacy/CaseCard";
+import { CaseLibraryInteractive } from "@/components/archive/legacy/CaseLibraryInteractive";
 import { LucideIconByName } from "@/components/LucideIconByName";
-import { SectionHeader } from "@/components/SectionHeader";
+import { SectionHeader } from "@/components/archive/legacy/SectionHeader";
 import {
   CASES_DESTAQUE,
   CASES_ROADMAP,

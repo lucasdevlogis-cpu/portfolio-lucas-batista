@@ -19,16 +19,17 @@ Dossiê profissional **headhunter-first**: em até 60 segundos, quem avalia fit 
 | Ordem | Seção | ID | Componente | Função |
 |------:|-------|-----|------------|--------|
 | 1 | Header | — | `Header` | Nav + CTA contato |
-| 2 | Hero executivo | — | `Hero` | Nome, posicionamento, provas rápidas |
-| 3 | Perfil em 60s | `perfil` | `ProfileSection` | Fit, senioridade, sinais |
-| 4 | Provas técnicas | `cases` | `Cases` | 3 âncora + biblioteca + roadmap |
-| 5 | Trajetória e stack | `trajetoria` | `TrajectorySection` | Experiência, stack, domínios |
-| 6 | Contato | `contato` | `Contato` | LinkedIn, email, GitHub, CV PDF |
-| 7 | Footer | — | `Footer` | Links, declaração, topo |
+| 2 | Hero executivo | — | `ExecutiveHero` | Nome, posicionamento, CTAs, cockpit visual |
+| 3 | Provas rápidas | — | `EvidenceStrip` | 3 evidências de impacto |
+| 4 | Perfil em 60s | `perfil` | `ProfileBrief` | Fit, senioridade, sinais |
+| 5 | Provas técnicas | `cases` | `SignatureCases` + `CaseLibraryDesktop` | 3 âncora + biblioteca + roadmap |
+| 6 | Trajetória e stack | `trajetoria` | `TrajectoryBoard` | Experiência, stack, domínios |
+| 7 | Contato | `contato` | `ContactPanel` | LinkedIn, email, GitHub, CV PDF |
+| 8 | Footer | — | `Footer` | Links, declaração, topo |
 
 **Mount tree (`HomePage.tsx`):**
 
-`Header` → `Hero` → `ProfileSection` → `Cases` → `TrajectorySection` → `Contato` → `Footer`
+`Header` → `ExecutiveHero` → `EvidenceStrip` → `ProfileBrief` → `SignatureCases` → `TrajectoryBoard` → `ContactPanel` → `Footer`
 
 **Nav (`data/content.ts`):** Perfil · Provas · Trajetória · Contato
 
@@ -44,6 +45,7 @@ Spec visual detalhada: [`design/design.md`](../design/design.md) §2.
 | Copy shelved (comercial) | [`data/archive/content-consultoria.ts`](../data/archive/content-consultoria.ts) | Remontar sem aprovação |
 | Spec visual + IA | [`design/design.md`](../design/design.md) | Figma |
 | Tokens landing | [`app/globals.css`](../app/globals.css) + [`design/tokens.md`](../design/tokens.md) | Hex inline |
+| Mapeamento do repo | [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | — |
 | Tokens demos Streamlit | [`demos-logistica/lib/brand.py`](../demos-logistica/lib/brand.py) | — |
 | Padrões viz demos | [`.agents/skills/portfolio-demos-viz/SKILL.md`](../.agents/skills/portfolio-demos-viz/SKILL.md) | Specs obsoletas em OPORTUNIDADES |
 | Estado do projeto | [`docs/AVALIACAO.md`](AVALIACAO.md) | Claims "100%" sem QA |
@@ -78,12 +80,12 @@ Validação: `npm run validate` (10 demos + slug ↔ `demos-logistica/pages/`)
 
 | Área | Lançado | QA manual | Polimento | Notas |
 |------|:-------:|:---------:|:---------:|-------|
-| Layout Executive Proof | ✅ | ✅ | — | QA checklist 06/07 |
+| Layout Executive Proof | ✅ | ✅ | — | QA checklist 07/07 |
 | Demos Streamlit (11 pages) | ✅ | ✅ | — | smoke 13/13 |
 | Deploy Vercel | ✅ | ✅ | — | ver `npx vercel inspect` — não usar SHA fixo |
 | OG image | ✅ | ✅ | — | prod 200 |
 | CV PDF | ✅ | ✅ | CV oficial | `npm run cv:generate` |
-| Lighthouse | ✅ local | ✅ prod | — | local 100/98; prod 89/97 (mobile meta OK) |
+| Lighthouse | ✅ local | ✅ prod | — | local 100/96/100/100; prod a revalidar |
 | READMEs por case (Fase 3) | — | — | ✅ | `demos-logistica/docs/cases/` |
 | Domínio custom / Analytics | — | — | 🟡 | Backlog |
 
@@ -118,6 +120,7 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 | Doc | Papel |
 |-----|-------|
 | **`docs/CANON.md`** | Este arquivo — entrada única |
+| [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | Estado completo do repositório |
 | [`docs/AVALIACAO.md`](AVALIACAO.md) | Snapshot de saúde, fases, histórico |
 | [`docs/DEPLOY.md`](DEPLOY.md) | Deploy Vercel + sync Streamlit |
 | [`docs/VERCEL.md`](VERCEL.md) | Projeto Vercel, env, MCP, checklist QA |

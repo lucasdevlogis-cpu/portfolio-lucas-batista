@@ -11,7 +11,7 @@ import {
   Zap,
 } from "lucide-react";
 
-import { SectionHeader } from "@/components/SectionHeader";
+import { SectionHeader } from "@/components/archive/legacy/SectionHeader";
 import { CONTENT } from "@/data/content";
 
 const ICONS = [BarChart3, Star, MessageSquare, Zap];

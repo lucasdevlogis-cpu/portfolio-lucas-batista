@@ -43,6 +43,7 @@ export type CaseCategoria =
 
 export interface Pessoal {
   nome: string;
+  nomeCurto: string;
   titulo: string;
   headline: string;
   subheadline: string;
@@ -86,6 +87,10 @@ export interface SecaoCopy {
   title: string;
   subtitle: string;
   eyebrow?: string;
+  sugestaoTitulo?: string;
+  sugestao?: string;
+  avaliacaoTitulo?: string;
+  avaliacaoItens?: string[];
 }
 
 export interface HeroProva {
@@ -120,11 +125,19 @@ export interface RecruiterBriefItem {
   descricao: string;
 }
 
+export interface RecruiterBriefPergunta {
+  pergunta: string;
+  resposta: string;
+}
+
 export interface RecruiterBriefConteudo {
   eyebrow: string;
   titulo: string;
   resumo: string;
   itens: RecruiterBriefItem[];
+  perguntasTitulo: string;
+  perguntasResumo: string;
+  perguntas: RecruiterBriefPergunta[];
 }
 
 export interface ExperienceSignal {
@@ -285,6 +298,7 @@ export const CASE_DEMO_SLUGS: Record<string, string> = {
 export const CONTENT: Content = {
   pessoal: {
     nome: "Lucas Farias Batista",
+    nomeCurto: "Lucas Batista",
     titulo: "Analista de Transportes Sênior | Operações, Dados e IA Aplicada",
     headline:
       "Operações logísticas com dados, produto interno, IA aplicada e impacto mensurável",
@@ -379,6 +393,26 @@ export const CONTENT: Content = {
         titulo: "Stack pragmática",
         descricao:
           "Python, SQL, Power BI, Excel avançado, Power Automate, Streamlit, Next.js, TypeScript e IA aplicada.",
+      },
+    ],
+    perguntasTitulo: "Perguntas que este perfil responde",
+    perguntasResumo:
+      "Leitura rápida para transformar o portfólio em triagem objetiva, sem depender de interpretação genérica de currículo.",
+    perguntas: [
+      {
+        pergunta: "Onde o perfil gera mais valor?",
+        resposta:
+          "Em ambientes onde operação, processo, dados e tecnologia precisam virar decisão executiva sem perder pragmatismo.",
+      },
+      {
+        pergunta: "Como avaliar profundidade técnica?",
+        resposta:
+          "Pelos cases navegáveis: cada prova mostra pergunta de negócio, métrica, decisão apoiada e limitação declarada.",
+      },
+      {
+        pergunta: "Que tipo de conversa faz sentido?",
+        resposta:
+          "Triagem para posições em operações, transportes, inteligência logística, analytics operacional e produto interno.",
       },
     ],
   },
@@ -616,6 +650,15 @@ export const CONTENT: Content = {
       title: "Prova em preparação",
       subtitle:
         "Análise ainda sem demo publicada. Mantida como sinal de continuidade do portfólio.",
+      sugestaoTitulo: "Próxima evidência sugerida",
+      sugestao:
+        "Transformar o roadmap de KPIs de CD em uma leitura de causa operacional: ocupação, picking, expedição, backlog e efeito no transporte.",
+      avaliacaoTitulo: "Como avaliar quando publicar",
+      avaliacaoItens: [
+        "Se a demo conecta CD e transporte em uma mesma linha de decisão.",
+        "Se a métrica principal evita painel decorativo e aponta gargalo acionável.",
+        "Se a limitação deixa claro quais integrações WMS/TMS seriam necessárias em produção.",
+      ],
     },
     caseDemoLabel: "Abrir demo e leitura",
     caseDemoUnavailableLabel: "Demo em preparação",

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 
+import { MotionProvider } from "@/components/providers/MotionProvider";
 import { CONTENT } from "@/data/content";
 
 import "./globals.css";
@@ -9,7 +10,14 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
-  weight: ["700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+  weight: ["600", "700", "800", "900"],
 });
 
 const siteUrl =
@@ -41,7 +49,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#102033",
+  themeColor: "#07111f",
   width: "device-width",
   initialScale: 1,
 };
@@ -68,7 +76,10 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="pt-BR" className={`${inter.variable} h-full antialiased`}>
+    <html
+      lang="pt-BR"
+      className={`${inter.variable} ${playfair.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col font-sans">
         <script
           type="application/ld+json"
@@ -80,7 +91,9 @@ export default function RootLayout({
         >
           Pular para o conteúdo
         </a>
-        <main id="conteudo">{children}</main>
+        <MotionProvider>
+          <main id="conteudo">{children}</main>
+        </MotionProvider>
       </body>
     </html>
   );

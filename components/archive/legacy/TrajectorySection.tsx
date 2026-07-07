@@ -14,8 +14,8 @@ import {
   Zap,
 } from "lucide-react";
 
-import { EditorialDarkPanel } from "@/components/EditorialDarkPanel";
-import { SectionHeader } from "@/components/SectionHeader";
+import { EditorialDarkPanel } from "@/components/archive/legacy/EditorialDarkPanel";
+import { SectionHeader } from "@/components/archive/legacy/SectionHeader";
 import { CONTENT } from "@/data/content";
 
 const trajectoryIcons = [Target, Zap, LineChart];

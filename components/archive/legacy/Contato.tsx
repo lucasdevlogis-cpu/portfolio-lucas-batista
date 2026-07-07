@@ -10,8 +10,8 @@ import {
   Mail,
 } from "lucide-react";
 
-import { EditorialDarkPanel } from "@/components/EditorialDarkPanel";
-import { SectionHeader } from "@/components/SectionHeader";
+import { EditorialDarkPanel } from "@/components/archive/legacy/EditorialDarkPanel";
+import { SectionHeader } from "@/components/archive/legacy/SectionHeader";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { CONTENT } from "@/data/content";
 import { cn } from "@/lib/utils";
