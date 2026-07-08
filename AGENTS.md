@@ -165,6 +165,8 @@ A nav exibe: **Perfil · Provas · Trajetória · Contato**.
 | Estado do projeto | `docs/AVALIACAO.md` | Claims "100%" sem QA |
 | Deploy / Vercel | `docs/DEPLOY.md`, `docs/VERCEL.md` | SHAs hardcoded |
 | CV PDF | Gerado de `content.ts` via `npm run cv:generate` | Copy manual no Python |
+| Checklist de refatoração | [`docs/P0_P1_P2_CHECKLIST.md`](docs/P0_P1_P2_CHECKLIST.md) | — |
+| Configuração MCPs | [`.cursor/MCP_SETUP.md`](.cursor/MCP_SETUP.md) | — |
 
 **Regra de ouro:** todo texto, link, case, CTA, métrica e rótulo da landing vêm de `data/content.ts`. Componentes não devem hardcodar narrativa de carreira, rótulos de CTA ou textos comerciais.
 
@@ -412,6 +414,7 @@ Fontes TTF candidatas: `scripts/assets/DejaVuSans.ttf`, Arial no Windows, DejaVu
 |-----|--------|
 | `docs/CANON.md` | Porta de entrada única — leia primeiro |
 | `docs/AVALIACAO.md` | Snapshot de saúde, fases, bloqueadores, histórico |
+| `docs/P0_P1_P2_CHECKLIST.md` | Plano de refatoração progressiva |
 | `docs/DEPLOY.md` | Guia completo de deploy Vercel + Streamlit |
 | `docs/VERCEL.md` | Operação, env vars, MCP e checklist QA na Vercel |
 | `docs/OPORTUNIDADES_DEMOS.md` | Backlog de demos |
@@ -419,6 +422,12 @@ Fontes TTF candidatas: `scripts/assets/DejaVuSans.ttf`, Arial no Windows, DejaVu
 | `design/tokens.md` | Resumo de tokens CSS/Streamlit |
 | `.cursorrules` | Regras do Cursor (auto-load) |
 | `.codex/AGENTS.md` | Guia específico para Codex |
+| `.cursor/MCP_SETUP.md` | Configuração dos MCPs do Cursor |
+| `.agents/skills/design-system.md` | Sistema visual atualizado |
+| `.agents/skills/component-patterns.md` | Padrões de componentes atualizados |
+| `.agents/skills/ux-writing.md` | Guia de copy atualizado |
+| `.agents/skills/a11y.md` | Acessibilidade atualizada |
+| `.agents/skills/mobile-first.md` | Mobile-first atualizado |
 | `.agents/skills/portfolio-demos-viz/SKILL.md` | Padrões visuais das demos Streamlit |
 
 ---

@@ -153,12 +153,24 @@ with tab_visao:
             "taxa_insucesso_pct",
             "score_risco",
         ],
-        cluster=len(f) > 40,
+        cluster=len(f) > 60,
         tooltip_field="cep5",
+    )
+    m = fmap.add_legend(
+        m,
+        "Severidade",
+        [
+            {"color": brand.SEVERITY_COLORS["Crítico"], "label": "Crítico (score ≥ 45)"},
+            {"color": brand.SEVERITY_COLORS["Atenção"], "label": "Atenção (score ≥ 32)"},
+            {"color": brand.SEVERITY_COLORS["OK"], "label": "OK (score < 32)"},
+        ],
+        position="bottomright",
     )
     fmap.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="promessa_mapa")
     st.caption(
-        "Amostra sintética por CEP5. Heatmap indica concentração de risco; pontos agrupados mostram a severidade individual."
+        "Amostra sintética por CEP5. "
+        "Score de risco = insucesso (%) × 0,6 + prazo (dias) × 2 + custo (R$) / 10. "
+        "Heatmap indica concentração de risco; pontos mostram severidade individual."
     )
 
     st.divider()

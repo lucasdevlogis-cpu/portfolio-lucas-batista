@@ -1,12 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, Download, ExternalLink, FileText, Link, Mail } from "lucide-react";
+import { CheckCircle2, Code2, Download, ExternalLink, FileText, HelpCircle, Link, Mail, MapPin } from "lucide-react";
 
 import { SectionShell } from "@/components/layout/SectionShell";
 import { PremiumCard } from "@/components/ui/PremiumCard";
 import { buttonVariants } from "@/components/ui/button";
 import { CONTENT } from "@/data/content";
+import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 export function ContactPanel() {
@@ -20,7 +21,7 @@ export function ContactPanel() {
       title={contactLinks.titulo}
       lead={contactLinks.descricao}
       className="relative overflow-hidden bg-surface-dark"
-      innerClassName="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center"
+      innerClassName="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start"
       headerClassName="mb-0"
     >
       <div
@@ -36,9 +37,41 @@ export function ContactPanel() {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="relative"
       >
-        <p className="max-w-xl text-base leading-relaxed text-on-dark-muted lg:text-lg">
-          {contactLinks.nota}
-        </p>
+        <div className="space-y-6">
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-on-dark-accent">
+              Quando me chamar
+            </p>
+            <ul className="mt-4 grid gap-3">
+              {contactLinks.manifesto.map((item) => (
+                <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-on-dark-muted">
+                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-on-dark-accent" aria-hidden />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex items-center gap-2 text-sm text-on-dark-muted">
+            <MapPin className="size-4 text-on-dark-accent" aria-hidden />
+            São Paulo/SP · resposta em até 24h (dias úteis)
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+            <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-accent">
+              <HelpCircle className="size-3.5" aria-hidden />
+              Triagem rápida
+            </p>
+            <div className="mt-3 grid gap-3">
+              {contactLinks.faq.map((item) => (
+                <div key={item.pergunta}>
+                  <p className="text-sm font-bold text-white">{item.pergunta}</p>
+                  <p className="text-xs leading-relaxed text-on-dark-muted">{item.resposta}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </motion.div>
 
       <motion.div
@@ -53,6 +86,7 @@ export function ContactPanel() {
               href={pessoal.linkedin}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => analytics.linkedinClick("contato")}
               className={cn(
                 buttonVariants({ variant: "default" }),
                 "group h-13 justify-between rounded-lg bg-white px-5 text-ink hover:bg-white/90",
@@ -66,6 +100,7 @@ export function ContactPanel() {
             </a>
             <a
               href={`mailto:${pessoal.email}`}
+              onClick={() => analytics.contactClick("email")}
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 "h-13 justify-start rounded-lg border-white/15 bg-white/[0.04] px-5 text-white transition-all hover:bg-white/10 hover:text-white",
@@ -78,6 +113,7 @@ export function ContactPanel() {
               href={pessoal.github}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => analytics.githubClick("contato")}
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 "h-13 justify-between rounded-lg border-white/15 bg-white/[0.04] px-5 text-white transition-all hover:bg-white/10 hover:text-white",
@@ -93,6 +129,7 @@ export function ContactPanel() {
               <a
                 href={contactLinks.cvUrl}
                 download
+                onClick={() => analytics.cvDownload()}
                 className={cn(
                   buttonVariants({ variant: "outline" }),
                   "h-13 justify-between rounded-lg border-white/15 bg-white/[0.04] px-5 text-white transition-all hover:bg-white/10 hover:text-white",

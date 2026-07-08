@@ -259,7 +259,7 @@ def tsp_visits() -> None:
 
 def torre_entregas(n: int = 140) -> None:
     transportadoras = ["TransFast", "LogBrasil", "Expresso Sul", "Rota Norte"]
-    status = ["No prazo", "Em risco", "Atrasado", "Ocorrencia aberta"]
+    status = ["No prazo", "Em risco", "Atrasado", "Ocorrência aberta"]
     rows = []
     for i in range(n):
         regiao = rng.choice(list(REGIAO_CENTROIDE.keys()))

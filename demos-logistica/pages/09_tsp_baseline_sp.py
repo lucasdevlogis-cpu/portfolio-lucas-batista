@@ -49,13 +49,13 @@ ui.hero(
         metodo="nearest-neighbor + 2-opt", producao="OR-Tools sobre rede real"
     ),
     metric={
-        "label": "Distância otimizada",
+        "label": "Distância melhorada",
         "value": f"{fmt.fmt_number(d_final, decimals=1)} km",
         "delta": (
             f"-{fmt.fmt_percent(economia_pct, decimals=0)} "
             f"vs ordem de cadastro ({fmt.fmt_number(d_cadastro, decimals=1)} km)"
         ),
-        "help": "Rota fechada saindo e voltando ao CD.",
+        "help": "Rota fechada saindo e voltando ao CD. Melhoria local (2-opt), não ótimo global garantido.",
     },
 )
 
@@ -105,7 +105,7 @@ comp = pd.DataFrame(
     {
         "método": ["Ordem cadastro", "Nearest-neighbor", "NN + 2-opt"],
         "km": [round(d_cadastro, 1), round(d_nn, 1), round(d_final, 1)],
-        "status": ["Baseline", "Intermediário", "Otimizado"],
+        "status": ["Baseline", "Intermediário", "Melhorado"],
     }
 )
 
@@ -114,7 +114,7 @@ tab_visao, tab_analise, tab_exportar = st.tabs(["Visão Geral", "Análise", "Exp
 with tab_visao:
     map_detail = not ui.is_embed()
     ui.section(
-        "Rota otimizada",
+        "Rota melhorada",
         "Marcadores numerados e setas de direção."
         if map_detail
         else "Rota compacta para leitura no modal da landing.",
@@ -130,13 +130,22 @@ with tab_visao:
         [
             {
                 "coords": route_coords,
-                "label": "Sequência otimizada",
+                "label": "Sequência melhorada",
                 "color": brand.PRIMARY,
             }
         ],
         depot=(depot_row["lat"], depot_row["lon"]),
         show_numbers=map_detail,
         show_arrows=map_detail,
+    )
+    m = fm.add_legend(
+        m,
+        "Paradas",
+        [
+            {"color": brand.PRIMARY, "label": "CD / origem"},
+            {"color": brand.ACCENT, "label": "Ponto de visita"},
+        ],
+        position="bottomright",
     )
     fm.render(m, height=map_height, key="tsp_mapa")
     st.caption(
@@ -151,7 +160,7 @@ with tab_analise:
         color_map = {
             "Baseline": brand.DANGER,
             "Intermediário": brand.WARNING,
-            "Otimizado": brand.SUCCESS,
+            "Melhorado": brand.SUCCESS,
         }
         fig = px.bar(
             comp,

@@ -69,6 +69,7 @@ def page_setup(title: str, icon: str = "🚚") -> None:
     _inject_css(embed)
 
 
+@st.cache_data(show_spinner=False)
 def load_csv(filename: str, **read_kwargs) -> pd.DataFrame:
     """Lê um CSV de `data/` com mensagem amigável se o dataset não existir.
 
@@ -103,10 +104,10 @@ def _inject_css(embed: bool = False) -> None:
             padding-bottom: 1rem !important;
             max-width: 1000px;
           }
-          .demo-hero { padding: 1rem; margin-bottom: .75rem; }
+          .demo-hero { padding: 1.15rem; margin-bottom: .85rem; }
           .demo-hero-grid { grid-template-columns: 1fr; gap: .85rem; }
-          .demo-hero-title { font-size: 1.55rem; }
-          .demo-hero-question { font-size: .92rem; }
+          .demo-hero-title { font-size: 1.85rem; }
+          .demo-hero-question { font-size: .95rem; }
           .kpi-card { padding: 12px 14px; }
           .kpi-value { font-size: 1.28rem; }
         """
@@ -116,20 +117,20 @@ def _inject_css(embed: bool = False) -> None:
     st.markdown(
         f"""
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..900;1,8..60,400..900&display=swap');
           html, body, .stApp {{
             font-family: {brand.FONT_FAMILY};
             color: {brand.FOREGROUND};
             background: {brand.BACKGROUND};
           }}
           .stApp {{
-            background: linear-gradient(180deg, {brand.EDITORIAL}, {brand.EDITORIAL_2});
+            background: {brand.BACKGROUND};
           }}
           div[data-testid="stMainBlockContainer"],
           div[data-testid="stAppViewContainer"] > .main .block-container {{
-            max-width: 1180px;
-            padding-top: 1.65rem !important;
-            padding-bottom: 2.2rem !important;
+            max-width: 1280px;
+            padding-top: 2rem !important;
+            padding-bottom: 2.75rem !important;
           }}
           section[data-testid="stSidebar"] {{
             background: {brand.CARD};
@@ -144,7 +145,7 @@ def _inject_css(embed: bool = False) -> None:
             font-weight: 650;
           }}
           section[data-testid="stSidebar"] a:hover {{
-            background: rgba(20,184,166,.10);
+            background: rgba(22,169,156,.10);
             color: {brand.ACCENT_DARK};
           }}
           header[data-testid="stHeader"] {{
@@ -159,6 +160,7 @@ def _inject_css(embed: bool = False) -> None:
           .stApp h1, .stApp h2, .stApp h3 {{
             color: {brand.INK};
             letter-spacing: -0.01em;
+            font-family: {brand.HEADING_FONT_FAMILY};
           }}
           .stApp h1 {{ font-weight: 800; }}
           .stApp h2, .stApp h3 {{ font-weight: 750; }}
@@ -189,15 +191,15 @@ def _inject_css(embed: bool = False) -> None:
             font-weight: 650 !important;
           }}
           .stMultiSelect div[data-baseweb="tag"] {{
-            background: rgba(20,184,166,.14) !important;
-            border: 1px solid rgba(20,184,166,.28) !important;
+            background: rgba(22,169,156,.14) !important;
+            border: 1px solid rgba(22,169,156,.28) !important;
             color: {brand.ACCENT_DARK} !important;
           }}
           div[data-testid="stVerticalBlockBorderWrapper"] {{
             border-color: {brand.BORDER} !important;
             border-radius: 14px !important;
-            background: rgba(255, 253, 248, .72);
-            box-shadow: 0 10px 30px rgba(15, 23, 42, .045);
+            background: rgba(255, 255, 255, .72);
+            box-shadow: 0 10px 30px rgba(7, 17, 31, .045);
           }}
           div[data-testid="stMetricValue"] {{
             color: {brand.INK};
@@ -213,7 +215,7 @@ def _inject_css(embed: bool = False) -> None:
             border:1px solid {brand.BORDER};
             border-radius:14px;
             padding:14px 16px;
-            box-shadow: 0 8px 24px rgba(15,23,42,.04);
+            box-shadow: 0 8px 24px rgba(7,17,31,.04);
           }}
           .stButton > button {{
             border-radius: 10px !important;
@@ -222,29 +224,29 @@ def _inject_css(embed: bool = False) -> None:
             border: 1px solid {brand.BORDER} !important;
             background: {brand.CARD} !important;
             color: {brand.INK} !important;
-            box-shadow: 0 8px 20px rgba(15,23,42,.04);
+            box-shadow: 0 8px 20px rgba(7,17,31,.04);
             transition: all .15s ease;
           }}
           .stButton > button:hover {{
-            border-color: rgba(20,184,166,.40) !important;
-            color: {brand.ACCENT_DARK} !important;
-            background: rgba(255,253,248,.92) !important;
-            box-shadow: 0 10px 24px rgba(20,184,166,.10);
+            border-color: rgba(7,17,31,.25) !important;
+            color: {brand.INK} !important;
+            background: rgba(255,255,255,.92) !important;
+            box-shadow: 0 10px 24px rgba(7,17,31,.10);
           }}
           button[kind="primary"] {{
             border-radius: 10px !important;
             font-weight: 800 !important;
             min-height: 2.55rem;
-            border: 1px solid {brand.ACCENT_DARK} !important;
-            background: linear-gradient(135deg, {brand.ACCENT}, {brand.ACCENT_DARK}) !important;
+            border: 1px solid {brand.INK} !important;
+            background: {brand.INK} !important;
             color: white !important;
-            box-shadow: 0 10px 24px rgba(20,184,166,.22);
+            box-shadow: 0 10px 24px rgba(7,17,31,.22);
             transition: all .15s ease;
           }}
           button[kind="primary"]:hover {{
-            background: linear-gradient(135deg, {brand.ACCENT_DARK}, #0d5c52) !important;
+            background: rgba(7,17,31,.88) !important;
             color: white !important;
-            box-shadow: 0 12px 28px rgba(20,184,166,.30);
+            box-shadow: 0 12px 28px rgba(7,17,31,.30);
           }}
           .stDownloadButton > button {{
             border-radius: 10px !important;
@@ -253,7 +255,7 @@ def _inject_css(embed: bool = False) -> None:
             background: {brand.PRIMARY} !important;
             color: white !important;
             font-weight: 800 !important;
-            box-shadow: 0 10px 24px rgba(15,23,42,.14);
+            box-shadow: 0 10px 24px rgba(7,17,31,.14);
             transition: all .15s ease;
           }}
           .stDownloadButton > button:hover {{
@@ -456,7 +458,7 @@ def _inject_css(embed: bool = False) -> None:
             font-weight:850;
             color:{brand.WARM_ACCENT};
             text-transform:uppercase;
-            letter-spacing:0.12em;
+            letter-spacing:0.18em;
             margin-bottom:.55rem;
           }}
           .demo-breadcrumb b {{ color:{brand.ACCENT_DARK}; }}
@@ -505,20 +507,22 @@ def _inject_css(embed: bool = False) -> None:
             font-size:1.42rem;
             line-height:1.08;
             color:{brand.INK};
-            font-weight:850;
+            font-weight:800;
             letter-spacing:-0.01em;
             margin-top:.25rem;
+            font-family: {brand.HEADING_FONT_FAMILY};
           }}
           .demo-section {{
             margin: 1.2rem 0 .55rem 0;
           }}
           .demo-section-title {{
             color:{brand.INK};
-            font-size:1.1rem;
+            font-size:1.15rem;
             line-height:1.2;
-            font-weight:850;
+            font-weight:800;
             letter-spacing:-0.01em;
             margin:0;
+            font-family: {brand.HEADING_FONT_FAMILY};
           }}
           .demo-section-desc {{
             color:{brand.MUTED};
@@ -532,7 +536,7 @@ def _inject_css(embed: bool = False) -> None:
             border-radius:16px;
             padding:18px;
             margin-top:1rem;
-            box-shadow:0 14px 34px rgba(15,23,42,.05);
+            box-shadow:0 14px 34px rgba(7,17,31,.05);
           }}
           footer {{ visibility:hidden; height:0; }}
           div[data-testid="stDecoration"] {{ display:none; }}

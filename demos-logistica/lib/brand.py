@@ -5,29 +5,29 @@ Streamlit pela velocidade de demo analítica, mas a camada visual deve esconder 
 "chrome" padrão e reforçar leitura editorial, contraste e proporção.
 """
 
-# Base editorial (papel envelhecido claro).
-EDITORIAL = "#f6f1e8"
-EDITORIAL_2 = "#efe7d8"
+# Base editorial (papel envelhecido claro) — espelha app/globals.css.
+EDITORIAL = "#f7f4ec"
+EDITORIAL_2 = "#eee8dc"
 
 # Tinta escura e navy da landing.
-INK = "#111827"
-PRIMARY = "#17324d"
-SURFACE_DARK = "#0b1220"
-TEXT_ON_DARK_MUTED = "#c8d2dc"
+INK = "#07111f"
+PRIMARY = "#153451"
+SURFACE_DARK = "#07111f"
+TEXT_ON_DARK_MUTED = "#cbd5e1"
 
 # Cores de destaque vibrantes (landing redesign).
-ACCENT = "#14b8a6"
-ACCENT_DARK = "#0f766e"
+ACCENT = "#16a99c"
+ACCENT_DARK = "#0d746d"
 ACCENT_LIGHT = "#5eead4"
 WARM_ACCENT = "#d4a853"
 WARM_ACCENT_DARK = "#9a6a2f"
 
 BACKGROUND = EDITORIAL
 FOREGROUND = INK
-MUTED = "#4b5563"
-BORDER = "#d8cfbf"
-CARD = "#fffdf8"
-GRID = "#e7ded0"
+MUTED = "#667085"
+BORDER = "#d7cebd"
+CARD = "#ffffff"
+GRID = "#e8e1d4"
 
 WARNING = "#f59e0b"
 DANGER = "#dc2626"
@@ -38,9 +38,9 @@ SEQ = [
     PRIMARY,
     ACCENT,
     WARM_ACCENT,
+    "#64748b",
     INK,
     WARNING,
-    "#475569",
     DANGER,
     "#0e7490",
     "#7c2d12",
@@ -61,9 +61,10 @@ STATUS_COLORS = {
     "No prazo": SUCCESS,
     "Atrasado": DANGER,
     "Em risco": WARNING,
-    "Ocorrencia aberta": DANGER,
+    "Ocorrência aberta": DANGER,
     "Entregue": SUCCESS,
     "Em transito": ACCENT,
+    "Em trânsito": ACCENT,
     "Apto": SUCCESS,
     "Abaixo do piso": WARNING,
     "Abaixo do piso ANTT": DANGER,
@@ -90,6 +91,7 @@ MAP_FULL_HEIGHT = 460
 MAP_EMBED_HEIGHT = 330
 
 FONT_FAMILY = "Inter, system-ui, -apple-system, Segoe UI, sans-serif"
+HEADING_FONT_FAMILY = "'Source Serif 4', Georgia, ui-serif, serif"
 
 
 def maturidade(metodo: str = "heurístico", producao: str = "solver dedicado") -> str:

@@ -4,6 +4,7 @@ import { type ComponentType, type ReactNode, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { CONTENT, type Case } from "@/data/content";
+import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 interface DemoModalProps {
@@ -32,6 +33,7 @@ export function CaseDemoLauncher({
 
   const handleOpen = async () => {
     if (!hasDemo) return;
+    analytics.demoOpen(caseItem.titulo);
     if (!Modal) {
       const mod = await import("@/components/DemoModal");
       setModal(() => mod.DemoModal);

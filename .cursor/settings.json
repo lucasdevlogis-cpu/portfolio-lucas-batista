@@ -1,7 +1,45 @@
 {
-  "plugins": {
-    "vercel": {
-      "enabled": true
-    }
-  }
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.rulers": [80, 120],
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.wordWrap": "on",
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.suggestSelection": "first",
+  "editor.linkedEditing": true,
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/out": true,
+    "**/.vercel": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true
+  },
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "emmet.includeLanguages": {
+    "typescriptreact": "html"
+  },
+  "tailwindCSS.includeLanguages": {
+    "typescriptreact": "html"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?\"'`]"],
+    ["cx\\(([^)]*)\\)", "(\"|'|`)((?!(\"|'|`)).)*\"|'|`)"],
+    ["cn\\(([^)]*)\\)", "(\"|'|`)((?!(\"|'|`)).)*\"|'|`)"]
+  ],
+  "cursor.aiRules": true,
+  "cursor.cmdk.workspaceOnly": false,
+  "cursor.useCtrlKAsInlineAI": true,
+  "cursor.inlineAI": true
 }

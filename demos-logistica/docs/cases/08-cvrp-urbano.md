@@ -18,7 +18,7 @@ streamlit run pages/03_cvrp_urbano.py
 
 ## Abordagem
 
-Heurística nearest-neighbor com capacidade de veículo. Compara ordem de cadastro vs rota otimizada; mapa com paradas numeradas.
+Heurística nearest-neighbor com capacidade de veículo. Compara ordem de cadastro vs rota melhorada; mapa com paradas numeradas.
 
 ## Stack
 

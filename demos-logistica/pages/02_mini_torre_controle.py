@@ -10,7 +10,7 @@ from lib import format as fmt
 
 ui.page_setup("02. Mini Torre de Controle", icon="📡")
 
-CRITICOS = ["Atrasado", "Ocorrencia aberta"]
+CRITICOS = ["Atrasado", "Ocorrência aberta"]
 
 ui.sidebar_brand()
 
@@ -114,16 +114,22 @@ m = folium_maps.add_points(
         "horas_atraso",
         "ocorrencias",
     ],
-    cluster=len(f) > 40,
+    cluster=len(f) > 60,
     tooltip_field="pedido",
 )
+status_legend = [
+    {"color": brand.STATUS_COLORS[s], "label": s}
+    for s in ["Atrasado", "Ocorrência aberta", "Em risco", "No prazo", "Entregue", "Em trânsito"]
+    if s in brand.STATUS_COLORS
+]
+m = folium_maps.add_legend(m, "Status", status_legend, position="bottomright")
 folium_maps.render(
     m,
     height=ui.map_height(brand.MAP_FULL_HEIGHT),
     key="torre_mapa",
 )
 st.caption(
-    "Cores dos marcadores indicam status operacional. "
+    "Cores dos marcadores indicam status operacional (ver legenda no canto inferior direito). "
     "Coordenadas aproximadas por região; não são posições de rastreamento ao vivo."
 )
 
@@ -171,7 +177,7 @@ with col2:
     dist.columns = ["status", "qtd"]
     ordem_status = {
         "Atrasado": 0,
-        "Ocorrencia aberta": 1,
+        "Ocorrência aberta": 1,
         "Em risco": 2,
         "No prazo": 3,
         "Entregue": 4,

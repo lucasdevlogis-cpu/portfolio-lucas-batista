@@ -1,140 +1,105 @@
-# Portfolio Lucas Batista — Regras para Kimi Code no Cursor
+# Cursor Rules — Portfolio Lucas Batista
+# Regras globais para vibe coding do portfólio profissional (Executive Proof System)
 
-> **Uso:** Este arquivo está na raiz do projeto. O Cursor (Kimi Code) lê este arquivo automaticamente para entender o contexto do projeto. Não é necessário copiar nada — o Cursor já tem acesso.
->
-> **Workflow:** Leia [`docs/CANON.md`](docs/CANON.md) → edite `data/content.ts` → teste. Copy shelved: `data/archive/content-consultoria.ts`. Estado: `docs/AVALIACAO.md`.
+## Contexto do Projeto
+- Portfolio profissional de Lucas Farias Batista (Analista de Transportes Senior)
+- Stack: Next.js 16.2.9 + React 19 + TypeScript 5 + Tailwind CSS v4 + shadcn/ui + Vercel
+- Objetivo: Dossiê executivo headhunter-first — conversão profissional
+- Público-alvo: Headhunters, recrutadores, diretores de operações e dados
+- URL: https://portfolio-lucas-batista-murex.vercel.app
 
----
+## Fonte da Verdade (SSOT)
+- **Copy ativo:** `data/content.ts` — nunca hardcode textos nos componentes
+- **Spec visual:** `design/design.md` + `app/globals.css`
+- **Tokens:** `design/tokens.md` + `:root`/`@theme` em `app/globals.css`
+- **Estado do projeto:** `docs/AVALIACAO.md`
+- **Deploy:** `docs/DEPLOY.md` + `docs/VERCEL.md`
+- **Demos Streamlit:** pasta `demos-logistica/` (repo separado)
 
-## Contexto
-
-- Portfólio profissional de Lucas Batista — operações, dados e inteligência logística (logística, transporte, varejo e e-commerce no Brasil).
-- Site: landing one-page (home) com Next.js 16, Tailwind CSS v4, TypeScript e shadcn/ui.
-- Objetivo (**Executive Proof System**): dossiê profissional para headhunters — em 60 segundos entender fit, senioridade, provas técnicas, stack e contato.
-- Todos os textos do site vêm de `data/content.ts`. Nunca hardcode textos nos componentes.
-- Spec visual: `design/design.md` + tokens em `app/globals.css` (sem Figma no fluxo)
-
----
-
-## Tecnologias
-
-- Next.js 16 (App Router)
-- React 19
-- TypeScript
-- Tailwind CSS v4 (CSS-based config, não tailwind.config.ts)
-- shadcn/ui (componentes UI — usar `npx shadcn@latest add <component>`)
-- Lucide React (ícones)
-- Framer Motion: **apenas** em `components/archive/consultoria/` (shelved)
-
-### Tailwind v4 — Regras Específicas
-
-- Tailwind v4 usa configuração CSS-based em `app/globals.css`, não `tailwind.config.ts`.
-- O arquivo `globals.css` deve ter: `@import "tailwindcss"` e bloco `@theme` com as variáveis CSS.
-- Cores customizadas são definidas como variáveis CSS em `@theme` (ver tokens em `:root`).
-- Não criar `tailwind.config.ts` — isso é v3.
-
----
-
-## Design
-
-- Cores (tokens em `app/globals.css`): editorial `#f6f1e8`, card `#fffdf8`, ink `#111827`, primary `#17324d`, accent `#0f766e`, warm-accent `#9a6a2f`, surface-dark `#102033`
-- Tipografia: Inter (`next/font`, `font-heading`); body system stack (`font-sans`)
-- Layout: mobile-first, responsivo; whitespace generoso, estética editorial (não SaaS genérico)
-- Scroll suave: `scroll-behavior: smooth` no CSS global
-- Motion discreto; conteúdo essencial não pode depender de animação para ser visível
-- Cards: `rounded-xl`, borda editorial, hover sutil (`border-primary/40`)
-
----
-
-## Estrutura de Seções (ordem DOM = nav)
-
-1. **Header/Nav** — links Perfil · Provas · Trajetória · Contato + CTA
-2. **Hero** — briefing executivo 2 col
-3. **ProfileSection** — fit em 60s (`#perfil`)
-4. **Cases** — 3 âncora + biblioteca + roadmap (`#cases`)
-5. **TrajectorySection** — stack e trajetória (`#trajetoria`)
-6. **Contato** — LinkedIn, email, GitHub, CV PDF (sem formulário)
-7. **Footer**
-
-Seções comerciais shelved: `components/archive/consultoria/` + `data/archive/content-consultoria.ts`.
-
----
+## Design System (Obrigatório)
+- **Paleta ativa:**
+  - Editorial `#f7f4ec` — fundo principal
+  - Card `#ffffff` — blocos claros
+  - Ink `#07111f` — texto forte, CTA primário
+  - Primary `#153451` — azul petróleo técnico
+  - Surface dark `#07111f` — hero/contato
+  - Accent `#16a99c` — sinal técnico
+  - Warm accent `#d4a853` — eyebrows e acento editorial
+  - Muted `#667085` — texto secundário
+  - Border `#d7cebd` — divisórias
+- **Fontes:** Playfair Display (headings, `--font-heading`) + Inter (body, `--font-body`)
+- **Containers:** max-w-[1440px] centralizado. Padding responsivo: px-5 sm:px-8 lg:px-10 xl:px-12
+- **Cards:** bg-card, border border-border/primary, shadow-card, rounded-xl. Hover: hover:-translate-y-1 hover:shadow-elevated
+- **Transições:** usar tokens `--duration-fast/normal/slow` + `--ease-editorial`
+- **Dark sections:** Hero e Contato usam bg-surface-dark com texto branco
+- **Light sections:** demais usam bg-editorial com texto ink
 
 ## Regras de Código
+- Usar componentes shadcn/ui + wrappers internos (`PremiumCard`, `SectionShell`, `EditorialBadge`, etc.)
+- Server Components por padrão. `'use client'` apenas para interação real (filtros, modal, mobile nav)
+- Imagens: `next/image` com `priority={true}` para hero/OG, `loading="lazy"` para o resto
+- Links externos: sempre `target="_blank"`, `rel="noopener noreferrer"` e `aria-label` descritivo
+- Ícones: usar Lucide React exclusivamente. Padrão: size-5 (20px)
+- Nunca usar `any`. Tipar todas as props com interfaces
+- Nunca usar inline styles. Tudo via Tailwind classes ou tokens CSS
+- Variáveis de ambiente: `NEXT_PUBLIC_*` apenas para dados não sensíveis
 
-- Todos os componentes: React function components com TypeScript.
-- Use `interface` ou `type` para tipagem. Evite `any`.
-- Use Tailwind classes utilitárias. Não criar CSS custom a menos que necessário.
-- Componentes reutilizáveis: `CaseCard`, `CaseDemoLauncher`, `CaseLibraryInteractive`, `ProfileSection`, `TrajectorySection`, `DemoModal`.
-- Imagens: usar placeholders, ícones Lucide, ou componentes SVG. Nunca imagens genéricas de stock.
-- Textos: sempre em português do Brasil. Nunca hardcode — importar de `data/content.ts`.
-- SEO: meta tags, Open Graph, title, description em `layout.tsx`.
-- Performance: lazy loading, `will-change` em animações.
-- Use `cn()` do `lib/utils.ts` (gerado pelo shadcn) para concatenação condicional de classes.
-- **shadcn/ui:** para adicionar componentes, use `npx shadcn@latest add <nome>` (ex: `npx shadcn@latest add button card dialog`).
+## Regras de UX/UI
+- **Menos texto, mais impacto:** cada seção deve ser escaneável em 10 segundos
+- **Hero:** label + nome (Playfair) + headline curta + subheadline de 1-2 linhas + CTAs + provas rápidas
+- **Cards:** título curto + descrição enxuta + ação
+- **CTAs primários:** botão sólido (executive/accent). CTAs secundários: outline
+- **Navegação:** smooth scroll obrigatório (já em `globals.css`)
+- **Mobile-first:** toda implementação deve funcionar em 375px antes do desktop
+- **Microinterações:** hover nos cards/botões, focus visível, motion discreto
 
----
+## Regras de Performance
+- Imagens: formato WebP/AVIF, max 200KB cada, usar placeholder quando possível
+- Fonts: `next/font/google` com `display: 'swap'`
+- Componentes: lazy load do `DemoModal` já implementado
+- Framer Motion: `LazyMotion` + `domAnimation` já ativo; respeitar `prefers-reduced-motion`
 
-## Integração com Demos Streamlit
+## Regras de Acessibilidade
+- Contraste mínimo 4.5:1 em todo texto (usar tokens verificados)
+- Todos os botões/links devem ter min-height 44px no mobile
+- Focus visible: `focus-ring` (tokens em `globals.css`)
+- Skip link no topo da página (`layout.tsx`)
+- Semântica HTML correta: nav, main, section, article, footer
+- `prefers-reduced-motion` respeitado em todas as animações
+- Ícones: `aria-hidden` quando com texto, `aria-label` quando sozinhos
 
-- **10 cases demonstráveis** mapeados em `CASE_DEMO_SLUGS` (`data/content.ts`).
-- Cada case demonstrável tem botão "Ver demo interativa".
-- Demo embedada via iframe: `src="{demoUrl}?embed=true"`.
-- O `?embed=true` remove toolbar do Streamlit (complementado por `toolbarMode = "minimal"` no config).
-- `DemoModal` inclui link "Abrir em nova aba" (URL sem embed).
-- Estilo do iframe: `width: 100%`, `height: 700px`, `border: none`, `border-radius: 12px`.
-- A demo abre em modal ao clicar, não em nova página (exceto link explícito no header).
-- Em mobile, o iframe deve ter altura reduzida (500px).
-- Demos Streamlit: 11 pages em `demos-logistica/pages/`; UX padronizado via `lib/ui.py`.
-- Verificação: `python scripts/smoke_test.py` (meta **13 checagens**: 12 scripts + 1 borda torre)
+## Proibido
+- ❌ Cores fora do design system (sem exceção)
+- ❌ Fontes que não sejam Playfair/Inter
+- ❌ Texto sem hierarquia (paredes de texto)
+- ❌ Componentes interativos falsos (cockpit estático sem propósito)
+- ❌ Ícones misturando bibliotecas
+- ❌ Hex inline fora dos tokens CSS
+- ❌ `console.log` em produção
+- ❌ Imagens sem alt text
+- ❌ Hardcode de copy fora de `data/content.ts`
 
----
+## Workflow de Vibe Coding
+1. Sempre ler o `.cursorrules` e `docs/CANON.md` antes de qualquer mudança
+2. Antes de implementar, verificar se a mudança está no checklist de prioridade (`docs/P0_P1_P2_CHECKLIST.md`)
+3. Cada prompt deve focar em UMA seção ou UMA funcionalidade
+4. Após implementar, verificar: responsivo (375px), contraste, acessibilidade, performance
+5. Rodar `npm run validate && npm run lint && npm run typecheck && npm run build` antes de commit
+6. Commit após cada feature completa com mensagem descritiva em português
 
-## Deploy
+## Dados do Portfolio
+- Nome: Lucas Farias Batista
+- Cargo: Analista de Transportes Senior | Operações, Dados e IA Aplicada
+- Localização: São Paulo/SP
+- Contato: lucas.farias.log@outlook.com | linkedin.com/in/lucasfariaslog
+- Github: github.com/lucasdevlogis-cpu
+- Estatísticas: +10 anos, +R$ 20M impacto, 10 provas navegáveis
+- Provas: Simulador de Custo de Frete, Mini Torre de Controle, CVRP Urbano + 7 outras
 
-- Target: Vercel (gratuito) — Next.js nativo, **sem** `output: 'export'`
-- Output Directory no painel: **vazio**, overrides desligados (ver `docs/DEPLOY.md`)
-- Demos: Streamlit Cloud; env `NEXT_PUBLIC_DEMOS_BASE_URL` no build
-- Guia completo: `docs/DEPLOY.md` · Vercel: `docs/VERCEL.md` · Avaliação: `docs/AVALIACAO.md`
+## Ordem Canônica da Homepage
+`Header` → `ExecutiveHero` → `EvidenceStrip` → `ProfileBrief` → `SignatureCases` → `TrajectoryBoard` → `ContactPanel` → `Footer`
 
----
-
-## Dicas de Vibecoding
-
-### Como o Cursor Usa Este Arquivo
-
-O Cursor lê `.cursorrules` automaticamente em cada sessão. Não precisa copiar/colar. Para dar instruções adicionais em um prompt, referencie arquivos com `@`.
-
-### Como Dar Contexto nos Prompts
-
-Sempre inclua: **Onde** (pasta/nome), **O que** já existe (arquivos relevantes), **Para que** serve (contexto de negócio).
-
-Exemplo bom:
-
-```
-No componente Hero.tsx (já existe em components/Hero.tsx), adicione um segundo CTA ao lado do botão existente. Este botão deve ser outline com texto "Ver cases demonstráveis" e ao clicar deve fazer scroll suave até a seção #cases. Use o mesmo estilo do botão primário mas com variant="outline".
-```
-
-### Como Iterar
-
-1. **Primeiro prompt:** estrutura básica
-2. **Teste:** `npm run dev` — verifique se compila e o layout está razoável
-3. **Segundo prompt:** ajustes de cores, espaçamentos, animações
-4. **Terceiro prompt:** funcionalidades (filtro, modal, validação)
-5. **Quarto prompt:** polimento (responsive, acessibilidade)
-
-### Como Debugar
-
-- Copie a mensagem de erro inteira e cole no prompt
-- Descreva o comportamento esperado vs o atual
-- Pergunte especificamente: "Por que o componente X não renderiza?"
-
-### Como Manter a Coerência
-
-- Mencione componentes existentes quando criar novos
-- Use `@` para referenciar: `@data/content.ts` ou `@components/CaseCard.tsx`
-- Atualize `.cursorrules` se mudar decisões de design
-
----
-
-*Arquivo de regras do Cursor. Mantenha na raiz do projeto. Atualize conforme evoluir.*
+## Referências Rápidas
+- Skills: `.agents/skills/design-system.md`, `.agents/skills/component-patterns.md`, `.agents/skills/ux-writing.md`, `.agents/skills/a11y.md`, `.agents/skills/mobile-first.md`
+- Checklist de prioridade: `docs/P0_P1_P2_CHECKLIST.md`
+- Revisão crítica base: `revisao-critica-portfolio-lucas.pdf`

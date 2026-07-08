@@ -36,8 +36,40 @@ def base_map(
     return m
 
 
+def _brand_icon(tipo: str, color: str) -> folium.DivIcon:
+    """Ícone circular customizado usando paleta da marca."""
+    mapping = {
+        "cd": "warehouse",
+        "depot": "warehouse",
+        "origem": "warehouse",
+        "entrega": "box",
+        "cliente": "box",
+        "hub": "store",
+        "loja": "store",
+        "critico": "exclamation-triangle",
+        "critica": "exclamation-triangle",
+        "veiculo": "truck",
+    }
+    icon_name = mapping.get(tipo.lower(), "circle")
+    html = (
+        f"<div style='"
+        f"background:{color};color:white;"
+        f"border-radius:50%;width:28px;height:28px;"
+        f"display:flex;align-items:center;justify-content:center;"
+        f"font-size:11px;border:2px solid white;"
+        f"box-shadow:0 4px 10px rgba(7,17,31,0.22);'>"
+        f"<i class=\"fa fa-{icon_name}\"></i></div>"
+    )
+    return folium.DivIcon(
+        icon_size=(28, 28),
+        icon_anchor=(14, 14),
+        popup_anchor=(0, -14),
+        html=html,
+    )
+
+
 def _icon_for(tipo: str) -> folium.Icon:
-    """Ícone FontAwesome por tipo de ponto."""
+    """Ícone FontAwesome por tipo de ponto usando cores próximas à marca."""
     mapping = {
         "cd": ("warehouse", "darkblue"),
         "depot": ("warehouse", "darkblue"),
@@ -51,7 +83,7 @@ def _icon_for(tipo: str) -> folium.Icon:
         "veiculo": ("truck", "green"),
     }
     icon_name, color = mapping.get(tipo.lower(), ("circle", "blue"))
-    return folium.Icon(prefix="fa", icon=icon_name, color=color)
+    return folium.Icon(prefix="fa", icon=icon_name, color=color, icon_color="white")
 
 
 def _popup(row: pd.Series, fields: Sequence[str]) -> str:
@@ -82,7 +114,6 @@ def add_points(
 
     for _, row in df.iterrows():
         tipo_val = str(row[tipo]).lower() if tipo and tipo in row else ""
-        icon = _icon_for(tipo_val)
         popup = _popup(row, popup_fields or [])
         tooltip = str(row[tooltip_field]) if tooltip_field and tooltip_field in row else None
         if color_by and color_by in row:
@@ -106,11 +137,18 @@ def add_points(
                 tooltip=tooltip,
             ).add_to(target)
             continue
+        icon_color = brand.PRIMARY
+        if tipo_val in {"hub", "loja"}:
+            icon_color = brand.WARM_ACCENT
+        elif tipo_val in {"critico", "critica"}:
+            icon_color = brand.DANGER
+        elif tipo_val in {"veiculo"}:
+            icon_color = brand.ACCENT
         folium.Marker(
             location=[float(row[lat]), float(row[lon])],
             popup=folium.Popup(popup, max_width=280) if popup else None,
             tooltip=tooltip,
-            icon=icon,
+            icon=_brand_icon(tipo_val, icon_color),
         ).add_to(target)
     return m
 
@@ -200,7 +238,7 @@ def add_routes(
         folium.Marker(
             location=depot,
             tooltip="CD / Origem",
-            icon=_icon_for("cd"),
+            icon=_brand_icon("cd", brand.PRIMARY),
         ).add_to(m)
     return m
 
@@ -300,6 +338,53 @@ def add_heatmap(
 
 
 icon_for = _icon_for
+
+
+def add_legend(
+    m: folium.Map,
+    title: str,
+    items: Sequence[dict[str, str]],
+    position: str = "bottomright",
+) -> folium.Map:
+    """Adiciona legenda HTML customizada ao mapa.
+
+    Cada item: {"color": "#hex", "label": "texto"}.
+    Posições suportadas: bottomright, bottomleft, topright, topleft.
+    """
+    position_css = {
+        "bottomright": "bottom:16px;right:16px;",
+        "bottomleft": "bottom:16px;left:16px;",
+        "topright": "top:16px;right:16px;",
+        "topleft": "top:16px;left:16px;",
+    }.get(position, "bottom:16px;right:16px;")
+
+    rows = "\n".join(
+        f"<div style='display:flex;align-items:center;gap:8px;margin:4px 0;'>"
+        f"<span style='display:inline-block;width:14px;height:14px;border-radius:3px;background:{item['color']};border:1px solid rgba(0,0,0,0.1);'></span>"
+        f"<span style='font-size:12px;color:{brand.INK};'>{item['label']}</span>"
+        f"</div>"
+        for item in items
+    )
+    html = f"""
+    <div style='
+        position:fixed;
+        {position_css}
+        z-index:9999;
+        background:{brand.CARD};
+        border:1px solid {brand.BORDER};
+        border-radius:8px;
+        padding:10px 12px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+        font-family:{brand.FONT_FAMILY};
+        line-height:1.4;
+        max-width:220px;
+    '>
+        <div style='font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:{brand.MUTED};margin-bottom:6px;'>{title}</div>
+        {rows}
+    </div>
+    """
+    m.get_root().html.add_child(folium.Element(html))
+    return m
 
 
 def render(

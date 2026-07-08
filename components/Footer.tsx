@@ -2,12 +2,13 @@ import {
   ArrowUp,
   ArrowUpRight,
   Code2,
+  FileText,
   Link,
   Mail,
   Star,
 } from "lucide-react";
 
-import { CONTENT } from "@/data/content";
+import { CONTENT, GITHUB_DEMOS_URL } from "@/data/content";
 
 function SocialLink({
   href,
@@ -52,19 +53,19 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border bg-card">
-      <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-14 sm:px-8 lg:grid-cols-3 lg:px-10 xl:px-12">
+      <div className="mx-auto grid max-w-[1440px] gap-8 px-5 py-12 sm:px-8 lg:grid-cols-4 lg:px-10 xl:px-12">
         <div>
           <p className="font-heading text-lg font-bold text-ink">
             {pessoal.nome}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">{pessoal.titulo}</p>
 
-          <div className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-bold text-accent-contrast">
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-xs font-bold text-accent-contrast">
             <Star className="size-3.5" aria-hidden />
             {footer.badgeCases}
           </div>
 
-          <div className="mt-5 flex flex-wrap gap-5">
+          <div className="mt-4 flex flex-wrap gap-4">
             <SocialLink
               href={pessoal.linkedin}
               label={contactLinks.linkedinLabel}
@@ -96,7 +97,7 @@ export function Footer() {
           <p className="font-heading text-sm font-bold text-ink">
             {footer.linksRapidosTitulo}
           </p>
-          <nav className="mt-5 flex flex-col gap-2" aria-label="Links rápidos do rodapé">
+          <nav className="mt-4 flex flex-col gap-2" aria-label="Links rápidos do rodapé">
             {nav.map((link) => (
               <a
                 key={link.href}
@@ -111,7 +112,43 @@ export function Footer() {
         </div>
 
         <div>
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="font-heading text-sm font-bold text-ink">Stack</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {["Python", "SQL", "Power BI", "Streamlit", "Next.js", "Power Automate"].map((stack) => (
+              <span
+                key={stack}
+                className="rounded-full border border-border bg-secondary/60 px-2.5 py-1 text-xs font-semibold text-ink"
+              >
+                {stack}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="font-heading text-sm font-bold text-ink">Recursos</p>
+          <div className="mt-4 flex flex-col gap-2">
+            <a
+              href={contactLinks.cvUrl}
+              download
+              className="group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-ink"
+            >
+              <FileText className="size-4" aria-hidden />
+              CV em PDF
+              <ArrowUpRight className="size-3.5 opacity-0 transition-all group-hover:opacity-100" aria-hidden />
+            </a>
+            <a
+              href={GITHUB_DEMOS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-ink"
+            >
+              <Code2 className="size-4" aria-hidden />
+              Repositório das demos
+              <ArrowUpRight className="size-3.5 opacity-0 transition-all group-hover:opacity-100" aria-hidden />
+            </a>
+          </div>
+          <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
             {footer.declaracaoLimitacao}
           </p>
         </div>

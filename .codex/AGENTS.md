@@ -6,11 +6,20 @@
 
 **Executive Proof System** — dossiê headhunter-first.
 
-`Header` → `Hero` → `ProfileSection` → `Cases` → `TrajectorySection` → `Contato` → `Footer`
+`Header` → `ExecutiveHero` → `EvidenceStrip` → `ProfileBrief` → `SignatureCases` → `TrajectoryBoard` → `ContactPanel` → `Footer`
 
 - Copy ativo: `data/content.ts` · shelved: `data/archive/content-consultoria.ts`
 - Design: `design/design.md` + `app/globals.css` — sem Figma
+- Tokens: `design/tokens.md`
+- Skills: `.agents/skills/`
 - Shelved: `components/archive/consultoria/`, `design/archive/`
+
+## Stack
+
+- Next.js 16.2.9 + React 19 + TypeScript 5
+- Tailwind CSS v4 (configuração CSS-only em `app/globals.css`)
+- shadcn/ui + Base UI + Lucide React
+- Framer Motion 12.x (LazyMotion + domAnimation)
 
 ## Produção
 
@@ -20,7 +29,7 @@
 ## Verificação
 
 ```bash
-npm run validate && npm run lint && npm run build
+npm run validate && npm run lint && npm run typecheck && npm run build
 npm run cv:generate
 
 cd demos-logistica && python scripts/smoke_test.py
@@ -31,7 +40,8 @@ cd demos-logistica && python scripts/smoke_test.py
 - Env: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_DEMOS_BASE_URL`
 - Guias: `docs/DEPLOY.md`, `docs/VERCEL.md`
 - Estado: `docs/AVALIACAO.md`
+- MCPs: `.cursor/MCP_SETUP.md`
 
-## Skills
+## Checklist de Prioridade
 
-`.agents/skills/portfolio-demos-viz/SKILL.md`
+Ver `docs/P0_P1_P2_CHECKLIST.md` para o plano de refatoração progressiva.

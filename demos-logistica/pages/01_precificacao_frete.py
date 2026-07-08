@@ -171,6 +171,17 @@ with tab_visao:
         m = folium_maps.base_map(center=(-18, -47), zoom=4, height=ui.map_height(brand.MAP_FULL_HEIGHT))
         if edges:
             m = folium_maps.add_network(m, nodes, edges, lat="lat", lon="lon", label="uf")
+            max_label = fmt.fmt_currency(fluxo["frete_total"].max(), decimals=0)
+            min_label = fmt.fmt_currency(fluxo["frete_total"].min(), decimals=0)
+            m = folium_maps.add_legend(
+                m,
+                "Frete total no corredor",
+                [
+                    {"color": brand.PRIMARY, "label": f"Maior ({max_label}) — linha mais grossa"},
+                    {"color": brand.PRIMARY, "label": f"Menor ({min_label}) — linha mais fina"},
+                ],
+                position="bottomright",
+            )
         folium_maps.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="frete_fluxos")
         st.caption(
             "Espessura da linha ∝ frete total no corredor UF→UF. "
@@ -300,7 +311,7 @@ with tab_exportar:
         ]
     ].round(2)
     tabela["status_piso"] = tabela["acima_piso_pct"].apply(
-        lambda x: tables.status_text("Apto") if x >= 0 else tables.status_text("Abaixo do piso")
+        lambda x: tables.status_text("Acima do piso") if x >= 0 else tables.status_text("Abaixo do piso")
     )
 
     config = {
@@ -313,7 +324,7 @@ with tab_exportar:
         "frete_total": tables.currency_column("Frete estimado"),
         "piso_antt": tables.currency_column("Piso ANTT"),
         "acima_piso_pct": tables.percent_column("Acima do piso", signed=True),
-        "status_piso": tables.status_column("Status"),
+        "status_piso": tables.status_column("Status vs piso ANTT"),
     }
     tables.format_dataframe(tabela, config=config, hide_index=True)
     ui.download_csv_button(tabela, "precificacao_frete.csv")

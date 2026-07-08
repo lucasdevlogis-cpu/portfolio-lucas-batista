@@ -51,10 +51,10 @@ def baseline_distance(stops_list: list[dict]) -> float:
     return total
 
 
-dist_otimizada = sum(r["distancia_km"] for r in rotas)
+dist_melhorada = sum(r["distancia_km"] for r in rotas)
 dist_baseline = baseline_distance(stops)
-economia_pct = (1 - dist_otimizada / dist_baseline) * 100 if dist_baseline else 0
-tempo_h = dist_otimizada / VELOCIDADE_KMH
+economia_pct = (1 - dist_melhorada / dist_baseline) * 100 if dist_baseline else 0
+tempo_h = dist_melhorada / VELOCIDADE_KMH
 atendidas = sum(len(r["paradas"]) for r in rotas)
 
 ui.breadcrumb("Case: Roteirização Urbana (CVRP) · <b>Demo interativa</b>")
@@ -65,10 +65,10 @@ ui.hero(
     frameworks=["PyVRP", "OR-Tools", "attention-learn-to-route"],
     selo=brand.maturidade(metodo="nearest-neighbor", producao="PyVRP / OR-Tools"),
     metric={
-        "label": "Distância otimizada",
-        "value": f"{dist_otimizada:,.1f} km",
+        "label": "Distância melhorada",
+        "value": f"{dist_melhorada:,.1f} km",
         "delta": f"-{economia_pct:.0f}% vs ordem de cadastro ({dist_baseline:,.0f} km)",
-        "help": "Comparação da heurística com o atendimento na ordem original.",
+        "help": "Heurística nearest-neighbor com capacidade; não é ótimo global garantido.",
     },
 )
 
@@ -83,7 +83,7 @@ ui.kpi_grid(
         {"label": "Tempo estimado", "value": f"{tempo_h:.1f} h"},
         {
             "label": "Economia",
-            "value": f"{dist_baseline - dist_otimizada:,.1f} km",
+            "value": f"{dist_baseline - dist_melhorada:,.1f} km",
             "severity": economia_severity,
         },
     ]
@@ -122,6 +122,10 @@ with tab_visao:
         show_numbers=map_detail,
         show_arrows=map_detail,
     )
+    legend_items = [
+        {"color": r["color"], "label": r["label"]} for r in rotas_viz[:6]
+    ]
+    m = folium_maps.add_legend(m, "Rotas por veículo", legend_items, position="bottomright")
 
     folium_maps.render(
         m,

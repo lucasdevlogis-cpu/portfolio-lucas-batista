@@ -137,10 +137,21 @@ with tab_visao:
     map_height = ui.map_height(brand.MAP_FULL_HEIGHT)
     m = fm.base_map(center, zoom=4, height=map_height)
     m = fm.add_network(m, nodes_df, edges, lat="lat", lon="lon", label="id")
+    max_vol = base["volume_ton"].max()
+    min_vol = base["volume_ton"].min()
+    m = fm.add_legend(
+        m,
+        "Volume do corredor",
+        [
+            {"color": brand.PRIMARY, "label": f"Maior ({fmt.fmt_number(max_vol, decimals=0)} t) — linha grossa"},
+            {"color": brand.PRIMARY, "label": f"Menor ({fmt.fmt_number(min_vol, decimals=0)} t) — linha fina"},
+        ],
+        position="bottomright",
+    )
     fm.render(m, height=map_height, key="rede_interhubs_mapa")
     st.caption(
         "Linhas retas entre cidades (geodésicas), não rotas rodoviárias reais. "
-        "Arestas com espessura proporcional ao volume movimentado."
+        "Arestas com espessura proporcional ao volume movimentado (ver legenda)."
     )
 
 with tab_analise:

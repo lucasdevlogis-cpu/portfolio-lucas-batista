@@ -156,12 +156,28 @@ with tab_visao:
         folium.Marker(
             location=[o["lat"], o["lon"]],
             tooltip=o["origem_id"],
-            icon=fmap.icon_for(o["origem_tipo"].lower()),
+            icon=fmap._brand_icon(
+                o["origem_tipo"].lower(),
+                {"CD": brand.PRIMARY, "Loja": brand.WARM_ACCENT, "Hub": brand.ACCENT}.get(
+                    o["origem_tipo"], brand.PRIMARY
+                ),
+            ),
         ).add_to(m)
+    tipo_colors = {"CD": brand.PRIMARY, "Loja": brand.ACCENT, "Hub": brand.WARM_ACCENT}
+    m = fmap.add_legend(
+        m,
+        "Origem do envio",
+        [
+            {"color": tipo_colors[t], "label": t}
+            for t in res["origem_tipo"].unique()
+            if t in tipo_colors
+        ],
+        position="bottomright",
+    )
     fmap.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="sfs_mapa")
     st.caption(
         "Linhas retas entre origem e destino (geodésicas), não rotas rodoviárias reais. "
-        "Espessura uniforme; cores por tipo de origem."
+        "Cores por tipo de origem (ver legenda)."
     )
 
 with tab_analise:

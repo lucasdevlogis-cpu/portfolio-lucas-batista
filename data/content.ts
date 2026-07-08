@@ -61,6 +61,8 @@ export interface Case {
   tags: string[];
   linkDemo: string;
   linkGitHub: string;
+  /** Caminho opcional para uma imagem de thumbnail real (ex.: "/cases/frete.png"). */
+  thumbnail?: string;
   prioridade: CasePrioridade;
   perguntaNegocio: string;
   metricaPrincipal: string;
@@ -123,6 +125,7 @@ export interface ProofStat {
 export interface RecruiterBriefItem {
   titulo: string;
   descricao: string;
+  evidencia?: string;
 }
 
 export interface RecruiterBriefPergunta {
@@ -197,6 +200,8 @@ export interface ContactLinksConteudo {
   cvLabel: string;
   cvUrl: string;
   nota: string;
+  manifesto: string[];
+  faq: { pergunta: string; resposta: string }[];
 }
 
 export interface DialogCopy {
@@ -378,21 +383,25 @@ export const CONTENT: Content = {
         titulo: "Operação com resultado",
         descricao:
           "Histórico comprovado de redução de custos, melhoria de SLA e impacto direto em EBITDA e capital de giro.",
+        evidencia: "-20% frete cadeia fria · +R$ 20M working capital",
       },
       {
         titulo: "Entrega demonstrável",
         descricao:
           "Transforma hipóteses em dashboards, simuladores e demos navegáveis, com limites e premissas declarados.",
+        evidencia: "10 cases publicados em Streamlit + Next.js",
       },
       {
         titulo: "Comunicação executiva",
         descricao:
           "Storytelling de dados para liderança: traduz métricas operacionais em decisão financeira e próxima ação.",
+        evidencia: "Apresentações recorrentes à diretoria",
       },
       {
         titulo: "Stack pragmática",
         descricao:
           "Python, SQL, Power BI, Excel avançado, Power Automate, Streamlit, Next.js, TypeScript e IA aplicada.",
+        evidencia: "Do BI ao protótipo com IA supervisionada",
       },
     ],
     perguntasTitulo: "Perguntas que este perfil responde",
@@ -632,6 +641,16 @@ export const CONTENT: Content = {
     cvLabel: "CV em PDF",
     cvUrl: "/lucas-batista-cv.pdf",
     nota: "CV executivo em PDF alinhado ao portfólio. Para detalhes completos de trajetória, use LinkedIn ou os cases demonstráveis.",
+    manifesto: [
+      "Conecto execução operacional a decisão baseada em dados e protótipos rápidos.",
+      "Prefiro entregas mensuráveis a apresentações genéricas: cada case mostra métrica e limitação.",
+      "Trabalho bem em ambientes onde operação, tecnologia e financeiro precisam falar a mesma língua.",
+    ],
+    faq: [
+      { pergunta: "Você está aberto a relocation?", resposta: "Base em São Paulo/SP; aberto a conversas presenciais ou híbridas, dependendo do desafio." },
+      { pergunta: "Prefere CLT ou PJ?", resposta: "Flexível. O formato depende do escopo, senioridade da posição e modelo da empresa." },
+      { pergunta: "Qual o tempo de resposta?", resposta: "Costumo responder em até 24h em dias úteis. LinkedIn é o canal mais rápido." },
+    ],
   },
 
   secoes: {

@@ -88,7 +88,7 @@ ui.hero(
         metodo="EDF (earliest deadline first)", producao="PyVRP time windows"
     ),
     metric={
-        "label": "Violações de SLA (plano otimizado)",
+        "label": "Violações de SLA (plano EDF)",
         "value": f"{viol_edf}",
         "delta": f"{viol_edf - viol_base:+d} vs ordem de cadastro ({viol_base})",
         "delta_color": "inverse",
@@ -100,7 +100,7 @@ ui.kpi_grid(
     [
         {"label": "Paradas", "value": fmt.fmt_number(n)},
         {
-            "label": "No prazo (otimizado)",
+            "label": "No prazo (plano EDF)",
             "value": f"{n - viol_edf}/{n}",
             "severity": "success" if viol_edf == 0 else "warning" if viol_edf == 1 else "danger",
         },
@@ -132,6 +132,15 @@ with tab_visao:
         show_numbers=map_detail,
         show_arrows=map_detail,
     )
+    m = fmap.add_legend(
+        m,
+        "Paradas",
+        [
+            {"color": brand.PRIMARY, "label": "CD / origem"},
+            {"color": brand.ACCENT, "label": "Cliente (sequência EDF)"},
+        ],
+        position="bottomright",
+    )
     fmap.render(m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="vrptw_mapa")
     st.caption(
         "Linhas retas entre paradas (geodésicas), não rotas rodoviárias reais. "
@@ -141,12 +150,12 @@ with tab_visao:
     if viol_edf:
         st.divider()
         st.warning(
-            f"{viol_edf} parada(s) ainda violam a janela mesmo no plano otimizado — "
+            f"{viol_edf} parada(s) ainda violam a janela mesmo no plano EDF — "
             "sinal de rever a promessa (SLA), adicionar veículo ou dividir a rota."
         )
 
 with tab_analise:
-    ui.section("Janela prometida vs chegada planejada (plano otimizado)")
+    ui.section("Janela prometida vs chegada planejada (plano EDF)")
     fig = go.Figure()
     for _, r in sched_edf.iterrows():
         fig.add_trace(
@@ -189,7 +198,7 @@ with tab_analise:
     ui.section("Comparativo: violações de SLA")
     comparativo = pd.DataFrame(
         {
-            "Cenário": ["Ordem de cadastro", "EDF (otimizado)"],
+            "Cenário": ["Ordem de cadastro", "EDF (heurístico)"],
             "Violações": [viol_base, viol_edf],
             "No prazo": [n - viol_base, n - viol_edf],
         }

@@ -8,6 +8,7 @@ import {
   MapPin,
   MessageSquareText,
   Star,
+  Target,
   Zap,
 } from "lucide-react";
 
@@ -26,7 +27,7 @@ const quickCredibility = [
 ];
 
 export function ProfileBrief() {
-  const { careerTarget, recruiterBrief } = CONTENT;
+  const { careerTarget, recruiterBrief, experienceSignals } = CONTENT;
 
   return (
     <SectionShell
@@ -35,9 +36,9 @@ export function ProfileBrief() {
       title={recruiterBrief.titulo}
       lead={recruiterBrief.resumo}
       className="relative border-b border-border/70"
-      headerClassName="mb-14"
+      headerClassName="mb-10"
     >
-      <div className="grid gap-6 lg:grid-cols-[1.05fr_1fr] lg:grid-rows-2 lg:items-stretch">
+      <div className="grid gap-5 lg:grid-cols-[1.1fr_1fr] lg:grid-rows-2 lg:items-stretch">
         <motion.div
           initial={{ opacity: 1, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -56,28 +57,46 @@ export function ProfileBrief() {
               <p className="mt-5 text-base leading-relaxed text-muted-foreground md:text-lg">
                 {careerTarget.resumo}
               </p>
-              <div className="mt-8 grid flex-1 gap-6 border-t border-border pt-7">
-                <div>
-                  <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
-                    Senioridade
-                  </p>
-                  <p className="mt-2 text-base leading-relaxed text-ink">
-                    {careerTarget.senioridade}
-                  </p>
+              <div className="mt-6 grid gap-4 border-t border-border pt-6">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
+                      Senioridade
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-ink">
+                      {careerTarget.senioridade}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
+                      Modelo de atuação
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-ink">
+                      {careerTarget.modeloAtuacao}
+                    </p>
+                  </div>
                 </div>
                 <div>
                   <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
-                    Fit profissional
+                    Domínios de negócio
                   </p>
-                  <p className="mt-2 text-base leading-relaxed text-ink">
-                    {careerTarget.modeloAtuacao}
-                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {experienceSignals.dominios.map((dominio) => (
+                      <span
+                        key={dominio}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-semibold text-ink"
+                      >
+                        <Target className="size-3 text-accent-contrast" aria-hidden />
+                        {dominio}
+                      </span>
+                    ))}
+                  </div>
                 </div>
                 <div>
                   <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
                     Localização e abertura
                   </p>
-                  <p className="mt-2 text-base leading-relaxed text-ink">
+                  <p className="mt-2 text-sm leading-relaxed text-ink">
                     {careerTarget.disponibilidade}
                   </p>
                 </div>
@@ -109,9 +128,14 @@ export function ProfileBrief() {
                 <h3 className="font-heading text-lg font-bold text-ink">
                   {item.titulo}
                 </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {item.descricao}
                 </p>
+                {item.evidencia && (
+                  <p className="mt-3 text-xs font-bold text-accent-contrast">
+                    {item.evidencia}
+                  </p>
+                )}
               </motion.article>
             );
           })}
@@ -123,7 +147,7 @@ export function ProfileBrief() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4"
+        className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4"
       >
         {quickCredibility.map((item, index) => {
           const Icon = item.icon;
@@ -157,33 +181,6 @@ export function ProfileBrief() {
         })}
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 1, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <PremiumCard className="mt-6 grid gap-6 p-6 lg:grid-cols-[0.32fr_1fr] lg:p-8" hover={false}>
-          <div>
-            <p className="eyebrow">{recruiterBrief.perguntasTitulo}</p>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              {recruiterBrief.perguntasResumo}
-            </p>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2">
-            {recruiterBrief.perguntas.map((item) => (
-              <article key={item.pergunta} className="rounded-xl border border-border/70 bg-editorial/60 p-4">
-                <h3 className="font-heading text-base font-bold leading-tight text-ink">
-                  {item.pergunta}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {item.resposta}
-                </p>
-              </article>
-            ))}
-          </div>
-        </PremiumCard>
-      </motion.div>
     </SectionShell>
   );
 }

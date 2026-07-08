@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, PlayCircle } from "lucide-react";
+import { Clock, ExternalLink, PlayCircle } from "lucide-react";
 
 import { CaseDemoLauncher } from "@/components/CaseDemoLauncher";
-import { CaseLibraryDesktop } from "@/components/sections/CaseLibraryDesktop";
+import { CaseThumbnail } from "@/components/CaseThumbnail";
+import { CaseLibrary } from "@/components/sections/CaseLibrary";
 import { EditorialBadge } from "@/components/ui/EditorialBadge";
 
 import { buttonVariants } from "@/components/ui/button";
-import { LucideIconByName } from "@/components/LucideIconByName";
 import {
   CASES_DESTAQUE,
   CASES_ROADMAP,
@@ -31,56 +31,63 @@ function SignatureCase({ caseItem, index }: { caseItem: Case; index: number }) {
         ease: [0.22, 1, 0.36, 1],
       }}
       whileHover={{ y: -8 }}
-      className="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-card transition-all duration-normal ease-editorial hover:border-accent/40 hover:shadow-elevated lg:p-7"
+      data-testid="case-card"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-normal ease-editorial hover:border-accent/40 hover:shadow-elevated"
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex size-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-white shadow-md transition-transform duration-normal group-hover:scale-105">
-          <LucideIconByName name={caseItem.icone} className="size-6" />
+      <CaseThumbnail caseItem={caseItem} />
+
+      <div className="flex h-full flex-col p-6 lg:p-7">
+        <div className="flex items-start justify-between gap-4">
+          <EditorialBadge className="w-fit">{caseItem.categoria}</EditorialBadge>
+          <span className="font-heading text-3xl font-bold leading-none text-primary/15 transition-colors group-hover:text-primary/25">
+            {String(index + 1).padStart(2, "0")}
+          </span>
         </div>
-        <span className="font-heading text-4xl font-bold leading-none text-primary/15 transition-colors group-hover:text-primary/25">
-          {String(index + 1).padStart(2, "0")}
-        </span>
-      </div>
 
-      <EditorialBadge className="mt-6 w-fit">{caseItem.categoria}</EditorialBadge>
+        <h3 className="mt-5 font-heading text-2xl font-bold leading-[1.1] tracking-tight text-ink">
+          {caseItem.titulo}
+        </h3>
 
-      <h3 className="mt-4 font-heading text-2xl font-bold leading-[1.1] tracking-tight text-ink">
-        {caseItem.titulo}
-      </h3>
+        <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+          {caseItem.descricao}
+        </p>
 
-      <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
-        {caseItem.descricao}
-      </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {caseItem.tags.slice(0, 4).map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-border bg-secondary/70 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
 
-      <div className="mt-5 space-y-3">
-        <div>
+        <div className="mt-5">
           <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
             Problema de negócio
           </p>
-          <p className="mt-1 text-sm leading-relaxed text-ink">
+          <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-ink">
             {caseItem.perguntaNegocio}
           </p>
         </div>
-        <div>
-          <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
-            Decisão apoiada
-          </p>
-          <p className="mt-1 text-sm leading-relaxed text-ink">
-            {caseItem.decisaoApoiada}
-          </p>
+
+        <div className="mt-5 flex items-end justify-between border-t border-border pt-5">
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-muted-foreground">
+              Métrica principal
+            </p>
+            <p className="mt-1 font-heading text-lg font-bold text-accent-contrast">
+              {caseItem.metricaResumo}
+            </p>
+          </div>
+          <span className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+            <Clock className="size-3.5" aria-hidden />
+            {caseItem.prioridade}
+          </span>
         </div>
-      </div>
 
-      <div className="mt-6 border-t border-border pt-5">
-        <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-muted-foreground">
-          Métrica principal
-        </p>
-        <p className="mt-1 font-heading text-lg font-bold text-accent-contrast">
-          {caseItem.metricaResumo}
-        </p>
-      </div>
-
-      <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+        <div className="mt-6 flex flex-col gap-2 sm:flex-row">
         <CaseDemoLauncher
           caseItem={caseItem}
           className="h-11 flex-1 rounded-md"
@@ -100,6 +107,7 @@ function SignatureCase({ caseItem, index }: { caseItem: Case; index: number }) {
             {labels.caseCodeLabel}
           </a>
         ) : null}
+        </div>
       </div>
     </motion.article>
   );
@@ -114,7 +122,7 @@ export function SignatureCases() {
       className="scroll-mt-24 overflow-hidden border-b border-border/70 bg-card py-20 lg:py-28"
     >
       <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-12">
-        <div className="mb-12 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+        <div className="mb-10 grid gap-5 lg:grid-cols-[1fr_1.1fr] lg:items-end">
           <motion.div
             initial={{ opacity: 1, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -129,7 +137,7 @@ export function SignatureCases() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-3xl text-lg leading-relaxed text-muted-foreground lg:justify-self-end"
+            className="max-w-2xl text-base leading-relaxed text-muted-foreground"
           >
             {secoes.cases.subtitle}
           </motion.p>
@@ -141,7 +149,7 @@ export function SignatureCases() {
           ))}
         </div>
 
-        <CaseLibraryDesktop />
+        <CaseLibrary />
 
         {CASES_ROADMAP.length > 0 ? (
           <motion.div
@@ -149,9 +157,10 @@ export function SignatureCases() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-12 rounded-2xl border border-dashed border-warm-accent/30 bg-warm-accent/[0.04] p-6"
+            data-testid="case-roadmap"
+            className="mt-10 rounded-2xl border border-dashed border-warm-accent/30 bg-warm-accent/[0.04] p-6"
           >
-            <div className="grid gap-6 lg:grid-cols-[0.38fr_1fr] lg:items-start">
+            <div className="grid gap-6 lg:grid-cols-[0.32fr_1fr] lg:items-start">
               <div>
                 <h3 className="font-heading text-xl font-bold text-ink">
                   {secoes.casesRoadmap.title}

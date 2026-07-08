@@ -9,7 +9,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, monospace;
-  --font-heading: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-heading: var(--font-serif), ui-serif, Georgia, serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --color-accent-contrast: var(--accent-contrast);
   --color-editorial: var(--editorial);

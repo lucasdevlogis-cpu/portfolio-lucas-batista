@@ -4,7 +4,9 @@
 >
 > **Entrada canônica:** [`docs/CANON.md`](CANON.md) — leia primeiro.
 >
-> **Última atualização:** 07/07/2026 — redesign premium + deploy.
+> **Checklist de prioridade:** [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md)
+>
+> **Última atualização:** 07/07/2026 — auditoria de documentação e agentes
 
 ---
 
@@ -25,7 +27,7 @@
 
 ### Componentes ativos
 
-`Header`, `ExecutiveHero`, `EvidenceStrip`, `ProfileBrief`, `SignatureCases`, `CaseLibraryDesktop`, `CaseDemoLauncher`, `DemoModal`, `TrajectoryBoard`, `ContactPanel`, `Footer`, `HomePage`, `MobileNav`, `LucideIconByName`, `FadeIn`, `Stagger`, `GlassCard`, `PremiumCard`, `MetricPill`, `EditorialBadge`, `LogisticsIntelligenceCockpit`, `MotionProvider`
+`Header`, `ExecutiveHero`, `EvidenceStrip`, `ProfileBrief`, `SignatureCases`, `CaseLibraryDesktop`, `CaseDemoLauncher`, `DemoModal`, `TrajectoryBoard`, `ContactPanel`, `Footer`, `HomePage`, `MobileNav`, `LucideIconByName`, `EditorialBadge`, `PremiumCard`, `SectionShell`, `LogisticsIntelligenceCockpit`, `MotionProvider`
 
 ### Arquivado (não montar)
 
@@ -46,22 +48,27 @@
 | Deploy Vercel | ✅ | ✅ prod `dpl_AeSkethQEEq4UasUAQgVXhEXNUHV` |
 | OG + CV PDF | ✅ | ✅ prod |
 | Lighthouse | ✅ local | ✅ prod desktop 100/96/100/100, mobile 96/96/100/100 |
+| Documentação de agentes | ✅ | ✅ alinhada nesta rodada |
+| MCPs do Cursor | 🟡 | 🟡 configurados com placeholders |
 
 ---
 
-## Bloqueadores pré-lançamento
+## Divergências documentadas (pós-auditoria)
 
-| # | Ação | Onde | Status |
-|---|------|------|--------|
-| 1 | CV gerado de `content.ts` | `public/lucas-batista-cv.pdf` | ✅ `npm run cv:generate` |
-| 2 | READMEs por case no repo demos | Fase 3 | ✅ `demos-logistica/docs/cases/` |
-| 3 | Lighthouse em produção | Vercel | ✅ desktop **100/96/100/100** — 07/07 |
-| 4 | Refinamento UX/UI e build | Local | ✅ desktop **100/96/100/100** — 07/07 |
-| 5 | Arquivar componentes legados | Repo | ✅ movidos para `components/archive/legacy/` |
-| 6 | Mapeamento e docs | Repo | ✅ `docs/MAPEAMENTO.md` + docs atualizados |
-| 7 | Deploy + E2E prod | Vercel | ✅ deploy `dpl_AeSkethQEEq4UasUAQgVXhEXNUHV` |
+| # | Divergência | Impacto | Plano |
+|---|-------------|---------|-------|
+| 1 | Cockpit SVG estático no hero gera expectativa de interatividade | UX | Decidir: tornar interativo, reduzir ou substituir por screenshot (P0) |
+| 2 | Seção Perfil ainda contém FAQ "Perguntas que este perfil responde" | Densidade de texto | Remover FAQ, distribuir conteúdo nos cards (P1) |
+| 3 | Cards de provas mostram "Decisão apoiada" (texto denso) | Escaneabilidade | Mover "Decisão apoiada" para o modal apenas (P0/P1) |
+| 4 | `CaseLibraryDesktop` tem nome desktop-only e layout de tabela em mobile | Mobile | Renomear para `CaseLibrary` e criar layout de lista mobile (P1) |
+| 5 | `MotionProvider` não usa `useReducedMotion()` | A11Y | Adicionar respeito a prefers-reduced-motion (P1) |
+| 6 | Filtros da biblioteca não anunciam resultado via `aria-live` | A11Y | Adicionar região live (P1) |
+| 7 | Header não tem indicador de seção ativa | Navegação | Implementar scroll spy (P1) |
+| 8 | Cards de provas não têm thumbnails/screenshots | Percepção de qualidade | Adicionar imagens 16:9 das demos (P0) |
+| 9 | Stack técnico em texto plano; poderia ser tags | Escaneabilidade | Converter para badges por categoria (P1) |
+| 10 | Analytics/Vercel Analytics não implementado | Medição | Adicionar eventos básicos (P2) |
 
-Checklist QA manual: [`docs/VERCEL.md`](VERCEL.md) — **concluído** 07/07.
+Detalhes e priorização completa: [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md).
 
 ---
 
@@ -84,29 +91,44 @@ Colunas: Performance / Acessibilidade / Best Practices / SEO. Meta lançamento: 
 
 - **Hero redesenhado com fundo escuro** (`bg-surface-dark`) para alto impacto visual e contraste.
 - **Header fixo escuro translúcido** com texto branco e CTA em teal vibrante.
-- **Paleta premium atualizada**: teal `#14B8A6`, dourado `#D4A853`, navy `#0B1220`, fundo editorial `#F8F7F4`.
+- **Paleta premium atualizada**: teal `#16a99c`, warm accent `#d4a853`, ink `#07111f`, editorial `#f7f4ec`.
 - **Animações Framer Motion** em todas as seções: fade + slide up, stagger, hover lift, scale em cards e botões.
-- **Perfil**: layout denso sem lacunas — card de senioridade em destaque + grid 2×2 de diferenciais + faixa de credibilidade.
-- **Cases**: cards com cores de categoria, barra colorida no topo, ícones em gradiente, hover elevado.
+- **Perfil**: layout denso sem lacunas — card de senioridade em destaque + grid de diferenciais + faixa de credibilidade.
+- **Cases**: cards com cores de categoria, ícones em gradiente, hover elevado.
 - **Trajetória**: timeline vertical conectada, cards de stack/dominios balanceados, experiências e formação em cards visuais.
 - **Contato**: mantido em superfície escura para consistência com o hero.
 - **Fundo com grid sutil** nas seções claras para textura e sofisticação.
 
 ### Demos Streamlit
 
-- Tokens de cor alinhados à landing (teal/dourado/navy).
+- Tokens de cor alinhados à landing (teal/warm-accent/ink).
 - CSS premium em `lib/ui.py`: header escuro translúcido, KPI cards com hover, badges destacados, tabelas estilizadas.
 - `lib/viz.py` e `lib/folium_maps.py` ajustados para novas cores e hoverlabels escuros.
 - Páginas refinadas visualmente sem alterar lógica de negócio.
 - Smoke test: **13/13 OK**.
 
+### Documentação e agentes
+
+- `.cursorrules` atualizado para refletir stack atual (Next.js 16, Tailwind v4, tokens editoriais, componentes atuais).
+- Skills em `.agents/skills/` atualizadas: `design-system.md`, `component-patterns.md`, `ux-writing.md`, `a11y.md`, `mobile-first.md`, `accessibility.md`.
+- `.codex/AGENTS.md` atualizado com ordem canônica atual.
+- `.cursor/mcp.json` configurado com placeholders + `.cursor/MCP_SETUP.md` com instruções.
+- `.gitignore` atualizado para ignorar `.cursor/mcp.json` (pode conter tokens).
+- Criado `docs/P0_P1_P2_CHECKLIST.md` com plano de refatoração progressiva.
+
 ---
 
 ## Pendências desejáveis
 
-- Vercel Analytics + domínio custom
+- Resolver cockpit do hero (P0)
+- Thumbnails nos cards de provas (P0)
+- Indicador de seção ativa no Header (P1)
+- `useReducedMotion` no MotionProvider (P1)
+- Renomear `CaseLibraryDesktop` → `CaseLibrary` + mobile (P1)
+- Analytics/Vercel Analytics (P2)
+- Testes E2E (P2)
+- Domínio custom / Vercel Analytics (P2)
 - Backlog demos: [`docs/OPORTUNIDADES_DEMOS.md`](OPORTUNIDADES_DEMOS.md)
-- Testes mobile automatizados após novas mudanças visuais
 
 ---
 
@@ -120,6 +142,7 @@ Colunas: Performance / Acessibilidade / Best Practices / SEO. Meta lançamento: 
 | 3 GitHub | ✅ | READMEs em `demos-logistica/docs/cases/` |
 | 4 Deploy | ✅ | QA manual |
 | 5 Lançamento | ✅ | CV gerado de content.ts |
+| 6 Refatoração P0/P1/P2 | 🟡 | Ver `docs/P0_P1_P2_CHECKLIST.md` |
 
 ---
 
@@ -154,16 +177,24 @@ python scripts/smoke_test.py   # 13 checagens
 | [`docs/CANON.md`](CANON.md) | **Entrada única** — SSOT docs |
 | [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | Estado completo do repositório |
 | `docs/AVALIACAO.md` | Este arquivo |
+| [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md) | Plano de refatoração progressiva |
 | `design/design.md` | Spec visual ativa |
 | `design/tokens.md` | Tokens CSS resumidos |
 | `docs/VERCEL.md` | Vercel, env, checklist QA |
 | `docs/DEPLOY.md` | Deploy Vercel + Streamlit |
 | `docs/OPORTUNIDADES_DEMOS.md` | Backlog demos |
-| `AGENTS.md` | Guia para agentes |
+| `AGENTS.md` | Guia para agentes Cursor |
+| `.cursorrules` | Regras Cursor (auto-load) |
+| `.codex/AGENTS.md` | Guia Codex |
+| `.cursor/MCP_SETUP.md` | Configuração dos MCPs |
 
 ---
 
 ## Histórico
+
+### Auditoria de documentação e agentes — 07/07/2026
+
+Atualização de `.cursorrules`, skills em `.agents/skills/`, `.codex/AGENTS.md`, configuração de MCPs e criação do checklist P0/P1/P2. Identificadas 10 divergências entre documentação e código a serem resolvidas nas próximas sprints.
 
 ### Redesign Premium + Deploy — 07/07/2026
 
@@ -171,7 +202,7 @@ Hero escuro, animações Framer Motion, paleta premium, grid denso no Perfil, ti
 
 ### Canonicalização — 06/07/2026 (tarde)
 
-`docs/CANON.md` criado; ordem seções Perfil → Cases → Trajetória; copy comercial extraído para `data/archive/`; status honesto (Fase 5 🟡); agent docs alinhados.
+`docs/CANON.md` criado; ordem seções Perfil → Cases → Trajetória; copy comercial extraído para `data/archive/`; status honesto; agent docs alinhados.
 
 ### Executive Proof System — 06/07/2026
 

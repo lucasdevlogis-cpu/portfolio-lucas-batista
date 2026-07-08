@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Source_Serif_4 } from "next/font/google";
 
+import { Analytics } from "@vercel/analytics/react";
+
+import { BackToTop } from "@/components/BackToTop";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import { CONTENT } from "@/data/content";
 
@@ -13,11 +16,11 @@ const inter = Inter({
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 
-const playfair = Playfair_Display({
+const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  variable: "--font-serif",
   display: "swap",
-  weight: ["600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const siteUrl =
@@ -78,7 +81,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${playfair.variable} h-full antialiased`}
+      className={`${inter.variable} ${sourceSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
         <script
@@ -94,6 +97,8 @@ export default function RootLayout({
         <MotionProvider>
           <main id="conteudo">{children}</main>
         </MotionProvider>
+        <BackToTop />
+        <Analytics />
       </body>
     </html>
   );

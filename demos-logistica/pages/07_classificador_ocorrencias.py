@@ -119,10 +119,10 @@ ui.hero(
         metodo="regras/keywords", producao="modelo supervisionado + revisão humana"
     ),
     metric={
-        "label": "Acurácia na amostra rotulada",
+        "label": "Concordância na amostra de desenvolvimento",
         "value": fmt.fmt_percent(acuracia, decimals=0),
         "delta": f"{alta} de {len(classificado)} classificadas como prioridade Alta",
-        "help": "Concordância entre a regra e o rótulo curado da amostra.",
+        "help": "Métrica no mesmo conjunto usado para ajustar as regras; pode superestimar a performance real. Produção exige validação em dados futuros.",
     },
 )
 

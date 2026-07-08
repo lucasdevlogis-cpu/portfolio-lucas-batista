@@ -131,7 +131,17 @@ with tab_visao:
                     "alertas",
                 ],
                 tooltip_field="pedido_id",
-                cluster=len(validos) > 40,
+                cluster=len(validos) > 60,
+            )
+            m = folium_maps.add_legend(
+                m,
+                "Confiança geográfica",
+                [
+                    {"color": brand.SEVERITY_COLORS["Alto"], "label": "Alta (score ≥ 80)"},
+                    {"color": brand.SEVERITY_COLORS["Média"], "label": "Média (50–79)"},
+                    {"color": brand.SEVERITY_COLORS["Baixa"], "label": "Baixa (< 50)"},
+                ],
+                position="bottomright",
             )
             folium_maps.render(
                 m, height=ui.map_height(brand.MAP_FULL_HEIGHT), key="auditoria_mapa"

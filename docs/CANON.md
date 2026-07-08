@@ -46,6 +46,7 @@ Spec visual detalhada: [`design/design.md`](../design/design.md) §2.
 | Spec visual + IA | [`design/design.md`](../design/design.md) | Figma |
 | Tokens landing | [`app/globals.css`](../app/globals.css) + [`design/tokens.md`](../design/tokens.md) | Hex inline |
 | Mapeamento do repo | [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | — |
+| Checklist de refatoração | [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md) | — |
 | Tokens demos Streamlit | [`demos-logistica/lib/brand.py`](../demos-logistica/lib/brand.py) | — |
 | Padrões viz demos | [`.agents/skills/portfolio-demos-viz/SKILL.md`](../.agents/skills/portfolio-demos-viz/SKILL.md) | Specs obsoletas em OPORTUNIDADES |
 | Estado do projeto | [`docs/AVALIACAO.md`](AVALIACAO.md) | Claims "100%" sem QA |

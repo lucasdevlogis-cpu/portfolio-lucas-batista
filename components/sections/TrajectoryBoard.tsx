@@ -18,6 +18,7 @@ import { EditorialBadge } from "@/components/ui/EditorialBadge";
 import { MetricPill } from "@/components/ui/MetricPill";
 import { PremiumCard } from "@/components/ui/PremiumCard";
 import { CONTENT } from "@/data/content";
+import { cn } from "@/lib/utils";
 
 const trajectoryIcons = [Target, Zap, LineChart];
 const impactIcons = [TrendingUp, TrendingUp, TrendingUp, TrendingUp];
@@ -33,9 +34,9 @@ export function TrajectoryBoard() {
       title={experienceSignals.titulo}
       lead={experienceSignals.resumo}
       className="relative border-b border-border/70 bg-editorial-2"
-      headerClassName="lg:mb-16"
+      headerClassName="lg:mb-10"
     >
-      <div className="grid gap-8 lg:grid-cols-[0.46fr_0.54fr]">
+      <div className="grid gap-6 lg:grid-cols-[0.48fr_0.52fr]">
         <div className="grid gap-6">
           <motion.div
             initial={{ opacity: 1, y: 30 }}
@@ -56,6 +57,7 @@ export function TrajectoryBoard() {
                 <div className="absolute left-[1.2rem] top-4 bottom-4 hidden w-px bg-gradient-to-b from-accent via-primary to-transparent sm:block" aria-hidden />
                 {experienceSignals.trajetoria.map((signal, index) => {
                   const Icon = trajectoryIcons[index % trajectoryIcons.length];
+                  const anos = ["2016–2020", "2020–2022", "2022–atual"];
                   return (
                     <div key={signal.titulo} className="relative grid grid-cols-[3.5rem_1fr] gap-4">
                       <div className="relative z-10 flex size-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-white shadow-md">
@@ -64,7 +66,7 @@ export function TrajectoryBoard() {
                       <div className="border-b border-border pb-5 last:border-b-0 last:pb-0">
                         <div className="flex items-center gap-3">
                           <span className="font-heading text-sm font-bold text-warm-accent">
-                            {String(index + 1).padStart(2, "0")}
+                            {anos[index] ?? String(index + 1).padStart(2, "0")}
                           </span>
                           <h4 className="font-heading text-lg font-bold text-ink">
                             {signal.titulo}
@@ -128,7 +130,7 @@ export function TrajectoryBoard() {
                   {experienceSignals.impactosTitulo}
                 </h3>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-2">
                 {experienceSignals.impactos.map((impacto, index) => {
                   const Icon = impactIcons[index % impactIcons.length];
                   return (
@@ -162,13 +164,27 @@ export function TrajectoryBoard() {
                 </h3>
               </div>
               <div className="space-y-5">
-                {latestExperiences.map((exp) => (
+                {latestExperiences.map((exp, index) => {
+                  const isCurrent = index === 0;
+                  return (
                   <article
                     key={exp.cargo + exp.empresa}
-                    className="group grid gap-4 rounded-xl border border-border bg-editorial/70 p-5 transition-all duration-normal ease-editorial hover:border-primary/25 hover:bg-editorial lg:grid-cols-[0.74fr_1.26fr]"
+                    className={cn(
+                      "group grid gap-4 rounded-xl border p-5 transition-all duration-normal ease-editorial lg:grid-cols-[0.74fr_1.26fr]",
+                      isCurrent
+                        ? "border-accent/40 bg-accent/[0.04] shadow-card hover:border-accent/60 hover:bg-accent/[0.06]"
+                        : "border-border bg-editorial/70 hover:border-primary/25 hover:bg-editorial",
+                    )}
                   >
                     <div>
-                      <p className="text-sm font-bold text-primary">{exp.periodo}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-bold text-primary">{exp.periodo}</p>
+                        {isCurrent ? (
+                          <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white">
+                            Atual
+                          </span>
+                        ) : null}
+                      </div>
                       <h4 className="mt-2 font-heading text-lg font-bold leading-tight text-ink">
                         {exp.cargo}
                       </h4>
@@ -178,7 +194,7 @@ export function TrajectoryBoard() {
                     </div>
                     <div>
                       <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-                        {exp.atribuicoes.slice(0, 2).map((atribuicao) => (
+                        {exp.atribuicoes.slice(0, 3).map((atribuicao) => (
                           <li key={atribuicao} className="flex gap-2">
                             <span className="mt-2 size-1.5 shrink-0 rounded-full bg-accent" />
                             <span>{atribuicao}</span>
@@ -187,7 +203,7 @@ export function TrajectoryBoard() {
                       </ul>
                       {exp.destaques ? (
                         <div className="mt-3 flex flex-wrap gap-2">
-                          {exp.destaques.slice(0, 2).map((destaque) => (
+                          {exp.destaques?.map((destaque) => (
                             <EditorialBadge key={destaque} tone="gold">
                               {destaque}
                             </EditorialBadge>
@@ -196,7 +212,8 @@ export function TrajectoryBoard() {
                       ) : null}
                     </div>
                   </article>
-                ))}
+                );
+              })}
               </div>
             </PremiumCard>
           </motion.div>
@@ -241,15 +258,24 @@ export function TrajectoryBoard() {
                     {experienceSignals.certificacoesTitulo}
                   </h3>
                 </div>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {experienceSignals.certificacoes.join(" · ")}
-                </p>
+                <ul className="grid gap-2">
+                  {experienceSignals.certificacoes.map((cert) => (
+                    <li key={cert} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" />
+                      {cert}
+                    </li>
+                  ))}
+                </ul>
                 <div className="mt-5 border-t border-border pt-4">
-                  <div className="flex items-center gap-3">
-                    <Languages className="size-5 text-primary" aria-hidden />
-                    <p className="text-sm font-semibold text-muted-foreground">
-                      {experienceSignals.idiomas.join(" · ")}
-                    </p>
+                  <div className="flex items-start gap-3">
+                    <Languages className="mt-0.5 size-5 text-primary" aria-hidden />
+                    <div className="grid gap-1">
+                      {experienceSignals.idiomas.map((idioma) => (
+                        <p key={idioma} className="text-sm text-muted-foreground">
+                          {idioma}
+                        </p>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </PremiumCard>
