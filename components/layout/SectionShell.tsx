@@ -29,7 +29,7 @@ export function SectionShell({
     <section
       id={id}
       className={cn(
-        "scroll-mt-24 overflow-hidden py-18 lg:py-28",
+        "scroll-mt-24 overflow-hidden py-10 lg:py-16",
         dark ? "bg-surface-dark text-white" : "bg-editorial text-ink",
         className,
       )}
@@ -41,13 +41,13 @@ export function SectionShell({
         )}
       >
         {title ? (
-          <div className={cn("mb-10 max-w-4xl lg:mb-14", headerClassName)}>
+          <div className={cn("mb-6 max-w-4xl lg:mb-10", headerClassName)}>
             {eyebrow ? (
               <p className={dark ? "eyebrow-dark" : "eyebrow"}>{eyebrow}</p>
             ) : null}
             <h2
               className={cn(
-                "mt-4 font-heading text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl",
+                "mt-3 font-heading text-3xl font-bold leading-[1.05] tracking-tight md:text-4xl",
                 dark ? "text-white" : "text-ink",
               )}
             >
@@ -56,7 +56,7 @@ export function SectionShell({
             {lead ? (
               <p
                 className={cn(
-                  "mt-4 max-w-3xl text-base leading-relaxed sm:text-lg md:max-w-4xl",
+                  "mt-3 max-w-3xl text-base leading-relaxed md:max-w-4xl",
                   dark ? "text-on-dark-muted" : "text-muted-foreground",
                 )}
               >

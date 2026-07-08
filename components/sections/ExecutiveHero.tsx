@@ -24,8 +24,8 @@ export function ExecutiveHero() {
 
   return (
     <SectionShell
-      className="relative min-h-[520px] overflow-hidden border-b border-white/10 bg-surface-dark pb-0 pt-16 text-white lg:min-h-[560px] lg:pt-14"
-      innerClassName="relative grid min-h-[460px] max-w-[1440px] items-center gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.75fr)] lg:gap-10 xl:grid-cols-[minmax(0,1.35fr)_minmax(400px,0.65fr)] xl:gap-12"
+      className="relative min-h-[420px] overflow-hidden border-b border-white/10 bg-surface-dark pb-0 pt-12 text-white lg:min-h-[460px] lg:pt-10"
+      innerClassName="relative grid min-h-[380px] max-w-[1440px] items-center gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.75fr)] lg:gap-8 xl:grid-cols-[minmax(0,1.35fr)_minmax(400px,0.65fr)] xl:gap-10"
     >
       {/* Ambient floating orbs */}
       <div
@@ -46,7 +46,7 @@ export function ExecutiveHero() {
       <div className="bg-grid-dark pointer-events-none absolute inset-0 opacity-35" aria-hidden />
       <div className="bg-noise pointer-events-none absolute inset-0" aria-hidden />
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-editorial"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-transparent to-editorial"
         aria-hidden
       />
 

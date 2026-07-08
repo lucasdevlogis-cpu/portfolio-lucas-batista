@@ -44,8 +44,6 @@ loadLocalEnv(".env");
 const require = createRequire(import.meta.url);
 const {
   CASE_DEMO_SLUGS,
-  CASES_DEMONSTRAVEIS,
-  CASES_ROADMAP,
   CONTENT,
   DEMOS_BASE_URL,
   demoUrl,
@@ -88,6 +86,10 @@ function warn(msg: string): void {
 
 const caseById = new Map(CONTENT.cases.map((c) => [c.id, c]));
 const demoIds = Object.keys(CASE_DEMO_SLUGS);
+
+// Derive CASES_DEMONSTRAVEIS e CASES_ROADMAP do CONTENT
+const CASES_DEMONSTRAVEIS = CONTENT.cases.filter((c) => c.id in CASE_DEMO_SLUGS);
+const CASES_ROADMAP = CONTENT.cases.filter((c) => c.id === "06-kpis-cd");
 
 // 0. Conteúdo headhunter-first obrigatório para o Executive Proof System.
 const contentRecord = CONTENT as unknown as Record<string, unknown>;

@@ -65,12 +65,10 @@ export interface Case {
   tags: string[];
   linkDemo: string;
   linkGitHub: string;
-  /** Caminho opcional para uma imagem de thumbnail real (ex.: "/cases/frete.png"). */
   thumbnail?: string;
   prioridade: CasePrioridade;
   perguntaNegocio: string;
   metricaPrincipal: string;
-  /** Métrica curta para a linha de triagem do card (ex.: "distância e frota otimizadas"). */
   metricaResumo: string;
   decisaoApoiada: string;
   limitacao: string;
@@ -267,12 +265,10 @@ export interface Content {
   mobileNav: MobileNavCopy;
 }
 
-/** URL pública do site — definir em `.env.local` ou na Vercel */
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
   "https://portfolio-lucas-batista-murex.vercel.app";
 
-/** URL base das demos no Streamlit Cloud — definir em `.env.local` */
 export const GITHUB_PROFILE_URL = "https://github.com/lucasdevlogis-cpu";
 export const GITHUB_DEMOS_URL =
   "https://github.com/lucasdevlogis-cpu/demos-logistica";
@@ -280,16 +276,11 @@ export const GITHUB_DEMOS_URL =
 export const DEMOS_BASE_URL =
   process.env.NEXT_PUBLIC_DEMOS_BASE_URL?.replace(/\/$/, "") ?? "";
 
-/** Monta URL da page Streamlit (slug sem .py) */
 export function demoUrl(pageSlug: string): string {
   if (!DEMOS_BASE_URL || !pageSlug) return "";
   return `${DEMOS_BASE_URL}/${pageSlug}`;
 }
 
-/**
- * Mapeamento case id → slug de URL Streamlit (sem prefixo numérico).
- * Arquivo `pages/08_ship_from_store.py` → URL `/ship_from_store`, não `/08_ship_from_store`.
- */
 export const CASE_DEMO_SLUGS: Record<string, string> = {
   "01-precificacao-frete": "precificacao_frete",
   "02-torre-controle": "mini_torre_controle",
@@ -303,7 +294,6 @@ export const CASE_DEMO_SLUGS: Record<string, string> = {
   "11-tsp-baseline-sp": "tsp_baseline_sp",
 };
 
-/** Constantes derivadas da SSOT para evitar redundância e inconsistência. */
 export const CASE_COUNT = Object.keys(CASE_DEMO_SLUGS).length;
 export const ANOS_EXPERIENCIA = 10;
 export const IMPACTO_PRINCIPAL = "+R$ 20M";
@@ -316,7 +306,7 @@ export const CONTENT: Content = {
     headline:
       "Operações logísticas com dados, produto interno, IA aplicada e impacto mensurável",
     subheadline:
-      "Mais de 10 anos conectando execução diária a indicadores, automações e decisões. Atua na interseção entre logística, analytics e tecnologia para reduzir custo, melhorar SLA e traduzir operação em resultado financeiro.",
+      "Mais de 10 anos conectando execução diária a indicadores, automações e decisões. Foco em prototipagem rápida e comunicação com diretoria.",
     email: "lucas.farias.log@outlook.com",
     linkedin: "https://linkedin.com/in/lucasfariaslog",
     github: GITHUB_PROFILE_URL,
@@ -357,7 +347,7 @@ export const CONTENT: Content = {
     resumo:
       "Atuo na interseção entre logística, dados e IA aplicada. O melhor fit está em posições que precisam conectar problema operacional, análise estruturada, prototipagem e comunicação executiva para diretoria.",
     senioridade:
-      "Analista Sênior com +10 anos de operação e portfólio técnico demonstrável",
+      "Analista Sênior com portfólio técnico demonstrável",
     disponibilidade:
       "São Paulo/SP — aberto a conversas com headhunters, recrutadores e lideranças de operações e dados",
     modeloAtuacao:
@@ -736,7 +726,7 @@ export const CONTENT: Content = {
       categoria: "Frete e Custo",
       icone: "DollarSign",
       tags: ["frete", "custo", "precificação", "componentes", "região"],
-      linkDemo: "",
+      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/precificacao_frete",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P0",
       perguntaNegocio: "Qual região concentra maior custo por entrega?",
@@ -755,7 +745,7 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Radar",
       tags: ["SLA", "OTD", "atraso", "ocorrência", "torre de controle"],
-      linkDemo: "",
+      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/mini_torre_controle",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P0",
       perguntaNegocio: "Quais entregas exigem ação imediata?",
@@ -774,7 +764,7 @@ export const CONTENT: Content = {
       categoria: "Last Mile e E-commerce",
       icone: "MapPin",
       tags: ["CEP", "last mile", "promessa", "prazo", "risco territorial"],
-      linkDemo: "",
+      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/promessa_cep",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P0",
       perguntaNegocio:
@@ -794,7 +784,7 @@ export const CONTENT: Content = {
       categoria: "Last Mile e E-commerce",
       icone: "Package",
       tags: ["ship from store", "omnichannel", "origem", "estoque", "prazo"],
-      linkDemo: "",
+      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/ship_from_store",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P1",
       perguntaNegocio: "Qual origem atende melhor: CD, loja, hub ou parceiro?",
@@ -814,7 +804,7 @@ export const CONTENT: Content = {
       categoria: "Last Mile e E-commerce",
       icone: "ScanSearch",
       tags: ["endereço", "geocoding", "CEP", "qualidade", "risco"],
-      linkDemo: "",
+      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/auditoria_endereco",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P1",
       perguntaNegocio:
@@ -855,7 +845,7 @@ export const CONTENT: Content = {
       categoria: "Método e Governança",
       icone: "AlertTriangle",
       tags: ["IA", "NLP", "ocorrências", "classificação", "triagem"],
-      linkDemo: "",
+      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/classificador_ocorrencias",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P2",
       perguntaNegocio:
@@ -876,7 +866,7 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Route",
       tags: ["CVRP", "roteirização", "capacidade", "frota", "otimização"],
-      linkDemo: "",
+      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/cvrp_urbano",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P0",
       perguntaNegocio:
@@ -897,7 +887,7 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Clock",
       tags: ["VRPTW", "janela de tempo", "SLA", "última milha", "sequência"],
-      linkDemo: "",
+      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/vrptw_ultima_milha",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P1",
       perguntaNegocio:
@@ -924,7 +914,7 @@ export const CONTENT: Content = {
         "consolidação",
         "hubs",
       ],
-      linkDemo: "",
+      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/rede_interhubs",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P1",
       perguntaNegocio:
@@ -945,7 +935,7 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Waypoints",
       tags: ["TSP", "sequência", "2-opt", "visitas", "otimização"],
-      linkDemo: "",
+      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/tsp_baseline_sp",
       linkGitHub: GITHUB_DEMOS_URL,
       prioridade: "P1",
       perguntaNegocio:
@@ -997,55 +987,4 @@ export const CONTENT: Content = {
     openLabel: "Abrir menu de navegação",
     closeLabel: "Fechar menu",
   },
-
 };
-
-/** Um case é "demonstrável" quando tem uma demo Streamlit publicada. */
-export function caseTemDemo(id: string): boolean {
-  return id in CASE_DEMO_SLUGS;
-}
-
-// Fonte única: `linkDemo` é derivado de CASE_DEMO_SLUGS, nunca declarado à mão.
-// Adicionar/remover uma entrada em CASE_DEMO_SLUGS já ativa ou desativa a demo.
-for (const c of CONTENT.cases) {
-  const slug = CASE_DEMO_SLUGS[c.id];
-  c.linkDemo = slug ? demoUrl(slug) : "";
-}
-
-/** Cases com demo interativa. */
-export const CASES_DEMONSTRAVEIS = CONTENT.cases.filter((c) =>
-  caseTemDemo(c.id),
-);
-
-/**
- * Três cases principais — abrem a seção Cases com cards ricos.
- * Escolhidos por cobrirem decisões distintas: custo de frete, visibilidade/SLA
- * e roteirização.
- */
-export const CASE_DESTAQUE_IDS = CONTENT.featuredProofCases;
-
-export function caseEhDestaque(id: string): boolean {
-  return (CASE_DESTAQUE_IDS as readonly string[]).includes(id);
-}
-
-/** Cases em destaque (ordem fixa de `CASE_DESTAQUE_IDS`). */
-export const CASES_DESTAQUE = CASE_DESTAQUE_IDS.map(
-  (id) => CASES_DEMONSTRAVEIS.find((c) => c.id === id)!,
-).filter(Boolean);
-
-/** Demais cases demonstráveis — biblioteca secundária filtrável. */
-export const CASES_BIBLIOTECA = CASES_DEMONSTRAVEIS.filter(
-  (c) => !caseEhDestaque(c.id),
-);
-
-/** Cases em desenvolvimento (sem demo) — lista compacta de roadmap. */
-export const CASES_ROADMAP = CONTENT.cases.filter((c) => !caseTemDemo(c.id));
-
-/** Impactos financeiros/operacionais quantificados do currículo. */
-export const IMPACTOS = CONTENT.experienceSignals.impactos;
-
-/** Categorias únicas para filtro (apenas biblioteca). */
-export const CASE_CATEGORIAS = [
-  "Todos",
-  ...Array.from(new Set(CASES_BIBLIOTECA.map((c) => c.categoria))),
-] as const;
