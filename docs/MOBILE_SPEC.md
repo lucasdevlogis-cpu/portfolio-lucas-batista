@@ -2,7 +2,7 @@
 
 > **Aplica-se a:** landing Next.js (todos os componentes em `components/`)
 >
-> **Meta:** Lighthouse mobile **100** (atual: 96)
+> **Meta:** Lighthouse mobile **≥ 90** (a reavaliar após densidade)
 >
 > **Breakpoints:** Tailwind padrao — `sm:640px`, `md:768px`, `lg:1024px`, `xl:1280px`
 
@@ -33,13 +33,13 @@ CTA Contato: Botao compacto (icone + texto curto) ou icone-only
 ```
 Layout: Single column, padding generoso
 Prioridade:
-  1. Nome (Playfair, text-3xl)
+  1. Nome (Source Serif 4, text-3xl)
   2. Posicionamento (1-2 linhas max)
   3. CTAs (stack vertical, largura total)
-  4. Cockpit (opcional — esconder abaixo de 640px?)
+  4. ProfileCockpit (opcional — esconder abaixo de 640px?)
 
-Decisao sobre cockpit:
-  - Opcao A: Esconder em mobile (cockpit e decorativo em telas pequenas)
+Decisao sobre ProfileCockpit:
+  - Opcao A: Esconder em mobile (ProfileCockpit e decorativo em telas pequenas)
   - Opcao B: Reduzir para 60% da largura, posicionar abaixo dos CTAs
   - Recomendacao: Opcao A — preservar 100vh para conteudo essencial
 
@@ -79,9 +79,9 @@ Touch target do card: Minimo 120px de altura total
 Gap entre cards: gap-4
 ```
 
-### CaseLibraryDesktop
+### CaseLibrary
 ```
-Nome: Renomear para CaseLibrary (nao "Desktop")
+Nome: CaseLibrary (responsivo: sidebar desktop + lista mobile)
 Layout: Stack vertical
 Filtros: Scroll horizontal com snap-x (pills compactos)
 Tabela: Converter para cards lista ou accordion

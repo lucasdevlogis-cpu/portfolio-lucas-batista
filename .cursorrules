@@ -27,7 +27,7 @@
   - Warm accent `#d4a853` — eyebrows e acento editorial
   - Muted `#667085` — texto secundário
   - Border `#d7cebd` — divisórias
-- **Fontes:** Playfair Display (headings, `--font-heading`) + Inter (body, `--font-body`)
+- **Fontes:** Source Serif 4 (headings, `--font-heading`) + Inter (body, `--font-body`)
 - **Containers:** max-w-[1440px] centralizado. Padding responsivo: px-5 sm:px-8 lg:px-10 xl:px-12
 - **Cards:** bg-card, border border-border/primary, shadow-card, rounded-xl. Hover: hover:-translate-y-1 hover:shadow-elevated
 - **Transições:** usar tokens `--duration-fast/normal/slow` + `--ease-editorial`
@@ -46,7 +46,7 @@
 
 ## Regras de UX/UI
 - **Menos texto, mais impacto:** cada seção deve ser escaneável em 10 segundos
-- **Hero:** label + nome (Playfair) + headline curta + subheadline de 1-2 linhas + CTAs + provas rápidas
+- **Hero:** label + nome (Source Serif 4) + headline curta + subheadline de 1-2 linhas + CTAs + provas rápidas
 - **Cards:** título curto + descrição enxuta + ação
 - **CTAs primários:** botão sólido (executive/accent). CTAs secundários: outline
 - **Navegação:** smooth scroll obrigatório (já em `globals.css`)
@@ -70,7 +70,7 @@
 
 ## Proibido
 - ❌ Cores fora do design system (sem exceção)
-- ❌ Fontes que não sejam Playfair/Inter
+- ❌ Fontes que não sejam Source Serif 4/Inter
 - ❌ Texto sem hierarquia (paredes de texto)
 - ❌ Componentes interativos falsos (cockpit estático sem propósito)
 - ❌ Ícones misturando bibliotecas
@@ -84,7 +84,7 @@
 2. Antes de implementar, verificar se a mudança está no checklist de prioridade (`docs/P0_P1_P2_CHECKLIST.md`)
 3. Cada prompt deve focar em UMA seção ou UMA funcionalidade
 4. Após implementar, verificar: responsivo (375px), contraste, acessibilidade, performance
-5. Rodar `npm run validate && npm run lint && npm run typecheck && npm run build` antes de commit
+5. Rodar `npm run validate && npm run lint && npm run typecheck && npm run build && npm run test:e2e` antes de commit
 6. Commit após cada feature completa com mensagem descritiva em português
 
 ## Dados do Portfolio
@@ -102,4 +102,4 @@
 ## Referências Rápidas
 - Skills: `.agents/skills/design-system.md`, `.agents/skills/component-patterns.md`, `.agents/skills/ux-writing.md`, `.agents/skills/a11y.md`, `.agents/skills/mobile-first.md`
 - Checklist de prioridade: `docs/P0_P1_P2_CHECKLIST.md`
-- Revisão crítica base: `revisao-critica-portfolio-lucas.pdf`
+- Revisão crítica base: `docs/GAPS.md` + `docs/AVALIACAO.md`

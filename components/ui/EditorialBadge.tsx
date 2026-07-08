@@ -14,7 +14,7 @@ export function EditorialBadge({
   return (
     <span
       className={cn(
-        "inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-extrabold uppercase leading-none tracking-[0.16em]",
+        "inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-extrabold uppercase leading-none tracking-[0.14em]",
         tone === "light" &&
           "border-primary/12 bg-primary/[0.04] text-primary",
         tone === "dark" &&

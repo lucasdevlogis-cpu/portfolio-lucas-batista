@@ -44,7 +44,7 @@ Este repositório contém o **portfólio profissional de Lucas Batista**, posici
 | UI components | shadcn/ui (`components/ui/`) |
 | Ícones | Lucide React |
 | Animação | Framer Motion 12.x (entrada, hover e micro-interações em toda a landing) |
-| Fonte | Inter via `next/font/google` |
+| Fonte | Source Serif 4 (títulos) + Inter (corpo) via `next/font/google` |
 | Bundler | Turbopack |
 
 **Importante:** Tailwind v4 não usa `tailwind.config.ts`. Todas as variáveis, cores e tokens customizados estão em `app/globals.css` dentro do bloco `@theme inline` e `:root`. Não crie um `tailwind.config.ts`.
@@ -77,21 +77,21 @@ portfolio-lucas-batista/
 │   ├── ui/                 # shadcn/ui (button, card, dialog, badge)
 │   ├── archive/            # Componentes shelved (não montar)
 │   ├── HomePage.tsx        # Monta a página na ordem canônica
-│   ├── Header.tsx          # Nav fixa
-│   ├── Hero.tsx            # Primeira dobra executiva
-│   ├── ProfileSection.tsx  # #perfil
-│   ├── Cases.tsx           # #cases (âncora + biblioteca + roadmap)
-│   ├── CaseCard.tsx        # Card de case study
-│   ├── CaseLibraryInteractive.tsx  # Filtros da biblioteca
-│   ├── CaseDemoLauncher.tsx        # Botão/demo launcher
-│   ├── DemoModal.tsx               # Modal com iframe Streamlit
-│   ├── TrajectorySection.tsx       # #trajetoria
-│   ├── Contato.tsx                 # #contato
-│   ├── Footer.tsx                  # Rodapé
-│   ├── SectionHeader.tsx           # Eyebrow + título + lead
-│   ├── EditorialDarkPanel.tsx      # Painel escuro reutilizável
-│   ├── MobileNav.tsx               # Menu mobile
-│   └── LucideIconByName.tsx        # Resolução dinâmica de ícones
+│   ├── Header.tsx          # Nav fixa com scroll spy
+│   ├── MobileNav.tsx       # Menu mobile
+│   ├── ExecutiveHero.tsx   # Primeira dobra executiva
+│   ├── EvidenceStrip.tsx   # Faixa de 4 métricas principais
+│   ├── ProfileBrief.tsx    # #perfil — fit, diferenciais, FAQ de triagem
+│   ├── SignatureCases.tsx  # #cases — 3 cards âncora
+│   ├── CaseLibrary.tsx     # Biblioteca filtrável (desktop + mobile)
+│   ├── CaseDemoLauncher.tsx# Botão/demo launcher
+│   ├── CaseThumbnail.tsx   # Thumbnail SVG dos cases
+│   ├── DemoModal.tsx       # Modal com iframe Streamlit
+│   ├── TrajectoryBoard.tsx # #trajetoria — experiência, stack, impactos
+│   ├── ContactPanel.tsx    # #contato — links e FAQ
+│   ├── Footer.tsx          # Rodapé
+│   ├── BackToTop.tsx       # Botão flutuante voltar ao topo
+│   └── LucideIconByName.tsx# Resolução dinâmica de ícones
 ├── data/
 │   ├── content.ts          # SSOT de copy, cases, links, nav
 │   └── archive/            # Copy shelved (não usar sem aprovação)
@@ -141,14 +141,14 @@ portfolio-lucas-batista/
 ### Ordem canônica da homepage (DOM = nav = scroll)
 
 ```
-Header → Hero → ProfileSection (#perfil) → Cases (#cases) → TrajectorySection (#trajetoria) → Contato (#contato) → Footer
+Header → ExecutiveHero → EvidenceStrip → ProfileBrief (#perfil) → SignatureCases (#cases) → TrajectoryBoard (#trajetoria) → ContactPanel (#contato) → Footer
 ```
 
 A nav exibe: **Perfil · Provas · Trajetória · Contato**.
 
 ### Componentes ativos (não usar archive sem aprovação)
 
-`Header`, `Hero`, `ProfileSection`, `SectionHeader`, `EditorialDarkPanel`, `TrajectorySection`, `Cases`, `CaseCard`, `CaseLibraryInteractive`, `CaseDemoLauncher`, `DemoModal`, `Contato`, `Footer`, `HomePage`, `MobileNav`, `LucideIconByName`, `AnimatedSection`.
+`Header`, `ExecutiveHero`, `EvidenceStrip`, `ProfileBrief`, `SignatureCases`, `CaseLibrary`, `CaseDemoLauncher`, `CaseThumbnail`, `DemoModal`, `TrajectoryBoard`, `ContactPanel`, `Footer`, `HomePage`, `MobileNav`, `LucideIconByName`, `EditorialBadge`, `PremiumCard`, `MetricPill`, `SectionShell`, `BackToTop`, `MotionProvider`.
 
 ---
 
@@ -161,7 +161,7 @@ A nav exibe: **Perfil · Provas · Trajetória · Contato**.
 | Spec visual + IA | `design/design.md` | Figma |
 | Tokens landing | `app/globals.css` + `design/tokens.md` | Hex inline |
 | Tokens demos Streamlit | `demos-logistica/lib/brand.py` | — |
-| Padrões viz demos | `.agents/skills/portfolio-demos-viz/SKILL.md` | Specs obsoletas em OPORTUNIDADES |
+| Padrões viz demos | `.agents/skills/design-system.md`, `.agents/skills/component-patterns.md` | Specs obsoletas em OPORTUNIDADES |
 | Estado do projeto | `docs/AVALIACAO.md` | Claims "100%" sem QA |
 | Deploy / Vercel | `docs/DEPLOY.md`, `docs/VERCEL.md` | SHAs hardcoded |
 | CV PDF | Gerado de `content.ts` via `npm run cv:generate` | Copy manual no Python |
@@ -249,6 +249,7 @@ python scripts/smoke_test.py   # 13 checagens
 - `npm run validate` é o teste principal: valida contagem de cases, slugs, ícones Lucide, campos obrigatórios, consistência `linkDemo` e correspondência com arquivos `demos-logistica/pages/*.py`.
 - `npm run lint` usa `eslint-config-next` (core-web-vitals + typescript).
 - `npm run build` deve passar sem erros. O `prebuild` roda `validate` automaticamente.
+- `npm run test:e2e` executa 8 testes Playwright contra build de produção.
 - QA manual pós-deploy está documentado em `docs/VERCEL.md` (checklist: modal demo, OG image, Lighthouse mobile ≥ 90, links de contato, etc.).
 
 ### Demos
@@ -428,7 +429,11 @@ Fontes TTF candidatas: `scripts/assets/DejaVuSans.ttf`, Arial no Windows, DejaVu
 | `.agents/skills/ux-writing.md` | Guia de copy atualizado |
 | `.agents/skills/a11y.md` | Acessibilidade atualizada |
 | `.agents/skills/mobile-first.md` | Mobile-first atualizado |
-| `.agents/skills/portfolio-demos-viz/SKILL.md` | Padrões visuais das demos Streamlit |
+| `.agents/skills/design-system.md` | Sistema visual da landing e das demos |
+| `.agents/skills/component-patterns.md` | Padrões de componentes reutilizáveis |
+| `.agents/skills/ux-writing.md` | Guia de copy |
+| `.agents/skills/a11y.md` | Acessibilidade |
+| `.agents/skills/mobile-first.md` | Mobile-first |
 
 ---
 

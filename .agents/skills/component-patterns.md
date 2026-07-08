@@ -34,7 +34,7 @@ interface SectionShellProps {
 
 ### Tailwind
 ```
-scroll-mt-24 overflow-hidden py-20 lg:py-28
+scroll-mt-24 overflow-hidden py-14 lg:py-20
 bg-editorial text-ink  (light)
 bg-surface-dark text-white  (dark)
 container max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-12
@@ -56,7 +56,7 @@ interface EditorialBadgeProps {
 ### Tailwind
 ```
 inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1.5
-text-[11px] font-extrabold uppercase leading-none tracking-[0.16em]
+text-xs font-extrabold uppercase leading-none tracking-[0.14em]
 
 // light
 border-primary/12 bg-primary/[0.04] text-primary
@@ -128,7 +128,7 @@ interface Case {
 - Mobile: 1 coluna, cards verticais
 - Ícone em gradiente primary no topo
 - Badge de categoria (EditorialBadge)
-- Título Playfair 2xl
+- Título Source Serif 4 text-2xl
 - Descrição curta
 - "Problema de negócio" (resumido no card, detalhado no modal)
 - "Métrica principal" destacada

@@ -20,11 +20,12 @@
 
 ## Tipografia
 
-- **Headings:** `font-heading` = **Playfair Display** via `next/font/google` (pesos 600-900).
+- **Headings:** `font-heading` = **Source Serif 4** via `next/font/google` (pesos 600-900).
 - **Body:** `font-body` = **Inter** via `next/font/google` (pesos 400-900).
-- **Eyebrow:** `text-[11px] font-extrabold uppercase tracking-[0.16em]`.
-- **Section title:** `font-heading text-4xl md:text-5xl font-bold leading-[1.05] tracking-tight`.
-- **Section lead:** `text-lg leading-relaxed text-muted-foreground`.
+- **Eyebrow:** `text-xs font-extrabold uppercase tracking-[0.14em]`.
+- **Section title:** `font-heading text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.08] tracking-tight`.
+- **Section lead:** `text-base sm:text-lg leading-relaxed text-muted-foreground`.
+- **Corpo mínimo:** `text-sm` (14px) apenas para metadados; `text-base` (16px) para leitura principal.
 
 ## Container (escopo)
 
@@ -35,7 +36,7 @@
 
 ## Radius e espaço
 
-- `--radius`: `0.875rem` · cards `rounded-xl` · seções `py-20 lg:py-28`
+- `--radius`: `0.875rem` · cards `rounded-xl` · seções `py-14 lg:py-20`
 - Landing padding: `px-5 sm:px-8 lg:px-10 xl:px-12`
 
 ## Elevação e motion

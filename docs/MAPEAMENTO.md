@@ -1,7 +1,7 @@
 # MAPEAMENTO — Portfólio Lucas Batista
 
-> Estado completo do repositório após redesign premium desktop (julho/2026).
-> Última atualização: 07/07/2026.
+> Estado completo do repositório após rodada de densificação, tipografia e documentação (julho/2026).
+> Última atualização: 08/07/2026.
 
 ---
 
@@ -36,16 +36,16 @@
 | UI base | shadcn/ui (`components/ui/`) |
 | Animação | Framer Motion 12.x (`LazyMotion` + `domAnimation`) |
 | Ícones | Lucide React |
-| Fontes | Inter (corpo) + Playfair Display (títulos) |
+| Fontes | Inter (corpo) + Source Serif 4 (títulos) |
 
 ### Scripts principais
 
 ```bash
 npm run validate          # valida cases e slugs
-npm run validate:premium  # valida componentes do redesign
 npm run lint              # ESLint 9
 npm run typecheck         # tsc --noEmit
 npm run build             # prebuild (validate + typecheck) + next build
+npm run test:e2e          # Playwright — 8 testes
 npm run cv:generate       # exporta content.ts → PDF
 ```
 
@@ -58,26 +58,26 @@ npm run cv:generate       # exporta content.ts → PDF
 ```
 Header
 └── ExecutiveHero
-    └── LogisticsIntelligenceCockpit
 EvidenceStrip
 ProfileBrief
 SignatureCases
 └── CaseDemoLauncher → DemoModal (lazy)
-└── CaseLibraryDesktop
+└── CaseLibrary
 TrajectoryBoard
 ContactPanel
 Footer
+BackToTop
 ```
 
 | Componente | Path | Função |
 |------------|------|--------|
 | `Header` | `components/Header.tsx` | Nav fixa, CTA contato |
-| `ExecutiveHero` | `components/sections/ExecutiveHero.tsx` | Hero escuro, nome, posicionamento, CTAs |
-| `LogisticsIntelligenceCockpit` | `components/visual/LogisticsIntelligenceCockpit.tsx` | Dashboard SVG animado do hero |
-| `EvidenceStrip` | `components/sections/EvidenceStrip.tsx` | 3 provas rápidas com ícones |
+| `ExecutiveHero` | `components/sections/ExecutiveHero.tsx` | Hero escuro, nome, posicionamento, CTAs, painel de credibilidade |
+| `EvidenceStrip` | `components/sections/EvidenceStrip.tsx` | 4 métricas principais com ícones |
 | `ProfileBrief` | `components/sections/ProfileBrief.tsx` | Perfil em 60s, senioridade, diferenciais |
 | `SignatureCases` | `components/sections/SignatureCases.tsx` | 3 cases âncora em grid |
-| `CaseLibraryDesktop` | `components/sections/CaseLibraryDesktop.tsx` | Biblioteca filtrável de cases |
+| `CaseLibrary` | `components/sections/CaseLibrary.tsx` | Biblioteca filtrável de cases (desktop + mobile) |
+| `CaseThumbnail` | `components/CaseThumbnail.tsx` | Thumbnail SVG dos cases |
 | `CaseDemoLauncher` | `components/CaseDemoLauncher.tsx` | Botão + lazy load do modal de demo |
 | `DemoModal` | `components/DemoModal.tsx` | Modal com iframe Streamlit |
 | `TrajectoryBoard` | `components/sections/TrajectoryBoard.tsx` | Timeline, stack, impactos, formação |
@@ -89,10 +89,9 @@ Footer
 ```
 components/ui/
 ├── button.tsx, card.tsx, dialog.tsx, badge.tsx  # shadcn/ui
-├── FadeIn.tsx        # reveal ao scroll
-├── Stagger.tsx       # container stagger
-├── GlassCard.tsx     # card glassmorphism
 ├── PremiumCard.tsx   # card com gradient border
+├── MetricPill.tsx    # mini métrica visual
+├── EditorialBadge.tsx# badge de categoria/seção
 ├── MetricPill.tsx    # mini métrica visual
 └── EditorialBadge.tsx# badge de categoria/seção
 ```
@@ -126,7 +125,8 @@ components/archive/
     ├── CaseCard.tsx
     ├── CaseLibraryInteractive.tsx
     ├── SectionHeader.tsx
-    └── EditorialDarkPanel.tsx
+    ├── EditorialDarkPanel.tsx
+    └── LogisticsIntelligenceCockpit.tsx  # cockpit SVG estático arquivado 08/07
 ```
 
 ---
@@ -172,13 +172,13 @@ components/archive/
 
 ## 7. Checklist de QA / E2E
 
-- [ ] `npm run validate` OK
-- [ ] `npm run validate:premium` OK
-- [ ] `npm run lint` OK
-- [ ] `npm run typecheck` OK
-- [ ] `npm run build` OK
-- [ ] `npm run cv:generate` OK
-- [ ] Homepage carrega na URL de produção
+- [x] `npm run validate` OK
+- [x] `npm run validate:premium` OK
+- [x] `npm run lint` OK
+- [x] `npm run typecheck` OK
+- [x] `npm run build` OK
+- [ ] `npm run cv:generate` OK (pendente re-geração pós ajustes)
+- [x] Homepage carrega na URL de produção
 - [ ] Seções visíveis: Hero, Evidence, Perfil, Cases, Trajetória, Contato
 - [ ] Nav scrolla para âncoras corretas
 - [ ] 3 cases âncora + biblioteca filtrável + roadmap

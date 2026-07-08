@@ -50,6 +50,10 @@ export interface Pessoal {
   email: string;
   linkedin: string;
   github: string;
+  localizacao: string;
+  tempoResposta: string;
+  stackTags: string[];
+  empresasResumo: { nome: string; abreviacao?: string }[];
 }
 
 export interface Case {
@@ -261,7 +265,6 @@ export interface Content {
   siteMetadata: SiteMetadata;
   dialog: DialogCopy;
   mobileNav: MobileNavCopy;
-  impactos: Impacto[];
 }
 
 /** URL pública do site — definir em `.env.local` ou na Vercel */
@@ -300,6 +303,11 @@ export const CASE_DEMO_SLUGS: Record<string, string> = {
   "11-tsp-baseline-sp": "tsp_baseline_sp",
 };
 
+/** Constantes derivadas da SSOT para evitar redundância e inconsistência. */
+export const CASE_COUNT = Object.keys(CASE_DEMO_SLUGS).length;
+export const ANOS_EXPERIENCIA = 10;
+export const IMPACTO_PRINCIPAL = "+R$ 20M";
+
 export const CONTENT: Content = {
   pessoal: {
     nome: "Lucas Farias Batista",
@@ -312,6 +320,15 @@ export const CONTENT: Content = {
     email: "lucas.farias.log@outlook.com",
     linkedin: "https://linkedin.com/in/lucasfariaslog",
     github: GITHUB_PROFILE_URL,
+    localizacao: "São Paulo/SP",
+    tempoResposta: "resposta em até 24h (dias úteis)",
+    stackTags: ["Python", "SQL", "Power BI", "Streamlit", "IA aplicada"],
+    empresasResumo: [
+      { nome: "GRUPO SBF", abreviacao: "Centauro e Nike" },
+      { nome: "GRUPO NOS", abreviacao: "Shell Select e OXXO" },
+      { nome: "VESTE S.A" },
+      { nome: "AREZZO&CO" },
+    ],
   },
 
   hero: {
@@ -320,15 +337,15 @@ export const CONTENT: Content = {
     ctaSecundario: "Contato profissional",
     provas: [
       {
-        valor: "+10 anos",
+        valor: `+${ANOS_EXPERIENCIA} anos`,
         label: "de operação em transporte, varejo, e-commerce e indústria",
       },
       {
-        valor: "+R$ 20M",
+        valor: IMPACTO_PRINCIPAL,
         label: "em working capital liberado e recuperação tributária",
       },
       {
-        valor: "10 demos",
+        valor: `${CASE_COUNT} demos`,
         label: "navegáveis em frete, SLA, last mile e IA aplicada",
       },
     ],
@@ -389,7 +406,7 @@ export const CONTENT: Content = {
         titulo: "Entrega demonstrável",
         descricao:
           "Transforma hipóteses em dashboards, simuladores e demos navegáveis, com limites e premissas declarados.",
-        evidencia: "10 cases publicados em Streamlit + Next.js",
+        evidencia: `${CASE_COUNT} cases publicados em Streamlit + Next.js`,
       },
       {
         titulo: "Comunicação executiva",
@@ -434,12 +451,12 @@ export const CONTENT: Content = {
 
   experienceSignals: {
     eyebrow: "Trajetória e stack",
-    titulo: "Senioridade construída na rotina operacional",
+    titulo: "Evolução da carreira até 2026",
     resumo:
       "Perfil que combina chão de fábrica, leitura de dados e prototipagem. Recrutadores conseguem avaliar fit sem depender de uma conversa inicial longa.",
     trajetoria: [
       {
-        titulo: "+10 anos em operações logísticas",
+        titulo: `+${ANOS_EXPERIENCIA} anos em operações logísticas`,
         descricao:
           "Transporte, varejo, e-commerce, moda e indústria. Conectando execução diária a indicadores e decisões.",
       },
@@ -451,7 +468,7 @@ export const CONTENT: Content = {
       {
         titulo: "Portfólio com prova navegável",
         descricao:
-          "10 cases publicados em Streamlit com contexto de negócio, métrica principal, decisão apoiada e limitação declarada.",
+          `${CASE_COUNT} cases publicados em Streamlit com contexto de negócio, métrica principal, decisão apoiada e limitação declarada.`,
       },
     ],
     stackTitulo: "Stack por tipo de contribuição",
@@ -947,7 +964,7 @@ export const CONTENT: Content = {
     declaracaoLimitacao:
       "Portfólio profissional com dados sintéticos, públicos ou anonimizados. As demos demonstram raciocínio, método e capacidade de prototipagem; decisões reais exigem validação com dados, contexto e governança da operação.",
     voltarTopo: "Voltar ao topo",
-    badgeCases: "10 provas navegáveis",
+    badgeCases: `${CASE_COUNT} provas navegáveis`,
     linksRapidosTitulo: "Links rápidos",
   },
 
@@ -981,33 +998,6 @@ export const CONTENT: Content = {
     closeLabel: "Fechar menu",
   },
 
-  impactos: [
-    {
-      valor: "+R$ 20M",
-      label: "Capital de giro liberado",
-      descricao: "Working capital +2 dias operacionais.",
-    },
-    {
-      valor: "-20%",
-      label: "Custo de frete cadeia fria",
-      descricao: "~R$ 150 mil mensais economizados.",
-    },
-    {
-      valor: "+R$ 600K",
-      label: "Recuperação de tributos",
-      descricao: "Identificação e revisão fiscal.",
-    },
-    {
-      valor: "-28%",
-      label: "Custo médio de frete",
-      descricao: "BID de última milha renegociado.",
-    },
-    {
-      valor: "-50%",
-      label: "Mudança de modal",
-      descricao: "Aéreo para rodoviário mantendo SLA.",
-    },
-  ],
 };
 
 /** Um case é "demonstrável" quando tem uma demo Streamlit publicada. */
@@ -1052,7 +1042,7 @@ export const CASES_BIBLIOTECA = CASES_DEMONSTRAVEIS.filter(
 export const CASES_ROADMAP = CONTENT.cases.filter((c) => !caseTemDemo(c.id));
 
 /** Impactos financeiros/operacionais quantificados do currículo. */
-export const IMPACTOS = CONTENT.impactos;
+export const IMPACTOS = CONTENT.experienceSignals.impactos;
 
 /** Categorias únicas para filtro (apenas biblioteca). */
 export const CASE_CATEGORIAS = [

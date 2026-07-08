@@ -7,90 +7,34 @@ Configuracoes de SEO tecnico e meta tags para maxima visibilidade em buscadores 
 
 ### layout.tsx — Configuracao Global
 ```tsx
+import { Inter, Source_Serif_4 } from "next/font/google";
 import { Metadata } from "next";
+import { CONTENT } from "@/data/content";
+
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
+const sourceSerif = Source_Serif_4({ subsets: ["latin"], display: "swap", variable: "--font-serif" });
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://portfolio-lucas-batista-murex.vercel.app";
 
 export const metadata: Metadata = {
-  // Basico
-  title: "Lucas Farias Batista | Analista de Transportes Senior — Operacoes, Dados e IA Aplicada",
-  description: "Portfolio profissional com 10 provas navegaveis em frete, SLA, last mile e IA aplicada. +10 anos de experiencia e +R$ 20M em impacto financeiro mensuravel.",
-  
-  // Open Graph (LinkedIn, Facebook, WhatsApp)
+  metadataBase: new URL(siteUrl),
+  title: CONTENT.siteMetadata.title,
+  description: CONTENT.siteMetadata.description,
+  keywords: CONTENT.siteMetadata.keywords,
+  robots: "index, follow",
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://portfolio-lucas-batista-murex.vercel.app",
-    siteName: "Lucas Farias Batista — Portfolio Profissional",
-    title: "Lucas Farias Batista | Analista de Transportes Senior",
-    description: "10 provas navegaveis em logistica, dados e IA aplicada. +R$ 20M em impacto financeiro.",
-    images: [
-      {
-        url: "https://portfolio-lucas-batista-murex.vercel.app/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Portfolio de Lucas Farias Batista — Analista de Transportes Senior",
-      },
-    ],
+    url: siteUrl,
+    title: CONTENT.siteMetadata.title,
+    description: CONTENT.siteMetadata.description,
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: CONTENT.siteMetadata.title }],
   },
-  
-  // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "Lucas Farias Batista | Analista de Transportes Senior",
-    description: "10 provas navegaveis em logistica, dados e IA aplicada. +R$ 20M em impacto financeiro.",
-    images: ["https://portfolio-lucas-batista-murex.vercel.app/og-image.jpg"],
-  },
-  
-  // Favicon e Icons
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
-  },
-  
-  // Robots
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  
-  // Canonical
-  alternates: {
-    canonical: "https://portfolio-lucas-batista-murex.vercel.app",
-  },
-  
-  // Keywords (meta search engines)
-  keywords: [
-    "analista de transportes",
-    "logistica",
-    "operacoes",
-    "dados",
-    "inteligencia logistica",
-    "SLA",
-    "OTD",
-    "custo de frete",
-    "roteirizacao",
-    "last mile",
-    "power bi",
-    "python",
-    "streamlit",
-    "supply chain",
-  ],
-  
-  // Autor
-  authors: [{ name: "Lucas Farias Batista" }],
-  creator: "Lucas Farias Batista",
-  publisher: "Lucas Farias Batista",
-  
-  // Verificacao
-  verification: {
-    google: "seu-codigo-de-verificacao",
+    title: CONTENT.siteMetadata.title,
+    description: CONTENT.siteMetadata.description,
+    images: ["/og-image.jpg"],
   },
 };
 ```
@@ -108,45 +52,14 @@ export default function Page() {
     jobTitle: "Analista de Transportes Senior",
     description: "Operacoes logisticas com dados, produto interno, IA aplicada e impacto mensuravel.",
     url: "https://portfolio-lucas-batista-murex.vercel.app",
-    image: "https://portfolio-lucas-batista-murex.vercel.app/lucas-batista.jpg",
-    sameAs: [
-      "https://linkedin.com/in/lucasfariaslog",
-      "https://github.com/lucasdevlogis-cpu",
-    ],
-    worksFor: {
-      "@type": "Organization",
-      name: "GRUPO SBF (Centauro e Nike)",
-    },
-    alumniOf: [
-      {
-        "@type": "EducationalOrganization",
-        name: "USP/Esalq",
-        description: "MBA Data Science e Analytics",
-      },
-      {
-        "@type": "EducationalOrganization",
-        name: "UNIP",
-        description: "MBA Engenharia Logistica",
-      },
-    ],
+    url: siteUrl,
     knowsAbout: [
-      "Logistica",
-      "Analise de Dados",
-      "Business Intelligence",
+      "Logística",
       "Supply Chain",
-      "Transporte",
-      "IA Aplicada",
-      "Power BI",
-      "Python",
-      "Roteirizacao",
-      "Last Mile",
+      "Análise de dados",
+      "Frete",
+      "E-commerce",
     ],
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Sao Paulo",
-      addressRegion: "SP",
-      addressCountry: "BR",
-    },
   };
 
   return (

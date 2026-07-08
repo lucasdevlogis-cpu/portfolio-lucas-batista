@@ -21,7 +21,7 @@ export function ContactPanel() {
       title={contactLinks.titulo}
       lead={contactLinks.descricao}
       className="relative overflow-hidden bg-surface-dark"
-      innerClassName="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start"
+      innerClassName="grid gap-10 lg:grid-cols-[1.1fr_0.75fr] lg:items-start"
       headerClassName="mb-0"
     >
       <div
@@ -42,31 +42,31 @@ export function ContactPanel() {
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-on-dark-accent">
               Quando me chamar
             </p>
-            <ul className="mt-4 grid gap-3">
+            <ul className="mt-5 grid gap-4">
               {contactLinks.manifesto.map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-on-dark-muted">
-                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-on-dark-accent" aria-hidden />
+                <li key={item} className="flex items-start gap-3 text-base leading-relaxed text-on-dark-muted">
+                  <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-on-dark-accent" aria-hidden />
                   {item}
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="flex items-center gap-2 text-sm text-on-dark-muted">
-            <MapPin className="size-4 text-on-dark-accent" aria-hidden />
-            São Paulo/SP · resposta em até 24h (dias úteis)
+          <div className="flex items-center gap-2 text-base text-on-dark-muted">
+            <MapPin className="size-5 text-on-dark-accent" aria-hidden />
+            {pessoal.localizacao} · {pessoal.tempoResposta}
           </div>
 
-          <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+          <div className="rounded-xl border border-white/10 bg-white/[0.04] p-5 lg:p-6">
             <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-accent">
               <HelpCircle className="size-3.5" aria-hidden />
               Triagem rápida
             </p>
-            <div className="mt-3 grid gap-3">
+            <div className="mt-4 grid gap-4">
               {contactLinks.faq.map((item) => (
                 <div key={item.pergunta}>
-                  <p className="text-sm font-bold text-white">{item.pergunta}</p>
-                  <p className="text-xs leading-relaxed text-on-dark-muted">{item.resposta}</p>
+                  <p className="text-base font-bold text-white">{item.pergunta}</p>
+                  <p className="mt-1.5 text-base leading-relaxed text-on-dark-muted">{item.resposta}</p>
                 </div>
               ))}
             </div>
@@ -81,7 +81,7 @@ export function ContactPanel() {
         transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
       >
         <PremiumCard tone="dark" className="relative p-6 lg:p-8" gradientBorder>
-          <div className="grid gap-3">
+          <div className="grid gap-4">
             <a
               href={pessoal.linkedin}
               target="_blank"
@@ -89,24 +89,24 @@ export function ContactPanel() {
               onClick={() => analytics.linkedinClick("contato")}
               className={cn(
                 buttonVariants({ variant: "default" }),
-                "group h-13 justify-between rounded-lg bg-white px-5 text-ink hover:bg-white/90",
+                "group h-13 justify-between rounded-lg bg-white px-5 text-base font-bold text-ink hover:bg-white/90",
               )}
             >
               <span className="inline-flex items-center gap-2">
-                <Link className="size-4" aria-hidden />
+                <Link className="size-5" aria-hidden />
                 {contactLinks.primaryLabel}
               </span>
-              <ExternalLink className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
+              <ExternalLink className="size-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
             </a>
             <a
               href={`mailto:${pessoal.email}`}
               onClick={() => analytics.contactClick("email")}
               className={cn(
                 buttonVariants({ variant: "outline" }),
-                "h-13 justify-start rounded-lg border-white/15 bg-white/[0.04] px-5 text-white transition-all hover:bg-white/10 hover:text-white",
+                "h-13 justify-start rounded-lg border-white/15 bg-white/[0.04] px-5 text-base font-bold text-white transition-all hover:bg-white/10 hover:text-white",
               )}
             >
-              <Mail className="size-4" aria-hidden />
+              <Mail className="size-5" aria-hidden />
               {pessoal.email}
             </a>
             <a
@@ -116,14 +116,14 @@ export function ContactPanel() {
               onClick={() => analytics.githubClick("contato")}
               className={cn(
                 buttonVariants({ variant: "outline" }),
-                "h-13 justify-between rounded-lg border-white/15 bg-white/[0.04] px-5 text-white transition-all hover:bg-white/10 hover:text-white",
+                "h-13 justify-between rounded-lg border-white/15 bg-white/[0.04] px-5 text-base font-bold text-white transition-all hover:bg-white/10 hover:text-white",
               )}
             >
               <span className="inline-flex items-center gap-2">
-                <Code2 className="size-4" aria-hidden />
+                <Code2 className="size-5" aria-hidden />
                 {contactLinks.githubLabel}
               </span>
-              <ExternalLink className="size-4" aria-hidden />
+              <ExternalLink className="size-5" aria-hidden />
             </a>
             {contactLinks.cvUrl ? (
               <a
@@ -132,14 +132,14 @@ export function ContactPanel() {
                 onClick={() => analytics.cvDownload()}
                 className={cn(
                   buttonVariants({ variant: "outline" }),
-                  "h-13 justify-between rounded-lg border-white/15 bg-white/[0.04] px-5 text-white transition-all hover:bg-white/10 hover:text-white",
+                  "h-13 justify-between rounded-lg border-white/15 bg-white/[0.04] px-5 text-base font-bold text-white transition-all hover:bg-white/10 hover:text-white",
                 )}
               >
                 <span className="inline-flex items-center gap-2">
-                  <FileText className="size-4" aria-hidden />
+                  <FileText className="size-5" aria-hidden />
                   {contactLinks.cvLabel}
                 </span>
-                <Download className="size-4" aria-hidden />
+                <Download className="size-5" aria-hidden />
               </a>
             ) : null}
           </div>

@@ -6,7 +6,7 @@
 >
 > **Checklist de prioridade:** [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md)
 >
-> **Última atualização:** 07/07/2026 — auditoria de documentação e agentes
+> **Última atualização:** 08/07/2026 — densificação visual, tipografia e sincronização de skills
 
 ---
 
@@ -17,7 +17,7 @@
 | **Layout oficial** | Executive Proof System — dossiê profissional para headhunters |
 | **Spec visual** | [`design/design.md`](../design/design.md) + tokens em `app/globals.css` |
 | **URL** | <https://portfolio-lucas-batista-murex.vercel.app> |
-| **Deploy Vercel** | `dpl_AeSkethQEEq4UasUAQgVXhEXNUHV` — 07/07/2026 18:16 UTC-3 |
+| **Deploy Vercel** | `dpl_FVD4YzJtZ65waAx7rYmzcaYkSJXJ` — 08/07/2026 09:02 UTC-3 |
 | **Lighthouse prod (desktop)** | **100 / 96 / 100 / 100** |
 | **Lighthouse prod (mobile)** | **96 / 96 / 100 / 100** |
 
@@ -27,7 +27,7 @@
 
 ### Componentes ativos
 
-`Header`, `ExecutiveHero`, `EvidenceStrip`, `ProfileBrief`, `SignatureCases`, `CaseLibraryDesktop`, `CaseDemoLauncher`, `DemoModal`, `TrajectoryBoard`, `ContactPanel`, `Footer`, `HomePage`, `MobileNav`, `LucideIconByName`, `EditorialBadge`, `PremiumCard`, `SectionShell`, `LogisticsIntelligenceCockpit`, `MotionProvider`
+`Header`, `ExecutiveHero`, `EvidenceStrip`, `ProfileBrief`, `SignatureCases`, `CaseLibrary`, `CaseDemoLauncher`, `DemoModal`, `TrajectoryBoard`, `ContactPanel`, `Footer`, `HomePage`, `MobileNav`, `LucideIconByName`, `EditorialBadge`, `PremiumCard`, `MetricPill`, `SectionShell`, `CaseThumbnail`, `BackToTop`, `MotionProvider`
 
 ### Arquivado (não montar)
 
@@ -45,9 +45,9 @@
 |------|:-------:|:---------:|
 | Layout Executive Proof (redesign premium) | ✅ | ✅ prod |
 | Demos Streamlit | ✅ | ✅ 13/13 smoke tests |
-| Deploy Vercel | ✅ | ✅ prod `dpl_AeSkethQEEq4UasUAQgVXhEXNUHV` |
+| Deploy Vercel | ✅ | ✅ prod `dpl_FVD4YzJtZ65waAx7rYmzcaYkSJXJ` |
 | OG + CV PDF | ✅ | ✅ prod |
-| Lighthouse | ✅ local | ✅ prod desktop 100/96/100/100, mobile 96/96/100/100 |
+| Lighthouse | ✅ local | 🟡 a revalidar após deploy 08/07 |
 | Documentação de agentes | ✅ | ✅ alinhada nesta rodada |
 | MCPs do Cursor | 🟡 | 🟡 configurados com placeholders |
 
@@ -58,15 +58,15 @@
 | # | Divergência | Impacto | Plano |
 |---|-------------|---------|-------|
 | 1 | Cockpit SVG estático no hero gera expectativa de interatividade | UX | Decidir: tornar interativo, reduzir ou substituir por screenshot (P0) |
-| 2 | Seção Perfil ainda contém FAQ "Perguntas que este perfil responde" | Densidade de texto | Remover FAQ, distribuir conteúdo nos cards (P1) |
-| 3 | Cards de provas mostram "Decisão apoiada" (texto denso) | Escaneabilidade | Mover "Decisão apoiada" para o modal apenas (P0/P1) |
-| 4 | `CaseLibraryDesktop` tem nome desktop-only e layout de tabela em mobile | Mobile | Renomear para `CaseLibrary` e criar layout de lista mobile (P1) |
-| 5 | `MotionProvider` não usa `useReducedMotion()` | A11Y | Adicionar respeito a prefers-reduced-motion (P1) |
-| 6 | Filtros da biblioteca não anunciam resultado via `aria-live` | A11Y | Adicionar região live (P1) |
-| 7 | Header não tem indicador de seção ativa | Navegação | Implementar scroll spy (P1) |
-| 8 | Cards de provas não têm thumbnails/screenshots | Percepção de qualidade | Adicionar imagens 16:9 das demos (P0) |
-| 9 | Stack técnico em texto plano; poderia ser tags | Escaneabilidade | Converter para badges por categoria (P1) |
-| 10 | Analytics/Vercel Analytics não implementado | Medição | Adicionar eventos básicos (P2) |
+| 2 | ~~Seção Perfil ainda contém FAQ~~ | Densidade de texto | ✅ Resolvido: FAQ de triagem integrado ao Perfil (08/07) |
+| 3 | Cards de provas mostram "Decisão apoiada" e "Limitação" | Escaneabilidade | ✅ Resolvido: campos exibidos de forma compacta (08/07) |
+| 4 | `CaseLibraryDesktop` tem nome desktop-only | Mobile | ✅ Resolvido: renomeado para `CaseLibrary` com filtros mobile (08/07) |
+| 5 | `MotionProvider` não usa `useReducedMotion()` | A11Y | ✅ Resolvido: `useReducedMotion()` integrado ao `MotionProvider` (08/07) |
+| 6 | Filtros da biblioteca não anunciam resultado via `aria-live` | A11Y | ✅ Resolvido: `aria-live` presente no `CaseLibrary` (08/07) |
+| 7 | Header não tem indicador de seção ativa | Navegação | ✅ Resolvido: `useActiveSection` + underline no link ativo (08/07) |
+| 8 | Cards de provas não têm thumbnails/screenshots | Percepção de qualidade | `CaseThumbnail` implementado; placeholder SVG até capturas reais (P1) |
+| 9 | Stack técnico em texto plano; poderia ser tags | Escaneabilidade | ✅ Resolvido: tags de stack no painel do hero e footer (08/07) |
+| 10 | Analytics/Vercel Analytics não implementado | Medição | ✅ Parcial: eventos de clique em `lib/analytics.ts` (08/07) |
 
 Detalhes e priorização completa: [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md).
 
@@ -85,19 +85,18 @@ Colunas: Performance / Acessibilidade / Best Practices / SEO. Meta lançamento: 
 
 ---
 
-## Mudanças da última rodada (07/07/2026)
+## Mudanças da última rodada (08/07/2026)
 
 ### Landing page
 
-- **Hero redesenhado com fundo escuro** (`bg-surface-dark`) para alto impacto visual e contraste.
-- **Header fixo escuro translúcido** com texto branco e CTA em teal vibrante.
-- **Paleta premium atualizada**: teal `#16a99c`, warm accent `#d4a853`, ink `#07111f`, editorial `#f7f4ec`.
-- **Animações Framer Motion** em todas as seções: fade + slide up, stagger, hover lift, scale em cards e botões.
-- **Perfil**: layout denso sem lacunas — card de senioridade em destaque + grid de diferenciais + faixa de credibilidade.
-- **Cases**: cards com cores de categoria, ícones em gradiente, hover elevado.
-- **Trajetória**: timeline vertical conectada, cards de stack/dominios balanceados, experiências e formação em cards visuais.
-- **Contato**: mantido em superfície escura para consistência com o hero.
-- **Fundo com grid sutil** nas seções claras para textura e sofisticação.
+- **Densidade e tipografia revisadas**: fontes de corpo aumentadas (mínimo `text-sm`/14px em metadados, `text-base`/16px em leitura), espaçamentos verticais reduzidos (`py-14 lg:py-20`), cards mais compactos.
+- **Hero redesenhado**: coluna de texto à esquerda + painel de credibilidade à direita com avatar, stack, empresas, provas e foco — elimina lacuna da foto placeholder.
+- **Perfil**: card principal de direção de carreira + 4 diferenciais + FAQ de triagem do headhunter + faixa de credibilidade.
+- **Cases**: cards âncora exibem problema, decisão apoiada, limitação declarada e métrica; biblioteca filtrável desktop/mobile; roadmap mantido.
+- **Trajetória**: timeline, stack, impactos, experiências e formação/certificações/idiomas consolidados em cards mais densos.
+- **Testes E2E**: 8/8 passando com Playwright contra build de produção.
+- **Build**: `validate`, `lint`, `typecheck`, `build` passando; cache CSS limpo após rebuild.
+- **Documentação**: `CANON.md`, `AVALIACAO.md`, `AGENTS.md`, `.codex/AGENTS.md`, `.agents/skills/*`, `docs/A11Y.md`, `docs/MOBILE_SPEC.md` e `docs/GAPS.md` sincronizados.
 
 ### Demos Streamlit
 
@@ -110,7 +109,7 @@ Colunas: Performance / Acessibilidade / Best Practices / SEO. Meta lançamento: 
 ### Documentação e agentes
 
 - `.cursorrules` atualizado para refletir stack atual (Next.js 16, Tailwind v4, tokens editoriais, componentes atuais).
-- Skills em `.agents/skills/` atualizadas: `design-system.md`, `component-patterns.md`, `ux-writing.md`, `a11y.md`, `mobile-first.md`, `accessibility.md`.
+- Skills em `.agents/skills/` atualizadas: `design-system.md`, `component-patterns.md`, `ux-writing.md`, `a11y.md`, `mobile-first.md`, `accessibility.md`, `performance.md`, `seo-meta.md`.
 - `.codex/AGENTS.md` atualizado com ordem canônica atual.
 - `.cursor/mcp.json` configurado com placeholders + `.cursor/MCP_SETUP.md` com instruções.
 - `.gitignore` atualizado para ignorar `.cursor/mcp.json` (pode conter tokens).
@@ -120,13 +119,10 @@ Colunas: Performance / Acessibilidade / Best Practices / SEO. Meta lançamento: 
 
 ## Pendências desejáveis
 
-- Resolver cockpit do hero (P0)
-- Thumbnails nos cards de provas (P0)
-- Indicador de seção ativa no Header (P1)
+- Substituir foto placeholder em `public/profile.jpg` (P0)
+- Capturas reais 16:9 para thumbnails dos cases (P1)
 - `useReducedMotion` no MotionProvider (P1)
-- Renomear `CaseLibraryDesktop` → `CaseLibrary` + mobile (P1)
-- Analytics/Vercel Analytics (P2)
-- Testes E2E (P2)
+- Revalidar Lighthouse após ajustes de densidade (P1)
 - Domínio custom / Vercel Analytics (P2)
 - Backlog demos: [`docs/OPORTUNIDADES_DEMOS.md`](OPORTUNIDADES_DEMOS.md)
 
@@ -191,6 +187,10 @@ python scripts/smoke_test.py   # 13 checagens
 ---
 
 ## Histórico
+
+### Densificação visual e sincronização de skills — 08/07/2026
+
+Redução de whitespace, aumento de fontes, preenchimento de blocos ociosos, rebuild limpo do Next.js para resolver cache CSS desatualizado, e atualização completa de skills e documentação. Testes E2E 8/8 passando.
 
 ### Auditoria de documentação e agentes — 07/07/2026
 

@@ -16,7 +16,7 @@ Regras de performance para garantir carregamento rapido e experiencia fluida. Ne
 - [ ] Responsive sizes: `sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"`
 
 ### Fonts
-- [ ] Usar `next/font/google` para Inter
+- [ ] Usar `next/font/google` para Inter e Source Serif 4
 - [ ] Configurar `display: 'swap'`
 - [ ] Subset: `subsets: ['latin']`
 - [ ] Preconnect no `<head>`: `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />`
@@ -117,12 +117,19 @@ module.exports = nextConfig;
 ## Configuracao de Font (layout.tsx)
 
 ```tsx
-import { Inter } from "next/font/google";
+import { Inter, Source_Serif_4 } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+});
+
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-source-serif",
+  weight: ["400", "500", "600", "700"],
 });
 
 export default function RootLayout({
@@ -131,10 +138,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={inter.variable}>
-      <head>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
+    <html lang="pt-BR" className={`${inter.variable} ${sourceSerif.variable}`}>
       <body className={`${inter.className} antialiased`}>
         {children}
       </body>
@@ -150,7 +154,7 @@ export default function RootLayout({
 // components/SkeletonSection.tsx
 export function SkeletonSection() {
   return (
-    <section className="py-20 bg-slate-50">
+    <section className="py-14 bg-slate-50">
       <div className="max-w-6xl mx-auto px-4">
         <div className="h-4 w-32 bg-slate-200 rounded animate-pulse mb-4" />
         <div className="h-10 w-64 bg-slate-200 rounded animate-pulse mb-8" />

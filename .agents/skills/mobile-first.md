@@ -25,15 +25,15 @@ CTA Contato: Compacto ou dentro do menu mobile
 ```tsx
 <ExecutiveHero className="min-h-[auto] px-5 pt-10 pb-12">
   <h1 className="font-heading text-4xl sm:text-5xl">Lucas Farias Batista</h1>
-  <p className="text-lg font-semibold text-white">Headline curta</p>
-  <p className="text-base text-on-dark-muted">Subheadline 1-2 linhas</p>
+  <p className="text-lg sm:text-xl font-semibold text-white">Headline curta</p>
+  <p className="text-base sm:text-lg text-on-dark-muted">Subheadline 1-2 linhas</p>
   <div className="flex flex-col gap-3 mt-8">
     <CTA className="w-full" /> {/* Stack vertical, largura total */}
     <CTA variant="outline" className="w-full" />
   </div>
   {/* Cockpit oculto em mobile */}
   <div className="hidden lg:block">
-    <LogisticsIntelligenceCockpit />
+    <ProfileCockpit />
   </div>
 </ExecutiveHero>
 ```
@@ -128,10 +128,10 @@ npx lighthouse https://portfolio-lucas-batista-murex.vercel.app \
 ```
 
 ## Tarefas Pendentes Mobile
-1. Renomear `CaseLibraryDesktop` → `CaseLibrary`
-2. Criar layout de lista para mobile na biblioteca de cases
-3. Reduzir densidade do hero em telas muito pequenas
-4. Otimizar cockpit SVG para evitar LCP alto
+1. ✅ `CaseLibraryDesktop` renomeado para `CaseLibrary`
+2. ✅ Layout de lista mobile implementado
+3. Verificar densidade do hero em telas muito pequenas (< 375px)
+4. Otimizar cockpit SVG/ilustração para evitar LCP alto
 
 ## Referencias
 - `docs/MOBILE_SPEC.md` — Spec completa

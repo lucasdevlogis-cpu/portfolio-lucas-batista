@@ -25,7 +25,7 @@ test.describe("Homepage", () => {
     ).toBeVisible();
 
     await expect(
-      page.getByRole("heading", { name: "Senioridade construída na rotina operacional", level: 2 }),
+      page.getByRole("heading", { name: "Evolução da carreira até 2026", level: 2 }),
     ).toBeVisible();
 
     await expect(
@@ -33,10 +33,10 @@ test.describe("Homepage", () => {
     ).toBeVisible();
   });
 
-  test("não exibe FAQ na seção Perfil", async ({ page }) => {
+  test("exibe FAQ de triagem na seção Perfil", async ({ page }) => {
     await page.goto("/");
     await expect(
       page.getByText("Perguntas que este perfil responde"),
-    ).not.toBeVisible();
+    ).toBeVisible();
   });
 });

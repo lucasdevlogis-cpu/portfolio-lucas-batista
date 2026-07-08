@@ -31,32 +31,33 @@ Define o sistema visual completo do portfolio Lucas Batista (Executive Proof Sys
 ## Tipografia
 
 ### Fontes
-- **Headings:** Playfair Display via `next/font/google` (`--font-playfair` → `font-heading`)
+- **Headings:** Source Serif 4 via `next/font/google` (`--font-source-serif` → `font-heading`)
 - **Body:** Inter via `next/font/google` (`--font-inter` → `font-sans`/`font-body`)
 
 ### Escala Modular
 | Token | Tamanho | Peso | Line-height | Uso |
 |-------|---------|------|-------------|-----|
-| text-4xl/5xl | 2.25rem / 3rem | 700 | 1.05 | Título de seção (Playfair) |
-| text-3xl | 1.875rem | 700 | 1.08 | Subtítulo de destaque (Playfair) |
+| text-3xl/4xl/5xl | 1.875rem / 2.25rem / 3rem | 700 | 1.08 | Título de seção (Source Serif 4) |
+| text-2xl | 1.5rem | 700 | 1.1 | Subtítulo de destaque (Source Serif 4) |
 | text-2xl | 1.5rem | 600/700 | 1.1 | Títulos de cards, métricas |
 | text-xl | 1.25rem | 600 | 1.2 | Destaques, subtítulos |
 | text-lg | 1.125rem | 500/600 | 1.4 | Subtítulo hero, lead de seção |
 | text-base | 1rem | 400/500 | 1.6 | Texto corrido |
 | text-sm | 0.875rem | 400/500 | 1.5 | Descrições secundárias |
 | text-xs | 0.75rem | 500/700/800 | 1.4 | Labels, badges, metadata |
-| text-[11px] | 11px | 800 | 1 | Eyebrows uppercase |
+| text-xs | 0.75rem | 800 | 1 | Eyebrows uppercase |
 
 ### Regras
 - Títulos: `font-heading`, semibold/bold
 - Texto corrido: `font-sans` (Inter), normal (400), nunca font-light
-- Labels uppercase: `uppercase` + `tracking-[0.12em]`/`tracking-[0.16em]` + `text-xs`/`text-[11px]`
+- Labels uppercase: `uppercase` + `tracking-[0.12em]`/`tracking-[0.14em]` + `text-xs`
+- Corpo mínimo: `text-sm` (14px) para metadados; `text-base` (16px) para leitura principal
 - Nunca usar fonte menor que 12px
 
 ## Espacamento
 
 ### Secoes
-- Padding vertical padrão: `py-20 lg:py-28`
+- Padding vertical padrão: `py-14 lg:py-20`
 - Gap entre seções: 0 (fundo contínuo) ou divisória sutil
 
 ### Containers

@@ -33,36 +33,36 @@ export function CaseLibrary() {
 
   return (
     <div
-      className="mt-10 grid gap-6 border-t border-border pt-8 lg:grid-cols-[17rem_1fr]"
+      className="mt-8 grid gap-5 border-t border-border pt-6 lg:grid-cols-[14rem_1fr] xl:grid-cols-[16rem_1fr]"
       aria-live="polite"
       aria-atomic="true"
     >
       <aside className="lg:sticky lg:top-24 lg:self-start">
         <EditorialBadge>{secoes.casesBiblioteca.title}</EditorialBadge>
-        <p className="mt-4 hidden text-sm leading-relaxed text-muted-foreground lg:block">
+        <p className="mt-3 hidden text-sm leading-snug text-muted-foreground lg:block">
           {secoes.casesBiblioteca.subtitle}
         </p>
 
-        <div className="mt-5 hidden rounded-xl border border-border bg-card/70 p-4 lg:block">
+        <div className="mt-4 hidden rounded-xl border border-border bg-card/70 p-4 lg:block">
           <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
             <Info className="size-3.5" aria-hidden />
             Como usar
           </p>
-          <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+          <p className="mt-2 text-xs leading-snug text-muted-foreground">
             Filtre por domínio. Cada linha leva a uma demo interativa com pergunta de negócio, métrica e limitação declarada.
           </p>
         </div>
 
-        <div className="mt-5 hidden grid-cols-3 gap-2 lg:grid">
-          <div className="rounded-lg border border-border bg-card/70 p-3 text-center">
+        <div className="mt-4 hidden grid-cols-3 gap-2 lg:grid">
+          <div className="rounded-lg border border-border bg-card/70 p-2.5 text-center">
             <p className="font-heading text-xl font-bold text-ink">{CASES_DESTAQUE.length}</p>
             <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">âncora</p>
           </div>
-          <div className="rounded-lg border border-border bg-card/70 p-3 text-center">
+          <div className="rounded-lg border border-border bg-card/70 p-2.5 text-center">
             <p className="font-heading text-xl font-bold text-ink">{CASES_BIBLIOTECA.length}</p>
             <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">biblioteca</p>
           </div>
-          <div className="rounded-lg border border-border bg-card/70 p-3 text-center">
+          <div className="rounded-lg border border-border bg-card/70 p-2.5 text-center">
             <p className="font-heading text-xl font-bold text-ink">{CASES_ROADMAP.length}</p>
             <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">roadmap</p>
           </div>
@@ -72,7 +72,7 @@ export function CaseLibrary() {
         <div
           role="group"
           aria-label={secoes.casesBiblioteca.title}
-          className="mt-6 hidden grid-cols-1 gap-2 lg:grid"
+          className="mt-4 hidden grid-cols-1 gap-2 lg:grid"
         >
           {CASE_CATEGORIAS.map((categoria) => {
             const ativo = filtroAtivo === categoria;
@@ -86,7 +86,7 @@ export function CaseLibrary() {
                   analytics.caseFilter(categoria);
                 }}
                 className={cn(
-                  "rounded-lg border px-3 py-2.5 text-left text-sm font-bold transition-all duration-normal ease-editorial focus-ring",
+                  "rounded-lg border px-3 py-2 text-left text-sm font-bold transition-all duration-normal ease-editorial focus-ring",
                   ativo
                     ? "border-primary bg-primary text-white shadow-md shadow-primary/20"
                     : "border-border bg-transparent text-muted-foreground hover:border-primary/35 hover:bg-card hover:text-ink",
@@ -105,7 +105,7 @@ export function CaseLibrary() {
         <div
           role="group"
           aria-label={secoes.casesBiblioteca.title}
-          className="mt-4 flex gap-2 overflow-x-auto pb-2 lg:hidden"
+          className="mt-3 flex gap-2 overflow-x-auto pb-2 lg:hidden"
         >
           {CASE_CATEGORIAS.map((categoria) => {
             const ativo = filtroAtivo === categoria;
@@ -160,7 +160,7 @@ export function CaseLibrary() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 whileHover={{ backgroundColor: "var(--card)" }}
-                className="group grid gap-4 bg-card/60 px-5 py-4 transition-colors lg:grid-cols-[0.9fr_1.15fr_0.8fr_10rem] lg:items-center"
+                className="group grid gap-3 bg-card/60 px-5 py-3.5 transition-colors lg:grid-cols-[0.9fr_1.15fr_0.8fr_10rem] lg:items-center"
               >
                 <div>
                   <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
@@ -169,7 +169,7 @@ export function CaseLibrary() {
                   <h3 className="mt-1 font-heading text-base font-bold leading-tight text-ink transition-colors group-hover:text-accent-contrast">
                     {caseItem.titulo}
                   </h3>
-                  <div className="mt-2 flex flex-wrap gap-1.5">
+                  <div className="mt-1.5 flex flex-wrap gap-1.5">
                     {caseItem.tags.slice(0, 3).map((tag) => (
                       <span
                         key={tag}
@@ -180,10 +180,10 @@ export function CaseLibrary() {
                     ))}
                   </div>
                 </div>
-                <p className="text-sm leading-relaxed text-muted-foreground">
+                <p className="text-sm leading-snug text-muted-foreground">
                   {caseItem.perguntaNegocio}
                 </p>
-                <p className="text-sm font-semibold leading-relaxed text-ink">
+                <p className="text-sm font-semibold leading-snug text-ink">
                   {caseItem.metricaResumo}
                 </p>
                 <div className="flex flex-wrap gap-2 xl:justify-end">

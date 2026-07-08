@@ -22,7 +22,7 @@ Dossiê profissional **headhunter-first**: em até 60 segundos, quem avalia fit 
 | 2 | Hero executivo | — | `ExecutiveHero` | Nome, posicionamento, CTAs, cockpit visual |
 | 3 | Provas rápidas | — | `EvidenceStrip` | 3 evidências de impacto |
 | 4 | Perfil em 60s | `perfil` | `ProfileBrief` | Fit, senioridade, sinais |
-| 5 | Provas técnicas | `cases` | `SignatureCases` + `CaseLibraryDesktop` | 3 âncora + biblioteca + roadmap |
+| 5 | Provas técnicas | `cases` | `SignatureCases` + `CaseLibrary` | 3 âncora + biblioteca filtrável + roadmap |
 | 6 | Trajetória e stack | `trajetoria` | `TrajectoryBoard` | Experiência, stack, domínios |
 | 7 | Contato | `contato` | `ContactPanel` | LinkedIn, email, GitHub, CV PDF |
 | 8 | Footer | — | `Footer` | Links, declaração, topo |
@@ -48,7 +48,7 @@ Spec visual detalhada: [`design/design.md`](../design/design.md) §2.
 | Mapeamento do repo | [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | — |
 | Checklist de refatoração | [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md) | — |
 | Tokens demos Streamlit | [`demos-logistica/lib/brand.py`](../demos-logistica/lib/brand.py) | — |
-| Padrões viz demos | [`.agents/skills/portfolio-demos-viz/SKILL.md`](../.agents/skills/portfolio-demos-viz/SKILL.md) | Specs obsoletas em OPORTUNIDADES |
+| Padrões viz demos | `.agents/skills/` (design-system, component-patterns, ux-writing, a11y) | Specs obsoletas em OPORTUNIDADES |
 | Estado do projeto | [`docs/AVALIACAO.md`](AVALIACAO.md) | Claims "100%" sem QA |
 | Deploy / Vercel | [`docs/DEPLOY.md`](DEPLOY.md), [`docs/VERCEL.md`](VERCEL.md) | SHAs hardcoded |
 | CV PDF | Gerado de `content.ts` via `npm run cv:generate` | Copy manual no Python |
@@ -81,13 +81,14 @@ Validação: `npm run validate` (10 demos + slug ↔ `demos-logistica/pages/`)
 
 | Área | Lançado | QA manual | Polimento | Notas |
 |------|:-------:|:---------:|:---------:|-------|
-| Layout Executive Proof | ✅ | ✅ | — | QA checklist 07/07 |
-| Demos Streamlit (11 pages) | ✅ | ✅ | — | smoke 13/13 |
-| Deploy Vercel | ✅ | ✅ | — | ver `npx vercel inspect` — não usar SHA fixo |
+| Layout Executive Proof | ✅ | ✅ | ✅ | Densidade, tipografia e preenchimento revisados 08/07 |
+| Demos Streamlit (10 pages + 1 roadmap) | ✅ | ✅ | — | smoke 13/13 |
+| Deploy Vercel | ✅ | ✅ | — | `dpl_FVD4YzJtZ65waAx7rYmzcaYkSJXJ` (08/07/2026) — ver `npx vercel inspect` |
 | OG image | ✅ | ✅ | — | prod 200 |
 | CV PDF | ✅ | ✅ | CV oficial | `npm run cv:generate` |
-| Lighthouse | ✅ local | ✅ prod | — | local 100/96/100/100; prod a revalidar |
-| READMEs por case (Fase 3) | — | — | ✅ | `demos-logistica/docs/cases/` |
+| Lighthouse | ✅ local | ✅ prod | — | a revalidar após ajustes 08/07 |
+| READMEs por case (Fase 3) | ✅ | — | — | `demos-logistica/docs/cases/` |
+| Testes E2E | ✅ | ✅ | — | 8/8 passando |
 | Domínio custom / Analytics | — | — | 🟡 | Backlog |
 
 **Regra:** "Lançado" = código em produção. "QA manual" = checklist em [`docs/VERCEL.md`](VERCEL.md) (concluído 06/07).
@@ -125,6 +126,8 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 | [`docs/AVALIACAO.md`](AVALIACAO.md) | Snapshot de saúde, fases, histórico |
 | [`docs/DEPLOY.md`](DEPLOY.md) | Deploy Vercel + sync Streamlit |
 | [`docs/VERCEL.md`](VERCEL.md) | Projeto Vercel, env, MCP, checklist QA |
+| [`docs/A11Y.md`](A11Y.md) | Guia de acessibilidade |
+| [`docs/MOBILE_SPEC.md`](MOBILE_SPEC.md) | Spec mobile-first |
 | [`design/design.md`](../design/design.md) | Spec visual ativa |
 | [`design/tokens.md`](../design/tokens.md) | Resumo tokens CSS |
 | [`docs/OPORTUNIDADES_DEMOS.md`](OPORTUNIDADES_DEMOS.md) | Backlog demos (histórico + roadmap) |

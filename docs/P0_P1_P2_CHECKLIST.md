@@ -1,6 +1,6 @@
 # Checklist de Prioridade — Refatoração do Portfolio
 
-> **Base:** `revisao-critica-portfolio-lucas.pdf`  
+> **Base:** `docs/GAPS.md` + `docs/AVALIACAO.md`  
 > **Princípio:** P0 (fundação) > P1 (refinamento) > P2 (polish)  
 > **Regra de ouro:** nenhuma mudança P1/P2 antes de todos os P0 estarem estáveis e validados.
 
@@ -22,12 +22,12 @@
 | # | Tarefa | Onde | Status | Notas |
 |---|--------|------|--------|-------|
 | 1 | Definir paleta de cores unificada | `app/globals.css`, `design/tokens.md` | ✅ | Tokens editoriais ativos |
-| 2 | Definir escala tipográfica (Playfair + Inter) | `app/globals.css`, `layout.tsx` | ✅ | Escala modular implementada |
-| 3 | Redesenhar hero: reduzir texto, CTAs claros | `components/sections/ExecutiveHero.tsx` | ✅ | Cockpit removido; foto profissional adicionada; CTAs mantidos |
-| 4 | Remover/substituir cockpit estático do hero | `components/visual/LogisticsIntelligenceCockpit.tsx` | ✅ | Cockpit removido; substituído por foto + badges flutuantes |
-| 5 | Compactar seção Perfil: 4 cards, sem FAQ | `components/sections/ProfileBrief.tsx` | ✅ | FAQ removido; cards de diferenciais mantidos |
+| 2 | Definir escala tipográfica (Source Serif 4 + Inter) | `app/globals.css`, `layout.tsx` | ✅ | Fontes atualizadas; corpo mínimo 14px, leitura 16px |
+| 3 | Redesenhar hero: reduzir texto, CTAs claros | `components/sections/ExecutiveHero.tsx` | ✅ | Layout denso com painel de credibilidade à direita |
+| 4 | Remover/substituir cockpit estático do hero | `components/visual/LogisticsIntelligenceCockpit.tsx` | ✅ | Componente arquivado em `components/archive/legacy/`; substituído por painel com stack, empresas e provas |
+| 5 | Densificar seção Perfil | `components/sections/ProfileBrief.tsx` | ✅ | Card de direção de carreira + 4 diferenciais + FAQ de triagem + credibilidade rápida |
 | 6 | Adicionar screenshots/thumbnails nos cards de provas | `components/sections/SignatureCases.tsx`, `public/` | ✅ | `CaseThumbnail` gerando placeholders SVG por categoria; campo `thumbnail` opcional para imagens reais |
-| 7 | Reduzir texto dos cards de provas (máx 3 linhas + link) | `components/sections/SignatureCases.tsx` | ✅ | "Decisão apoiada" removida do card; descrição e problema com line-clamp |
+| 7 | Cards de provas completos e escaneáveis | `components/sections/SignatureCases.tsx` | ✅ | Problema, decisão apoiada, limitação declarada e métrica em layout compacto |
 | 8 | Redesenhar timeline de trajetória (visual vertical) | `components/sections/TrajectoryBoard.tsx` | ✅ | Timeline visual implementada |
 | 9 | Resumir experiências (máx 4 linhas, foco em resultado) | `data/content.ts` + `TrajectoryBoard.tsx` | 🟡 | `atribuicoes` ainda podem ser longas |
 | 10 | Ajustar contraste em todas as seções (WCAG AA) | Todo o site | 🟡 | Lighthouse a11y 96/100 |
@@ -35,10 +35,10 @@
 | 12 | Configurar MCPs do Cursor sem expor tokens | `.cursor/mcp.json`, `.cursor/MCP_SETUP.md` | ✅ | Placeholders + instruções |
 
 ### Bloqueadores P0
-- **Cockpit estático no hero:** pode gerar expectativa frustrada (revisão crítica). Decisão pendente.
-- **FAQ na seção Perfil:** revisão crítica pede remoção (P1 no PDF, mas impacta densidade).
-- **Foto do hero:** placeholder gerado em `public/profile.jpg`. Substituir por foto profissional real antes do deploy final.
-- **Lighthouse a11y 96:** falta identificar os 4 pontos perdidos.
+- **Foto do hero:** placeholder em `public/profile.jpg`. Substituir por foto profissional real.
+- **Lighthouse a11y 96:** revalidar após ajustes de densidade/tipografia.
+- **Cache CSS:** rebuild limpo resolveu problema de estilos não aplicados em `next start` local.
+- **Cockpit estático no hero:** ✅ resolvido (arquivado e substituído por painel de credibilidade).
 
 ---
 
@@ -57,7 +57,7 @@
 | 9 | Implementar grid responsivo inteligente para provas | `SignatureCases.tsx` + `CaseLibrary.tsx` | ✅ | Cards âncora empilham em mobile; biblioteca tem filtros pills horizontais |
 | 10 | Padronizar ícones (Lucide, um peso) | Todo o site | ✅ | Lucide React exclusivo |
 | 11 | Renomear `CaseLibraryDesktop` → `CaseLibrary` | `components/sections/CaseLibrary.tsx` | ✅ | Arquivo renomeado; layout mobile adicionado |
-| 12 | Remover FAQ da seção Perfil | `components/sections/ProfileBrief.tsx` | ✅ | FAQ removido no Sprint P0 |
+| 12 | FAQ de triagem na seção Perfil | `components/sections/ProfileBrief.tsx` | ✅ | FAQ de triagem do headhunter integrado ao Perfil |
 | 13 | Adicionar `useReducedMotion` no MotionProvider | `components/providers/MotionProvider.tsx` | ✅ | Respeita `prefers-reduced-motion` via MotionConfig |
 | 14 | Adicionar `aria-live` nos filtros da biblioteca | `components/sections/CaseLibrary.tsx` | ✅ | Container com `aria-live="polite"` anuncia mudanças |
 
@@ -107,10 +107,10 @@
 ## Sequência Recomendada de Execução
 
 ### Sprint 1 — Fundação (P0)
-1. Resolver cockpit do hero (remover, reduzir ou tornar interativo)
-2. Remover FAQ da seção Perfil
-3. Reduzir "Decisão apoiada" dos cards de provas (manter no modal)
-4. Adicionar thumbnails/screenshots nas provas âncora
+1. ✅ Resolver cockpit do hero (arquivado; painel de credibilidade no lugar)
+2. ✅ Densificar seção Perfil com FAQ de triagem
+3. ✅ Ajustar tipografia e espaçamentos para melhor legibilidade
+4. Substituir foto placeholder em `public/profile.jpg`
 5. Subir Lighthouse a11y de 96 para 100
 
 ### Sprint 2 — Refinamento (P1)

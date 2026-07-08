@@ -1,6 +1,6 @@
 # GAPS — Diagnostico Honesto: Docs vs Site vs Necessidades
 
-> **Data:** 08/07/2026 | **Analista:** Revisao externa de UI/UX
+> **Data:** 08/07/2026 | **Analista:** Revisao externa de UI/UX | **Atualizacao:** pos-redesign de densidade
 >
 > **Metodologia:** Comparacao tripla entre (1) documentacao do repo, (2) site em producao, (3) padroes profissionais de portfolio senior.
 
@@ -16,15 +16,15 @@ No entanto, **cinco gaps estrategicos** persistem e merecem atencao.
 
 ## Gap 1: Acessibilidade (A11Y) — Prioridade ALTA
 
-**Status:** Nao documentado. Nenhum doc trata de a11y de forma estruturada.
+**Status:** Parcialmente resolvido. `docs/A11Y.md` e `.agents/skills/a11y.md` existem.
 
 **Evidencia:**
 - AVALIACAO.md mostra "Acessibilidade 96" no Lighthouse — faltam 4 pontos para 100
-- Nao ha checklist WCAG em nenhum documento
+- ✅ Checklist WCAG em `docs/A11Y.md`
 - Nao ha padrao de contraste além de "Contraste AA" generico no design.md
 - Nao ha documentacao de keyboard navigation, skip links, aria-labels, screen readers
-- Nao ha `prefers-reduced-motion` documentado (crucial com Framer Motion)
-- Cockpit SVG animado pode ser problematico para leitores de tela
+- ✅ `prefers-reduced-motion` respeitado em `MotionProvider`
+- ProfileCockpit mantido com `aria-label` ou `aria-hidden`
 
 **Impacto:** Um headhunter usando screen reader nao consegue avaliar o portfolio. Além disso, acessibilidade e sinal de profissionalismo em dados — voce trabalha com inclusao operacional, o site deve refletir isso.
 
@@ -34,7 +34,7 @@ No entanto, **cinco gaps estrategicos** persistem e merecem atencao.
 
 ## Gap 2: Mobile-First Detalhado — Prioridade ALTA
 
-**Status:** Lighthouse mobile 96 (nao 100). Documentacao foca em desktop.
+**Status:** A reavaliar após redesign de densidade. `docs/MOBILE_SPEC.md` e `.agents/skills/mobile-first.md` existem.
 
 **Evidencia:**
 - MAPEAMENTO.md lista componentes mas nao especifica comportamento mobile por componente
@@ -42,7 +42,7 @@ No entanto, **cinco gaps estrategicos** persistem e merecem atencao.
 - tokens.md nao tem tokens mobile-specific (touch targets, font sizes mobile, spacing mobile)
 - Nao ha spec de navegacao gestual, bottom sheet para modais, ou otimizacao de scroll
 - Hero com cockpit SVG em mobile pode consumir viewport excessiva
-- CaseLibraryDesktop em mobile — o nome ja diz "Desktop"
+- ✅ `CaseLibrary` renomeado e responsivo (sidebar desktop + lista mobile)
 
 **Impacto:** Headhunters acessam via LinkedIn no celular. 96 vs 100 no mobile pode significar LCP mais lento ou CLS em componentes especificos.
 
@@ -92,11 +92,11 @@ import { Analytics } from "@vercel/analytics/react";
 
 ## Gap 5: Testes Além de Build — Prioridade MEDIA
 
-**Status:** Só validate + lint + smoke tests. Sem testes de UI ou E2E.
+**Status:** Parcialmente resolvido. Existem 8 testes Playwright E2E cobrindo homepage, navegacao, cases, filtros e modal de demo.
 
 **Evidencia:**
 - Nao ha Jest/Testing Library para componentes React
-- Nao ha Playwright/Cypress para testes E2E (modal abrindo, iframe carregando, scroll funcionando)
+- ✅ Playwright E2E ativo: modal, iframe, scroll, filtros, metadados
 - Nao ha testes de regressao visual (Chromatic, Percy, Loki)
 - Nao ha testes de acessibilidade automatizados (axe-core, pa11y)
 - `npm run validate` valida dados, nao comportamento
@@ -107,7 +107,6 @@ import { Analytics } from "@vercel/analytics/react";
 ```bash
 # Instalar (prioridade)
 npm install -D @testing-library/react @testing-library/jest-dom jest jest-environment-jsdom
-npm install -D @playwright/test
 npm install -D @axe-core/react
 
 # Testes criticos a automatizar:

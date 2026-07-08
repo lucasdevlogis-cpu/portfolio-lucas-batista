@@ -77,7 +77,7 @@ Substitua estas palavras/frases por alternativas mais diretas:
 ### Labels de Secao (Eyebrows)
 - SEMPRE uppercase
 - SEMPRE tracking amplo (`tracking-[0.12em]` a `tracking-[0.18em]`)
-- SEMPRE `text-[11px]` ou `text-xs`
+- SEMPRE `text-xs` (12px)
 - SEMPRE cor warm-accent (light) ou on-dark-accent (dark)
 - Máximo 3 palavras
 - Exemplos: "PROVAS TÉCNICAS", "PERFIL PROFISSIONAL", "TRAJETÓRIA"
@@ -86,7 +86,7 @@ Substitua estas palavras/frases por alternativas mais diretas:
 - Máximo 6 palavras
 - Sem ponto final
 - Preferencialmente com verbo ou ação
-- Fonte Playfair Display
+- Fonte Source Serif 4
 - Exemplos bons: "Cases com evidência navegável", "Provas técnicas em ação"
 - Exemplos ruins: "A seção das provas técnicas que foram desenvolvidas"
 

@@ -32,7 +32,7 @@ export function MetricPill({
       transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -3 }}
       className={cn(
-        "group min-w-0 overflow-hidden rounded-lg border p-4 transition-colors duration-normal ease-editorial",
+        "group min-w-0 overflow-hidden rounded-lg border p-4 transition-colors duration-normal ease-editorial lg:p-5",
         dark
           ? "border-white/10 bg-white/[0.04] hover:bg-white/[0.07]"
           : "border-primary/10 bg-card/80 hover:border-primary/20 hover:bg-card",
@@ -43,19 +43,19 @@ export function MetricPill({
         {Icon ? (
           <div
             className={cn(
-              "flex size-9 shrink-0 items-center justify-center rounded-md transition-transform duration-normal group-hover:scale-110",
+              "flex size-10 shrink-0 items-center justify-center rounded-md transition-transform duration-normal group-hover:scale-110",
               dark
                 ? "bg-white/10 text-on-dark-accent"
                 : "bg-primary/[0.06] text-primary",
             )}
           >
-            <Icon className="size-4" aria-hidden />
+            <Icon className="size-5" aria-hidden />
           </div>
         ) : null}
         <div className="min-w-0">
           <p
             className={cn(
-              "break-words font-heading text-3xl font-bold leading-none tracking-tight",
+              "break-words font-heading text-3xl font-bold leading-none tracking-tight lg:text-4xl",
               dark ? "text-white" : "text-ink",
             )}
           >
@@ -63,7 +63,7 @@ export function MetricPill({
           </p>
           <p
             className={cn(
-              "mt-2 break-words text-sm font-bold leading-snug",
+              "mt-2 break-words text-base font-bold leading-snug lg:text-lg",
               dark ? "text-on-dark-accent" : "text-primary",
             )}
           >
@@ -72,7 +72,7 @@ export function MetricPill({
           {detail ? (
             <p
               className={cn(
-                "mt-1 break-words text-xs leading-relaxed",
+                "mt-1.5 break-words text-sm leading-snug lg:text-base/relaxed",
                 dark ? "text-on-dark-muted" : "text-muted-foreground",
               )}
             >

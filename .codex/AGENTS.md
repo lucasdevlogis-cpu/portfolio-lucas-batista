@@ -19,7 +19,9 @@
 - Next.js 16.2.9 + React 19 + TypeScript 5
 - Tailwind CSS v4 (configuração CSS-only em `app/globals.css`)
 - shadcn/ui + Base UI + Lucide React
-- Framer Motion 12.x (LazyMotion + domAnimation)
+- Framer Motion 12.x
+- Source Serif 4 (títulos) + Inter (corpo)
+- Playwright E2E (8 testes)
 
 ## Produção
 
@@ -30,6 +32,7 @@
 
 ```bash
 npm run validate && npm run lint && npm run typecheck && npm run build
+npm run test:e2e
 npm run cv:generate
 
 cd demos-logistica && python scripts/smoke_test.py
