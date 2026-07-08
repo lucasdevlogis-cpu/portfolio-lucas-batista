@@ -24,21 +24,9 @@ export function ExecutiveHero() {
 
   return (
     <SectionShell
-      className="relative min-h-[85vh] overflow-hidden border-b border-white/10 bg-surface-dark pb-0 pt-16 text-white lg:min-h-[90vh] lg:pt-14"
-      innerClassName="relative grid min-h-[78vh] max-w-[1440px] items-center gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.75fr)] lg:gap-10 xl:grid-cols-[minmax(0,1.35fr)_minmax(400px,0.65fr)] xl:gap-12"
+      className="relative overflow-hidden border-b border-white/10 bg-surface-dark pb-0 pt-12 text-white lg:pt-10"
+      innerClassName="relative grid max-w-[1440px] items-start gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.75fr)] lg:gap-8 xl:grid-cols-[minmax(0,1.35fr)_minmax(400px,0.65fr)] xl:gap-10"
     >
-      {/* Ambient floating orbs */}
-      <div
-        className="ambient-orb animate-float top-10 right-1/4 h-72 w-72"
-        style={{ background: "rgba(22, 169, 156, 0.18)" }}
-        aria-hidden
-      />
-      <div
-        className="ambient-orb animate-float bottom-20 left-10 h-64 w-64"
-        style={{ background: "rgba(201, 152, 63, 0.15)", animationDelay: "4s" }}
-        aria-hidden
-      />
-
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_82%_12%,rgba(20,184,166,0.14),transparent_58%),radial-gradient(ellipse_48%_42%_at_12%_86%,rgba(212,168,83,0.12),transparent_52%)]"
         aria-hidden
@@ -46,7 +34,7 @@ export function ExecutiveHero() {
       <div className="bg-grid-dark pointer-events-none absolute inset-0 opacity-35" aria-hidden />
       <div className="bg-noise pointer-events-none absolute inset-0" aria-hidden />
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-transparent to-editorial"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-b from-transparent to-editorial"
         aria-hidden
       />
 
@@ -63,7 +51,7 @@ export function ExecutiveHero() {
           initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-4 max-w-full break-words font-heading text-2xl font-semibold leading-tight text-on-dark-accent sm:text-3xl"
+          className="mt-3 max-w-full break-words font-heading text-xl font-semibold leading-tight text-on-dark-accent sm:text-2xl"
         >
           {pessoal.titulo}
         </motion.p>
@@ -72,7 +60,7 @@ export function ExecutiveHero() {
           initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-5 max-w-full break-words font-heading text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl"
+          className="mt-4 max-w-full break-words font-heading text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
         >
           {pessoal.nome}
         </motion.h1>
@@ -81,7 +69,7 @@ export function ExecutiveHero() {
           initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 max-w-[820px] break-words text-xl font-semibold leading-snug text-white md:text-2xl xl:text-3xl"
+          className="mt-5 max-w-[820px] break-words text-lg font-semibold leading-snug text-white md:text-xl xl:text-2xl"
         >
           {pessoal.headline}
         </motion.p>
@@ -90,7 +78,7 @@ export function ExecutiveHero() {
           initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-5 max-w-[780px] break-words text-lg leading-relaxed text-on-dark-muted md:text-xl"
+          className="mt-4 max-w-[780px] break-words text-base leading-relaxed text-on-dark-muted md:text-lg"
         >
           {pessoal.subheadline}
         </motion.p>
@@ -99,28 +87,28 @@ export function ExecutiveHero() {
           initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 flex flex-col gap-4 sm:flex-row"
+          className="mt-6 flex flex-col gap-3 sm:flex-row"
         >
           <a
             href="#cases"
             onClick={() => analytics.ctaClick(hero.ctaPrimario, "hero")}
             className={cn(
               buttonVariants({ variant: "executive", size: "lg" }),
-              "group/button h-14 w-full gap-2 rounded-lg bg-accent px-8 text-lg font-bold text-white shadow-glow transition-all duration-normal ease-editorial hover:-translate-y-0.5 hover:bg-accent-contrast sm:w-auto",
+              "group/button h-12 w-full gap-2 rounded-lg bg-accent px-6 text-base font-bold text-white shadow-glow transition-all duration-normal ease-editorial hover:-translate-y-0.5 hover:bg-accent-contrast sm:w-auto",
             )}
           >
             {hero.ctaPrimario}
-            <ArrowRight className="size-5 transition-transform duration-normal group-hover/button:translate-x-1" aria-hidden />
+            <ArrowRight className="size-4 transition-transform duration-normal group-hover/button:translate-x-1" aria-hidden />
           </a>
           <a
             href="#contato"
             onClick={() => analytics.ctaClick(hero.ctaSecundario, "hero")}
             className={cn(
               buttonVariants({ variant: "outline" }),
-              "h-14 w-full gap-2 rounded-lg border-white/15 bg-white/[0.055] px-8 text-lg font-bold text-white backdrop-blur-sm transition-all duration-normal ease-editorial hover:-translate-y-0.5 hover:bg-white/10 hover:text-white sm:w-auto",
+              "h-12 w-full gap-2 rounded-lg border-white/15 bg-white/[0.055] px-6 text-base font-bold text-white backdrop-blur-sm transition-all duration-normal ease-editorial hover:-translate-y-0.5 hover:bg-white/10 hover:text-white sm:w-auto",
             )}
           >
-            <Mail className="size-5" aria-hidden />
+            <Mail className="size-4" aria-hidden />
             {hero.ctaSecundario}
           </a>
         </motion.div>
@@ -129,7 +117,7 @@ export function ExecutiveHero() {
           initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10 grid grid-cols-1 gap-4 border-t border-white/10 pt-6 sm:grid-cols-3"
+          className="mt-7 grid grid-cols-1 gap-3 border-t border-white/10 pt-5 sm:grid-cols-3"
         >
           {hero.provas.map((prova, index) => {
             const Icon = proofIcons[index % proofIcons.length];
@@ -144,16 +132,16 @@ export function ExecutiveHero() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 whileHover={{ y: -3, backgroundColor: "rgba(255,255,255,0.08)" }}
-                className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-sm transition-colors"
+                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] p-3.5 backdrop-blur-sm transition-colors"
               >
-                <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-white/10 text-on-dark-accent">
-                  <Icon className="size-5" aria-hidden />
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-white/10 text-on-dark-accent">
+                  <Icon className="size-4" aria-hidden />
                 </div>
                 <div className="min-w-0">
-                  <p className="font-heading text-2xl font-bold leading-none text-white">
+                  <p className="font-heading text-xl font-bold leading-none text-white">
                     {prova.valor}
                   </p>
-                  <p className="mt-1 text-sm leading-snug text-on-dark-muted">
+                  <p className="mt-0.5 text-xs leading-snug text-on-dark-muted">
                     {prova.label}
                   </p>
                 </div>
@@ -169,14 +157,14 @@ export function ExecutiveHero() {
         transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="relative hidden min-w-0 lg:block"
       >
-        <div className="rounded-2xl border border-white/15 bg-white/[0.06] p-8 backdrop-blur-sm lg:p-10">
+        <div className="rounded-2xl border border-white/15 bg-white/[0.06] p-7 backdrop-blur-sm lg:p-8">
           <div className="flex items-start gap-5 border-b border-white/10 pb-6">
-            <div className="relative flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-primary to-accent shadow-lg">
-              <span className="font-heading text-2xl font-bold text-white">LB</span>
+            <div className="relative flex size-22 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-primary to-accent shadow-lg">
+              <span className="font-heading text-xl font-bold text-white">LB</span>
             </div>
             <div className="min-w-0">
               <p className="font-heading text-2xl font-bold text-white">{pessoal.nomeCurto}</p>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-3.5 flex flex-wrap gap-2">
                 {pessoal.stackTags.map((tag) => (
                   <span
                     key={tag}
@@ -190,14 +178,14 @@ export function ExecutiveHero() {
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-4">
-            <div className="rounded-xl border border-white/10 bg-white/[0.04] p-5">
+            <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
               <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-accent">Provas</p>
-              <p className="font-heading text-4xl font-bold text-white">{CASE_COUNT}</p>
+              <p className="font-heading text-3xl font-bold text-white">{CASE_COUNT}</p>
               <p className="text-xs text-on-dark-muted">demos navegáveis</p>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/[0.04] p-5">
+            <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3">
               <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-accent">Impacto</p>
-              <p className="font-heading text-4xl font-bold text-white">{IMPACTO_PRINCIPAL}</p>
+              <p className="font-heading text-3xl font-bold text-white">{IMPACTO_PRINCIPAL}</p>
               <p className="text-xs text-on-dark-muted">resultado mensurável</p>
             </div>
           </div>
