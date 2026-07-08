@@ -47,23 +47,23 @@ export function ExecutiveHero() {
           <EditorialBadge tone="dark">{hero.badge}</EditorialBadge>
         </motion.div>
 
-        <motion.p
-          initial={{ opacity: 1, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-3 max-w-full break-words font-heading text-xl font-semibold leading-tight text-on-dark-accent sm:text-2xl"
-        >
-          {pessoal.titulo}
-        </motion.p>
-
         <motion.h1
           initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-4 max-w-full break-words font-heading text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-3 max-w-full break-words font-heading text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
         >
           {pessoal.nome}
         </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 1, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-4 max-w-[820px] break-words text-xl font-semibold leading-tight text-on-dark-accent sm:text-2xl"
+        >
+          {pessoal.titulo}
+        </motion.p>
 
         <motion.p
           initial={{ opacity: 1, y: 30 }}
