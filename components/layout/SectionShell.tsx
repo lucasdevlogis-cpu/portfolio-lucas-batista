@@ -29,7 +29,7 @@ export function SectionShell({
     <section
       id={id}
       className={cn(
-        "scroll-mt-24 overflow-hidden py-10 lg:py-16",
+        "scroll-mt-24 overflow-hidden py-8 lg:py-12",
         dark ? "bg-surface-dark text-white" : "bg-editorial text-ink",
         className,
       )}
@@ -41,7 +41,7 @@ export function SectionShell({
         )}
       >
         {title ? (
-          <div className={cn("mb-6 max-w-4xl lg:mb-10", headerClassName)}>
+          <div className={cn("mb-5 max-w-4xl lg:mb-8", headerClassName)}>
             {eyebrow ? (
               <p className={dark ? "eyebrow-dark" : "eyebrow"}>{eyebrow}</p>
             ) : null}
