@@ -10,12 +10,12 @@ const categoriaCores: Record<
   CaseCategoria,
   { from: string; to: string; accent: string }
 > = {
-  "Frete e Custo": { from: "#153451", to: "#1a4566", accent: "#d4a853" },
-  "Roteirização e SLA": { from: "#16a99c", to: "#0d9488", accent: "#f7f4ec" },
-  "Last Mile e E-commerce": { from: "#8A651F", to: "#d4a853", accent: "#07111f" },
-  "Operação de CD": { from: "#667085", to: "#475569", accent: "#f7f4ec" },
-  "Rede e Estratégia": { from: "#07111f", to: "#153451", accent: "#d4a853" },
-  "Método e Governança": { from: "#5b21b6", to: "#7c3aed", accent: "#f7f4ec" },
+  "Frete e Custo": { from: "#153451", to: "#1a4566", accent: "#c9983f" },
+  "Roteirização e SLA": { from: "#16a99c", to: "#0d8a7f", accent: "#f5f2ed" },
+  "Last Mile e E-commerce": { from: "#8A651F", to: "#c9983f", accent: "#07111f" },
+  "Operação de CD": { from: "#556070", to: "#475569", accent: "#f5f2ed" },
+  "Rede e Estratégia": { from: "#07111f", to: "#153451", accent: "#c9983f" },
+  "Método e Governança": { from: "#153451", to: "#0d8a7f", accent: "#f5f2ed" },
 };
 
 interface CaseThumbnailProps {
@@ -105,7 +105,7 @@ export function CaseThumbnail({ caseItem, className }: CaseThumbnailProps) {
         </div>
       </div>
 
-      <span className="absolute left-4 top-3 font-heading text-2xl font-bold text-white/25">
+      <span className="absolute left-4 top-3 font-heading text-2xl font-bold text-white/30">
         {numero}
       </span>
     </div>

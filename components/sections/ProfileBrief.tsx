@@ -36,8 +36,8 @@ export function ProfileBrief() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <PremiumCard className="group flex h-full flex-col p-6 lg:p-8">
-            <div className="absolute -right-12 -top-12 size-48 rounded-full bg-accent/8 blur-3xl transition-opacity group-hover:opacity-70" aria-hidden />
-            <div className="absolute -bottom-12 -left-12 size-40 rounded-full bg-warm-accent/8 blur-3xl" aria-hidden />
+            <div className="absolute -right-12 -top-12 size-48 rounded-full bg-accent/20 blur-2xl transition-opacity group-hover:opacity-70" aria-hidden />
+            <div className="absolute -bottom-12 -left-12 size-40 rounded-full bg-warm-accent/15 blur-2xl" aria-hidden />
             <div className="relative flex h-full flex-col">
               <EditorialBadge tone="gold">{careerTarget.eyebrow}</EditorialBadge>
               <h3 className="mt-5 max-w-2xl font-heading text-2xl font-bold leading-[1.1] tracking-tight text-ink sm:text-3xl">
@@ -111,7 +111,7 @@ export function ProfileBrief() {
                 whileHover={{ y: -6 }}
                 className="group flex flex-col rounded-xl border border-border bg-card p-6 shadow-card transition-all duration-normal ease-editorial hover:border-primary/25 hover:shadow-elevated lg:p-7"
               >
-                <div className="mb-3 flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-accent/15 to-accent/5 text-accent-contrast transition-transform duration-normal group-hover:scale-110">
+                <div className="mb-3 flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-accent/25 to-accent/10 text-accent-contrast transition-transform duration-normal group-hover:scale-110">
                   <Icon className="size-5" aria-hidden />
                 </div>
                 <h3 className="font-heading text-xl font-bold text-ink">
@@ -148,7 +148,7 @@ export function ProfileBrief() {
           {recruiterBrief.perguntas.map((item) => (
             <div
               key={item.pergunta}
-              className="rounded-xl border border-border bg-editorial/70 p-5"
+              className="rounded-xl border border-primary/10 bg-card p-5"
             >
               <p className="text-base font-bold text-ink">{item.pergunta}</p>
               <p className="mt-2 text-base leading-relaxed text-muted-foreground">

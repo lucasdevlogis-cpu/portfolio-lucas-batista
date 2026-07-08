@@ -55,15 +55,15 @@ Ordem em `HomePage.tsx`: Header → ExecutiveHero → EvidenceStrip → ProfileB
 
 | Token | Hex | Uso |
 |---|---:|---|
-| Editorial | `#f7f4ec` | Fundo principal, tom de publicação premium |
+| Editorial | `#f5f2ed` | Fundo principal, tom de publicação premium — bege neutro refinado |
 | Card | `#ffffff` | Blocos claros e áreas de leitura |
 | Ink | `#07111f` | Texto forte, CTA principal, contraste |
 | Primary | `#153451` | Azul petróleo técnico |
 | Surface dark | `#07111f` | Blocos premium escuros |
 | Accent | `#16a99c` | Sinal técnico mínimo |
-| Warm accent | `#d4a853` | Eyebrows e acento editorial |
-| Muted | `#667085` | Texto secundário |
-| Border | `#d7cebd` | Divisórias editoriais |
+| Warm accent | `#c9983f` | Eyebrows e acento editorial — dourado sofisticado |
+| Muted | `#556070` | Texto secundário — legível em fundos claros |
+| Border | `#c8c2b8` | Divisórias editoriais — cinza quente neutro |
 
 ### Tipografia
 
@@ -76,10 +76,13 @@ Ordem em `HomePage.tsx`: Header → ExecutiveHero → EvidenceStrip → ProfileB
 
 - Tipografia e hierarquia mandam mais que decoração.
 - **CTA sólido:** `ink` (`#07111f`) — variant `executive` em `button.tsx`; não usar `primary` para botões de ação principal.
-- Espaçamentos controlados (`py-14 lg:py-20`); blocos densos onde ajudam a triagem; nenhuma lacuna visual sem função.
+- Espaçamentos controlados (`py-18 lg:py-28`); blocos densos onde ajudam a triagem; nenhuma lacuna visual sem função.
 - Poucos ícones; ícone só quando melhora reconhecimento.
 - Motion discreto: entrada por translação sutil (conteúdo permanece visível), sem competir com leitura.
-- Glassmorphism, gradientes sutis e elevação hierárquica para criar dimensão.
+- Glassmorphism real com backdrop-blur-xl, gradientes sutis e elevação hierárquica para criar dimensão.
+- Ambient orbs flutuantes com animate-float para profundidade no hero.
+- Shine effect em CTAs primários para hierarquia visual.
+- Custom scrollbar e selection brandada para polish final.
 - Conteúdo essencial não pode começar invisível por dependência de scroll/JS. Animações usam `opacity: 1` no estado inicial; o movimento vem de `y`/`scale`.
 
 ---
@@ -99,7 +102,8 @@ Ordem em `HomePage.tsx`: Header → ExecutiveHero → EvidenceStrip → ProfileB
 | `ContactPanel` | Canais profissionais diretos em painel glass escuro |
 | `Header` / `Footer` | Navegação curta, consistência e links |
 | `FadeIn` / `Stagger` | Wrappers reutilizáveis de motion |
-| `PremiumCard` / `GlassCard` / `MetricPill` | Blocos de UI premium reutilizáveis |
+| `PremiumCard` / `GlassCard` / `MetricPill` / `EditorialBadge` | Blocos de UI premium reutilizáveis |
+| `AmbientOrb` / `Shine` / `GradientBorder` | Efeitos visuais premium (orbs flutuantes, brilho, borda gradiente) |
 
 Todo copy deve vir de `data/content.ts`. Componentes não devem hardcodar narrativa de carreira, rótulos de CTA ou textos comerciais.
 
@@ -167,6 +171,10 @@ As demos não podem parecer outro produto visual. Elas são a camada interativa 
 - Performance continua como sinal profissional: build limpo e Lighthouse ≥90.
 - Mobile precisa ser escaneável para triagem via LinkedIn.
 - Animações não escondem conteúdo essencial: estado inicial `opacity: 1`.
+- Selection brandada com cor primary e texto branco.
+- Custom scrollbar sutil com thumb cinza quente.
+- Ambient orbs flutuantes no hero para dimensão visual.
+- Hover states premium: elevação + shadow + border accent.
 
 ---
 

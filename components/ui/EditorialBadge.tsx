@@ -20,7 +20,7 @@ export function EditorialBadge({
         tone === "dark" &&
           "border-white/12 bg-white/[0.06] text-on-dark-accent",
         tone === "gold" &&
-          "border-warm-accent/25 bg-warm-accent/10 text-[#8A651F]",
+          "border-warm-accent/30 bg-warm-accent/10 text-[#7a5a1a]",
         className,
       )}
     >

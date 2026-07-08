@@ -29,6 +29,18 @@ export function ContactPanel() {
         aria-hidden
       />
       <div className="bg-grid-dark pointer-events-none absolute inset-0 opacity-30" aria-hidden />
+      <div
+        className="ambient-orb"
+        style={{
+          width: 360,
+          height: 360,
+          background: "rgba(22, 169, 156, 0.16)",
+          top: "-80px",
+          right: "-60px",
+          opacity: 0.4,
+        }}
+        aria-hidden
+      />
 
       <motion.div
         initial={{ opacity: 1, y: 30 }}
@@ -89,7 +101,7 @@ export function ContactPanel() {
               onClick={() => analytics.linkedinClick("contato")}
               className={cn(
                 buttonVariants({ variant: "default" }),
-                "group h-13 justify-between rounded-lg bg-white px-5 text-base font-bold text-ink hover:bg-white/90",
+                "shine group h-13 justify-between rounded-lg bg-white px-5 text-base font-bold text-ink hover:bg-white/90",
               )}
             >
               <span className="inline-flex items-center gap-2">

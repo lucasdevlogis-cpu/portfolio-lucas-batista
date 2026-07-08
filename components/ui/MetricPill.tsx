@@ -32,10 +32,10 @@ export function MetricPill({
       transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -3 }}
       className={cn(
-        "group min-w-0 overflow-hidden rounded-lg border p-4 transition-colors duration-normal ease-editorial lg:p-5",
+        "group min-w-0 overflow-hidden rounded-lg border p-4 transition-all duration-normal ease-editorial lg:p-5",
         dark
-          ? "border-white/10 bg-white/[0.04] hover:bg-white/[0.07]"
-          : "border-primary/10 bg-card/80 hover:border-primary/20 hover:bg-card",
+          ? "border-white/10 bg-white/[0.04] hover:bg-white/[0.08]"
+          : "border-primary/15 bg-card shadow-card hover:border-primary/30 hover:shadow-elevated",
         className,
       )}
     >

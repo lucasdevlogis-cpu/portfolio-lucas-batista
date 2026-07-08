@@ -24,9 +24,10 @@ function SocialLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex items-center gap-2 text-base text-muted-foreground transition-colors hover:text-ink"
+      className="group relative inline-flex items-center gap-2 text-base text-muted-foreground transition-colors duration-normal ease-editorial hover:text-ink"
     >
       {children}
+      <span className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-current transition-all duration-normal ease-editorial group-hover:w-full" aria-hidden />
       <span className="sr-only">{label}</span>
     </a>
   );
@@ -44,7 +45,7 @@ export function Footer() {
           </p>
           <p className="mt-1 text-base text-muted-foreground">{pessoal.titulo}</p>
 
-          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1.5 text-xs font-bold text-accent-contrast">
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent/15 px-3 py-1.5 text-xs font-bold text-accent-contrast">
             <Star className="size-3.5" aria-hidden />
             {footer.badgeCases}
           </div>
@@ -89,7 +90,7 @@ export function Footer() {
             {pessoal.stackTags.map((stack) => (
               <span
                 key={stack}
-                className="rounded-full border border-border bg-secondary/60 px-2.5 py-1 text-xs font-semibold text-ink"
+                className="rounded-full border border-primary/15 bg-primary/[0.04] px-2.5 py-1 text-xs font-semibold text-ink"
               >
                 {stack}
               </span>
@@ -120,7 +121,7 @@ export function Footer() {
               <ArrowUpRight className="size-4 opacity-0 transition-all group-hover:opacity-100" aria-hidden />
             </a>
           </div>
-          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
             {footer.declaracaoLimitacao}
           </p>
         </div>

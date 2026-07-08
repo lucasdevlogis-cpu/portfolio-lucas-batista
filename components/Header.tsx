@@ -15,7 +15,7 @@ export function Header() {
   const activeSection = useActiveSection(sectionIds);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-surface-dark/90 backdrop-blur-md transition-colors duration-normal ease-editorial">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-surface-dark/90 backdrop-blur-xl transition-colors duration-normal ease-editorial">
       <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-10 xl:px-12 2xl:px-16">
         <a
           href="#conteudo"
@@ -44,7 +44,7 @@ export function Header() {
               >
                 {link.label}
                 {isActive ? (
-                  <span className="absolute bottom-1 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-accent" aria-hidden />
+                  <span className="absolute bottom-1 left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-accent" aria-hidden />
                 ) : null}
               </a>
             );

@@ -24,12 +24,12 @@ export function PremiumCard({
       className={cn(
         "relative overflow-hidden rounded-xl border transition-all duration-normal ease-editorial will-change-transform",
         tone === "light" &&
-          "border-primary/10 bg-card/95 shadow-card",
+          "border-primary/15 bg-card shadow-card",
         tone === "dark" &&
-          "border-white/10 bg-white/[0.055] shadow-[0_24px_80px_rgba(0,0,0,0.18)]",
+          "border-white/[0.12] bg-white/[0.06] shadow-[0_24px_80px_rgba(0,0,0,0.22)]",
         hover &&
-          "hover:-translate-y-1 hover:shadow-elevated hover:border-primary/20",
-        tone === "dark" && hover && "hover:border-white/20",
+          "hover:-translate-y-1 hover:shadow-elevated hover:border-primary/25",
+        tone === "dark" && hover && "hover:border-white/25 hover:bg-white/[0.08]",
         gradientBorder && "gradient-border",
         className,
       )}

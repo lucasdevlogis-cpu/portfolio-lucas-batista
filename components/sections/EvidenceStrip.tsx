@@ -15,7 +15,7 @@ export function EvidenceStrip() {
       aria-label="Métricas principais do portfólio"
       className="relative border-b border-border bg-editorial"
     >
-      <div className="mx-auto grid max-w-[1440px] gap-3 px-5 py-5 sm:grid-cols-2 sm:px-8 lg:grid-cols-4 lg:gap-4 lg:px-10 xl:px-12 2xl:px-16">
+      <div className="mx-auto grid max-w-[1440px] gap-3 px-5 py-6 sm:grid-cols-2 sm:px-8 lg:grid-cols-4 lg:gap-4 lg:px-10 lg:py-8 xl:px-12 2xl:px-16">
         {metrics.map((metric, index) => {
           const Icon = icons[index % icons.length];
           return (
@@ -29,9 +29,9 @@ export function EvidenceStrip() {
                 delay: index * 0.1,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="group flex items-center gap-3.5 border-l-2 border-primary/20 bg-card/60 px-4 py-3.5 transition-colors duration-normal ease-editorial hover:border-accent hover:bg-card lg:px-5 lg:py-4"
+              className="group flex items-center gap-3.5 border-l-4 border-accent/40 bg-card px-4 py-3.5 shadow-card transition-colors duration-normal ease-editorial hover:border-accent hover:bg-card lg:px-5 lg:py-4"
             >
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/[0.06] text-primary transition-transform duration-normal group-hover:scale-110">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/[0.08] text-primary transition-transform duration-normal group-hover:scale-110">
                 <Icon className="size-4" aria-hidden />
               </div>
               <div className="min-w-0">

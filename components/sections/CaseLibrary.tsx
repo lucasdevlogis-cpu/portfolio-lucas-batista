@@ -134,7 +134,7 @@ export function CaseLibrary() {
 
       <div className="overflow-hidden rounded-2xl border border-border bg-editorial shadow-card">
         {/* Desktop table header */}
-        <div className="hidden grid-cols-[0.9fr_1.15fr_0.8fr_10rem] gap-4 border-b border-border bg-primary/[0.045] px-5 py-3 text-xs font-extrabold uppercase tracking-[0.12em] text-primary lg:grid">
+        <div className="hidden grid-cols-[0.9fr_1.15fr_0.8fr_10rem] gap-4 border-b border-border bg-primary/[0.08] px-5 py-3 text-xs font-extrabold uppercase tracking-[0.12em] text-primary lg:grid">
           <span>Case</span>
           <span>Problema</span>
           <span>Métrica</span>
@@ -160,7 +160,11 @@ export function CaseLibrary() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 whileHover={{ backgroundColor: "var(--card)" }}
-                className="group grid gap-3 bg-card/60 px-5 py-3.5 transition-colors lg:grid-cols-[0.9fr_1.15fr_0.8fr_10rem] lg:items-center"
+                className={cn(
+                  "group grid gap-3 px-5 py-3.5 transition-colors lg:grid-cols-[0.9fr_1.15fr_0.8fr_10rem] lg:items-center",
+                  "hover:border-l-2 hover:border-accent",
+                  index % 2 === 0 ? "bg-card" : "bg-editorial/50",
+                )}
               >
                 <div>
                   <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
@@ -173,7 +177,7 @@ export function CaseLibrary() {
                     {caseItem.tags.slice(0, 3).map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full border border-border bg-secondary/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground"
+                        className="rounded-full border border-border bg-secondary/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground"
                       >
                         {tag}
                       </span>
