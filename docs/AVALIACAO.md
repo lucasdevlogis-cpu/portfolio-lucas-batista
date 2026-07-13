@@ -6,7 +6,7 @@
 >
 > **Checklist de prioridade:** [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md)
 >
-> **Última atualização:** 08/07/2026 — densificação visual, tipografia e sincronização de skills
+> **Última atualização:** 13/07/2026 — consolidação de conteúdo e refatoração da seção Contato
 
 ---
 
@@ -17,9 +17,9 @@
 | **Layout oficial** | Executive Proof System — dossiê profissional para headhunters |
 | **Spec visual** | [`design/design.md`](../design/design.md) + tokens em `app/globals.css` |
 | **URL** | <https://portfolio-lucas-batista-murex.vercel.app> |
-| **Deploy Vercel** | `dpl_FVD4YzJtZ65waAx7rYmzcaYkSJXJ` — 08/07/2026 09:02 UTC-3 |
-| **Lighthouse prod (desktop)** | **100 / 96 / 100 / 100** |
-| **Lighthouse prod (mobile)** | **96 / 96 / 100 / 100** |
+| **Deploy Vercel** | `9FUG7tSarRquoDL66wRbnrBXMPHP` — 13/07/2026 18:25 UTC-3 |
+| **Lighthouse prod (desktop)** | **a revalidar** |
+| **Lighthouse prod (mobile)** | **a revalidar** |
 
 ### Homepage (ordem DOM = nav)
 
@@ -34,6 +34,7 @@
 | Pasta | Conteúdo |
 |-------|----------|
 | `components/archive/consultoria/` | Landing comercial (Dores, Serviços, Método, Sobre, IA) |
+| `components/archive/legacy/` | Componentes de iterações anteriores (excluídos do typecheck) |
 | `data/archive/content-consultoria.ts` | Copy shelved da landing comercial |
 | `design/archive/` | Planos e specs históricos |
 
@@ -44,12 +45,13 @@
 | Área | Lançado | QA manual |
 |------|:-------:|:---------:|
 | Layout Executive Proof (redesign premium) | ✅ | ✅ prod |
+| Consolidação de conteúdo (Hero, Perfil, Trajetória, Contato) | ✅ | ✅ prod |
 | Demos Streamlit | ✅ | ✅ 13/13 smoke tests |
-| Deploy Vercel | ✅ | ✅ prod `dpl_FVD4YzJtZ65waAx7rYmzcaYkSJXJ` |
+| Deploy Vercel | ✅ | ✅ prod `9FUG7tSarRquoDL66wRbnrBXMPHP` |
 | OG + CV PDF | ✅ | ✅ prod |
-| Lighthouse | ✅ local | 🟡 a revalidar após deploy 08/07 |
-| Documentação de agentes | ✅ | ✅ alinhada nesta rodada |
-| MCPs do Cursor | 🟡 | 🟡 configurados com placeholders |
+| Lighthouse | ✅ local | 🟡 a revalidar após deploy 13/07 |
+| Documentação de agentes | ✅ | 🟡 parcial — skills em revisão |
+| Testes E2E | ✅ | ✅ 8/8 passando |
 
 ---
 
@@ -58,15 +60,17 @@
 | # | Divergência | Impacto | Plano |
 |---|-------------|---------|-------|
 | 1 | Cockpit SVG estático no hero gera expectativa de interatividade | UX | Decidir: tornar interativo, reduzir ou substituir por screenshot (P0) |
-| 2 | ~~Seção Perfil ainda contém FAQ~~ | Densidade de texto | ✅ Resolvido: FAQ de triagem integrado ao Perfil (08/07) |
+| 2 | ~~Seção Perfil ainda contém FAQ~~ | Densidade de texto | ✅ Resolvido: FAQ removido; copy enxuta nos diferenciais (13/07) |
 | 3 | Cards de provas mostram "Decisão apoiada" e "Limitação" | Escaneabilidade | ✅ Resolvido: campos exibidos de forma compacta (08/07) |
-| 4 | `CaseLibraryDesktop` tem nome desktop-only | Mobile | ✅ Resolvido: renomeado para `CaseLibrary` com filtros mobile (08/07) |
-| 5 | `MotionProvider` não usa `useReducedMotion()` | A11Y | ✅ Resolvido: `useReducedMotion()` integrado ao `MotionProvider` (08/07) |
+| 4 | ~~`CaseLibraryDesktop` tem nome desktop-only~~ | Mobile | ✅ Resolvido: renomeado para `CaseLibrary` com filtros mobile (08/07) |
+| 5 | ~~`MotionProvider` não usa `useReducedMotion()`~~ | A11Y | ✅ Resolvido: `useReducedMotion()` integrado ao `MotionProvider` (08/07) |
 | 6 | Filtros da biblioteca não anunciam resultado via `aria-live` | A11Y | ✅ Resolvido: `aria-live` presente no `CaseLibrary` (08/07) |
 | 7 | Header não tem indicador de seção ativa | Navegação | ✅ Resolvido: `useActiveSection` + underline no link ativo (08/07) |
 | 8 | Cards de provas não têm thumbnails/screenshots | Percepção de qualidade | `CaseThumbnail` implementado; placeholder SVG até capturas reais (P1) |
 | 9 | Stack técnico em texto plano; poderia ser tags | Escaneabilidade | ✅ Resolvido: tags de stack no painel do hero e footer (08/07) |
 | 10 | Analytics/Vercel Analytics não implementado | Medição | ✅ Parcial: eventos de clique em `lib/analytics.ts` (08/07) |
+| 11 | Redundâncias de copy em Hero, EvidenceStrip, Trajetória e Contato | Clareza | ✅ Resolvido: cada informação aparece em um único lugar (13/07) |
+| 12 | Seção Contato com blocos de texto grandes antes da ação | UX | ✅ Resolvido: CTAs em cards prioritários, texto reduzido (13/07) |
 
 Detalhes e priorização completa: [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md).
 
@@ -74,46 +78,41 @@ Detalhes e priorização completa: [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECK
 
 ## Performance (Lighthouse)
 
-Scores pós-refinamento premium (2026-07-07):
+Scores a serem revalidados após deploy de 13/07/2026:
 
 | | Desktop | Mobile |
 |---|--------:|-------:|
-| **Local** (`next start`) | 100 / 96 / 100 / 100 | — |
-| **Prod** (Vercel URL) | **100 / 96 / 100 / 100** | **96 / 96 / 100 / 100** |
+| **Local** (`next start`) | — | — |
+| **Prod** (Vercel URL) | **a revalidar** | **a revalidar** |
 
 Colunas: Performance / Acessibilidade / Best Practices / SEO. Meta lançamento: desktop Performance ≥ 90 ✅.
 
 ---
 
-## Mudanças da última rodada (08/07/2026)
+## Mudanças da última rodada (13/07/2026)
 
 ### Landing page
 
-- **Densidade e tipografia revisadas**: fontes de corpo aumentadas (mínimo `text-sm`/14px em metadados, `text-base`/16px em leitura), espaçamentos verticais reduzidos (`py-14 lg:py-20`), cards mais compactos.
-- **Hero redesenhado**: coluna de texto à esquerda + painel de credibilidade à direita com avatar, stack, empresas, provas e foco — elimina lacuna da foto placeholder.
-- **Perfil**: card principal de direção de carreira + 4 diferenciais + FAQ de triagem do headhunter + faixa de credibilidade.
-- **Cases**: cards âncora exibem problema, decisão apoiada, limitação declarada e métrica; biblioteca filtrável desktop/mobile; roadmap mantido.
-- **Trajetória**: timeline, stack, impactos, experiências e formação/certificações/idiomas consolidados em cards mais densos.
+- **Consolidação de conteúdo**: cada informação (anos, impacto, stack, domínios, impactos por empresa) agora aparece em apenas um lugar.
+- **Hero**: painel lateral simplificado para stack tags e empresas; métricas e domínios removidos do cockpit para evitar duplicação com `EvidenceStrip` e `ProfileBrief`.
+- **EvidenceStrip**: reduzido para 3 métricas distintas (`+10 anos`, `+R$ 20M impacto`, `10 demos`).
+- **Perfil**: 3 diferenciais compactos, domínios como tags, sem FAQ.
+- **Trajetória**: layout limpo em 1 coluna, sem narrativa genérica ou stack duplicado; impactos por empresa como badges dentro dos cards de experiência.
+- **Contato**: refatorado com hierarquia de ação — CTAs em cards clicáveis com touch target amplo, manifesto reduzido e metadados compactos.
+- **CV PDF**: script de export/geração atualizado para nova estrutura de experiências.
+- **TypeScript**: `components/archive/**` excluído do typecheck para evitar que componentes legacy/shelved quebrem builds.
 - **Testes E2E**: 8/8 passando com Playwright contra build de produção.
-- **Build**: `validate`, `lint`, `typecheck`, `build` passando; cache CSS limpo após rebuild.
-- **Documentação**: `CANON.md`, `AVALIACAO.md`, `AGENTS.md`, `.codex/AGENTS.md`, `.agents/skills/*`, `docs/A11Y.md`, `docs/MOBILE_SPEC.md` e `docs/GAPS.md` sincronizados.
+- **Build**: `validate`, `lint`, `typecheck`, `build` passando.
 
 ### Demos Streamlit
 
-- Tokens de cor alinhados à landing (teal/warm-accent/ink).
-- CSS premium em `lib/ui.py`: header escuro translúcido, KPI cards com hover, badges destacados, tabelas estilizadas.
-- `lib/viz.py` e `lib/folium_maps.py` ajustados para novas cores e hoverlabels escuros.
-- Páginas refinadas visualmente sem alterar lógica de negócio.
-- Smoke test: **13/13 OK**.
+- Sem alterações nesta rodada.
+- Smoke test: **13/13 OK** (última verificação anterior).
 
 ### Documentação e agentes
 
-- `.cursorrules` atualizado para refletir stack atual (Next.js 16, Tailwind v4, tokens editoriais, componentes atuais).
-- Skills em `.agents/skills/` atualizadas: `design-system.md`, `component-patterns.md`, `ux-writing.md`, `a11y.md`, `mobile-first.md`, `accessibility.md`, `performance.md`, `seo-meta.md`.
-- `.codex/AGENTS.md` atualizado com ordem canônica atual.
-- `.cursor/mcp.json` configurado com placeholders + `.cursor/MCP_SETUP.md` com instruções.
-- `.gitignore` atualizado para ignorar `.cursor/mcp.json` (pode conter tokens).
-- Criado `docs/P0_P1_P2_CHECKLIST.md` com plano de refatoração progressiva.
+- `docs/AVALIACAO.md` atualizado com status pós-consolidação.
+- Pendências de documentação: revisão alinhada das skills em `.agents/skills/` com o estado atual da landing.
 
 ---
 
@@ -121,8 +120,8 @@ Colunas: Performance / Acessibilidade / Best Practices / SEO. Meta lançamento: 
 
 - Substituir foto placeholder em `public/profile.jpg` (P0)
 - Capturas reais 16:9 para thumbnails dos cases (P1)
-- `useReducedMotion` no MotionProvider (P1)
-- Revalidar Lighthouse após ajustes de densidade (P1)
+- Revalidar Lighthouse após ajustes de conteúdo (P1)
+- Revisar e consolidar skills em `.agents/skills/` (P1)
 - Domínio custom / Vercel Analytics (P2)
 - Backlog demos: [`docs/OPORTUNIDADES_DEMOS.md`](OPORTUNIDADES_DEMOS.md)
 
@@ -158,6 +157,7 @@ Colunas: Performance / Acessibilidade / Best Practices / SEO. Meta lançamento: 
 ```bash
 npm run validate && npm run lint && npm run typecheck && npm run build
 npm run cv:generate
+npx playwright test
 
 cd demos-logistica
 python scripts/build_datasets.py
@@ -188,6 +188,10 @@ python scripts/smoke_test.py   # 13 checagens
 
 ## Histórico
 
+### Consolidação de conteúdo e refatoração do Contato — 13/07/2026
+
+Remoção de redundâncias entre Hero, EvidenceStrip, Perfil, Trajetória e Contato; seção Contato reorganizada com CTAs prioritários e copy enxuta; testes E2E atualizados e 8/8 passando.
+
 ### Densificação visual e sincronização de skills — 08/07/2026
 
 Redução de whitespace, aumento de fontes, preenchimento de blocos ociosos, rebuild limpo do Next.js para resolver cache CSS desatualizado, e atualização completa de skills e documentação. Testes E2E 8/8 passando.
@@ -202,7 +206,7 @@ Hero escuro, animações Framer Motion, paleta premium, grid denso no Perfil, ti
 
 ### Canonicalização — 06/07/2026 (tarde)
 
-`docs/CANON.md` criado; ordem seções Perfil → Cases → Trajetória; copy comercial extraído para `data/archive/`; status honesto; agent docs alinhados.
+`docs/CANON.md` criado; ordem seções Perfil → Cases → Trajetória; copy comercial extraída para `data/archive/`; status honesto; agent docs alinhados.
 
 ### Executive Proof System — 06/07/2026
 

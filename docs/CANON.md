@@ -23,7 +23,7 @@ Dossiê profissional **headhunter-first**: em até 60 segundos, quem avalia fit 
 | 3 | Provas rápidas | — | `EvidenceStrip` | 3 evidências de impacto |
 | 4 | Perfil em 60s | `perfil` | `ProfileBrief` | Fit, senioridade, sinais |
 | 5 | Provas técnicas | `cases` | `SignatureCases` + `CaseLibrary` | 3 âncora + biblioteca filtrável + roadmap |
-| 6 | Trajetória e stack | `trajetoria` | `TrajectoryBoard` | Experiência, stack, domínios |
+| 6 | Trajetória | `trajetoria` | `TrajectoryBoard` | Experiências, formação, certificações, idiomas |
 | 7 | Contato | `contato` | `ContactPanel` | LinkedIn, email, GitHub, CV PDF |
 | 8 | Footer | — | `Footer` | Links, declaração, topo |
 
@@ -72,6 +72,7 @@ Validação: `npm run validate` (10 demos + slug ↔ `demos-logistica/pages/`)
 | Path | Conteúdo |
 |------|----------|
 | [`components/archive/consultoria/`](../components/archive/consultoria/) | Dores, Serviços, Método, Sobre, IA + moléculas |
+| [`components/archive/legacy/`](../components/archive/legacy/) | Componentes de iterações anteriores (excluídos do typecheck) |
 | [`data/archive/content-consultoria.ts`](../data/archive/content-consultoria.ts) | Copy da landing comercial |
 | [`design/archive/`](../design/archive/) | editorial v3, plan-ux, lighthouse histórico, tokens comerciais |
 
@@ -83,10 +84,10 @@ Validação: `npm run validate` (10 demos + slug ↔ `demos-logistica/pages/`)
 |------|:-------:|:---------:|:---------:|-------|
 | Layout Executive Proof | ✅ | ✅ | ✅ | Densidade, tipografia e preenchimento revisados 08/07 |
 | Demos Streamlit (10 pages + 1 roadmap) | ✅ | ✅ | — | smoke 13/13 |
-| Deploy Vercel | ✅ | ✅ | — | `dpl_FVD4YzJtZ65waAx7rYmzcaYkSJXJ` (08/07/2026) — ver `npx vercel inspect` |
+| Deploy Vercel | ✅ | ✅ | — | `9FUG7tSarRquoDL66wRbnrBXMPHP` (13/07/2026) — ver `npx vercel inspect` |
 | OG image | ✅ | ✅ | — | prod 200 |
 | CV PDF | ✅ | ✅ | CV oficial | `npm run cv:generate` |
-| Lighthouse | ✅ local | ✅ prod | — | a revalidar após ajustes 08/07 |
+| Lighthouse | ✅ local | ✅ prod | — | a revalidar após ajustes 13/07 |
 | READMEs por case (Fase 3) | ✅ | — | — | `demos-logistica/docs/cases/` |
 | Testes E2E | ✅ | ✅ | — | 8/8 passando |
 | Domínio custom / Analytics | — | — | 🟡 | Backlog |

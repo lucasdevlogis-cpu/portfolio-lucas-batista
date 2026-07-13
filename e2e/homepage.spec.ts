@@ -25,18 +25,18 @@ test.describe("Homepage", () => {
     ).toBeVisible();
 
     await expect(
-      page.getByRole("heading", { name: "Evolução da carreira até 2026", level: 2 }),
+      page.getByRole("heading", { name: "Experiência profissional", level: 2 }),
     ).toBeVisible();
 
     await expect(
-      page.getByRole("heading", { name: "Contato profissional direto", level: 2 }),
+      page.getByRole("heading", { name: "Contato profissional", level: 2 }),
     ).toBeVisible();
   });
 
-  test("exibe FAQ de triagem na seção Perfil", async ({ page }) => {
+  test("exibe CTAs de contato na seção Contato", async ({ page }) => {
     await page.goto("/");
     await expect(
-      page.getByText("Perguntas que este perfil responde"),
+      page.getByRole("link", { name: /linkedin\.com\/in\/lucasfariaslog/i }),
     ).toBeVisible();
   });
 });

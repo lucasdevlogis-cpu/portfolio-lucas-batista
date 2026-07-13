@@ -25,11 +25,11 @@
 | 2 | Definir escala tipográfica (Source Serif 4 + Inter) | `app/globals.css`, `layout.tsx` | ✅ | Fontes atualizadas; corpo mínimo 14px, leitura 16px |
 | 3 | Redesenhar hero: reduzir texto, CTAs claros | `components/sections/ExecutiveHero.tsx` | ✅ | Layout denso com painel de credibilidade à direita |
 | 4 | Remover/substituir cockpit estático do hero | `components/visual/LogisticsIntelligenceCockpit.tsx` | ✅ | Componente arquivado em `components/archive/legacy/`; substituído por painel com stack, empresas e provas |
-| 5 | Densificar seção Perfil | `components/sections/ProfileBrief.tsx` | ✅ | Card de direção de carreira + 4 diferenciais + FAQ de triagem + credibilidade rápida |
+| 5 | Densificar seção Perfil | `components/sections/ProfileBrief.tsx` | ✅ | Card de direção de carreira + 3 diferenciais + domínios como tags + metadados de carreira |
 | 6 | Adicionar screenshots/thumbnails nos cards de provas | `components/sections/SignatureCases.tsx`, `public/` | ✅ | `CaseThumbnail` gerando placeholders SVG por categoria; campo `thumbnail` opcional para imagens reais |
 | 7 | Cards de provas completos e escaneáveis | `components/sections/SignatureCases.tsx` | ✅ | Problema, decisão apoiada, limitação declarada e métrica em layout compacto |
 | 8 | Redesenhar timeline de trajetória (visual vertical) | `components/sections/TrajectoryBoard.tsx` | ✅ | Timeline visual implementada |
-| 9 | Resumir experiências (máx 4 linhas, foco em resultado) | `data/content.ts` + `TrajectoryBoard.tsx` | 🟡 | `atribuicoes` ainda podem ser longas |
+| 9 | Resumir experiências (foco em resultado) | `data/content.ts` + `TrajectoryBoard.tsx` | ✅ | `atribuicoes` enxutas; impactos por empresa como badges |
 | 10 | Ajustar contraste em todas as seções (WCAG AA) | Todo o site | 🟡 | Lighthouse a11y 96/100 |
 | 11 | Alinhar documentação de agentes com código real | `.cursorrules`, `.agents/skills/`, `.codex/AGENTS.md` | ✅ | Atualizado nesta rodada |
 | 12 | Configurar MCPs do Cursor sem expor tokens | `.cursor/mcp.json`, `.cursor/MCP_SETUP.md` | ✅ | Placeholders + instruções |
@@ -57,7 +57,7 @@
 | 9 | Implementar grid responsivo inteligente para provas | `SignatureCases.tsx` + `CaseLibrary.tsx` | ✅ | Cards âncora empilham em mobile; biblioteca tem filtros pills horizontais |
 | 10 | Padronizar ícones (Lucide, um peso) | Todo o site | ✅ | Lucide React exclusivo |
 | 11 | Renomear `CaseLibraryDesktop` → `CaseLibrary` | `components/sections/CaseLibrary.tsx` | ✅ | Arquivo renomeado; layout mobile adicionado |
-| 12 | FAQ de triagem na seção Perfil | `components/sections/ProfileBrief.tsx` | ✅ | FAQ de triagem do headhunter integrado ao Perfil |
+| 12 | Remover FAQ e reduzir densidade textual | `components/sections/ProfileBrief.tsx`, `components/sections/ContactPanel.tsx` | ✅ | FAQ removido; copy enxuta em Perfil e Contato |
 | 13 | Adicionar `useReducedMotion` no MotionProvider | `components/providers/MotionProvider.tsx` | ✅ | Respeita `prefers-reduced-motion` via MotionConfig |
 | 14 | Adicionar `aria-live` nos filtros da biblioteca | `components/sections/CaseLibrary.tsx` | ✅ | Container com `aria-live="polite"` anuncia mudanças |
 
