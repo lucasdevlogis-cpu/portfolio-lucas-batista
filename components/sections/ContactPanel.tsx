@@ -90,8 +90,8 @@ export function ContactPanel() {
       title={contactLinks.titulo}
       lead={contactLinks.descricao}
       className="relative overflow-hidden bg-surface-dark"
-      innerClassName="grid gap-8 lg:grid-cols-[1.05fr_1fr] lg:items-start lg:gap-10"
-      headerClassName="mb-0"
+      innerClassName="max-w-4xl"
+      headerClassName="text-center lg:text-left"
     >
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_78%_20%,rgba(20,184,166,0.12),transparent_55%),radial-gradient(ellipse_50%_40%_at_10%_85%,rgba(212,168,83,0.12),transparent_50%)]"
@@ -118,7 +118,7 @@ export function ContactPanel() {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="relative"
       >
-        <div className="grid gap-3">
+        <div className="grid gap-3 sm:grid-cols-2">
           <ContactLinkCard
             href={pessoal.linkedin}
             external
@@ -161,7 +161,7 @@ export function ContactPanel() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-        className="relative space-y-5"
+        className="relative mt-6 grid gap-4 lg:mt-8 lg:grid-cols-3"
       >
         <PremiumCard tone="dark" className="p-5 lg:p-6" gradientBorder>
           <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-on-dark-accent">
@@ -169,7 +169,7 @@ export function ContactPanel() {
           </p>
           <ul className="mt-4 grid gap-3">
             {contactLinks.manifesto.map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-on-dark-muted sm:text-base">
+              <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-on-dark-muted">
                 <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
                 {item}
               </li>
@@ -177,21 +177,20 @@ export function ContactPanel() {
           </ul>
         </PremiumCard>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-          <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.04] p-4">
-            <MapPin className="mt-0.5 size-5 shrink-0 text-on-dark-accent" aria-hidden />
-            <div>
-              <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-accent">Localização</p>
-              <p className="mt-1 text-sm font-semibold text-white">{pessoal.localizacao}</p>
-              <p className="text-xs text-on-dark-muted">{pessoal.tempoResposta}</p>
-            </div>
+        <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.04] p-5">
+          <MapPin className="mt-0.5 size-5 shrink-0 text-on-dark-accent" aria-hidden />
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-accent">Localização</p>
+            <p className="mt-2 text-sm font-semibold text-white">{pessoal.localizacao}</p>
+            <p className="text-xs text-on-dark-muted">{pessoal.tempoResposta}</p>
           </div>
-          <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.04] p-4">
-            <FileText className="mt-0.5 size-5 shrink-0 text-on-dark-accent" aria-hidden />
-            <div>
-              <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-accent">Sobre este dossiê</p>
-              <p className="mt-1 text-sm leading-relaxed text-on-dark-muted">{contactLinks.nota}</p>
-            </div>
+        </div>
+
+        <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.04] p-5">
+          <FileText className="mt-0.5 size-5 shrink-0 text-on-dark-accent" aria-hidden />
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-accent">Sobre este dossiê</p>
+            <p className="mt-2 text-sm leading-relaxed text-on-dark-muted">{contactLinks.nota}</p>
           </div>
         </div>
       </motion.div>
