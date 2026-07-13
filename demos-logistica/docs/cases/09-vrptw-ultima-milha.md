@@ -6,14 +6,14 @@
 
 | Item | Valor |
 |------|-------|
-| Página | `pages/05_vrptw_ultima_milha.py` |
+| Página | `pages/vrptw_ultima_milha.py` |
 | URL | `/vrptw_ultima_milha` |
 | Tipo | Profunda (tabs) |
 
 ## Como rodar
 
 ```bash
-streamlit run pages/05_vrptw_ultima_milha.py
+streamlit run pages/vrptw_ultima_milha.py
 ```
 
 ## Abordagem

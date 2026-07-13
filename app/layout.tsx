@@ -34,13 +34,20 @@ export const metadata: Metadata = {
   title,
   description,
   keywords,
+  authors: [{ name: CONTENT.pessoal.nome, url: siteUrl }],
+  creator: CONTENT.pessoal.nome,
+  publisher: CONTENT.pessoal.nome,
   robots: "index, follow",
+  alternates: {
+    canonical: siteUrl,
+  },
   openGraph: {
     title,
     description,
     type: "website",
     url: siteUrl,
     locale: "pt_BR",
+    siteName: title,
     images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: title }],
   },
   twitter: {
@@ -69,12 +76,33 @@ export default function RootLayout({
     jobTitle,
     description,
     url: siteUrl,
+    image: `${siteUrl}/profile.jpg`,
+    sameAs: [CONTENT.pessoal.linkedin, CONTENT.pessoal.github],
     knowsAbout: [
       "Logística",
       "Supply Chain",
       "Análise de dados",
       "Frete",
       "E-commerce",
+      "Roteirização",
+      "Last Mile",
+      "SLA / OTD",
+      "Inteligência operacional",
+      "IA aplicada",
+    ],
+    worksFor: {
+      "@type": "Organization",
+      name: "GRUPO SBF",
+    },
+    alumniOf: [
+      {
+        "@type": "EducationalOrganization",
+        name: "USP/Esalq",
+      },
+      {
+        "@type": "EducationalOrganization",
+        name: "UNIP",
+      },
     ],
   };
 

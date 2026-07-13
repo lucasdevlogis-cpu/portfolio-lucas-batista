@@ -1,6 +1,7 @@
-# AGENTS.md — Portfólio Lucas Batista
+<!-- AGENTS.md — Portfólio Lucas Batista -->
+# AGENTS.md — Guia para Agentes de Código
 
-Guia completo para agentes de código (Cursor, Kimi Code, Codex, etc.) trabalhando neste repositório. Leia este arquivo antes de fazer qualquer alteração. O projeto usa principalmente **português do Brasil** em copy, comentários e documentação.
+Guia completo para agentes de código (Cursor, Kimi Code, Codex, etc.) trabalhando neste repositório. **Leia este arquivo antes de fazer qualquer alteração.** O projeto usa principalmente **português do Brasil** em copy, comentários e documentação.
 
 ---
 
@@ -14,19 +15,19 @@ Este repositório contém o **portfólio profissional de Lucas Batista**, posici
 
 **Estrutura de alto nível:**
 
-- Landing one-page em Next.js 16 + React 19 + TypeScript + Tailwind CSS v4.
-- Demos interativas em Streamlit (pasta `demos-logistica/`), embedadas na landing via iframe.
-- CV PDF gerado automaticamente a partir do mesmo conteúdo da landing.
-- Deploy na Vercel (landing) e Streamlit Cloud (demos).
+- Landing one-page em **Next.js 16.2.9 + React 19 + TypeScript + Tailwind CSS v4**.
+- Demos interativas em **Streamlit** (pasta `demos-logistica/`), embedadas na landing via iframe.
+- CV PDF gerado automaticamente a partir do mesmo conteúdo da landing (`data/content.ts`).
+- Deploy na **Vercel** (landing) e **Streamlit Cloud** (demos).
 
 **URLs de produção:**
 
 | Serviço | URL |
-|---------|-----|
-| Landing | <https://portfolio-lucas-batista-murex.vercel.app> |
-| Demos Streamlit | <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app> |
-| GitHub landing | <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista> |
-| GitHub demos | <https://github.com/lucasdevlogis-cpu/demos-logistica> |
+|---|---|
+| Landing | `https://portfolio-lucas-batista-murex.vercel.app` |
+| Demos Streamlit | `https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app` |
+| GitHub landing | `https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista` |
+| GitHub demos | `https://github.com/lucasdevlogis-cpu/demos-logistica` |
 
 ---
 
@@ -35,29 +36,32 @@ Este repositório contém o **portfólio profissional de Lucas Batista**, posici
 ### Landing (Next.js)
 
 | Tecnologia | Versão / Configuração |
-|------------|----------------------|
-| Framework | Next.js 16.2.9 (App Router) |
-| React | 19.2.4 |
-| TypeScript | 5.x |
-| Node.js | 24.x (`package.json` `engines`) |
-| Estilo | Tailwind CSS v4 (configuração CSS-only em `app/globals.css`) |
-| UI components | shadcn/ui (`components/ui/`) |
-| Ícones | Lucide React |
-| Animação | Framer Motion 12.x (entrada, hover e micro-interações em toda a landing) |
-| Fonte | Source Serif 4 (títulos) + Inter (corpo) via `next/font/google` |
-| Bundler | Turbopack |
+|---|---|
+| Framework | Next.js `16.2.9` (App Router) |
+| React | `19.2.4` |
+| TypeScript | `^5` |
+| Node.js | `24.x` (`engines` no `package.json`) |
+| Estilo | Tailwind CSS `^4` — configuração **CSS-only** em `app/globals.css` |
+| UI base | `@base-ui/react ^1.6.0` + `shadcn/ui` (`components/ui/`) |
+| Animação | Framer Motion `^12.42.0` |
+| Ícones | Lucide React `^1.21.0` |
+| Analytics | `@vercel/analytics ^2.0.1` |
+| Fontes | Inter (corpo) + Source Serif 4 (títulos) via `next/font/google` |
+| Bundler | Turbopack (`next dev`) |
+| E2E | Playwright `^1.61.1` |
 
-**Importante:** Tailwind v4 não usa `tailwind.config.ts`. Todas as variáveis, cores e tokens customizados estão em `app/globals.css` dentro do bloco `@theme inline` e `:root`. Não crie um `tailwind.config.ts`.
+**Importante:** Tailwind v4 não usa `tailwind.config.ts`. Todas as variáveis, cores e tokens customizados estão em `app/globals.css` dentro do bloco `@theme inline` e `:root`. **Não crie um `tailwind.config.ts`.**
 
 ### Demos (Streamlit)
 
 | Tecnologia | Uso |
-|------------|-----|
+|---|---|
 | Python | 3.x |
-| Streamlit | ≥ 1.39.0 |
+| Streamlit | `>= 1.39.0` |
 | Pandas / NumPy | Dados e modelagem |
 | Plotly | Gráficos interativos |
-| Folium + streamlit-folium | Mapas |
+| Folium + streamlit-folium | Mapas com Leaflet |
+| Tema | `.streamlit/config.toml` + CSS injetado em `demos-logistica/lib/ui.py` |
 
 A UI das demos é padronizada por `demos-logistica/lib/ui.py`, com tokens de marca em `demos-logistica/lib/brand.py`.
 
@@ -70,46 +74,47 @@ A UI das demos é padronizada por `demos-logistica/lib/ui.py`, com tokens de mar
 ```
 portfolio-lucas-batista/
 ├── app/                    # App Router Next.js
-│   ├── globals.css         # Tailwind v4 + tokens CSS
-│   ├── layout.tsx          # Metadata, viewport, fonte Inter, JSON-LD
+│   ├── globals.css         # Tailwind v4 + tokens CSS + utilitários
+│   ├── layout.tsx          # Metadata, viewport, fontes, JSON-LD, skip-link
 │   └── page.tsx            # Renderiza <HomePage />
 ├── components/             # Componentes React ativos
-│   ├── ui/                 # shadcn/ui (button, card, dialog, badge)
-│   ├── archive/            # Componentes shelved (não montar)
+│   ├── ui/                 # shadcn/ui (button, card, dialog, badge) e wrappers
+│   ├── sections/           # Seções da homepage
+│   ├── layout/             # SectionShell
+│   ├── providers/          # MotionProvider (LazyMotion + reduced-motion)
+│   ├── archive/            # Componentes shelved (não montar sem aprovação)
 │   ├── HomePage.tsx        # Monta a página na ordem canônica
 │   ├── Header.tsx          # Nav fixa com scroll spy
 │   ├── MobileNav.tsx       # Menu mobile
-│   ├── ExecutiveHero.tsx   # Primeira dobra executiva
-│   ├── EvidenceStrip.tsx   # Faixa de 4 métricas principais
-│   ├── ProfileBrief.tsx    # #perfil — fit, diferenciais, FAQ de triagem
-│   ├── SignatureCases.tsx  # #cases — 3 cards âncora
-│   ├── CaseLibrary.tsx     # Biblioteca filtrável (desktop + mobile)
-│   ├── CaseDemoLauncher.tsx# Botão/demo launcher
-│   ├── CaseThumbnail.tsx   # Thumbnail SVG dos cases
-│   ├── DemoModal.tsx       # Modal com iframe Streamlit
-│   ├── TrajectoryBoard.tsx # #trajetoria — experiência, stack, impactos
-│   ├── ContactPanel.tsx    # #contato — links e FAQ
 │   ├── Footer.tsx          # Rodapé
 │   ├── BackToTop.tsx       # Botão flutuante voltar ao topo
-│   └── LucideIconByName.tsx# Resolução dinâmica de ícones
+│   ├── CaseDemoLauncher.tsx# Botão que abre DemoModal
+│   ├── CaseThumbnail.tsx   # Thumbnail ou SVG gradiente por categoria
+│   ├── DemoModal.tsx       # Modal com iframe Streamlit
+│   ├── LucideIconByName.tsx# Resolução dinâmica de ícones
+│   └── ...
 ├── data/
 │   ├── content.ts          # SSOT de copy, cases, links, nav
-│   └── archive/            # Copy shelved (não usar sem aprovação)
+│   └── archive/            # Copy shelved
 ├── lib/
 │   ├── utils.ts            # `cn()` do shadcn
 │   ├── lucide-icons.ts     # Mapa nome → componente Lucide
-│   └── scroll.ts           # Helpers de scroll suave
+│   ├── scroll.ts           # Helpers de scroll suave
+│   ├── use-active-section.ts # Scrollspy
+│   └── analytics.ts        # Wrapper tipado Vercel Analytics
 ├── scripts/
 │   ├── validate-cases.ts   # Validação de cases (prebuild)
+│   ├── validate-premium-redesign.ts # Validação extra de redesign
 │   ├── export-cv-content.ts# Exporta content.ts → public/cv-export.json
-│   └── generate-cv-pdf.py  # Gera public/lucas-batista-cv.pdf
+│   ├── generate-cv-pdf.py  # Gera public/lucas-batista-cv.pdf
+│   └── generate-seo-files.ts # Gera sitemap.xml e robots.txt
 ├── demos-logistica/        # App Streamlit (subprojeto Python)
 │   ├── app.py              # Home das demos
 │   ├── paths.py            # DATA_DIR
 │   ├── pages/              # 11 pages Streamlit
 │   ├── lib/                # brand, ui, viz, folium_maps, geo, frete, format, tables
 │   ├── data/               # Datasets gerados
-│   ├── data/raw/           # Amostras curadas
+│   │   └── raw/            # Amostras curadas
 │   ├── scripts/
 │   │   ├── build_datasets.py   # Gera CSVs com seed fixa
 │   │   ├── smoke_test.py       # 13 checagens (12 scripts + 1 borda)
@@ -123,60 +128,89 @@ portfolio-lucas-batista/
 │   ├── AVALIACAO.md        # Estado, fases, bloqueadores
 │   ├── DEPLOY.md           # Deploy Vercel + Streamlit
 │   ├── VERCEL.md           # Operação e auditoria Vercel
-│   └── OPORTUNIDADES_DEMOS.md  # Backlog de demos
+│   ├── P0_P1_P2_CHECKLIST.md # Plano de refatoração progressiva
+│   ├── OPORTUNIDADES_DEMOS.md  # Backlog de demos
+│   ├── GAPS.md             # Gaps conhecidos
+│   ├── A11Y.md             # Acessibilidade
+│   └── MOBILE_SPEC.md      # Especificação mobile
 ├── public/                 # Assets estáticos
 │   ├── og-image.jpg
 │   ├── lucas-batista-cv.pdf
 │   ├── cv-export.json
 │   ├── robots.txt
 │   └── sitemap.xml
-├── .cursorrules            # Regras do Cursor (auto-load)
-├── .codex/AGENTS.md        # Guia Codex
+├── .cursorrules            # Regras globais do Cursor
+├── .agents/skills/         # Skills especializadas
+├── .env.example
+├── .env.local              # Não commitar
 ├── package.json
-├── next.config.ts          # Configuração mínima do Next.js
+├── next.config.ts          # Configuração mínima (vazio)
 ├── tsconfig.json
-└── eslint.config.mjs
+├── eslint.config.mjs
+└── playwright.config.ts
 ```
 
 ### Ordem canônica da homepage (DOM = nav = scroll)
 
 ```
-Header → ExecutiveHero → EvidenceStrip → ProfileBrief (#perfil) → SignatureCases (#cases) → TrajectoryBoard (#trajetoria) → ContactPanel (#contato) → Footer
+Header → ExecutiveHero → EvidenceStrip → ProfileBrief (#perfil)
+→ SignatureCases (#cases) → TrajectoryBoard (#trajetoria)
+→ ContactPanel (#contato) → Footer
 ```
 
 A nav exibe: **Perfil · Provas · Trajetória · Contato**.
 
-### Componentes ativos (não usar archive sem aprovação)
+### Componentes ativos
 
-`Header`, `ExecutiveHero`, `EvidenceStrip`, `ProfileBrief`, `SignatureCases`, `CaseLibrary`, `CaseDemoLauncher`, `CaseThumbnail`, `DemoModal`, `TrajectoryBoard`, `ContactPanel`, `Footer`, `HomePage`, `MobileNav`, `LucideIconByName`, `EditorialBadge`, `PremiumCard`, `MetricPill`, `SectionShell`, `BackToTop`, `MotionProvider`.
+Não usar `components/archive/` sem aprovação. Os componentes montados são:
+
+`Header`, `MobileNav`, `ExecutiveHero`, `EvidenceStrip`, `ProfileBrief`, `SignatureCases`, `CaseLibrary`, `CaseDemoLauncher`, `CaseThumbnail`, `DemoModal`, `TrajectoryBoard`, `ContactPanel`, `Footer`, `HomePage`, `BackToTop`, `LucideIconByName`, `MotionProvider`, `SectionShell`, `EditorialBadge`, `PremiumCard`, `MetricPill`.
+
+Componentes arquivados em `components/archive/ui/`: `FadeIn`, `Stagger`, `GlassCard`.
 
 ---
 
 ## 4. Fonte da verdade (SSOT)
 
 | Domínio | Fonte | Não usar |
-|---------|-------|----------|
+|---|---|---|
 | Copy ativo (landing) | `data/content.ts` | Hardcode nos componentes |
 | Copy shelved (comercial) | `data/archive/content-consultoria.ts` | Remontar sem aprovação |
-| Spec visual + IA | `design/design.md` | Figma |
+| Spec visual + IA | `design/design.md` + `app/globals.css` | Figma |
 | Tokens landing | `app/globals.css` + `design/tokens.md` | Hex inline |
 | Tokens demos Streamlit | `demos-logistica/lib/brand.py` | — |
-| Padrões viz demos | `.agents/skills/design-system.md`, `.agents/skills/component-patterns.md` | Specs obsoletas em OPORTUNIDADES |
+| Padrões de componentes | `.agents/skills/design-system.md`, `.agents/skills/component-patterns.md` | Specs obsoletas |
 | Estado do projeto | `docs/AVALIACAO.md` | Claims "100%" sem QA |
 | Deploy / Vercel | `docs/DEPLOY.md`, `docs/VERCEL.md` | SHAs hardcoded |
 | CV PDF | Gerado de `content.ts` via `npm run cv:generate` | Copy manual no Python |
-| Checklist de refatoração | [`docs/P0_P1_P2_CHECKLIST.md`](docs/P0_P1_P2_CHECKLIST.md) | — |
-| Configuração MCPs | [`.cursor/MCP_SETUP.md`](.cursor/MCP_SETUP.md) | — |
+| Checklist de refatoração | `docs/P0_P1_P2_CHECKLIST.md` | — |
 
 **Regra de ouro:** todo texto, link, case, CTA, métrica e rótulo da landing vêm de `data/content.ts`. Componentes não devem hardcodar narrativa de carreira, rótulos de CTA ou textos comerciais.
 
 ### Cases e demos
 
-- **10 cases demonstráveis** mapeados em `CASE_DEMO_SLUGS` em `data/content.ts`.
-- **3 cases âncora** listados em `featuredProofCases` (`01-precificacao-frete`, `02-torre-controle`, `08-cvrp-urbano`).
+- **11 cases** em `CONTENT.cases`.
+- **10 cases demonstráveis** mapeados em `CASE_DEMO_SLUGS` (`data/content.ts`).
+- **3 cases âncora** listados em `featuredProofCases`: `01-precificacao-frete`, `02-torre-controle`, `08-cvrp-urbano`.
 - **1 roadmap** (`06-kpis-cd`) — sem demo publicada.
 - `linkDemo` é derivado automaticamente de `CASE_DEMO_SLUGS` e `NEXT_PUBLIC_DEMOS_BASE_URL`. Nunca declare `linkDemo` manualmente.
-- A URL Streamlit usa o **slug sem prefixo numérico**: `pages/08_ship_from_store.py` → `/ship_from_store`.
+- A URL Streamlit usa o **slug sem prefixo numérico**: `pages/ship_from_store.py` → `/ship_from_store`.
+
+Mapeamento atual:
+
+| Case ID | Slug Streamlit | Título | Prioridade |
+|---|---|---|---|
+| `01-precificacao-frete` | `precificacao_frete` | Simulador de Custo de Frete | P0 |
+| `02-torre-controle` | `mini_torre_controle` | Mini Torre de Controle de Entregas | P0 |
+| `03-promessa-cep` | `promessa_cep` | Promessa de Entrega por CEP | P0 |
+| `04-ship-from-store` | `ship_from_store` | Ship from Store / Origem Ótima | P1 |
+| `05-auditoria-endereco` | `auditoria_endereco` | Auditoria de Endereço e Geocoding | P1 |
+| `07-classificador-ocorrencias` | `classificador_ocorrencias` | Classificador de Ocorrências Operacionais | P2 |
+| `08-cvrp-urbano` | `cvrp_urbano` | Roteirização Urbana (CVRP) | P0 |
+| `09-vrptw-ultima-milha` | `vrptw_ultima_milha` | Última Milha com Janelas (VRPTW) | P1 |
+| `10-rede-interhubs` | `rede_interhubs` | Rede Inter-hubs / Corredores | P1 |
+| `11-tsp-baseline-sp` | `tsp_baseline_sp` | Sequência de Visitas (TSP) | P1 |
+| `06-kpis-cd` | — | KPIs de Armazenagem e Expedição | P2 (roadmap) |
 
 ---
 
@@ -194,16 +228,20 @@ npm run dev                 # http://localhost:3000
 # Validação (obrigatória antes do build)
 npm run validate            # roda scripts/validate-cases.ts
 
-# Lint
+# Lint e typecheck
 npm run lint                # ESLint 9 (eslint.config.mjs)
+npm run typecheck           # tsc --noEmit
 
-# Build de produção (prebuild roda validate automaticamente)
+# SEO
+npm run seo:generate        # gera public/sitemap.xml e public/robots.txt
+
+# Build de produção (prebuild roda validate + typecheck automaticamente)
 npm run build
 
 # Servir build local
 npm run start               # http://localhost:3000
 
-# Gerar CV PDF
+# CV PDF
 npm run cv:generate         # npm run cv:export + python scripts/generate-cv-pdf.py
 ```
 
@@ -214,16 +252,21 @@ cd demos-logistica
 
 # Ambiente Python isolado (recomendado)
 python -m venv .venv
-source .venv/bin/activate   # Linux/macOS
-# .venv\Scripts\activate    # Windows
+# Windows:
+.venv\Scripts\activate
+# Linux/macOS:
+# source .venv/bin/activate
 
-pip install -r requirements.txt
+pip install -r requirements.txt   # streamlit, pandas, numpy, plotly, folium, streamlit-folium
 
 # Gerar datasets reprodutíveis
 python scripts/build_datasets.py
 
 # Smoke test: meta 13/13 checagens
 python scripts/smoke_test.py
+
+# Validar slugs entre landing e pages Streamlit
+python scripts/validate_slugs.py
 
 # Rodar localmente
 streamlit run app.py        # http://localhost:8501
@@ -232,12 +275,14 @@ streamlit run app.py        # http://localhost:8501
 ### Verificação completa recomendada
 
 ```bash
-npm run validate && npm run lint && npm run build
-npm run cv:generate
+npm run validate && npm run lint && npm run typecheck && npm run build
+npm run test:e2e            # 8 testes Playwright
+npm run cv:generate         # se content.ts foi alterado
 
 cd demos-logistica
 python scripts/build_datasets.py
-python scripts/smoke_test.py   # 13 checagens
+python scripts/smoke_test.py        # 13/13
+python scripts/validate_slugs.py    # 10/10
 ```
 
 ---
@@ -246,18 +291,20 @@ python scripts/smoke_test.py   # 13 checagens
 
 ### Landing
 
-- `npm run validate` é o teste principal: valida contagem de cases, slugs, ícones Lucide, campos obrigatórios, consistência `linkDemo` e correspondência com arquivos `demos-logistica/pages/*.py`.
+- `npm run validate` é o teste principal: valida contagem de cases, slugs, ícones Lucide, campos obrigatórios, consistência `linkDemo`, correspondência com arquivos `demos-logistica/pages/*.py` e frescor dos artefatos de CV.
 - `npm run lint` usa `eslint-config-next` (core-web-vitals + typescript).
-- `npm run build` deve passar sem erros. O `prebuild` roda `validate` automaticamente.
-- `npm run test:e2e` executa 8 testes Playwright contra build de produção.
-- QA manual pós-deploy está documentado em `docs/VERCEL.md` (checklist: modal demo, OG image, Lighthouse mobile ≥ 90, links de contato, etc.).
+- `npm run typecheck` roda `tsc --noEmit`.
+- `npm run build` deve passar sem erros. O `prebuild` roda `validate` e `typecheck` automaticamente.
+- `npm run test:e2e` executa 8 testes Playwright contra build de produção (o `playwright.config.ts` sobe o servidor com `next build && next start`).
+- QA manual pós-deploy está documentado em `docs/VERCEL.md`.
 
 ### Demos
 
-- `python scripts/smoke_test.py` executa cada page via `AppTest` e reporta exceções.
-- Inclui um teste de borda: filtro vazio na Mini Torre de Controle (page 02).
+- `python scripts/smoke_test.py` executa `app.py` e todas as `pages/*.py` via `AppTest` e reporta exceções.
+- Inclui um teste de borda: filtro vazio na `02_mini_torre_controle.py` (`at.multiselect[0].set_value([]).run()`).
 - Meta: **13/13 checagens OK**.
 - Sempre rode `build_datasets.py` antes de `smoke_test.py` se os datasets ainda não existirem.
+- `python scripts/validate_slugs.py` garante que os 10 slugs esperados pela landing existam como pages.
 - Verifique visualmente a página alterada em tela cheia **e** em embed (`?embed=true`).
 
 ---
@@ -270,10 +317,10 @@ python scripts/smoke_test.py   # 13 checagens
 - Use `interface` ou `type` para tipagem. Evite `any`.
 - Use Tailwind classes utilitárias. Não crie CSS custom a menos que necessário.
 - Para concatenação condicional de classes, use `cn()` de `lib/utils.ts`.
-- Imagens: use placeholders, ícones Lucide ou SVG. Nunca imagens genéricas de stock.
+- Imagens: use `next/image`, `priority={true}` apenas acima da fold, `loading="lazy"` abaixo. Nunca imagens genéricas de stock.
 - Textos: **sempre em português do Brasil**. Nunca hardcode — importe de `data/content.ts`.
-- SEO: meta tags, Open Graph, title, description em `layout.tsx`.
-- Performance: lazy loading, `will-change` em animações, conteúdo essencial visível sem depender de JS.
+- Server Components por padrão. Use `'use client'` apenas para interação real (filtros, modal, mobile nav).
+- Links externos: `target="_blank"`, `rel="noopener noreferrer"`, `aria-label` descritivo.
 
 ### Tailwind CSS v4
 
@@ -281,7 +328,7 @@ python scripts/smoke_test.py   # 13 checagens
 - Use `@import "tailwindcss"` e `@theme inline` com variáveis CSS.
 - Cores customizadas são definidas como variáveis CSS em `:root`.
 - **Não crie `tailwind.config.ts`** — isso é v3.
-- Tokens ativos: `editorial`, `card`, `ink`, `primary`, `accent`, `warm-accent`, `surface-dark`, `muted`, `border`.
+- Tokens ativos: `editorial`, `card`, `ink`, `primary`, `accent`, `warm-accent`, `surface-dark`, `muted`, `border`, `muted-foreground`.
 
 ### shadcn/ui
 
@@ -292,9 +339,58 @@ python scripts/smoke_test.py   # 13 checagens
 
 - Todo texto da UI em português do Brasil.
 - Cada demo deve deixar visível: problema, abordagem, stack, trade-off, métrica e limitação.
-- Use `lib/ui.py`, `lib/viz.py`, `lib/brand.py`, `lib/folium_maps.py`, `lib/format.py`, `lib/tables.py` para padronizar.
+- Use `lib/ui.py`, `lib/viz.py`, `lib/brand.py`, `lib/folium_maps.py`, `lib/format.py`, `lib/tables.py`, `lib/geo.py`, `lib/frete.py` para padronizar.
 - Não adicione segredos ou chaves de API hardcoded.
 - Não introduza APIs pagas como dependências obrigatórias.
+
+### UX Writing
+
+- Economia máxima: reduzir 50% do texto na primeira revisão, depois mais 20%.
+- Frases ≤ 20 palavras; parágrafos ≤ 3 linhas no desktop.
+- Hero ≤ 40 palavras; cards de prova ≤ 30 palavras.
+- CTAs: verbo no infinitivo + objeto, ≤ 4 palavras, com ícone.
+- Eyebrows: uppercase, tracking amplo (`tracking-[0.12em]`–`[0.18em]`), `text-xs`, máx. 3 palavras.
+- Anti-padrões: paredes de texto, tom acadêmico, palavras proibidas como `fui responsável por`, `realizei a implementação de`, `de forma significativa`.
+
+### Acessibilidade
+
+- Meta: Lighthouse a11y 100 (atual 96 — pendência documentada).
+- Contraste mínimo WCAG AA: texto normal 4.5:1, texto grande/bold 3:1, componentes interativos 3:1.
+- Skip link (`#conteudo`), ordem de foco lógica, `.focus-ring` visível, ESC fecha modais.
+- Ícones com `aria-hidden` quando acompanhados de texto ou `aria-label` quando sozinhos.
+- Semântica HTML: `<main>`, `<nav>`, `<section>`, `<article>`, `<footer>`; H1 único, hierarquia sem pulos.
+- Motion: respeitar `prefers-reduced-motion` (já implementado no `MotionProvider`).
+
+### Mobile-first
+
+- Primeiro mobile (375px). Toda implementação deve funcionar em 375px antes do desktop.
+- Touch targets mínimos: 44×44px; CTAs principais 56px de altura.
+- Fontes: nunca < 14px em mobile.
+- Hero, EvidenceStrip, SignatureCases, CaseLibrary, TrajectoryBoard e ContactPanel têm layouts adaptados (stack, lista em vez de tabela, etc.).
+
+### Performance
+
+- Imagens: WebP/AVIF, ≤ 200KB, dimensão máx. 1920px, `placeholder="blur"` quando possível.
+- Fontes: `next/font/google` com `display: 'swap'`, subset `latin`.
+- Componentes: dynamic import/lazy para seções abaixo da fold e bibliotecas pesadas (`DemoModal` já lazy).
+- Framer Motion: `LazyMotion` + `domAnimation` ativo.
+- Core Web Vitals: LCP < 2.5s, FID < 100ms, CLS < 0.1, TTFB < 600ms, FCP < 1.8s, INP < 200ms.
+- Lighthouse atual: desktop 100/96/100/100, mobile 96/96/100/100.
+
+### Proibições explícitas
+
+- ❌ Cores/hex fora do design system.
+- ❌ Fontes que não sejam Source Serif 4 / Inter.
+- ❌ Imagens sem alt text.
+- ❌ Ícones de bibliotecas misturadas (use Lucide React).
+- ❌ Componentes interativos falsos (ex: cockpit estático sem propósito).
+- ❌ `console.log` em produção.
+- ❌ Hardcode de copy fora de `data/content.ts`.
+- ❌ Criar `tailwind.config.ts`.
+- ❌ Usar `output: 'export'` ou `vercel.json` com override de output directory.
+- ❌ Commitar `.env.local`, `.vercel/`, `.venv/`.
+- ❌ Adicionar chaves de API, credenciais ou dependências pagas obrigatórias.
+- ❌ Remontar conteúdo de `components/archive/`, `data/archive/` ou `design/archive/` sem aprovação.
 
 ---
 
@@ -308,7 +404,7 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 ```
 
 | Variável | Obrigatória | Ambientes | Descrição |
-|----------|:-----------:|:---------:|-----------|
+|---|---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | Sim | Production, Preview, Development | URL pública do site |
 | `NEXT_PUBLIC_DEMOS_BASE_URL` | Sim | Production, Preview, Development | URL base do Streamlit Cloud (sem `/` final) |
 | `NEXT_PUBLIC_FORMSPREE_FORM_ID` | Não | — | Form removido; não usar |
@@ -326,7 +422,7 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 - **Não crie** `vercel.json` com override de output directory.
 - Configuração correta do painel:
   - Framework Preset: **Next.js**
-  - Build Command: **vazio** (usa `npm run build`, que roda `prebuild` → `validate`)
+  - Build Command: **vazio** (usa `npm run build`, que roda `prebuild` → `validate` + `typecheck`)
   - Output Directory: **vazio** (usa `.next/` nativo)
   - Install Command: **vazio** (usa `npm install`)
 - Env vars obrigatórias em Production, Preview e Development.
@@ -340,7 +436,7 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 
 ```powershell
 # clone único
- git clone https://github.com/lucasdevlogis-cpu/demos-logistica.git ..\demos-logistica-deploy
+git clone https://github.com/lucasdevlogis-cpu/demos-logistica.git ..\demos-logistica-deploy
 
 # a cada release
 robocopy demos-logistica ..\demos-logistica-deploy /E /XD .git __pycache__ .venv .pytest_cache /NFL /NDL /NJH /NJS
@@ -356,7 +452,7 @@ git push origin main
 - [ ] 3 cases âncora + biblioteca filtrável + roadmap visíveis.
 - [ ] Demos abrem no modal (iframe) com contexto de negócio.
 - [ ] Link "Abrir em nova aba" no modal funciona.
-- [ ] LinkedIn, email e GitHub funcionam na seção Contato.
+- [ ] LinkedIn, email, GitHub e CV PDF funcionam na seção Contato.
 - [ ] `robots.txt` e `sitemap.xml` acessíveis.
 - [ ] `og-image.jpg` aparece no preview de link (LinkedIn/WhatsApp).
 - [ ] Lighthouse ≥ 90 em mobile.
@@ -375,12 +471,12 @@ git push origin main
 
 ---
 
-## 11. Arquivado / shelved (não montar sem aprovação)
+## 11. Arquivado / shelved
 
 Alguns componentes e copy foram deliberadamente retirados da homepage no pivot para *Executive Proof System*. Não remonte sem revisar `docs/CANON.md` e `docs/AVALIACAO.md`.
 
 | Path | Conteúdo |
-|------|----------|
+|---|---|
 | `components/archive/consultoria/` | Landing comercial (Dores, Serviços, Método, Sobre, IA) |
 | `data/archive/content-consultoria.ts` | Copy shelved da landing comercial |
 | `design/archive/` | Specs históricos, planos UX, Lighthouse antigo, tokens comerciais |
@@ -402,38 +498,38 @@ Alguns componentes e copy foram deliberadamente retirados da homepage no pivot p
 O CV é gerado a partir de `data/content.ts` (SSOT):
 
 1. `npm run cv:export` roda `scripts/export-cv-content.ts` e gera `public/cv-export.json`.
-2. `scripts/generate-cv-pdf.py` lê `public/cv-export.json` e gera `public/lucas-batista-cv.pdf`.
+2. `scripts/generate-cv-pdf.py` lê `public/cv-export.json` e gera `public/lucas-batista-cv.pdf` com `fpdf`.
 3. `npm run cv:generate` executa os dois passos.
 
-Fontes TTF candidatas: `scripts/assets/DejaVuSans.ttf`, Arial no Windows, DejaVu no Linux, Arial no macOS. Se nenhuma for encontrada, o script falha com instrução clara.
+Fontes TTF candidatas: `scripts/assets/DejaVuSans.ttf`, `C:\Windows\Fonts\arial.ttf`, `/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf`, `/Library/Fonts/Arial.ttf`. Se nenhuma for encontrada, o script falha com instrução clara. Instale `fpdf` no ambiente Python (`pip install fpdf`) se necessário.
 
 ---
 
 ## 14. Documentação complementar
 
 | Doc | Função |
-|-----|--------|
+|---|---|
 | `docs/CANON.md` | Porta de entrada única — leia primeiro |
 | `docs/AVALIACAO.md` | Snapshot de saúde, fases, bloqueadores, histórico |
 | `docs/P0_P1_P2_CHECKLIST.md` | Plano de refatoração progressiva |
 | `docs/DEPLOY.md` | Guia completo de deploy Vercel + Streamlit |
 | `docs/VERCEL.md` | Operação, env vars, MCP e checklist QA na Vercel |
 | `docs/OPORTUNIDADES_DEMOS.md` | Backlog de demos |
+| `docs/A11Y.md` | Diretrizes de acessibilidade |
+| `docs/MOBILE_SPEC.md` | Especificação mobile-first |
+| `docs/GAPS.md` | Gaps conhecidos do projeto |
 | `design/design.md` | Spec visual ativa |
 | `design/tokens.md` | Resumo de tokens CSS/Streamlit |
 | `.cursorrules` | Regras do Cursor (auto-load) |
 | `.codex/AGENTS.md` | Guia específico para Codex |
 | `.cursor/MCP_SETUP.md` | Configuração dos MCPs do Cursor |
-| `.agents/skills/design-system.md` | Sistema visual atualizado |
-| `.agents/skills/component-patterns.md` | Padrões de componentes atualizados |
-| `.agents/skills/ux-writing.md` | Guia de copy atualizado |
-| `.agents/skills/a11y.md` | Acessibilidade atualizada |
-| `.agents/skills/mobile-first.md` | Mobile-first atualizado |
-| `.agents/skills/design-system.md` | Sistema visual da landing e das demos |
-| `.agents/skills/component-patterns.md` | Padrões de componentes reutilizáveis |
+| `.agents/skills/design-system.md` | Sistema visual |
+| `.agents/skills/component-patterns.md` | Padrões de componentes |
 | `.agents/skills/ux-writing.md` | Guia de copy |
-| `.agents/skills/a11y.md` | Acessibilidade |
+| `.agents/skills/a11y.md` / `.agents/skills/accessibility.md` | Acessibilidade |
 | `.agents/skills/mobile-first.md` | Mobile-first |
+| `.agents/skills/performance.md` | Performance Web |
+| `.agents/skills/seo-meta.md` | SEO e Meta Tags |
 
 ---
 

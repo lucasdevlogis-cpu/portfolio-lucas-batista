@@ -301,5 +301,5 @@ ui.provenance_expander(
     producao="Histórico de entregas + fonte postal contratada.",
     limitacoes="Geografia é apoio, não verdade; validar com operação e transportadoras.",
 )
-ui.demo_cta(next_demo_path="pages/05_vrptw_ultima_milha.py")
+ui.demo_cta(next_demo_path="pages/vrptw_ultima_milha.py")
 ui.footer()

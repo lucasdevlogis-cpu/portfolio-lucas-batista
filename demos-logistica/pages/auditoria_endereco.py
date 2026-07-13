@@ -316,5 +316,5 @@ ui.provenance_expander(
     producao="DNE + CNEFE + geocoding com score de confiança.",
     limitacoes="Sem base postal real; regras simplificadas de qualidade.",
 )
-ui.demo_cta(next_demo_path="pages/01_precificacao_frete.py")
+ui.demo_cta(next_demo_path="pages/precificacao_frete.py")
 ui.footer()

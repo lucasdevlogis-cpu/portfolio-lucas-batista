@@ -1,13 +1,19 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, Info, PlayCircle } from "lucide-react";
+import { useMemo, useState } from "react";
 
 import { CaseDemoLauncher } from "@/components/CaseDemoLauncher";
 import { EditorialBadge } from "@/components/ui/EditorialBadge";
 import { buttonVariants } from "@/components/ui/button";
-import { CASES_BIBLIOTECA, CASE_CATEGORIAS, CASES_DESTAQUE, CASES_ROADMAP, CONTENT } from "@/data/content";
+import {
+  CASE_CATEGORIAS,
+  CASES_BIBLIOTECA,
+  CASES_DESTAQUE,
+  CASES_ROADMAP,
+  CONTENT,
+} from "@/data/content";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -17,19 +23,34 @@ export function CaseLibrary() {
   const [filtroAtivo, setFiltroAtivo] = useState<FiltroCategoria>("Todos");
   const { secoes } = CONTENT;
 
-  const casesFiltrados = useMemo(() => {
-    if (filtroAtivo === "Todos") return CASES_BIBLIOTECA;
-    return CASES_BIBLIOTECA.filter((caseItem) => caseItem.categoria === filtroAtivo);
-  }, [filtroAtivo]);
-
   const contagemPorCategoria = useMemo(() => {
-    const contagem: Record<string, number> = { Todos: CASES_BIBLIOTECA.length };
-    for (const c of CASE_CATEGORIAS) {
-      if (c === "Todos") continue;
-      contagem[c] = CASES_BIBLIOTECA.filter((item) => item.categoria === c).length;
+    const contagem: Record<string, number> = {
+      Todos: CASES_BIBLIOTECA.length,
+    };
+    for (const caseItem of CASES_BIBLIOTECA) {
+      contagem[caseItem.categoria] = (contagem[caseItem.categoria] ?? 0) + 1;
     }
     return contagem;
   }, []);
+
+  const categoriasVisiveis = useMemo(() => {
+    return CASE_CATEGORIAS.filter((categoria) => {
+      if (categoria === "Todos") return true;
+      return (contagemPorCategoria[categoria] ?? 0) > 0;
+    });
+  }, [contagemPorCategoria]);
+
+  const casesFiltrados = useMemo(() => {
+    if (filtroAtivo === "Todos") return CASES_BIBLIOTECA;
+    return CASES_BIBLIOTECA.filter(
+      (caseItem) => caseItem.categoria === filtroAtivo,
+    );
+  }, [filtroAtivo]);
+
+  const filtroHint = secoes.casesBibliotecaFiltroHint.replace(
+    "{count}",
+    String(CASES_BIBLIOTECA.length),
+  );
 
   return (
     <div
@@ -42,6 +63,9 @@ export function CaseLibrary() {
         <p className="mt-3 hidden text-sm leading-snug text-muted-foreground lg:block">
           {secoes.casesBiblioteca.subtitle}
         </p>
+        <p className="mt-2 text-xs leading-snug text-muted-foreground">
+          {filtroHint}
+        </p>
 
         <div className="mt-4 hidden rounded-xl border border-border bg-card/70 p-4 lg:block">
           <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
@@ -49,32 +73,44 @@ export function CaseLibrary() {
             Como usar
           </p>
           <p className="mt-2 text-xs leading-snug text-muted-foreground">
-            Filtre por domínio. Cada linha leva a uma demo interativa com pergunta de negócio, métrica e limitação declarada.
+            Filtre por domínio. Cada linha leva a uma demo interativa com
+            pergunta de negócio, métrica e limitação declarada.
           </p>
         </div>
 
         <div className="mt-4 hidden grid-cols-3 gap-2 lg:grid">
           <div className="rounded-lg border border-border bg-card/70 p-2.5 text-center">
-            <p className="font-heading text-xl font-bold text-ink">{CASES_DESTAQUE.length}</p>
-            <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">âncora</p>
+            <p className="font-heading text-xl font-bold text-ink">
+              {CASES_DESTAQUE.length}
+            </p>
+            <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+              âncora
+            </p>
           </div>
           <div className="rounded-lg border border-border bg-card/70 p-2.5 text-center">
-            <p className="font-heading text-xl font-bold text-ink">{CASES_BIBLIOTECA.length}</p>
-            <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">biblioteca</p>
+            <p className="font-heading text-xl font-bold text-ink">
+              {CASES_BIBLIOTECA.length}
+            </p>
+            <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+              biblioteca
+            </p>
           </div>
           <div className="rounded-lg border border-border bg-card/70 p-2.5 text-center">
-            <p className="font-heading text-xl font-bold text-ink">{CASES_ROADMAP.length}</p>
-            <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">roadmap</p>
+            <p className="font-heading text-xl font-bold text-ink">
+              {CASES_ROADMAP.length}
+            </p>
+            <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+              roadmap
+            </p>
           </div>
         </div>
 
-        {/* Desktop filters */}
         <div
           role="group"
           aria-label={secoes.casesBiblioteca.title}
-          className="mt-4 hidden grid-cols-1 gap-2 lg:grid"
+          className="mt-4 flex gap-2 overflow-x-auto pb-2 lg:grid lg:grid-cols-1 lg:overflow-visible lg:pb-0"
         >
-          {CASE_CATEGORIAS.map((categoria) => {
+          {categoriasVisiveis.map((categoria) => {
             const ativo = filtroAtivo === categoria;
             return (
               <button
@@ -86,54 +122,28 @@ export function CaseLibrary() {
                   analytics.caseFilter(categoria);
                 }}
                 className={cn(
-                  "rounded-lg border px-3 py-2 text-left text-sm font-bold transition-all duration-normal ease-editorial focus-ring",
+                  "inline-flex min-h-11 shrink-0 items-center justify-between gap-2 rounded-full border px-4 py-2 text-left text-sm font-bold transition-all duration-normal ease-editorial focus-ring lg:w-full lg:rounded-lg lg:px-3",
                   ativo
                     ? "border-primary bg-primary text-white shadow-md shadow-primary/20"
-                    : "border-border bg-transparent text-muted-foreground hover:border-primary/35 hover:bg-card hover:text-ink",
+                    : "border-border bg-card text-muted-foreground hover:border-primary/35 hover:bg-card hover:text-ink lg:bg-transparent",
                 )}
               >
                 <span className="flex-1">{categoria}</span>
-                <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold">
+                <span
+                  className={cn(
+                    "rounded-full px-2 py-0.5 text-[10px] font-bold lg:text-[10px]",
+                    ativo ? "bg-white/20" : "bg-primary/8 text-primary",
+                  )}
+                >
                   {contagemPorCategoria[categoria] ?? 0}
                 </span>
               </button>
             );
           })}
         </div>
-
-        {/* Mobile filters */}
-        <div
-          role="group"
-          aria-label={secoes.casesBiblioteca.title}
-          className="mt-3 flex gap-2 overflow-x-auto pb-2 lg:hidden"
-        >
-          {CASE_CATEGORIAS.map((categoria) => {
-            const ativo = filtroAtivo === categoria;
-            return (
-              <button
-                key={categoria}
-                type="button"
-                aria-pressed={ativo}
-                onClick={() => {
-                  setFiltroAtivo(categoria);
-                  analytics.caseFilter(categoria);
-                }}
-                className={cn(
-                  "shrink-0 rounded-full border px-4 py-2 text-sm font-bold transition-all duration-normal ease-editorial focus-ring",
-                  ativo
-                    ? "border-primary bg-primary text-white shadow-md shadow-primary/20"
-                    : "border-border bg-card text-muted-foreground hover:border-primary/35 hover:text-ink",
-                )}
-              >
-                {categoria}
-              </button>
-            );
-          })}
-        </div>
       </aside>
 
-      <div className="overflow-hidden rounded-2xl border border-border bg-editorial shadow-card">
-        {/* Desktop table header */}
+      <div className="overflow-hidden rounded-2xl border border-border bg-editorial shadow-card max-lg:border-0 max-lg:bg-transparent max-lg:shadow-none">
         <div className="hidden grid-cols-[0.9fr_1.15fr_0.8fr_10rem] gap-4 border-b border-border bg-primary/[0.08] px-5 py-3 text-xs font-extrabold uppercase tracking-[0.12em] text-primary lg:grid">
           <span>Case</span>
           <span>Problema</span>
@@ -141,7 +151,7 @@ export function CaseLibrary() {
           <span className="text-right">Ações</span>
         </div>
 
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-border max-lg:flex max-lg:flex-col max-lg:gap-3 max-lg:divide-y-0">
           {casesFiltrados.length === 0 ? (
             <p className="px-5 py-8 text-center text-sm text-muted-foreground">
               Nenhum case encontrado para este filtro.
@@ -161,9 +171,10 @@ export function CaseLibrary() {
                 }}
                 whileHover={{ backgroundColor: "var(--card)" }}
                 className={cn(
-                  "group grid gap-3 px-5 py-3.5 transition-colors lg:grid-cols-[0.9fr_1.15fr_0.8fr_10rem] lg:items-center",
-                  "hover:border-l-2 hover:border-accent",
-                  index % 2 === 0 ? "bg-card" : "bg-editorial/50",
+                  "group grid gap-3 px-5 py-4 transition-colors lg:grid-cols-[0.9fr_1.15fr_0.8fr_10rem] lg:items-center lg:py-3.5",
+                  "max-lg:rounded-2xl max-lg:border max-lg:border-border max-lg:bg-card max-lg:shadow-card",
+                  "lg:hover:border-l-2 lg:hover:border-accent",
+                  index % 2 === 0 ? "lg:bg-card" : "lg:bg-editorial/50",
                 )}
               >
                 <div>
@@ -173,16 +184,6 @@ export function CaseLibrary() {
                   <h3 className="mt-1 font-heading text-base font-bold leading-tight text-ink transition-colors group-hover:text-accent-contrast">
                     {caseItem.titulo}
                   </h3>
-                  <div className="mt-1.5 flex flex-wrap gap-1.5">
-                    {caseItem.tags.slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-border bg-secondary/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
                 </div>
                 <p className="text-sm leading-snug text-muted-foreground">
                   {caseItem.perguntaNegocio}
@@ -190,10 +191,10 @@ export function CaseLibrary() {
                 <p className="text-sm font-semibold leading-snug text-ink">
                   {caseItem.metricaResumo}
                 </p>
-                <div className="flex flex-wrap gap-2 xl:justify-end">
+                <div className="flex flex-wrap items-center gap-2 lg:justify-end">
                   <CaseDemoLauncher
                     caseItem={caseItem}
-                    className="h-9 rounded-md px-3 text-xs"
+                    className="h-11 min-h-11 rounded-md px-3 text-xs lg:h-10 lg:min-h-10"
                     icon={<PlayCircle className="size-3.5" aria-hidden />}
                   />
                   {caseItem.linkGitHub ? (
@@ -204,7 +205,7 @@ export function CaseLibrary() {
                       aria-label={`${CONTENT.secoes.caseCodeLabel}: ${caseItem.titulo}`}
                       className={cn(
                         buttonVariants({ variant: "outline", size: "icon" }),
-                        "size-9 rounded-md border-primary/15 bg-transparent",
+                        "size-11 min-h-11 min-w-11 rounded-md border-primary/15 bg-transparent lg:size-10",
                       )}
                     >
                       <ExternalLink className="size-3.5" aria-hidden />

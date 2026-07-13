@@ -272,5 +272,5 @@ ui.provenance_expander(
     producao="PyVRP (time windows) sobre matriz de rede.",
     limitacoes="Um veículo, distância proxy, sem otimização global de janelas.",
 )
-ui.demo_cta(next_demo_path="pages/06_rede_interhubs.py")
+ui.demo_cta(next_demo_path="pages/rede_interhubs.py")
 ui.footer()

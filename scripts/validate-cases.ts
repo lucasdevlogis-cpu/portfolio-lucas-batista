@@ -195,16 +195,15 @@ if (DEMOS_BASE_URL) {
   );
 }
 
-// 7. Slug ↔ arquivo de page Streamlit (NN_{slug}.py → /{slug}).
+// 7. Slug ↔ arquivo de page Streamlit ({slug}.py → /{slug}).
 if (existsSync(PAGES_DIR)) {
   const pageFiles = readdirSync(PAGES_DIR).filter((f) => f.endsWith(".py"));
-  const slugFromFile = (file: string): string =>
-    file.replace(/\.py$/, "").replace(/^\d+_/, "");
+  const slugFromFile = (file: string): string => file.replace(/\.py$/, "");
   const availableSlugs = new Set(pageFiles.map(slugFromFile));
   for (const [id, slug] of Object.entries(CASE_DEMO_SLUGS)) {
     if (!availableSlugs.has(slug)) {
       fail(
-        `Case "${id}" mapeia slug "${slug}" sem page correspondente em demos-logistica/pages (esperado NN_${slug}.py).`,
+        `Case "${id}" mapeia slug "${slug}" sem page correspondente em demos-logistica/pages (esperado ${slug}.py).`,
       );
     }
   }

@@ -278,5 +278,5 @@ ui.provenance_expander(
     producao="OMS integrado a WMS/ERP com estoque e SLA por praça.",
     limitacoes="Sem estoque por SKU, rede viária ou regras fiscais; distância proxy.",
 )
-ui.demo_cta(next_demo_path="pages/09_tsp_baseline_sp.py")
+ui.demo_cta(next_demo_path="pages/tsp_baseline_sp.py")
 ui.footer()

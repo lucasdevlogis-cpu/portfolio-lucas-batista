@@ -6,14 +6,14 @@
 
 | Item | Valor |
 |------|-------|
-| Página | `pages/07_classificador_ocorrencias.py` |
+| Página | `pages/classificador_ocorrencias.py` |
 | URL | `/classificador_ocorrencias` |
 | Tipo | Pontual (NLP inline) |
 
 ## Como rodar
 
 ```bash
-streamlit run pages/07_classificador_ocorrencias.py
+streamlit run pages/classificador_ocorrencias.py
 ```
 
 ## Abordagem

@@ -6,14 +6,14 @@
 
 | Item | Valor |
 |------|-------|
-| Página | `pages/03_cvrp_urbano.py` |
+| Página | `pages/cvrp_urbano.py` |
 | URL | `/cvrp_urbano` |
 | Tipo | Profunda (tabs) |
 
 ## Como rodar
 
 ```bash
-streamlit run pages/03_cvrp_urbano.py
+streamlit run pages/cvrp_urbano.py
 ```
 
 ## Abordagem

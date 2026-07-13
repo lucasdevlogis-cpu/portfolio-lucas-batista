@@ -219,6 +219,6 @@ ui.provenance_expander(
     producao="OR-Tools sobre matriz de rede (OSMnx/OSRM).",
     limitacoes="Sem capacidade, SLA, tráfego ou rota viária real; distância Haversine.",
 )
-ui.demo_cta(next_demo_path="pages/10_auditoria_endereco.py")
+ui.demo_cta(next_demo_path="pages/auditoria_endereco.py")
 
 ui.footer()

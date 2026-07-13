@@ -255,5 +255,5 @@ ui.provenance_expander(
     limitacoes="Não substitui torre real; sem eventos de tracking ao vivo.",
 )
 
-ui.demo_cta(next_demo_path="pages/03_cvrp_urbano.py")
+ui.demo_cta(next_demo_path="pages/cvrp_urbano.py")
 ui.footer()

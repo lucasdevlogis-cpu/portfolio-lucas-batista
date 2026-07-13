@@ -260,6 +260,6 @@ ui.provenance_expander(
     producao="Modelo de rede com malha real e custos contratados.",
     limitacoes="Sem pedágio real, consolidação multi-lane ou balanceamento de fluxo.",
 )
-ui.demo_cta(next_demo_path="pages/07_classificador_ocorrencias.py")
+ui.demo_cta(next_demo_path="pages/classificador_ocorrencias.py")
 
 ui.footer()

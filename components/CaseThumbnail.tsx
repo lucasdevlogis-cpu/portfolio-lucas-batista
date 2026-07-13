@@ -3,7 +3,11 @@
 import Image from "next/image";
 
 import { LucideIconByName } from "@/components/LucideIconByName";
-import type { Case, CaseCategoria } from "@/data/content";
+import {
+  caseNumberFromId,
+  type Case,
+  type CaseCategoria,
+} from "@/data/content";
 import { cn } from "@/lib/utils";
 
 const categoriaCores: Record<
@@ -12,7 +16,11 @@ const categoriaCores: Record<
 > = {
   "Frete e Custo": { from: "#153451", to: "#1a4566", accent: "#c9983f" },
   "Roteirização e SLA": { from: "#16a99c", to: "#0d8a7f", accent: "#f5f2ed" },
-  "Last Mile e E-commerce": { from: "#8A651F", to: "#c9983f", accent: "#07111f" },
+  "Last Mile e E-commerce": {
+    from: "#8A651F",
+    to: "#c9983f",
+    accent: "#07111f",
+  },
   "Operação de CD": { from: "#556070", to: "#475569", accent: "#f5f2ed" },
   "Rede e Estratégia": { from: "#07111f", to: "#153451", accent: "#c9983f" },
   "Método e Governança": { from: "#153451", to: "#0d8a7f", accent: "#f5f2ed" },
@@ -24,9 +32,11 @@ interface CaseThumbnailProps {
 }
 
 export function CaseThumbnail({ caseItem, className }: CaseThumbnailProps) {
-  const numero = caseItem.id.split("-")[0] ?? "00";
+  const numero = caseNumberFromId(caseItem.id);
   const cores =
     categoriaCores[caseItem.categoria] ?? categoriaCores["Frete e Custo"];
+  const alt =
+    caseItem.thumbnailAlt ?? `Pré-visualização do case ${caseItem.titulo}`;
 
   if (caseItem.thumbnail) {
     return (
@@ -38,11 +48,15 @@ export function CaseThumbnail({ caseItem, className }: CaseThumbnailProps) {
       >
         <Image
           src={caseItem.thumbnail}
-          alt={`Pré-visualização do case ${caseItem.titulo}`}
+          alt={alt}
           fill
           loading="lazy"
-          className="object-cover"
+          className="pointer-events-none object-cover object-top"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface-dark/35 to-transparent"
+          aria-hidden
         />
       </div>
     );
@@ -54,6 +68,8 @@ export function CaseThumbnail({ caseItem, className }: CaseThumbnailProps) {
         "relative aspect-video overflow-hidden rounded-t-2xl bg-card",
         className,
       )}
+      role="img"
+      aria-label={alt}
     >
       <svg
         viewBox="0 0 400 225"
@@ -105,8 +121,8 @@ export function CaseThumbnail({ caseItem, className }: CaseThumbnailProps) {
         </div>
       </div>
 
-      <span className="absolute left-4 top-3 font-heading text-2xl font-bold text-white/30">
-        {numero}
+      <span className="absolute left-4 top-3 font-heading text-sm font-bold uppercase tracking-[0.08em] text-white/50">
+        Case {numero}
       </span>
     </div>
   );

@@ -6,14 +6,14 @@
 
 | Item | Valor |
 |------|-------|
-| Página | `pages/08_ship_from_store.py` |
+| Página | `pages/ship_from_store.py` |
 | URL | `/ship_from_store` |
 | Tipo | Profunda (tabs) |
 
 ## Como rodar
 
 ```bash
-streamlit run pages/08_ship_from_store.py
+streamlit run pages/ship_from_store.py
 ```
 
 ## Abordagem

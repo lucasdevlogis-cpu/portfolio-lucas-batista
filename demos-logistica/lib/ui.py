@@ -576,23 +576,23 @@ def sidebar_brand() -> None:
             "<div class='demo-sidebar-section'>Cases âncora</div>",
             unsafe_allow_html=True,
         )
-        nav_link("pages/01_precificacao_frete.py", "01 Frete e custo")
-        nav_link("pages/02_mini_torre_controle.py", "02 Torre de controle")
-        nav_link("pages/03_cvrp_urbano.py", "03 Roteirização CVRP")
+        nav_link("pages/precificacao_frete.py", "01 Frete e custo")
+        nav_link("pages/mini_torre_controle.py", "02 Torre de controle")
+        nav_link("pages/cvrp_urbano.py", "08 Roteirização CVRP")
         st.markdown(
             "<div class='demo-sidebar-section'>Biblioteca</div>", unsafe_allow_html=True
         )
-        nav_link("pages/04_promessa_cep.py", "04 Promessa por CEP")
-        nav_link("pages/05_vrptw_ultima_milha.py", "05 VRPTW última milha")
-        nav_link("pages/06_rede_interhubs.py", "06 Rede inter-hubs")
-        nav_link("pages/07_classificador_ocorrencias.py", "07 Classificador")
-        nav_link("pages/08_ship_from_store.py", "08 Ship-from-store")
-        nav_link("pages/09_tsp_baseline_sp.py", "09 Sequência TSP")
-        nav_link("pages/10_auditoria_endereco.py", "10 Auditoria endereço")
+        nav_link("pages/promessa_cep.py", "04 Promessa por CEP")
+        nav_link("pages/vrptw_ultima_milha.py", "05 VRPTW última milha")
+        nav_link("pages/rede_interhubs.py", "06 Rede inter-hubs")
+        nav_link("pages/classificador_ocorrencias.py", "07 Classificador")
+        nav_link("pages/ship_from_store.py", "08 Ship-from-store")
+        nav_link("pages/tsp_baseline_sp.py", "09 Sequência TSP")
+        nav_link("pages/auditoria_endereco.py", "10 Auditoria endereço")
         st.markdown(
             "<div class='demo-sidebar-section'>Método</div>", unsafe_allow_html=True
         )
-        nav_link("pages/11_sobre_dados_metodos.py", "Dados e métodos")
+        nav_link("pages/sobre_dados_metodos.py", "Dados e métodos")
         st.divider()
 
 
@@ -826,7 +826,9 @@ def insight(texto: str, icone: str = "💡") -> None:
     )
 
 
-def progress_bar(label: str, valor: float, maximo: float = 100.0, cor: str | None = None) -> None:
+def progress_bar(
+    label: str, valor: float, maximo: float = 100.0, cor: str | None = None
+) -> None:
     """Barra de progresso estilizada com a paleta da marca.
 
     `valor` e `maximo` devem estar na mesma escala (padrão 0-100).
@@ -841,7 +843,7 @@ def progress_bar(label: str, valor: float, maximo: float = 100.0, cor: str | Non
             <span style="font-size:.78rem;font-weight:750;color:{brand.MUTED};">{valor:.1f}%</span>
           </div>
           <div style="height:8px;background:{brand.EDITORIAL_2};border-radius:999px;overflow:hidden;border:1px solid {brand.BORDER};">
-            <div style="width:{pct*100:.2f}%;height:100%;background:{cor_hex};border-radius:999px;transition:width .4s ease;"></div>
+            <div style="width:{pct * 100:.2f}%;height:100%;background:{cor_hex};border-radius:999px;transition:width .4s ease;"></div>
           </div>
         </div>
         """,

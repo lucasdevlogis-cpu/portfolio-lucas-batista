@@ -6,14 +6,14 @@
 
 | Item | Valor |
 |------|-------|
-| Página | `pages/04_promessa_cep.py` |
+| Página | `pages/promessa_cep.py` |
 | URL | `/promessa_cep` |
 | Tipo | Profunda (tabs) |
 
 ## Como rodar
 
 ```bash
-streamlit run pages/04_promessa_cep.py
+streamlit run pages/promessa_cep.py
 ```
 
 ## Abordagem

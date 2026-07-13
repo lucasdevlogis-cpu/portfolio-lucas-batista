@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "next dev",
     "validate": "tsx scripts/validate-cases.ts",
-    "validate:premium": "tsx scripts/validate-premium-redesign.ts",
     "prebuild": "npm run validate && npm run typecheck",
     "build": "next build",
     "start": "next start",

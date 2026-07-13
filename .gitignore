@@ -59,6 +59,8 @@ cv-export.json
 wb-*.json
 .tmp-streamlit-*.log
 next-start.*.log
+scripts/tmp-captures/
+qa-captures/
 
 # exceções ao gitignore global (*token* — secrets, não design docs)
 !design/tokens.md

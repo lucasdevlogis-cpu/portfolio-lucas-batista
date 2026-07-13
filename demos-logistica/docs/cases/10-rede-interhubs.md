@@ -6,14 +6,14 @@
 
 | Item | Valor |
 |------|-------|
-| Página | `pages/06_rede_interhubs.py` |
+| Página | `pages/rede_interhubs.py` |
 | URL | `/rede_interhubs` |
 | Tipo | Profunda (tabs) |
 
 ## Como rodar
 
 ```bash
-streamlit run pages/06_rede_interhubs.py
+streamlit run pages/rede_interhubs.py
 ```
 
 ## Abordagem

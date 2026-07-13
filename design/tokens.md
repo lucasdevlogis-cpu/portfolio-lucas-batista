@@ -15,7 +15,8 @@
 | Primary | `#153451` | `--primary` / `PRIMARY` | Azul petróleo técnico |
 | Accent | `#16a99c` | `--accent` / `ACCENT` | Sinal técnico teal |
 | Accent contrast | `#0d8a7f` | `--accent-contrast` | Hover/foco em accent |
-| Warm accent | `#c9983f` | `--warm-accent` / `WARM_ACCENT` | Eyebrows, dourado sofisticado |
+| Warm accent | `#c9983f` | `--warm-accent` / `WARM_ACCENT` | Acento editorial decorativo, bordas, fundos escuros |
+| Warm accent contrast | `#7a5a1a` | `--warm-accent-contrast` | Texto dourado em fundos claros (≥ 4.5:1) |
 | Surface dark | `#07111f` | `--surface-dark` / `SURFACE_DARK` | Blocos escuros |
 | Surface dark 2 | `#0d1524` | `--surface-dark-2` | Variante escura |
 | Surface dark 3 | `#131e30` | `--surface-dark-3` | Variante escura |

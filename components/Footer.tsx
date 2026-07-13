@@ -34,7 +34,7 @@ function SocialLink({
 }
 
 export function Footer() {
-  const { pessoal, footer, nav, contactLinks } = CONTENT;
+  const { pessoal, footer, nav, contactLinks, footerLabels } = CONTENT;
 
   return (
     <footer className="border-t border-border bg-card">
@@ -85,7 +85,7 @@ export function Footer() {
         </div>
 
         <div>
-          <p className="font-heading text-base font-bold text-ink">Stack</p>
+          <p className="font-heading text-base font-bold text-ink">{footerLabels.stack}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {pessoal.stackTags.map((stack) => (
               <span
@@ -99,7 +99,7 @@ export function Footer() {
         </div>
 
         <div>
-          <p className="font-heading text-base font-bold text-ink">Recursos</p>
+          <p className="font-heading text-base font-bold text-ink">{footerLabels.recursos}</p>
           <div className="mt-4 flex flex-col gap-2">
             <a
               href={contactLinks.cvUrl}
@@ -107,7 +107,7 @@ export function Footer() {
               className="group inline-flex items-center gap-2 text-base text-muted-foreground transition-colors hover:text-ink"
             >
               <FileText className="size-4" aria-hidden />
-              CV em PDF
+              {footerLabels.cvPdf}
               <ArrowUpRight className="size-4 opacity-0 transition-all group-hover:opacity-100" aria-hidden />
             </a>
             <a
@@ -117,7 +117,7 @@ export function Footer() {
               className="group inline-flex items-center gap-2 text-base text-muted-foreground transition-colors hover:text-ink"
             >
               <Code2 className="size-4" aria-hidden />
-              Repositório das demos
+              {footerLabels.repositorioDemos}
               <ArrowUpRight className="size-4 opacity-0 transition-all group-hover:opacity-100" aria-hidden />
             </a>
           </div>

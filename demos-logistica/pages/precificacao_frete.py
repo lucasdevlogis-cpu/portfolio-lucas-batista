@@ -355,5 +355,5 @@ ui.provenance_expander(
     limitacoes="Coeficientes ilustrativos; não é cotação nem validação regulatória de piso.",
 )
 
-ui.demo_cta(next_demo_path="pages/02_mini_torre_controle.py")
+ui.demo_cta(next_demo_path="pages/mini_torre_controle.py")
 ui.footer()

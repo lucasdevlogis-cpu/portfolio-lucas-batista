@@ -29,7 +29,7 @@ export function SectionShell({
     <section
       id={id}
       className={cn(
-        "scroll-mt-24 overflow-hidden py-8 lg:py-12",
+        "scroll-mt-24 overflow-hidden py-10 lg:py-16 xl:py-20",
         dark ? "bg-surface-dark text-white" : "bg-editorial text-ink",
         className,
       )}

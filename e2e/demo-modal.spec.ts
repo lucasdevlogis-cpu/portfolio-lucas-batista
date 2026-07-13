@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("Modal de demo", () => {
   test.beforeEach(async ({ page }) => {
@@ -13,7 +13,9 @@ test.describe("Modal de demo", () => {
       .first();
     await card.scrollIntoViewIfNeeded();
 
-    const openButton = card.getByRole("button", { name: /Abrir demo/i });
+    const openButton = card.getByRole("button", {
+      name: /Abrir demonstração: Simulador de Custo de Frete/i,
+    });
     await expect(openButton).toBeVisible();
     await openButton.click();
 
@@ -28,10 +30,14 @@ test.describe("Modal de demo", () => {
     await expect(iframe).toBeVisible();
     await expect(iframe).toHaveAttribute("src", /embed=true/);
 
-    const externalLink = dialog.getByRole("link", { name: /Abrir demo em nova aba/i });
+    const externalLink = dialog.getByRole("link", {
+      name: /Abrir em nova aba/i,
+    });
     await expect(externalLink).toBeVisible();
     await expect(externalLink).toHaveAttribute("href", /streamlit\.app/);
     await expect(externalLink).toHaveAttribute("target", "_blank");
+
+    await expect(dialog.getByText(/Inicializando demonstração/i)).toBeVisible();
 
     await dialog.getByRole("button", { name: /Fechar/i }).click();
     await expect(dialog).not.toBeVisible();
@@ -42,7 +48,7 @@ test.describe("Modal de demo", () => {
     await roadmap.scrollIntoViewIfNeeded();
     await expect(roadmap).toBeVisible();
     await expect(
-      roadmap.getByRole("button", { name: /Abrir demo/i }),
+      roadmap.getByRole("button", { name: /Abrir demonstração|Explorar/i }),
     ).not.toBeVisible();
   });
 });

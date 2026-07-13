@@ -31,7 +31,7 @@ for script in scripts:
 
 def test_torre_filtro_vazio() -> bool:
     """Page 02 não pode quebrar quando todos os filtros ficam vazios."""
-    page = ROOT / "pages" / "02_mini_torre_controle.py"
+    page = ROOT / "pages" / "mini_torre_controle.py"
     try:
         at = AppTest.from_file(str(page), default_timeout=60)
         at.run()

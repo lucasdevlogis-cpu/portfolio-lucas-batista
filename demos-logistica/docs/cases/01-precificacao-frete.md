@@ -6,14 +6,14 @@
 
 | Item | Valor |
 |------|-------|
-| Página | `pages/01_precificacao_frete.py` |
+| Página | `pages/precificacao_frete.py` |
 | URL | `/precificacao_frete` |
 | Tipo | Profunda (tabs) |
 
 ## Como rodar
 
 ```bash
-streamlit run pages/01_precificacao_frete.py
+streamlit run pages/precificacao_frete.py
 ```
 
 ## Abordagem

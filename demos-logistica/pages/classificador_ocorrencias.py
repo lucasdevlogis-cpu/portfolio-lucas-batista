@@ -259,5 +259,5 @@ ui.provenance_expander(
     producao="Modelo NLP supervisionado + validação humana.",
     limitacoes="Sem ML treinado; regras não cobrem variações de linguagem.",
 )
-ui.demo_cta(next_demo_path="pages/08_ship_from_store.py")
+ui.demo_cta(next_demo_path="pages/ship_from_store.py")
 ui.footer()

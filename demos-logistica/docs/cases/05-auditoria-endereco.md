@@ -6,14 +6,14 @@
 
 | Item | Valor |
 |------|-------|
-| Página | `pages/10_auditoria_endereco.py` |
+| Página | `pages/auditoria_endereco.py` |
 | URL | `/auditoria_endereco` |
 | Tipo | Pontual com tabs |
 
 ## Como rodar
 
 ```bash
-streamlit run pages/10_auditoria_endereco.py
+streamlit run pages/auditoria_endereco.py
 ```
 
 ## Abordagem

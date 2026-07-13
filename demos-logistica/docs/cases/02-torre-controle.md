@@ -6,14 +6,14 @@
 
 | Item | Valor |
 |------|-------|
-| Página | `pages/02_mini_torre_controle.py` |
+| Página | `pages/mini_torre_controle.py` |
 | URL | `/mini_torre_controle` |
 | Tipo | Pontual (scroll único) |
 
 ## Como rodar
 
 ```bash
-streamlit run pages/02_mini_torre_controle.py
+streamlit run pages/mini_torre_controle.py
 ```
 
 ## Abordagem

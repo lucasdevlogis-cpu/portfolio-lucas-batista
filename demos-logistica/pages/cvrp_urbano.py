@@ -1,4 +1,4 @@
-"""03. Roteirização Urbana SP (CVRP) — demo profunda.
+"""08. Roteirização Urbana SP (CVRP) — demo profunda.
 
 Adaptado do case `02_cvrp_urbano_sp`. Paradas reais de São Paulo, heurística
 nearest-neighbor com capacidade e comparação antes/depois vs atendimento na
@@ -8,9 +8,11 @@ ordem de cadastro. Produção usaria PyVRP / OR-Tools.
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from lib import brand, folium_maps, format as fmt, geo, tables, ui, viz
 
-ui.page_setup("03. Roteirização Urbana SP (CVRP)", icon="🗺️")
+from lib import brand, folium_maps, geo, tables, ui, viz
+from lib import format as fmt
+
+ui.page_setup("08. Roteirização Urbana SP (CVRP)", icon="🗺️")
 
 DEPOT = (-23.51, -46.72)  # CD em SP
 VELOCIDADE_KMH = 22  # média urbana
@@ -60,7 +62,7 @@ atendidas = sum(len(r["paradas"]) for r in rotas)
 ui.breadcrumb("Case: Roteirização Urbana (CVRP) · <b>Demo interativa</b>")
 
 ui.hero(
-    "03. Roteirização Urbana SP — CVRP",
+    "08. Roteirização Urbana SP — CVRP",
     "Quantos veículos atendem as entregas e quanta distância dá para economizar?",
     frameworks=["PyVRP", "OR-Tools", "attention-learn-to-route"],
     selo=brand.maturidade(metodo="nearest-neighbor", producao="PyVRP / OR-Tools"),
@@ -122,10 +124,10 @@ with tab_visao:
         show_numbers=map_detail,
         show_arrows=map_detail,
     )
-    legend_items = [
-        {"color": r["color"], "label": r["label"]} for r in rotas_viz[:6]
-    ]
-    m = folium_maps.add_legend(m, "Rotas por veículo", legend_items, position="bottomright")
+    legend_items = [{"color": r["color"], "label": r["label"]} for r in rotas_viz[:6]]
+    m = folium_maps.add_legend(
+        m, "Rotas por veículo", legend_items, position="bottomright"
+    )
 
     folium_maps.render(
         m,
@@ -167,8 +169,15 @@ with tab_analise:
                 [("Veículo", "%{x}"), ("Distância", "%{y:,.1f} km")]
             )
         )
-        fig.update_layout(showlegend=False, height=ui.chart_height(brand.CHART_HALF_HEIGHT), xaxis_title="", yaxis_title="km")
-        fig = viz.add_reference_line(fig, y=media_km, label="média", color=brand.WARNING)
+        fig.update_layout(
+            showlegend=False,
+            height=ui.chart_height(brand.CHART_HALF_HEIGHT),
+            xaxis_title="",
+            yaxis_title="km",
+        )
+        fig = viz.add_reference_line(
+            fig, y=media_km, label="média", color=brand.WARNING
+        )
         ui.plot(fig, width="stretch")
 
     with col2:
@@ -193,8 +202,14 @@ with tab_analise:
                 [("Veículo", "%{x}"), ("Ocupação", "%{y:.1f}%")]
             )
         )
-        fig2.update_layout(height=ui.chart_height(brand.CHART_HALF_HEIGHT), xaxis_title="", yaxis_title="% capacidade")
-        fig2 = viz.add_reference_line(fig2, y=100, label="capacidade máxima", color=brand.DANGER)
+        fig2.update_layout(
+            height=ui.chart_height(brand.CHART_HALF_HEIGHT),
+            xaxis_title="",
+            yaxis_title="% capacidade",
+        )
+        fig2 = viz.add_reference_line(
+            fig2, y=100, label="capacidade máxima", color=brand.DANGER
+        )
         ui.plot(fig2, width="stretch")
 
 with tab_exportar:
@@ -248,5 +263,5 @@ ui.provenance_expander(
     limitacoes="Sem trânsito, janelas ou rede viária; distância proxy Haversine.",
 )
 
-ui.demo_cta(next_demo_path="pages/04_promessa_cep.py")
+ui.demo_cta(next_demo_path="pages/promessa_cep.py")
 ui.footer()

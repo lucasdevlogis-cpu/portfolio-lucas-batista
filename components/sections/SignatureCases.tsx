@@ -1,26 +1,27 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Clock, ExternalLink, PlayCircle } from "lucide-react";
+import { ExternalLink, PlayCircle } from "lucide-react";
 
 import { CaseDemoLauncher } from "@/components/CaseDemoLauncher";
 import { CaseThumbnail } from "@/components/CaseThumbnail";
 import { CaseLibrary } from "@/components/sections/CaseLibrary";
 import { EditorialBadge } from "@/components/ui/EditorialBadge";
-
 import { buttonVariants } from "@/components/ui/button";
 import {
   CASES_DESTAQUE,
   CASES_ROADMAP,
   CONTENT,
+  caseNumberFromId,
   type Case,
 } from "@/data/content";
 import { cn } from "@/lib/utils";
 
-function SignatureCase({ caseItem, index }: { caseItem: Case; index: number }) {
+function SignatureCase({ caseItem }: { caseItem: Case }) {
   const labels = CONTENT.secoes;
   const prioridadeCor =
     caseItem.prioridade === "P0" ? "border-accent" : "border-primary";
+  const caseNumber = caseNumberFromId(caseItem.id);
 
   return (
     <motion.article
@@ -29,7 +30,6 @@ function SignatureCase({ caseItem, index }: { caseItem: Case; index: number }) {
       viewport={{ once: true, margin: "-60px" }}
       transition={{
         duration: 0.7,
-        delay: index * 0.15,
         ease: [0.22, 1, 0.36, 1],
       }}
       whileHover={{ y: -6 }}
@@ -40,51 +40,31 @@ function SignatureCase({ caseItem, index }: { caseItem: Case; index: number }) {
         prioridadeCor,
       )}
     >
-      <div className="shine relative">
+      <div className="shine relative z-0 overflow-hidden">
         <CaseThumbnail caseItem={caseItem} />
       </div>
 
-      <div className="flex flex-col p-5 lg:p-6">
+      <div className="relative z-10 flex flex-1 flex-col p-5 lg:p-6">
         <div className="flex items-start justify-between gap-4">
-          <EditorialBadge className="w-fit">{caseItem.categoria}</EditorialBadge>
-          <span className="font-heading text-2xl font-bold leading-none text-primary/20 transition-colors group-hover:text-primary/30">
-            {String(index + 1).padStart(2, "0")}
+          <EditorialBadge className="w-fit">
+            {caseItem.categoria}
+          </EditorialBadge>
+          <span className="shrink-0 font-heading text-sm font-bold uppercase tracking-[0.08em] text-primary/45">
+            Case {caseNumber}
           </span>
         </div>
 
-        <h3 className="mt-4 font-heading text-xl font-bold leading-[1.1] tracking-tight text-ink lg:text-2xl">
+        <h3 className="mt-3 font-heading text-xl font-bold leading-[1.1] tracking-tight text-ink lg:text-2xl">
           {caseItem.titulo}
         </h3>
 
-        <p className="mt-2 line-clamp-2 text-sm leading-snug text-muted-foreground">
-          {caseItem.descricao}
-        </p>
-
-        <div className="mt-4 space-y-3">
-          <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
-              Problema de negócio
-            </p>
-            <p className="mt-1 text-sm leading-snug text-ink">
-              {caseItem.perguntaNegocio}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
-              Decisão apoiada
-            </p>
-            <p className="mt-1 text-sm leading-snug text-ink">
-              {caseItem.decisaoApoiada}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
-              Limitação declarada
-            </p>
-            <p className="mt-1 line-clamp-2 text-sm leading-snug text-muted-foreground">
-              {caseItem.limitacao}
-            </p>
-          </div>
+        <div className="mt-3">
+          <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
+            Problema de negócio
+          </p>
+          <p className="mt-1 text-sm leading-snug text-ink">
+            {caseItem.perguntaNegocio}
+          </p>
         </div>
 
         <div className="mt-4 flex items-end justify-between border-t border-border pt-4">
@@ -96,27 +76,12 @@ function SignatureCase({ caseItem, index }: { caseItem: Case; index: number }) {
               {caseItem.metricaResumo}
             </p>
           </div>
-          <span className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
-            <Clock className="size-3.5" aria-hidden />
-            {caseItem.prioridade}
-          </span>
         </div>
 
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {caseItem.tags.slice(0, 4).map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full border border-border bg-secondary/80 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-primary"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+        <div className="mt-auto flex flex-col gap-2 pt-5 sm:flex-row">
           <CaseDemoLauncher
             caseItem={caseItem}
-            className="h-11 flex-1 rounded-md"
+            className="h-11 min-h-11 flex-1 rounded-md"
             icon={<PlayCircle className="size-4" aria-hidden />}
           />
           {caseItem.linkGitHub ? (
@@ -124,9 +89,10 @@ function SignatureCase({ caseItem, index }: { caseItem: Case; index: number }) {
               href={caseItem.linkGitHub}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`${labels.caseCodeLabel}: ${caseItem.titulo}`}
               className={cn(
                 buttonVariants({ variant: "outline" }),
-                "h-11 rounded-md border-primary/15 bg-transparent px-3",
+                "h-11 min-h-11 rounded-md border-primary/15 bg-transparent px-3",
               )}
             >
               <ExternalLink className="size-4" aria-hidden />
@@ -156,7 +122,9 @@ export function SignatureCases() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="eyebrow">{secoes.cases.eyebrow}</p>
-            <h2 className="section-title mt-3 text-balance">{secoes.cases.title}</h2>
+            <h2 className="section-title mt-3 text-balance">
+              {secoes.cases.title}
+            </h2>
           </motion.div>
           <motion.p
             initial={{ opacity: 1, y: 30 }}
@@ -170,8 +138,8 @@ export function SignatureCases() {
         </div>
 
         <div className="grid gap-5 lg:grid-cols-3">
-          {CASES_DESTAQUE.map((caseItem, index) => (
-            <SignatureCase key={caseItem.id} caseItem={caseItem} index={index} />
+          {CASES_DESTAQUE.map((caseItem) => (
+            <SignatureCase key={caseItem.id} caseItem={caseItem} />
           ))}
         </div>
 
@@ -197,7 +165,7 @@ export function SignatureCases() {
                 {secoes.casesRoadmap.sugestaoTitulo &&
                 secoes.casesRoadmap.sugestao ? (
                   <div className="mt-5 rounded-xl border border-warm-accent/25 bg-warm-accent/10 p-4">
-                    <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-[#8A651F]">
+                    <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-warm-accent-contrast">
                       {secoes.casesRoadmap.sugestaoTitulo}
                     </p>
                     <p className="mt-2 text-sm leading-relaxed text-ink">

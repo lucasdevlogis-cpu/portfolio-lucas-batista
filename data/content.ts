@@ -66,6 +66,8 @@ export interface Case {
   linkDemo: string;
   linkGitHub: string;
   thumbnail?: string;
+  thumbnailAlt?: string;
+  ctaDemoLabel?: string;
   prioridade: CasePrioridade;
   perguntaNegocio: string;
   metricaPrincipal: string;
@@ -213,6 +215,7 @@ export interface SiteMetadata {
 export interface SecoesCopy {
   cases: SecaoCopy;
   casesBiblioteca: SecaoCopy;
+  casesBibliotecaFiltroHint: string;
   casesRoadmap: SecaoCopy;
   caseDemoLabel: string;
   caseDemoUnavailableLabel: string;
@@ -226,11 +229,14 @@ export interface SecoesCopy {
     decisao: string;
     metrica: string;
     limitacao: string;
+    descricao: string;
     contextoMobile: string;
   };
   demoIndisponivel: string;
   demoCarregando: string;
+  demoInicializando: string;
   demoErro: string;
+  demoTimeoutHint: string;
 }
 
 export interface Content {
@@ -320,8 +326,7 @@ export const CONTENT: Content = {
     titulo: "Perfil híbrido de operação, analytics e produto interno",
     resumo:
       "Atuo na interseção entre logística, dados e IA aplicada. O melhor fit está em posições que precisam conectar problema operacional, análise estruturada, prototipagem e comunicação executiva para diretoria.",
-    senioridade:
-      "Analista Sênior com portfólio técnico demonstrável",
+    senioridade: "Analista Sênior com portfólio técnico demonstrável",
     disponibilidade:
       "São Paulo/SP — aberto a conversas com headhunters, recrutadores e lideranças de operações e dados",
     modeloAtuacao:
@@ -499,7 +504,8 @@ export const CONTENT: Content = {
   contactLinks: {
     eyebrow: "Contato",
     titulo: "Contato profissional",
-    descricao: "LinkedIn ou email direto para oportunidades e triagem de perfil.",
+    descricao:
+      "LinkedIn ou email direto para oportunidades e triagem de perfil.",
     primaryLabel: "Conversar no LinkedIn",
     linkedinLabel: "LinkedIn",
     emailLabel: "Email",
@@ -526,6 +532,8 @@ export const CONTENT: Content = {
       subtitle:
         "Mais demos por domínio logístico. A biblioteca amplia a leitura de stack, repertório e profundidade técnica.",
     },
+    casesBibliotecaFiltroHint:
+      "Filtros aplicados aos {count} cases da biblioteca complementar.",
     casesRoadmap: {
       title: "Prova em preparação",
       subtitle:
@@ -540,10 +548,10 @@ export const CONTENT: Content = {
         "Se a limitação deixa claro quais integrações WMS/TMS seriam necessárias em produção.",
       ],
     },
-    caseDemoLabel: "Abrir demo e leitura",
+    caseDemoLabel: "Explorar demonstração",
     caseDemoUnavailableLabel: "Demo em preparação",
     caseCodeLabel: "Ver repositório",
-    demoOpenExternalLabel: "Abrir demo em nova aba",
+    demoOpenExternalLabel: "Abrir em nova aba",
     demoFullscreenLabel: "Abrir demo em tela cheia",
     demoLoadInlineLabel: "Carregar demo aqui",
     demoMobileHint:
@@ -553,14 +561,18 @@ export const CONTENT: Content = {
       decisao: "Decisão apoiada",
       metrica: "Métrica principal",
       limitacao: "Limitação declarada",
+      descricao: "Leitura completa",
       contextoMobile: "Contexto da análise",
     },
     demoIndisponivel:
       "Demo interativa em breve. Enquanto isso, use LinkedIn ou email na seção Contato.",
     demoCarregando:
       "Carregando a demo… As demos hospedadas no plano gratuito podem levar até 30 segundos para acordar na primeira visita.",
+    demoInicializando: "Inicializando demonstração…",
     demoErro:
       "Não foi possível carregar a demo aqui. Abra em uma nova aba pelo botão acima.",
+    demoTimeoutHint:
+      "A demo ainda está inicializando. Você pode continuar aguardando ou abrir em nova aba.",
   },
 
   nav: [
@@ -580,8 +592,13 @@ export const CONTENT: Content = {
       categoria: "Frete e Custo",
       icone: "DollarSign",
       tags: ["frete", "custo", "precificação", "componentes", "região"],
-      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/precificacao_frete",
+      linkDemo:
+        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/precificacao_frete",
       linkGitHub: GITHUB_DEMOS_URL,
+      thumbnail: "/cases/01-precificacao-frete.webp",
+      thumbnailAlt:
+        "Dashboard do Simulador de Custo de Frete com frete estimado da carteira, custo por kg e comparação ao piso ANTT",
+      ctaDemoLabel: "Explorar Simulador de Frete",
       prioridade: "P0",
       perguntaNegocio: "Qual região concentra maior custo por entrega?",
       metricaPrincipal: "Custo por kg, custo por entrega, composição de frete",
@@ -599,8 +616,13 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Radar",
       tags: ["SLA", "OTD", "atraso", "ocorrência", "torre de controle"],
-      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/mini_torre_controle",
+      linkDemo:
+        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/mini_torre_controle",
       linkGitHub: GITHUB_DEMOS_URL,
+      thumbnail: "/cases/02-torre-controle.webp",
+      thumbnailAlt:
+        "Dashboard da Mini Torre de Controle com entregas em ação imediata, atraso médio e mapa de status por região",
+      ctaDemoLabel: "Explorar Torre de Controle",
       prioridade: "P0",
       perguntaNegocio: "Quais entregas exigem ação imediata?",
       metricaPrincipal:
@@ -618,8 +640,10 @@ export const CONTENT: Content = {
       categoria: "Last Mile e E-commerce",
       icone: "MapPin",
       tags: ["CEP", "last mile", "promessa", "prazo", "risco territorial"],
-      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/promessa_cep",
+      linkDemo:
+        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/promessa_cep",
       linkGitHub: GITHUB_DEMOS_URL,
+      ctaDemoLabel: "Explorar Promessa por CEP",
       prioridade: "P0",
       perguntaNegocio:
         "Qual CEP ou praça tem maior risco de atraso ou insucesso?",
@@ -638,8 +662,10 @@ export const CONTENT: Content = {
       categoria: "Last Mile e E-commerce",
       icone: "Package",
       tags: ["ship from store", "omnichannel", "origem", "estoque", "prazo"],
-      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/ship_from_store",
+      linkDemo:
+        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/ship_from_store",
       linkGitHub: GITHUB_DEMOS_URL,
+      ctaDemoLabel: "Explorar Ship from Store",
       prioridade: "P1",
       perguntaNegocio: "Qual origem atende melhor: CD, loja, hub ou parceiro?",
       metricaPrincipal:
@@ -658,8 +684,10 @@ export const CONTENT: Content = {
       categoria: "Last Mile e E-commerce",
       icone: "ScanSearch",
       tags: ["endereço", "geocoding", "CEP", "qualidade", "risco"],
-      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/auditoria_endereco",
+      linkDemo:
+        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/auditoria_endereco",
       linkGitHub: GITHUB_DEMOS_URL,
+      ctaDemoLabel: "Explorar Auditoria de Endereço",
       prioridade: "P1",
       perguntaNegocio:
         "Quais endereços precisam de revisão antes da decisão logística?",
@@ -699,8 +727,10 @@ export const CONTENT: Content = {
       categoria: "Método e Governança",
       icone: "AlertTriangle",
       tags: ["IA", "NLP", "ocorrências", "classificação", "triagem"],
-      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/classificador_ocorrencias",
+      linkDemo:
+        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/classificador_ocorrencias",
       linkGitHub: GITHUB_DEMOS_URL,
+      ctaDemoLabel: "Explorar Classificador de Ocorrências",
       prioridade: "P2",
       perguntaNegocio:
         "Como transformar mensagens, chamados e justificativas em categorias acionáveis?",
@@ -720,8 +750,13 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Route",
       tags: ["CVRP", "roteirização", "capacidade", "frota", "otimização"],
-      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/cvrp_urbano",
+      linkDemo:
+        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/cvrp_urbano",
       linkGitHub: GITHUB_DEMOS_URL,
+      thumbnail: "/cases/08-cvrp-urbano.webp",
+      thumbnailAlt:
+        "Dashboard de Roteirização Urbana CVRP com distância melhorada, veículos usados e economia versus ordem de cadastro",
+      ctaDemoLabel: "Explorar Roteirização Urbana",
       prioridade: "P0",
       perguntaNegocio:
         "Quantos veículos atendem as entregas e quanta distância dá para economizar?",
@@ -741,8 +776,10 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Clock",
       tags: ["VRPTW", "janela de tempo", "SLA", "última milha", "sequência"],
-      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/vrptw_ultima_milha",
+      linkDemo:
+        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/vrptw_ultima_milha",
       linkGitHub: GITHUB_DEMOS_URL,
+      ctaDemoLabel: "Explorar Última Milha VRPTW",
       prioridade: "P1",
       perguntaNegocio:
         "A sequência de entregas respeita as janelas prometidas ao cliente?",
@@ -768,8 +805,10 @@ export const CONTENT: Content = {
         "consolidação",
         "hubs",
       ],
-      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/rede_interhubs",
+      linkDemo:
+        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/rede_interhubs",
       linkGitHub: GITHUB_DEMOS_URL,
+      ctaDemoLabel: "Explorar Rede Inter-hubs",
       prioridade: "P1",
       perguntaNegocio:
         "Qual corredor tem melhor custo por tonelada e onde priorizar consolidação?",
@@ -789,8 +828,10 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Waypoints",
       tags: ["TSP", "sequência", "2-opt", "visitas", "otimização"],
-      linkDemo: "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/tsp_baseline_sp",
+      linkDemo:
+        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/tsp_baseline_sp",
       linkGitHub: GITHUB_DEMOS_URL,
+      ctaDemoLabel: "Explorar Sequência de Visitas",
       prioridade: "P1",
       perguntaNegocio:
         "Qual a melhor sequência para visitar os pontos a partir do CD?",
@@ -850,14 +891,44 @@ export const CONTENT: Content = {
 };
 
 // Constantes derivadas para componentes (devem vir depois de CONTENT)
-export const CASES_DESTAQUE = CONTENT.cases.filter((c) =>
-  CONTENT.featuredProofCases.includes(c.id)
-);
+export const CASES_DESTAQUE = CONTENT.featuredProofCases
+  .map((id) => CONTENT.cases.find((c) => c.id === id))
+  .filter((c): c is Case => Boolean(c));
 export const CASES_BIBLIOTECA = CONTENT.cases.filter(
-  (c) => c.linkDemo && !CONTENT.featuredProofCases.includes(c.id)
+  (c) => c.linkDemo && !CONTENT.featuredProofCases.includes(c.id),
 );
 export const CASES_ROADMAP = CONTENT.cases.filter((c) => !c.linkDemo);
+
+/** Categorias com pelo menos 1 case na biblioteca complementar (exclui âncora e roadmap). */
 export const CASE_CATEGORIAS = [
   "Todos",
-  ...Array.from(new Set(CONTENT.cases.map((c) => c.categoria))),
+  ...Array.from(new Set(CASES_BIBLIOTECA.map((c) => c.categoria))),
 ] as const;
+
+export function caseNumberFromId(id: string): string {
+  const match = /^(\d+)/.exec(id);
+  return match?.[1] ?? "00";
+}
+
+export function caseDemoCta(caseItem: Case): {
+  label: string;
+  ariaLabel: string;
+} {
+  const label = caseItem.ctaDemoLabel ?? CONTENT.secoes.caseDemoLabel;
+  return {
+    label,
+    ariaLabel: `Abrir demonstração: ${caseItem.titulo}`,
+  };
+}
+
+/** Sem data final (ou final explícito "Atual"): true. Com data final fechada: false. */
+export function isPeriodoAtual(periodo: string): boolean {
+  const normalized = periodo.replace(/\s+/g, " ").trim();
+  const parts = normalized.split(/\s*[—–]\s*/);
+  if (parts.length < 2) {
+    return /atual|presente/i.test(normalized);
+  }
+  const end = parts[parts.length - 1]?.trim() ?? "";
+  if (!end) return true;
+  return /^(atual|presente|hoje)$/i.test(end);
+}

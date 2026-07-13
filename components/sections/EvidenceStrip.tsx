@@ -1,21 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BarChart3, Briefcase, FolderOpen, TrendingUp } from "lucide-react";
+import { Briefcase, FolderOpen, TrendingUp } from "lucide-react";
 
 import { CONTENT } from "@/data/content";
 
-const icons = [Briefcase, TrendingUp, FolderOpen, BarChart3];
+const icons = [Briefcase, TrendingUp, FolderOpen];
 
 export function EvidenceStrip() {
-  const metrics = CONTENT.proofStats;
+  const metrics = CONTENT.proofStats.slice(0, 3);
 
   return (
     <section
       aria-label="Métricas principais do portfólio"
       className="relative border-b border-border bg-editorial"
     >
-      <div className="mx-auto grid max-w-[1440px] gap-3 px-5 py-4 sm:grid-cols-2 sm:px-8 lg:grid-cols-4 lg:gap-4 lg:px-10 lg:py-5 xl:px-12 2xl:px-16">
+      <div className="mx-auto grid max-w-[1440px] gap-3 px-5 py-4 sm:grid-cols-3 sm:px-8 lg:gap-4 lg:px-10 lg:py-5 xl:px-12 2xl:px-16">
         {metrics.map((metric, index) => {
           const Icon = icons[index % icons.length];
           return (

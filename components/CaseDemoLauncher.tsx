@@ -1,9 +1,9 @@
 "use client";
 
-import { type ComponentType, type ReactNode, useState } from "react";
+import { useState, type ComponentType, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
-import { CONTENT, type Case } from "@/data/content";
+import { caseDemoCta, CONTENT, type Case } from "@/data/content";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +30,7 @@ export function CaseDemoLauncher({
   );
   const labels = CONTENT.secoes;
   const hasDemo = Boolean(caseItem.linkDemo);
+  const cta = caseDemoCta(caseItem);
 
   const handleOpen = async () => {
     if (!hasDemo) return;
@@ -46,15 +47,16 @@ export function CaseDemoLauncher({
       <Button
         variant={hasDemo ? "executive" : "outline"}
         className={cn(
-          "h-10 flex-1 rounded-lg",
+          "h-10 min-h-10 flex-1 rounded-lg",
           !hasDemo && "cursor-not-allowed opacity-60",
           className,
         )}
         onClick={handleOpen}
         aria-disabled={!hasDemo}
+        aria-label={hasDemo ? cta.ariaLabel : labels.caseDemoUnavailableLabel}
       >
         {icon}
-        {hasDemo ? labels.caseDemoLabel : labels.caseDemoUnavailableLabel}
+        {hasDemo ? cta.label : labels.caseDemoUnavailableLabel}
       </Button>
       {Modal ? (
         <Modal

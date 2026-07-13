@@ -6,14 +6,14 @@
 
 | Item | Valor |
 |------|-------|
-| Página | `pages/09_tsp_baseline_sp.py` |
+| Página | `pages/tsp_baseline_sp.py` |
 | URL | `/tsp_baseline_sp` |
 | Tipo | Profunda (tabs) |
 
 ## Como rodar
 
 ```bash
-streamlit run pages/09_tsp_baseline_sp.py
+streamlit run pages/tsp_baseline_sp.py
 ```
 
 ## Abordagem

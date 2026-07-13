@@ -1,14 +1,17 @@
 # Cursor Rules — Portfolio Lucas Batista
+
 # Regras globais para vibe coding do portfólio profissional (Executive Proof System)
 
 ## Contexto do Projeto
+
 - Portfolio profissional de Lucas Farias Batista (Analista de Transportes Senior)
 - Stack: Next.js 16.2.9 + React 19 + TypeScript 5 + Tailwind CSS v4 + shadcn/ui + Vercel
 - Objetivo: Dossiê executivo headhunter-first — conversão profissional
 - Público-alvo: Headhunters, recrutadores, diretores de operações e dados
-- URL: https://portfolio-lucas-batista-murex.vercel.app
+- URL: <https://portfolio-lucas-batista-murex.vercel.app>
 
 ## Fonte da Verdade (SSOT)
+
 - **Copy ativo:** `data/content.ts` — nunca hardcode textos nos componentes
 - **Spec visual:** `design/design.md` + `app/globals.css`
 - **Tokens:** `design/tokens.md` + `:root`/`@theme` em `app/globals.css`
@@ -17,6 +20,7 @@
 - **Demos Streamlit:** pasta `demos-logistica/` (repo separado)
 
 ## Design System (Obrigatório)
+
 - **Paleta ativa:**
   - Editorial `#f7f4ec` — fundo principal
   - Card `#ffffff` — blocos claros
@@ -24,7 +28,8 @@
   - Primary `#153451` — azul petróleo técnico
   - Surface dark `#07111f` — hero/contato
   - Accent `#16a99c` — sinal técnico
-  - Warm accent `#d4a853` — eyebrows e acento editorial
+  - Warm accent `#c9983f` — acento editorial decorativo
+  - Warm accent contrast `#7a5a1a` — eyebrows e labels dourados em fundos claros (≥ 4.5:1)
   - Muted `#667085` — texto secundário
   - Border `#d7cebd` — divisórias
 - **Fontes:** Source Serif 4 (headings, `--font-heading`) + Inter (body, `--font-body`)
@@ -35,6 +40,7 @@
 - **Light sections:** demais usam bg-editorial com texto ink
 
 ## Regras de Código
+
 - Usar componentes shadcn/ui + wrappers internos (`PremiumCard`, `SectionShell`, `EditorialBadge`, etc.)
 - Server Components por padrão. `'use client'` apenas para interação real (filtros, modal, mobile nav)
 - Imagens: `next/image` com `priority={true}` para hero/OG, `loading="lazy"` para o resto
@@ -45,6 +51,7 @@
 - Variáveis de ambiente: `NEXT_PUBLIC_*` apenas para dados não sensíveis
 
 ## Regras de UX/UI
+
 - **Menos texto, mais impacto:** cada seção deve ser escaneável em 10 segundos
 - **Hero:** label + nome (Source Serif 4) + headline curta + subheadline de 1-2 linhas + CTAs + provas rápidas
 - **Cards:** título curto + descrição enxuta + ação
@@ -54,12 +61,14 @@
 - **Microinterações:** hover nos cards/botões, focus visível, motion discreto
 
 ## Regras de Performance
+
 - Imagens: formato WebP/AVIF, max 200KB cada, usar placeholder quando possível
 - Fonts: `next/font/google` com `display: 'swap'`
 - Componentes: lazy load do `DemoModal` já implementado
 - Framer Motion: `LazyMotion` + `domAnimation` já ativo; respeitar `prefers-reduced-motion`
 
 ## Regras de Acessibilidade
+
 - Contraste mínimo 4.5:1 em todo texto (usar tokens verificados)
 - Todos os botões/links devem ter min-height 44px no mobile
 - Focus visible: `focus-ring` (tokens em `globals.css`)
@@ -69,6 +78,7 @@
 - Ícones: `aria-hidden` quando com texto, `aria-label` quando sozinhos
 
 ## Proibido
+
 - ❌ Cores fora do design system (sem exceção)
 - ❌ Fontes que não sejam Source Serif 4/Inter
 - ❌ Texto sem hierarquia (paredes de texto)
@@ -80,6 +90,7 @@
 - ❌ Hardcode de copy fora de `data/content.ts`
 
 ## Workflow de Vibe Coding
+
 1. Sempre ler o `.cursorrules` e `docs/CANON.md` antes de qualquer mudança
 2. Antes de implementar, verificar se a mudança está no checklist de prioridade (`docs/P0_P1_P2_CHECKLIST.md`)
 3. Cada prompt deve focar em UMA seção ou UMA funcionalidade
@@ -88,18 +99,21 @@
 6. Commit após cada feature completa com mensagem descritiva em português
 
 ## Dados do Portfolio
+
 - Nome: Lucas Farias Batista
 - Cargo: Analista de Transportes Senior | Operações, Dados e IA Aplicada
 - Localização: São Paulo/SP
-- Contato: lucas.farias.log@outlook.com | linkedin.com/in/lucasfariaslog
+- Contato: <lucas.farias.log@outlook.com> | linkedin.com/in/lucasfariaslog
 - Github: github.com/lucasdevlogis-cpu
 - Estatísticas: +10 anos, +R$ 20M impacto, 10 provas navegáveis
 - Provas: Simulador de Custo de Frete, Mini Torre de Controle, CVRP Urbano + 7 outras
 
 ## Ordem Canônica da Homepage
+
 `Header` → `ExecutiveHero` → `EvidenceStrip` → `ProfileBrief` → `SignatureCases` → `TrajectoryBoard` → `ContactPanel` → `Footer`
 
 ## Referências Rápidas
+
 - Skills: `.agents/skills/design-system.md`, `.agents/skills/component-patterns.md`, `.agents/skills/ux-writing.md`, `.agents/skills/a11y.md`, `.agents/skills/mobile-first.md`
 - Checklist de prioridade: `docs/P0_P1_P2_CHECKLIST.md`
 - Revisão crítica base: `docs/GAPS.md` + `docs/AVALIACAO.md`

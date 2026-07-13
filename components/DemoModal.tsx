@@ -1,8 +1,10 @@
 "use client";
 
 import { ChevronDown, ExternalLink } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
+import { buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { buttonVariants } from "@/components/ui/button";
 import { CONTENT, type Case } from "@/data/content";
 import { cn } from "@/lib/utils";
 
@@ -20,29 +21,9 @@ interface DemoModalProps {
   caseItem: Case | null;
 }
 
-type IframeStatus = "loading" | "ready" | "error";
+type IframeStatus = "loading" | "ready" | "timeout" | "error";
 
-function DemoSkeleton() {
-  const bar = "h-4 rounded-md bg-muted motion-reduce:animate-none animate-pulse";
-  const card = "rounded-lg bg-muted motion-reduce:animate-none animate-pulse";
-
-  return (
-    <div className="flex w-full max-w-xl flex-col gap-4">
-      <div className="flex items-center gap-3">
-        <div className="h-8 w-8 rounded-md bg-muted motion-reduce:animate-none animate-pulse" />
-        <div className={cn(bar, "h-5 w-1/2")} />
-      </div>
-      <div className="grid grid-cols-3 gap-3">
-        <div className={cn(card, "h-16")} />
-        <div className={cn(card, "h-16")} />
-        <div className={cn(card, "h-16")} />
-      </div>
-      <div className={cn(card, "h-40")} />
-      <div className={cn(card, "h-28")} />
-      <div className={cn(bar, "w-3/4")} />
-    </div>
-  );
-}
+const DEMO_TIMEOUT_MS = 22000;
 
 function CaseContext({
   caseItem,
@@ -55,7 +36,7 @@ function CaseContext({
   const body = (
     <>
       <div>
-        <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent">
+        <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent-contrast">
           {labels.pergunta}
         </p>
         <p className="mt-2 text-sm leading-relaxed text-ink">
@@ -64,20 +45,29 @@ function CaseContext({
       </div>
 
       <div className="mt-5">
-        <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent">
-          {labels.decisao}
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-ink">
-          {caseItem.decisaoApoiada}
-        </p>
-      </div>
-
-      <div className="mt-5 border-t border-border pt-5">
-        <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent">
+        <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent-contrast">
           {labels.metrica}
         </p>
         <p className="mt-2 font-heading text-xl font-black leading-tight text-ink">
           {caseItem.metricaPrincipal}
+        </p>
+      </div>
+
+      <div className="mt-5">
+        <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent-contrast">
+          {labels.descricao}
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-ink">
+          {caseItem.descricao}
+        </p>
+      </div>
+
+      <div className="mt-5">
+        <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent-contrast">
+          {labels.decisao}
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-ink">
+          {caseItem.decisaoApoiada}
         </p>
       </div>
 
@@ -104,7 +94,7 @@ function CaseContext({
   }
 
   return (
-    <details className="group border-b bg-editorial">
+    <details className="group border-b bg-editorial" open>
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 text-sm font-bold text-ink sm:px-6 [&::-webkit-details-marker]:hidden">
         {labels.contextoMobile}
         <ChevronDown
@@ -153,31 +143,38 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
       if (loadedUrl !== embedUrl) {
         setTimeoutUrl(embedUrl);
       }
-    }, 15000);
+    }, DEMO_TIMEOUT_MS);
     return () => clearTimeout(timer);
   }, [embedUrl, loadedUrl]);
 
   const status: IframeStatus =
-    (errorUrl === embedUrl && embedUrl) ||
-    (timeoutUrl === embedUrl && embedUrl)
+    errorUrl === embedUrl && embedUrl
       ? "error"
       : loadedUrl === embedUrl && embedUrl
         ? "ready"
-        : "loading";
+        : timeoutUrl === embedUrl && embedUrl
+          ? "timeout"
+          : "loading";
 
   const shouldMountIframe = !isMobile || loadRequestedUrl === embedUrl;
   const labels = CONTENT.secoes;
+  const showPreview = status !== "ready";
+  const thumbnailSrc = caseItem?.thumbnail;
+  const thumbnailAlt =
+    caseItem?.thumbnailAlt ??
+    (caseItem ? `Pré-visualização do case ${caseItem.titulo}` : "");
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent
         className="max-h-[92vh] max-w-6xl gap-0 overflow-hidden rounded-2xl border-border bg-card p-0 lg:max-w-7xl"
         showCloseButton
+        closeLabel={CONTENT.dialog.closeLabel}
       >
         <DialogHeader className="border-b border-border px-5 py-4 sm:px-6">
           <div className="flex items-center justify-between gap-3 pr-6">
             <div>
-              <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent">
+              <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent-contrast">
                 {caseItem?.categoria ?? ""}
               </p>
               <DialogTitle className="mt-1 font-heading text-xl font-black text-ink">
@@ -189,7 +186,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
                 href={demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center gap-1 text-xs font-bold text-accent-contrast hover:underline"
+                className="inline-flex min-h-11 shrink-0 items-center gap-1 text-xs font-bold text-accent-contrast hover:underline"
               >
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden />
                 {labels.demoOpenExternalLabel}
@@ -201,7 +198,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid max-h-[calc(92vh-4.5rem)] lg:grid-cols-[22rem_1fr]">
+        <div className="grid max-h-[calc(92vh-4.5rem)] overflow-y-auto lg:grid-cols-[22rem_1fr] lg:overflow-hidden">
           {caseItem ? (
             <CaseContext caseItem={caseItem} collapsible={isMobile} />
           ) : null}
@@ -213,7 +210,10 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
                   href={demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={cn(buttonVariants({ variant: "default" }), "w-full")}
+                  className={cn(
+                    buttonVariants({ variant: "default" }),
+                    "min-h-11 w-full",
+                  )}
                 >
                   <ExternalLink className="size-4" aria-hidden />
                   {labels.demoFullscreenLabel}
@@ -224,48 +224,98 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
             <div className="relative flex-1">
               {embedUrl && !shouldMountIframe ? (
                 <div className="flex flex-col items-center gap-3 px-6 py-10 text-center">
+                  {thumbnailSrc ? (
+                    <div className="relative mb-2 aspect-video w-full max-w-lg overflow-hidden rounded-xl border border-border">
+                      <Image
+                        src={thumbnailSrc}
+                        alt={thumbnailAlt}
+                        fill
+                        className="object-cover object-top"
+                        sizes="(max-width: 1024px) 100vw, 40vw"
+                      />
+                    </div>
+                  ) : null}
                   <p className="max-w-sm text-sm text-muted-foreground">
                     {labels.demoMobileHint}
                   </p>
                   <button
                     type="button"
                     onClick={() => setLoadRequestedUrl(embedUrl)}
-                    className={cn(buttonVariants({ variant: "default" }), "w-full")}
+                    className={cn(
+                      buttonVariants({ variant: "default" }),
+                      "min-h-11 w-full",
+                    )}
                   >
                     {labels.demoLoadInlineLabel}
                   </button>
                 </div>
               ) : embedUrl ? (
                 <>
-                  {status !== "ready" ? (
+                  {showPreview ? (
                     <div
                       className={cn(
-                        "absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-background/95 px-6 text-center",
-                        status === "error" && "bg-background",
+                        "absolute inset-0 z-10 flex flex-col",
+                        "motion-safe:transition-opacity motion-safe:duration-normal motion-safe:ease-editorial",
                       )}
+                      aria-live="polite"
                     >
-                      {status === "loading" ? (
-                        <>
-                          <DemoSkeleton />
-                          <p className="max-w-md text-sm text-muted-foreground">
-                            {CONTENT.secoes.demoCarregando}
+                      <div className="relative flex-1 overflow-hidden bg-editorial">
+                        {thumbnailSrc ? (
+                          <Image
+                            src={thumbnailSrc}
+                            alt={thumbnailAlt}
+                            fill
+                            priority
+                            className="object-cover object-top"
+                            sizes="(max-width: 1024px) 100vw, 60vw"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-editorial" />
+                        )}
+                        <div className="absolute inset-0 bg-surface-dark/55" />
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center">
+                          <p className="max-w-md text-sm font-semibold text-white">
+                            {status === "error"
+                              ? labels.demoErro
+                              : status === "timeout"
+                                ? labels.demoTimeoutHint
+                                : labels.demoInicializando}
                           </p>
-                        </>
-                      ) : (
-                        <p className="max-w-md text-sm text-muted-foreground">
-                          {CONTENT.secoes.demoErro}
-                        </p>
-                      )}
+                          {status === "loading" || status === "timeout" ? (
+                            <div
+                              className="size-8 rounded-full border-2 border-white/30 border-t-accent motion-safe:animate-spin motion-reduce:animate-none"
+                              aria-hidden
+                            />
+                          ) : null}
+                          {demoUrl &&
+                          (status === "timeout" || status === "error") ? (
+                            <a
+                              href={demoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={cn(
+                                buttonVariants({ variant: "outline" }),
+                                "min-h-11 border-white/30 bg-white/10 text-white hover:bg-white/20",
+                              )}
+                            >
+                              <ExternalLink className="size-4" aria-hidden />
+                              {labels.demoOpenExternalLabel}
+                            </a>
+                          ) : null}
+                        </div>
+                      </div>
                     </div>
                   ) : null}
                   <iframe
                     src={embedUrl}
                     title={caseItem?.titulo ?? CONTENT.secoes.demoIndisponivel}
-                    loading="lazy"
+                    loading="eager"
                     onLoad={() => setLoadedUrl(embedUrl)}
                     onError={() => setErrorUrl(embedUrl)}
                     className={cn(
                       "w-full border-0",
+                      "motion-safe:transition-opacity motion-safe:duration-normal motion-safe:ease-editorial",
+                      status === "ready" ? "opacity-100" : "opacity-0",
                       isMobile
                         ? "h-[60vh] min-h-[300px] max-h-[500px]"
                         : "h-[min(640px,calc(92vh-11rem))] min-h-[420px]",

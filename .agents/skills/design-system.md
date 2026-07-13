@@ -1,40 +1,46 @@
 # Skill: Design System do Portfolio
 
 ## Descricao
+
 Define o sistema visual completo do portfolio Lucas Batista (Executive Proof System). Todo código gerado deve seguir estas regras estritamente.
 
 ## Paleta de Cores
 
 ### Cores Base
+
 | Token | Hex | CSS var | Uso |
 |-------|-----|---------|-----|
-| Editorial | `#f7f4ec` | `--background` / `--editorial` | Fundo principal das seções claras |
+| Editorial | `#f5f2ed` | `--background` / `--editorial` | Fundo principal das seções claras |
 | Card | `#ffffff` | `--card` | Blocos claros, áreas de leitura |
 | Ink | `#07111f` | `--ink` | Texto forte, CTA principal |
 | Primary | `#153451` | `--primary` | Azul petróleo técnico |
 | Surface dark | `#07111f` | `--surface-dark` | Hero, contato, blocos escuros |
 | Accent | `#16a99c` | `--accent` | Sinal técnico, CTAs de destaque |
-| Warm accent | `#d4a853` | `--warm-accent` | Eyebrows, acento editorial |
-| Muted | `#667085` | `--muted-foreground` | Texto secundário |
-| Border | `#d7cebd` | `--border` | Divisórias editoriais |
+| Warm accent | `#c9983f` | `--warm-accent` | Acento editorial decorativo (não usar em texto pequeno sobre fundo claro) |
+| Warm accent contrast | `#7a5a1a` | `--warm-accent-contrast` | Eyebrows e labels dourados em fundos claros (≥ 4.5:1) |
+| Muted | `#556070` | `--muted-foreground` | Texto secundário |
+| Border | `#c8c2b8` | `--border` | Divisórias editoriais |
 
 ### Cores Derivadas
+
 | Token | Hex | Uso |
 |-------|-----|-----|
 | Accent contrast | `#0d746d` | Hover de accent, texto em fundo claro |
-| Editorial 2 | `#eee8dc` | Fundo alternativo para contraste sutil |
-| Surface dark 2 | `#0b1220` | Glass escuro, overlays |
-| Surface dark 3 | `#101b2d` | Elevação em superfícies escuras |
-| Text on dark muted | `#cbd5e1` | Texto secundário em fundo escuro |
+| Editorial 2 | `#e8e4dc` | Fundo alternativo para contraste sutil |
+| Surface dark 2 | `#0d1524` | Glass escuro, overlays |
+| Surface dark 3 | `#131e30` | Elevação em superfícies escuras |
+| Text on dark muted | `#9aa8b8` | Texto secundário em fundo escuro |
 | Text on dark accent | `#5eead4` | Acento em fundo escuro |
 
 ## Tipografia
 
 ### Fontes
+
 - **Headings:** Source Serif 4 via `next/font/google` (`--font-source-serif` → `font-heading`)
 - **Body:** Inter via `next/font/google` (`--font-inter` → `font-sans`/`font-body`)
 
 ### Escala Modular
+
 | Token | Tamanho | Peso | Line-height | Uso |
 |-------|---------|------|-------------|-----|
 | text-3xl/4xl/5xl | 1.875rem / 2.25rem / 3rem | 700 | 1.08 | Título de seção (Source Serif 4) |
@@ -48,6 +54,7 @@ Define o sistema visual completo do portfolio Lucas Batista (Executive Proof Sys
 | text-xs | 0.75rem | 800 | 1 | Eyebrows uppercase |
 
 ### Regras
+
 - Títulos: `font-heading`, semibold/bold
 - Texto corrido: `font-sans` (Inter), normal (400), nunca font-light
 - Labels uppercase: `uppercase` + `tracking-[0.12em]`/`tracking-[0.14em]` + `text-xs`
@@ -57,20 +64,24 @@ Define o sistema visual completo do portfolio Lucas Batista (Executive Proof Sys
 ## Espacamento
 
 ### Secoes
+
 - Padding vertical padrão: `py-14 lg:py-20`
 - Gap entre seções: 0 (fundo contínuo) ou divisória sutil
 
 ### Containers
+
 - Max-width: `max-w-[1440px]`
 - Padding horizontal: `px-5 sm:px-8 lg:px-10 xl:px-12`
 - Centralizado: `mx-auto`
 
 ### Grid de Cards
+
 - Desktop (lg+): `grid-cols-3`, gap-6
 - Tablet (md): `grid-cols-2`, gap-6
 - Mobile: `grid-cols-1`, gap-4
 
 ### Componentes
+
 | Elemento | Padding | Border | Shadow |
 |----------|---------|--------|--------|
 | Card padrão | p-6 / p-7 | border-primary/10 ou border-border | shadow-card |
@@ -83,26 +94,31 @@ Define o sistema visual completo do portfolio Lucas Batista (Executive Proof Sys
 ## Transicoes e Animacoes
 
 ### Padrao
+
 ```css
 transition: all var(--duration-normal) var(--ease-editorial);
 ```
+
 - `--duration-fast`: 120ms
 - `--duration-normal`: 220ms
 - `--duration-slow`: 350ms
 - `--ease-editorial`: cubic-bezier(0.22, 1, 0.36, 1)
 
 ### Hover States
+
 - Cards: `hover:-translate-y-1 hover:shadow-elevated hover:border-primary/20`
 - Botões: `hover:-translate-y-0.5 hover:bg-accent-contrast hover:shadow-glow`
 - Links: mudança de cor + underline animado
 
 ### Scroll Animations
+
 - Framer Motion `whileInView` com `viewport={{ once: true }}`
 - Estado inicial `opacity: 1` (conteúdo nunca invisível)
 - Movimento principal em `y` (20-40px) e escala sutil
 - Respeitar `prefers-reduced-motion`
 
 ## Breakpoints
+
 | Nome | Largura | Tailwind Prefix |
 |------|---------|-----------------|
 | Mobile | < 640px | (default) |
@@ -111,6 +127,7 @@ transition: all var(--duration-normal) var(--ease-editorial);
 | Wide | 1280px+ | xl: |
 
 ## Icones
+
 - Biblioteca: lucide-react
 - Tamanho padrão: size-5 (20px)
 - Tamanho grande: size-6 (24px) para títulos de seção
@@ -118,6 +135,7 @@ transition: all var(--duration-normal) var(--ease-editorial);
 - Cor: text-muted-foreground (default), text-primary/accent (acento)
 
 ## Z-Index Hierarchy
+
 | Valor | Uso |
 |-------|-----|
 | z-50 | Skip link focado |
@@ -127,6 +145,7 @@ transition: all var(--duration-normal) var(--ease-editorial);
 | z-0 | Conteúdo padrão |
 
 ## Utilitarios Premium
+
 - `.card-surface` — card padrão
 - `.hover-lift` — elevação no hover
 - `.focus-ring` — foco acessível
@@ -139,6 +158,7 @@ transition: all var(--duration-normal) var(--ease-editorial);
 - `.shine` — efeito de brilho no hover
 
 ## Sombra e Elevação
+
 | Token | Valor |
 |-------|-------|
 | --shadow-card | `0 8px 32px rgba(7,17,31,0.08)` |

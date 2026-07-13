@@ -1,6 +1,6 @@
 """Valida que os slugs de URL esperados pela landing existem como pages.
 
-Espelha a regra do Streamlit: arquivo `pages/NN_{slug}.py` vira a URL `/{slug}`.
+Espelha a regra do Streamlit: arquivo `pages/{slug}.py` vira a URL `/{slug}`.
 A lista de slugs esperados fica em `EXPECTED_SLUGS` (espelho de `CASE_DEMO_SLUGS`
 em `data/content.ts`). Falha com código 1 se algum slug não tiver page.
 """
@@ -28,8 +28,8 @@ EXPECTED_SLUGS = [
 
 
 def slug_from_file(name: str) -> str:
-    """`08_ship_from_store.py` -> `ship_from_store` (remove prefixo NN_ e .py)."""
-    return re.sub(r"^\d+_", "", name[:-3])
+    """`ship_from_store.py` -> `ship_from_store` (remove .py)."""
+    return name[:-3]
 
 
 def main() -> int:
