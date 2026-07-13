@@ -13,6 +13,8 @@
 ## Fonte da Verdade (SSOT)
 
 - **Copy ativo:** `data/content.ts` — nunca hardcode textos nos componentes
+- **Arquitetura:** `docs/ARQUITETURA.md`
+- **Entrada docs:** `docs/CANON.md`
 - **Spec visual:** `design/design.md` + `app/globals.css`
 - **Tokens:** `design/tokens.md` + `:root`/`@theme` em `app/globals.css`
 - **Estado do projeto:** `docs/AVALIACAO.md`
@@ -22,7 +24,7 @@
 ## Design System (Obrigatório)
 
 - **Paleta ativa:**
-  - Editorial `#f7f4ec` — fundo principal
+  - Editorial `#f5f2ed` — fundo principal
   - Card `#ffffff` — blocos claros
   - Ink `#07111f` — texto forte, CTA primário
   - Primary `#153451` — azul petróleo técnico
@@ -30,9 +32,9 @@
   - Accent `#16a99c` — sinal técnico
   - Warm accent `#c9983f` — acento editorial decorativo
   - Warm accent contrast `#7a5a1a` — eyebrows e labels dourados em fundos claros (≥ 4.5:1)
-  - Muted `#667085` — texto secundário
-  - Border `#d7cebd` — divisórias
-- **Fontes:** Source Serif 4 (headings, `--font-heading`) + Inter (body, `--font-body`)
+  - Muted foreground `#556070` — texto secundário
+  - Border `#c8c2b8` — divisórias
+- **Arquitetura:** `docs/ARQUITETURA.md` · **Entrada:** `docs/CANON.md`- **Fontes:** Source Serif 4 (headings, `--font-heading`) + Inter (body, `--font-body`)
 - **Containers:** max-w-[1440px] centralizado. Padding responsivo: px-5 sm:px-8 lg:px-10 xl:px-12
 - **Cards:** bg-card, border border-border/primary, shadow-card, rounded-xl. Hover: hover:-translate-y-1 hover:shadow-elevated
 - **Transições:** usar tokens `--duration-fast/normal/slow` + `--ease-editorial`

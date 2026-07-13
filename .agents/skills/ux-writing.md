@@ -1,54 +1,45 @@
 # Skill: UX Writing e Copy
 
-## Descricao
-Guia de escrita para o portfolio Executive Proof System. O texto deve ser direto, profissional e escaneável em segundos. Cada palavra deve justificar sua existência.
+> **SSOT de textos:** [`data/content.ts`](../../data/content.ts) · Entrada: [`docs/CANON.md`](../../docs/CANON.md)
 
-## Principios Fundamentais
+## Descrição
 
-### 1. Economia Maxima
+Guia de escrita para o portfolio Executive Proof System. Texto direto, profissional e escaneável. Cada palavra justifica sua existência.
+
+## Princípios fundamentais
+
+### 1. Economia máxima
 - Remova 50% do texto na primeira revisão, depois mais 20%
-- Se uma palavra não muda o significado, ela vai embora
-- Parágrafos: máximo 3 linhas no desktop
-- Frases: máximo 20 palavras
+- Parágrafos: máximo 3 linhas no desktop · Frases: máximo 20 palavras
 
-### 2. Tom de Voz
-- **Direto:** "Reduzi custo de frete em 28%" > "Fui responsável pela redução significativa dos custos"
-- **Confiante:** Sem hesitação, sem "talvez", "acho", "creio"
-- **Profissional:** Sem gírias, sem emojis, sem exclamações excessivas
-- **Honesto:** "Dados sintéticos, premissas visíveis e limitações declaradas"
-- **Acessível:** Jargão técnico apenas quando necessário, sempre com contexto
-- **Editorial premium:** autoridade sem exageros; tono de dossiê, não de pitch
+### 2. Tom de voz
+- Direto, confiante, profissional, honesto (limitações declaradas), editorial
 
-### 3. Estrutura de Secoes
+### 3. Estrutura de seções
 
-**Hero (máx 40 palavras)**
-```
-Label: DOSSIÊ EXECUTIVO
-Título: Lucas Farias Batista
-Headline: Operações logísticas com dados, produto interno, IA aplicada e impacto mensurável
-Subheadline: +10 anos conectando execução diária a indicadores em transporte, varejo e e-commerce.
-CTAs: Ver provas técnicas + Entrar em contato
-Provas rápidas: +10 anos | +R$ 20M impacto | 10 provas navegáveis
-```
+**Hero (máx ~40 palavras)** — label + nome + headline + subheadline + CTAs (sem parede de métricas).
 
-**Card de Prova (máx 30 palavras)**
+**Card âncora (escaneável)**
 ```
-Número: 01
-Título: Simulador de Custo de Frete
-Categoria: Frete e Custo
-Problema: Qual região concentra maior custo por entrega?
-Métrica: -28% no custo médio de frete
-Link: Ver demo
+Case {id} · Categoria
+Título
+Problema de negócio (1 linha)
+Métrica principal (resumo)
+CTA: Explorar {nome curto} · Ver repositório
 ```
+Detalhe completo (descrição, decisão, limitação, tags) vive no **modal**.
 
-**Experiência Profissional (máx 25 palavras por cargo)**
+**CTAs de demo**
+- Label: `ctaDemoLabel` (ex.: “Explorar Simulador de Frete”)
+- `aria-label`: `Abrir demonstração: {titulo}`
+- Evitar genéricos repetidos (“Abrir demo e leitura”)
+
+**Experiência profissional (máx 25 palavras por cargo)**
 ```
-Período: Fev/2025 — Atual
+Período: Fev/2025 — Jun/2026   # sem selo Atual se há data final
 Cargo: Analista de Transportes Sr
 Empresa: GRUPO SBF
-Bullets (máx 2, foco em resultado):
-  - Redução de 28% no custo médio de frete B2B
-  - Dashboards de SLA/OTD para decisões diárias
+Bullets (máx 2, foco em resultado)
 ```
 
 ## Palavras Proibidas
@@ -78,7 +69,7 @@ Substitua estas palavras/frases por alternativas mais diretas:
 - SEMPRE uppercase
 - SEMPRE tracking amplo (`tracking-[0.12em]` a `tracking-[0.18em]`)
 - SEMPRE `text-xs` (12px)
-- SEMPRE cor warm-accent (light) ou on-dark-accent (dark)
+- SEMPRE cor `text-warm-accent-contrast` (light) ou `text-on-dark-accent` (dark)
 - Máximo 3 palavras
 - Exemplos: "PROVAS TÉCNICAS", "PERFIL PROFISSIONAL", "TRAJETÓRIA"
 

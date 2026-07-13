@@ -1,8 +1,10 @@
 # Skill: Design System do Portfolio
 
-## Descricao
+> **Canônico:** [`design/design.md`](../../design/design.md) + [`design/tokens.md`](../../design/tokens.md) + `app/globals.css`
 
-Define o sistema visual completo do portfolio Lucas Batista (Executive Proof System). Todo código gerado deve seguir estas regras estritamente.
+## Descrição
+
+Define o sistema visual do portfolio Lucas Batista (Executive Proof System). Todo código gerado deve seguir estas regras.
 
 ## Paleta de Cores
 

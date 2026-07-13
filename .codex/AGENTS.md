@@ -1,6 +1,6 @@
 # Portfolio Lucas Batista — Codex (projeto)
 
-> Paridade com Cursor. **Entrada:** [`docs/CANON.md`](../docs/CANON.md).
+> Paridade com Cursor. **Entrada:** [`docs/CANON.md`](../docs/CANON.md) · **Arquitetura:** [`docs/ARQUITETURA.md`](../docs/ARQUITETURA.md)
 
 ## Norte
 
@@ -8,20 +8,18 @@
 
 `Header` → `ExecutiveHero` → `EvidenceStrip` → `ProfileBrief` → `SignatureCases` → `TrajectoryBoard` → `ContactPanel` → `Footer`
 
-- Copy ativo: `data/content.ts` · shelved: `data/archive/content-consultoria.ts`
-- Design: `design/design.md` + `app/globals.css` — sem Figma
-- Tokens: `design/tokens.md`
-- Skills: `.agents/skills/`
-- Shelved: `components/archive/consultoria/`, `design/archive/`
+- Copy: `data/content.ts` · shelved: `data/archive/`
+- Design: `design/design.md` + `app/globals.css`
+- Tokens: `design/tokens.md` (inclui `--warm-accent-contrast`)
+- Skills: `.agents/skills/` (apontam para docs canônicos)
+- Shelved: `components/archive/`, `design/archive/`, `docs/archive/`
 
 ## Stack
 
-- Next.js 16.2.9 + React 19 + TypeScript 5
-- Tailwind CSS v4 (configuração CSS-only em `app/globals.css`)
-- shadcn/ui + Base UI + Lucide React
-- Framer Motion 12.x
-- Source Serif 4 (títulos) + Inter (corpo)
-- Playwright E2E (8 testes)
+- Next.js 16.2.9 + React 19 + TypeScript 5 · Node 24.x
+- Tailwind CSS v4 (CSS-only em `app/globals.css`)
+- shadcn/ui + Lucide + Framer Motion
+- Playwright E2E (**9** testes)
 
 ## Produção
 
@@ -35,7 +33,7 @@ npm run validate && npm run lint && npm run typecheck && npm run build
 npm run test:e2e
 npm run cv:generate
 
-cd demos-logistica && python scripts/smoke_test.py
+cd demos-logistica && python scripts/smoke_test.py && python scripts/validate_slugs.py
 ```
 
 ## Deploy
@@ -43,8 +41,3 @@ cd demos-logistica && python scripts/smoke_test.py
 - Env: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_DEMOS_BASE_URL`
 - Guias: `docs/DEPLOY.md`, `docs/VERCEL.md`
 - Estado: `docs/AVALIACAO.md`
-- MCPs: `.cursor/MCP_SETUP.md`
-
-## Checklist de Prioridade
-
-Ver `docs/P0_P1_P2_CHECKLIST.md` para o plano de refatoração progressiva.

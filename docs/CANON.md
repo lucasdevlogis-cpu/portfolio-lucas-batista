@@ -1,6 +1,8 @@
 # CANON — Executive Proof System
 
 > **Porta de entrada única** do repositório. Todo agente ou humano começa aqui. Os demais docs **referenciam** este arquivo — não contradizem.
+>
+> Índice: [`docs/README.md`](README.md) · Arquitetura: [`docs/ARQUITETURA.md`](ARQUITETURA.md)
 
 ---
 
@@ -19,10 +21,10 @@ Dossiê profissional **headhunter-first**: em até 60 segundos, quem avalia fit 
 | Ordem | Seção | ID | Componente | Função |
 |------:|-------|-----|------------|--------|
 | 1 | Header | — | `Header` | Nav + CTA contato |
-| 2 | Hero executivo | — | `ExecutiveHero` | Nome, posicionamento, CTAs, cockpit visual |
-| 3 | Provas rápidas | — | `EvidenceStrip` | 3 evidências de impacto |
-| 4 | Perfil em 60s | `perfil` | `ProfileBrief` | Fit, senioridade, sinais |
-| 5 | Provas técnicas | `cases` | `SignatureCases` + `CaseLibrary` | 3 âncora + biblioteca filtrável + roadmap |
+| 2 | Hero executivo | — | `ExecutiveHero` | Nome, posicionamento, CTAs, painel stack/empresas |
+| 3 | Provas rápidas | — | `EvidenceStrip` | **3** evidências de impacto |
+| 4 | Perfil em 60s | `perfil` | `ProfileBrief` | Fit, senioridade, sinais (sem FAQ) |
+| 5 | Provas técnicas | `cases` | `SignatureCases` + `CaseLibrary` | 3 âncora + 7 biblioteca + 1 roadmap |
 | 6 | Trajetória | `trajetoria` | `TrajectoryBoard` | Experiências, formação, certificações, idiomas |
 | 7 | Contato | `contato` | `ContactPanel` | LinkedIn, email, GitHub, CV PDF |
 | 8 | Footer | — | `Footer` | Links, declaração, topo |
@@ -33,7 +35,7 @@ Dossiê profissional **headhunter-first**: em até 60 segundos, quem avalia fit 
 
 **Nav (`data/content.ts`):** Perfil · Provas · Trajetória · Contato
 
-Spec visual detalhada: [`design/design.md`](../design/design.md) §2.
+Detalhes estruturais: [`ARQUITETURA.md`](ARQUITETURA.md). Spec visual: [`design/design.md`](../design/design.md).
 
 ---
 
@@ -43,12 +45,13 @@ Spec visual detalhada: [`design/design.md`](../design/design.md) §2.
 |---------|-------|----------|
 | Copy ativo (landing) | [`data/content.ts`](../data/content.ts) | Hardcode nos componentes |
 | Copy shelved (comercial) | [`data/archive/content-consultoria.ts`](../data/archive/content-consultoria.ts) | Remontar sem aprovação |
+| Arquitetura do sistema | [`docs/ARQUITETURA.md`](ARQUITETURA.md) | Specs obsoletas / audits soltos |
 | Spec visual + IA | [`design/design.md`](../design/design.md) | Figma |
 | Tokens landing | [`app/globals.css`](../app/globals.css) + [`design/tokens.md`](../design/tokens.md) | Hex inline |
-| Mapeamento do repo | [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | — |
+| Inventário do repo | [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | — |
 | Checklist de refatoração | [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md) | — |
 | Tokens demos Streamlit | [`demos-logistica/lib/brand.py`](../demos-logistica/lib/brand.py) | — |
-| Padrões viz demos | `.agents/skills/` (design-system, component-patterns, ux-writing, a11y) | Specs obsoletas em OPORTUNIDADES |
+| Padrões para agentes | [`.agents/skills/`](../.agents/skills/) (apontam para docs canônicos) | Specs obsoletas em archive |
 | Estado do projeto | [`docs/AVALIACAO.md`](AVALIACAO.md) | Claims "100%" sem QA |
 | Deploy / Vercel | [`docs/DEPLOY.md`](DEPLOY.md), [`docs/VERCEL.md`](VERCEL.md) | SHAs hardcoded |
 | CV PDF | Gerado de `content.ts` via `npm run cv:generate` | Copy manual no Python |
@@ -57,10 +60,11 @@ Spec visual detalhada: [`design/design.md`](../design/design.md) §2.
 
 ## 4. Demos e cases
 
-- **10 cases demonstráveis** — mapeamento em `CASE_DEMO_SLUGS` (`data/content.ts`)
+- **10 cases demonstráveis** — `CASE_DEMO_SLUGS` em `data/content.ts`
 - **1 roadmap** — `06-kpis-cd` (sem demo Streamlit)
-- **3 âncora** — `featuredProofCases` em `content.ts`
-- Embed: `DemoModal` + iframe `?embed=true`
+- **3 âncora** — `featuredProofCases` (`01`, `02`, `08`) com thumbnails em `public/cases/*.webp`
+- **7 biblioteca** — filtros dinâmicos só com `count > 0` (não incluem âncora/roadmap)
+- Embed: `DemoModal` + preview progressivo + iframe `?embed=true`
 - Env obrigatória no build: `NEXT_PUBLIC_DEMOS_BASE_URL`
 
 Validação: `npm run validate` (10 demos + slug ↔ `demos-logistica/pages/`)
@@ -71,40 +75,46 @@ Validação: `npm run validate` (10 demos + slug ↔ `demos-logistica/pages/`)
 
 | Path | Conteúdo |
 |------|----------|
-| [`components/archive/consultoria/`](../components/archive/consultoria/) | Dores, Serviços, Método, Sobre, IA + moléculas |
-| [`components/archive/legacy/`](../components/archive/legacy/) | Componentes de iterações anteriores (excluídos do typecheck) |
-| [`data/archive/content-consultoria.ts`](../data/archive/content-consultoria.ts) | Copy da landing comercial |
-| [`design/archive/`](../design/archive/) | editorial v3, plan-ux, lighthouse histórico, tokens comerciais |
+| [`components/archive/consultoria/`](../components/archive/consultoria/) | Dores, Serviços, Método, Sobre, IA |
+| [`components/archive/legacy/`](../components/archive/legacy/) | Cockpit e iterações anteriores |
+| [`components/archive/ui/`](../components/archive/ui/) | `FadeIn`, `Stagger`, `GlassCard` |
+| [`data/archive/`](../data/archive/) | Copy da landing comercial |
+| [`design/archive/`](../design/archive/) | Specs históricos |
+| [`docs/archive/`](archive/) | QA e gaps históricos |
 
 ---
 
 ## 6. Matriz de status (honesta)
 
-| Área | Lançado | QA manual | Polimento | Notas |
-|------|:-------:|:---------:|:---------:|-------|
-| Layout Executive Proof | ✅ | ✅ | ✅ | Densidade, tipografia e preenchimento revisados 08/07 |
-| Demos Streamlit (10 pages + 1 roadmap) | ✅ | ✅ | — | smoke 13/13 |
-| Deploy Vercel | ✅ | ✅ | — | `9FUG7tSarRquoDL66wRbnrBXMPHP` (13/07/2026) — ver `npx vercel inspect` |
-| OG image | ✅ | ✅ | — | prod 200 |
-| CV PDF | ✅ | ✅ | CV oficial | `npm run cv:generate` |
-| Lighthouse | ✅ local | ✅ prod | — | a revalidar após ajustes 13/07 |
-| READMEs por case (Fase 3) | ✅ | — | — | `demos-logistica/docs/cases/` |
-| Testes E2E | ✅ | ✅ | — | 8/8 passando |
-| Domínio custom / Analytics | — | — | 🟡 | Backlog |
+| Área | Lançado | QA | Polimento | Notas |
+|------|:-------:|:--:|:---------:|-------|
+| Layout Executive Proof | ✅ | ✅ | ✅ | Densidade revisada 13/07 |
+| Cases âncora (thumbs + compactação) | ✅ | ✅ | ✅ | WebP reais + CTAs específicos |
+| Filtros biblioteca dinâmicos | ✅ | ✅ | ✅ | Sem categorias com 0 |
+| Modal demo progressivo | ✅ | ✅ | ✅ | Preview + fallback ~22s |
+| Demos Streamlit (10 + roadmap) | ✅ | ✅ | — | smoke 13/13 |
+| Deploy Vercel | ✅ | ✅ | — | ver `npx vercel inspect` |
+| OG + CV PDF | ✅ | ✅ | — | prod 200 |
+| Lighthouse | ✅ local | 🟡 | — | a revalidar pós-refino |
+| E2E Playwright | ✅ | ✅ | — | **9/9** |
+| Domínio custom | — | — | 🟡 | Backlog |
+| Analytics | ✅ parcial | — | 🟡 | `@vercel/analytics` + `lib/analytics.ts` |
 
-**Regra:** "Lançado" = código em produção. "QA manual" = checklist em [`docs/VERCEL.md`](VERCEL.md) (concluído 06/07).
+**Regra:** "Lançado" = código em produção. QA pós-deploy: [`VERCEL.md`](VERCEL.md).
 
 ---
 
 ## 7. Verificação
 
 ```bash
-npm run validate && npm run lint && npm run build
-npm run cv:generate          # opcional: regen CV após editar content.ts
+npm run validate && npm run lint && npm run typecheck && npm run build
+npm run test:e2e
+npm run cv:generate          # se content.ts mudou
 
 cd demos-logistica
 python scripts/build_datasets.py
 python scripts/smoke_test.py   # 13 checagens
+python scripts/validate_slugs.py
 ```
 
 **Env** (`.env.example`):
@@ -114,27 +124,24 @@ NEXT_PUBLIC_SITE_URL=https://portfolio-lucas-batista-murex.vercel.app
 NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
 ```
 
-**Deploy commit atual:** `npx vercel inspect portfolio-lucas-batista-murex.vercel.app` ou MCP Vercel `list_deployments` — não confiar em SHA fixo nos docs.
+**Deploy atual:** `npx vercel inspect portfolio-lucas-batista-murex.vercel.app` — não confiar em SHA fixo nos docs.
 
 ---
 
 ## 8. Índice de documentação
 
+Ver [`docs/README.md`](README.md). Principais:
+
 | Doc | Papel |
 |-----|-------|
 | **`docs/CANON.md`** | Este arquivo — entrada única |
-| [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | Estado completo do repositório |
-| [`docs/AVALIACAO.md`](AVALIACAO.md) | Snapshot de saúde, fases, histórico |
-| [`docs/DEPLOY.md`](DEPLOY.md) | Deploy Vercel + sync Streamlit |
-| [`docs/VERCEL.md`](VERCEL.md) | Projeto Vercel, env, MCP, checklist QA |
-| [`docs/A11Y.md`](A11Y.md) | Guia de acessibilidade |
-| [`docs/MOBILE_SPEC.md`](MOBILE_SPEC.md) | Spec mobile-first |
-| [`design/design.md`](../design/design.md) | Spec visual ativa |
-| [`design/tokens.md`](../design/tokens.md) | Resumo tokens CSS |
-| [`docs/OPORTUNIDADES_DEMOS.md`](OPORTUNIDADES_DEMOS.md) | Backlog demos (histórico + roadmap) |
-| [`AGENTS.md`](../AGENTS.md) | Guia agentes Cursor |
-| [`.cursorrules`](../.cursorrules) | Regras Cursor (auto-load) |
-| [`.codex/AGENTS.md`](../.codex/AGENTS.md) | Guia Codex |
+| [`docs/ARQUITETURA.md`](ARQUITETURA.md) | Arquitetura do sistema |
+| [`docs/AVALIACAO.md`](AVALIACAO.md) | Snapshot de saúde |
+| [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | Inventário do repositório |
+| [`docs/DEPLOY.md`](DEPLOY.md) / [`VERCEL.md`](VERCEL.md) | Publicação |
+| [`design/design.md`](../design/design.md) | Spec visual |
+| [`AGENTS.md`](../AGENTS.md) | Guia agentes |
+| [`.cursorrules`](../.cursorrules) | Regras Cursor |
 
 ---
 

@@ -1,10 +1,11 @@
 # MOBILE SPEC — Portfolio Lucas Batista
 
-> **Aplica-se a:** landing Next.js (todos os componentes em `components/`)
+> **Canônico para mobile.** Skill thin: [`.agents/skills/mobile-first.md`](../.agents/skills/mobile-first.md)  
+> **Entrada:** [`CANON.md`](CANON.md) · **Arquitetura:** [`ARQUITETURA.md`](ARQUITETURA.md)
 >
-> **Meta:** Lighthouse mobile **≥ 90** (a reavaliar após densidade)
->
-> **Breakpoints:** Tailwind padrao — `sm:640px`, `md:768px`, `lg:1024px`, `xl:1280px`
+> **Aplica-se a:** landing Next.js (`components/`)  
+> **Breakpoints:** `sm:640` · `md:768` · `lg:1024` · `xl:1280`  
+> **Nota:** sem cockpit na homepage; biblioteca em cards abaixo de `lg`.
 
 ---
 

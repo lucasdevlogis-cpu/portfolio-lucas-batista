@@ -2,72 +2,71 @@
 
 Dossiê profissional — operações, dados e inteligência logística. **Executive Proof System** para headhunters e lideranças que avaliam fit técnico.
 
-> **Documentação canônica:** [`docs/CANON.md`](docs/CANON.md) — leia primeiro.
+> **Comece aqui:** [`docs/CANON.md`](docs/CANON.md) · Arquitetura: [`docs/ARQUITETURA.md`](docs/ARQUITETURA.md) · Índice: [`docs/README.md`](docs/README.md)
 
 ## Posicionamento
 
 - **Público:** headhunters, recrutadores e lideranças de operações/dados.
-- **Prova:** 10 demos navegáveis (3 âncora + biblioteca) com contexto de negócio, métrica e limitação declarada.
+- **Prova:** 10 demos (3 âncora + 7 biblioteca) + 1 roadmap; contexto, métrica e limitação declarada.
 - **Contato:** LinkedIn, email, GitHub e CV PDF — sem formulário.
-
-Copy shelved (landing comercial): [`components/archive/consultoria/`](components/archive/consultoria/) + [`data/archive/content-consultoria.ts`](data/archive/content-consultoria.ts).
 
 ## Stack
 
-- Next.js 16 (App Router) + React 19 + TypeScript
+- Next.js 16.2.9 (App Router) + React 19 + TypeScript · Node 24.x
 - Tailwind CSS v4 + shadcn/ui + Lucide React
-- Deploy: Vercel (Next.js nativo — **sem** static export)
+- Deploy: Vercel (nativo — **sem** static export) + Streamlit Cloud
 
 ## Desenvolvimento
 
 ```bash
 npm install
 npm run dev
-npm run cv:generate   # regen CV PDF após editar data/content.ts
+npm run validate && npm run lint && npm run typecheck && npm run build
+npm run test:e2e
+npm run cv:generate   # após editar data/content.ts
 ```
 
-Abre [http://localhost:3000](http://localhost:3000). Node **24.x** (`engines` no `package.json`).
+Abre [http://localhost:3000](http://localhost:3000).
 
 ## Variáveis de ambiente
 
-Copie `.env.example` para `.env.local`:
+Copie `.env.example` → `.env.local`:
 
 | Variável | Descrição |
 |----------|-----------|
-| `NEXT_PUBLIC_SITE_URL` | URL pública do site (Vercel) |
-| `NEXT_PUBLIC_DEMOS_BASE_URL` | URL base do Streamlit Cloud (**obrigatória no build**) |
-
-Sync: `npx vercel env pull .env.local` · [`docs/VERCEL.md`](docs/VERCEL.md)
+| `NEXT_PUBLIC_SITE_URL` | URL pública (Vercel) |
+| `NEXT_PUBLIC_DEMOS_BASE_URL` | URL base Streamlit (**obrigatória no build**) |
 
 ## Demos Streamlit
 
-[`demos-logistica/`](demos-logistica/) — 11 pages. Deploy: [github.com/lucasdevlogis-cpu/demos-logistica](https://github.com/lucasdevlogis-cpu/demos-logistica).
-
-10 demos embutidas via `DemoModal` (`?embed=true`). Mapeamento: `CASE_DEMO_SLUGS` em `data/content.ts`.
+Pasta [`demos-logistica/`](demos-logistica/) · repo de deploy: [demos-logistica](https://github.com/lucasdevlogis-cpu/demos-logistica).
 
 ```bash
 cd demos-logistica
 python scripts/build_datasets.py
-python scripts/smoke_test.py   # 13 checagens
+python scripts/smoke_test.py      # 13/13
+python scripts/validate_slugs.py
 ```
 
-## Deploy
+## Produção
 
 | Serviço | URL |
 |---------|-----|
 | Landing | <https://portfolio-lucas-batista-murex.vercel.app> |
 | Demos | <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app> |
 
-[`docs/DEPLOY.md`](docs/DEPLOY.md) · Vercel: Output Directory **vazio**.
+Guia: [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## Documentação
 
 | Doc | Papel |
 |-----|-------|
-| [`docs/CANON.md`](docs/CANON.md) | **Entrada única** |
-| [`docs/AVALIACAO.md`](docs/AVALIACAO.md) | Estado e fases |
+| [`docs/CANON.md`](docs/CANON.md) | Entrada única |
+| [`docs/ARQUITETURA.md`](docs/ARQUITETURA.md) | Arquitetura |
+| [`docs/AVALIACAO.md`](docs/AVALIACAO.md) | Estado / saúde |
 | [`design/design.md`](design/design.md) | Spec visual |
 | [`data/content.ts`](data/content.ts) | Copy ativo |
+| [`AGENTS.md`](AGENTS.md) | Guia para agentes |
 
 ## Licença
 

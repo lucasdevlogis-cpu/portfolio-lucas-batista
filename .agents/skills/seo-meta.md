@@ -101,36 +101,20 @@ Fundo: #0f172a    Texto: #ffffff    Acento: #0d9488
 
 ## Sitemap
 
-### sitemap.ts
-```tsx
-import { MetadataRoute } from "next";
+O projeto usa `scripts/generate-seo-files.ts` para gerar `public/sitemap.xml` e `public/robots.txt`. Regenere após alterações no conteúdo:
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://portfolio-lucas-batista-murex.vercel.app";
-  
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/provas`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/provas/simulador-custo-frete`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    // ... demais provas
-  ];
-}
+```bash
+npm run seo:generate
 ```
+
+### URLs indexadas
+
+| URL | Priority | ChangeFreq |
+|-----|----------|------------|
+| `/` | 1.0 | weekly |
+| `/lucas-batista-cv.pdf` | 0.5 | monthly |
+
+As demos Streamlit são hospedadas em domínio próprio e não devem ser incluídas no sitemap da landing.
 
 ## robots.txt
 
@@ -145,11 +129,22 @@ Sitemap: https://portfolio-lucas-batista-murex.vercel.app/sitemap.xml
 | Pagina | URL | Prioridade |
 |--------|-----|------------|
 | Home | / | 1.0 |
-| Provas (lista) | /provas | 0.9 |
-| Prova: Frete | /provas/simulador-custo-frete | 0.8 |
-| Prova: Torre | /provas/torre-controle-entregas | 0.8 |
-| Prova: CVRP | /provas/roteirizacao-urbana-cvrp | 0.8 |
 | CV PDF | /lucas-batista-cv.pdf | 0.5 |
+
+As demos Streamlit são acessadas via modal (iframe) ou em nova aba no domínio `NEXT_PUBLIC_DEMOS_BASE_URL`. Slugs atuais (sem prefixo numérico):
+
+| Case ID | Slug Streamlit |
+|---------|----------------|
+| `01-precificacao-frete` | `precificacao_frete` |
+| `02-torre-controle` | `mini_torre_controle` |
+| `03-promessa-cep` | `promessa_cep` |
+| `04-ship-from-store` | `ship_from_store` |
+| `05-auditoria-endereco` | `auditoria_endereco` |
+| `07-classificador-ocorrencias` | `classificador_ocorrencias` |
+| `08-cvrp-urbano` | `cvrp_urbano` |
+| `09-vrptw-ultima-milha` | `vrptw_ultima_milha` |
+| `10-rede-interhubs` | `rede_interhubs` |
+| `11-tsp-baseline-sp` | `tsp_baseline_sp` |
 
 ## Keywords por Secao
 

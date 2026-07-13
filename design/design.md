@@ -26,12 +26,13 @@ Não é uma landing de consultoria, não é currículo comum e não é vitrine g
 | Ordem | Seção | ID | Função |
 |---|---|---|---|
 | 1 | Header | — | Navegação curta e CTA de contato |
-| 2 | Hero executivo | — | Nome, posicionamento, fit, CTAs, provas rápidas e painel de credibilidade |
-| 3 | Perfil em 60s | `perfil` | Leitura de fit, senioridade, modelo de atuação e sinais |
-| 4 | Provas técnicas | `cases` | 3 cases âncora + biblioteca complementar |
-| 5 | Trajetória e stack | `trajetoria` | Experiência, stack por contribuição e domínios |
-| 6 | Contato profissional | `contato` | LinkedIn, email, GitHub e CV quando existir |
-| 7 | Footer | — | Links, declaração de uso e retorno ao topo |
+| 2 | Hero executivo | — | Nome, posicionamento, CTAs e painel de stack/empresas |
+| 3 | Provas rápidas | — | 3 métricas de impacto (`EvidenceStrip`) |
+| 4 | Perfil em 60s | `perfil` | Fit, senioridade, diferenciais e domínios |
+| 5 | Provas técnicas | `cases` | 3 âncora + biblioteca filtrável + roadmap |
+| 6 | Trajetória | `trajetoria` | Experiência, formação, certificações, idiomas |
+| 7 | Contato profissional | `contato` | LinkedIn, email, GitHub e CV PDF |
+| 8 | Footer | — | Links, declaração e retorno ao topo |
 
 **Mapeamento componentes React:**
 
@@ -39,13 +40,16 @@ Não é uma landing de consultoria, não é currículo comum e não é vitrine g
 |-------|------------|
 | Header | `Header` |
 | Hero | `ExecutiveHero` |
+| Provas rápidas | `EvidenceStrip` |
 | Perfil em 60s | `ProfileBrief` (`#perfil`) |
-| Provas técnicas | `SignatureCases` (`#cases`) |
-| Trajetória e stack | `TrajectoryBoard` (`#trajetoria`) |
+| Provas técnicas | `SignatureCases` (`#cases`) — inclui `CaseLibrary` + roadmap |
+| Trajetória | `TrajectoryBoard` (`#trajetoria`) |
 | Contato | `ContactPanel` (`#contato`) |
 | Footer | `Footer` |
 
 Ordem em `HomePage.tsx`: Header → ExecutiveHero → EvidenceStrip → ProfileBrief → SignatureCases → TrajectoryBoard → ContactPanel → Footer (DOM = nav = esta tabela).
+
+Arquitetura detalhada: [`docs/ARQUITETURA.md`](../docs/ARQUITETURA.md).
 
 ---
 
@@ -55,15 +59,18 @@ Ordem em `HomePage.tsx`: Header → ExecutiveHero → EvidenceStrip → ProfileB
 
 | Token | Hex | Uso |
 |---|---:|---|
-| Editorial | `#f5f2ed` | Fundo principal, tom de publicação premium — bege neutro refinado |
+| Editorial | `#f5f2ed` | Fundo principal — bege neutro refinado |
 | Card | `#ffffff` | Blocos claros e áreas de leitura |
-| Ink | `#07111f` | Texto forte, CTA principal, contraste |
+| Ink | `#07111f` | Texto forte, CTA principal |
 | Primary | `#153451` | Azul petróleo técnico |
 | Surface dark | `#07111f` | Blocos premium escuros |
 | Accent | `#16a99c` | Sinal técnico mínimo |
-| Warm accent | `#c9983f` | Eyebrows e acento editorial — dourado sofisticado |
-| Muted | `#556070` | Texto secundário — legível em fundos claros |
-| Border | `#c8c2b8` | Divisórias editoriais — cinza quente neutro |
+| Warm accent | `#c9983f` | Acento editorial decorativo (bordas, fundos escuros) |
+| Warm accent contrast | `#7a5a1a` | Eyebrows e labels dourados em fundos claros (≥ 4.5:1) |
+| Muted foreground | `#556070` | Texto secundário |
+| Border | `#c8c2b8` | Divisórias |
+
+Resumo vivo: [`design/tokens.md`](tokens.md). Runtime: `app/globals.css`.
 
 ### Tipografia
 
@@ -91,21 +98,22 @@ Ordem em `HomePage.tsx`: Header → ExecutiveHero → EvidenceStrip → ProfileB
 
 | Componente | Responsabilidade |
 |---|---|
-| `ExecutiveHero` | Briefing executivo com nome em Source Serif 4, posicionamento, provas, CTAs e painel de credibilidade |
-| `EvidenceStrip` | Faixa de 4 métricas principais com ícones e divisórias |
-| `ProfileBrief` | Fit profissional em 60s (`#perfil`) — direção de carreira, diferenciais, FAQ de triagem |
-| `TrajectoryBoard` | Senioridade, stack e domínios (`#trajetoria`) |
-| `SignatureCases` | Provas técnicas: 3 cases âncora em grid + biblioteca filtrável |
-| `CaseLibrary` | Biblioteca complementar em tabela premium com filtros (desktop + mobile) |
-| `CaseDemoLauncher` | Botão de demo + lazy loading do `DemoModal` |
-| `DemoModal` | Contexto de case study + iframe Streamlit preservado |
-| `ContactPanel` | Canais profissionais diretos em painel glass escuro |
-| `Header` / `Footer` | Navegação curta, consistência e links |
-| `FadeIn` / `Stagger` | Wrappers reutilizáveis de motion |
-| `PremiumCard` / `GlassCard` / `MetricPill` / `EditorialBadge` | Blocos de UI premium reutilizáveis |
-| `AmbientOrb` / `Shine` / `GradientBorder` | Efeitos visuais premium (orbs flutuantes, brilho, borda gradiente) |
+| `ExecutiveHero` | Briefing executivo: nome, posicionamento, CTAs, stack e empresas |
+| `EvidenceStrip` | Faixa de **3** métricas principais |
+| `ProfileBrief` | Fit profissional em 60s (`#perfil`) — sem FAQ |
+| `TrajectoryBoard` | Experiência, formação, certificações e idiomas (`#trajetoria`) |
+| `SignatureCases` | 3 cases âncora compactos + thumbnails reais + CTAs específicos |
+| `CaseLibrary` | Biblioteca complementar (tabela ≥1024px / cards <1024px); filtros só com count > 0 |
+| `CaseThumbnail` | WebP real (`public/cases/`) ou SVG fallback |
+| `CaseDemoLauncher` | CTA específico + lazy load do `DemoModal` |
+| `DemoModal` | Contexto completo + preview progressivo + iframe Streamlit |
+| `ContactPanel` | Canais profissionais diretos |
+| `Header` / `Footer` | Navegação e links |
+| `PremiumCard` / `MetricPill` / `EditorialBadge` / `SectionShell` | Blocos de UI reutilizáveis |
 
-Todo copy deve vir de `data/content.ts`. Componentes não devem hardcodar narrativa de carreira, rótulos de CTA ou textos comerciais.
+**Shelved (não montar):** `FadeIn`, `Stagger`, `GlassCard` → `components/archive/ui/`. Cockpit → `components/archive/legacy/`.
+
+Todo copy vem de `data/content.ts`. CTAs de demo usam `ctaDemoLabel` + `aria-label` específico (`caseDemoCta`).
 
 ---
 

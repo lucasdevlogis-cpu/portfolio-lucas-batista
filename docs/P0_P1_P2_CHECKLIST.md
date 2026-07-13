@@ -1,8 +1,11 @@
 # Checklist de Prioridade — Refatoração do Portfolio
 
-> **Base:** `docs/GAPS.md` + `docs/AVALIACAO.md`  
+> **Base:** [`docs/AVALIACAO.md`](AVALIACAO.md) · Gaps históricos: [`archive/GAPS-2026-07-08.md`](archive/GAPS-2026-07-08.md)  
+> **Entrada:** [`CANON.md`](CANON.md) · **Arquitetura:** [`ARQUITETURA.md`](ARQUITETURA.md)  
 > **Princípio:** P0 (fundação) > P1 (refinamento) > P2 (polish)  
-> **Regra de ouro:** nenhuma mudança P1/P2 antes de todos os P0 estarem estáveis e validados.
+> **Regra:** nenhuma mudança P1/P2 antes dos P0 abertos estarem estáveis.
+>
+> Muitas linhas ✅ abaixo são **histórico de entrega**. Itens ainda abertos: foto placeholder, Lighthouse revalidação, domínio custom.
 
 ---
 
@@ -26,8 +29,8 @@
 | 3 | Redesenhar hero: reduzir texto, CTAs claros | `components/sections/ExecutiveHero.tsx` | ✅ | Layout denso com painel de credibilidade à direita |
 | 4 | Remover/substituir cockpit estático do hero | `components/visual/LogisticsIntelligenceCockpit.tsx` | ✅ | Componente arquivado em `components/archive/legacy/`; substituído por painel com stack, empresas e provas |
 | 5 | Densificar seção Perfil | `components/sections/ProfileBrief.tsx` | ✅ | Card de direção de carreira + 3 diferenciais + domínios como tags + metadados de carreira |
-| 6 | Adicionar screenshots/thumbnails nos cards de provas | `components/sections/SignatureCases.tsx`, `public/` | ✅ | `CaseThumbnail` gerando placeholders SVG por categoria; campo `thumbnail` opcional para imagens reais |
-| 7 | Cards de provas completos e escaneáveis | `components/sections/SignatureCases.tsx` | ✅ | Problema, decisão apoiada, limitação declarada e métrica em layout compacto |
+| 6 | Adicionar screenshots/thumbnails nos cards de provas | `SignatureCases`, `public/cases/` | ✅ | WebP reais nos 3 âncora; SVG fallback só sem `thumbnail` |
+| 7 | Cards de provas escaneáveis | `SignatureCases` + `DemoModal` | ✅ | Card compacto; detalhe (decisão/limitação/tags) no modal |
 | 8 | Redesenhar timeline de trajetória (visual vertical) | `components/sections/TrajectoryBoard.tsx` | ✅ | Timeline visual implementada |
 | 9 | Resumir experiências (foco em resultado) | `data/content.ts` + `TrajectoryBoard.tsx` | ✅ | `atribuicoes` enxutas; impactos por empresa como badges |
 | 10 | Ajustar contraste em todas as seções (WCAG AA) | Todo o site | 🟡 | Lighthouse a11y 96/100 |

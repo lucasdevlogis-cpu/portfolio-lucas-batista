@@ -1,15 +1,10 @@
 # Oportunidades de Melhoria — Demos Visuais
 
-> **Backlog histórico + roadmap** — não reflete estado da landing. **Padrões visuais atuais:** [`.agents/skills/portfolio-demos-viz/SKILL.md`](../.agents/skills/portfolio-demos-viz/SKILL.md) (supersedes alturas/recomendações deste doc).
+> **Backlog histórico** — não é SSOT da landing nem dos padrões atuais das demos.
 >
-> **Entrada canônica:** [`docs/CANON.md`](CANON.md).
+> **Entrada canônica:** [`docs/CANON.md`](CANON.md) · Tokens demos: [`demos-logistica/lib/brand.py`](../demos-logistica/lib/brand.py) · UI: [`demos-logistica/lib/ui.py`](../demos-logistica/lib/ui.py)
 >
-> **Data:** 05/07/2026
-> **Contexto:** Análise pós-deploy das demos Streamlit com foco em **desktop-first**.
->
-> **Premissa:** O Streamlit é excelente para protótipos rápidos e validação de conceito, mas **não é uma plataforma de visualização de dados premium**. Este documento propõe alternativas e melhorias para elevar a percepção de valor das demos.
->
-> **Status de implementação (atualizado 06/07/2026):** Fases 1–3 **concluídas** — Folium, tabs, KPIs coloridos, `kpi_grid` embed, `filter_container`, formatação de tabelas, CTA final. Deps `streamlit-echarts` e `streamlit-aggrid` **removidas** (não adotadas). Fase 4 (protótipo Next.js híbrido) não iniciada.
+> **Data:** 05–06/07/2026 · Fases 1–3 concluídas (Folium, tabs, KPIs, filtros). Fase 4 (híbrido Next.js) não iniciada.
 
 ---
 

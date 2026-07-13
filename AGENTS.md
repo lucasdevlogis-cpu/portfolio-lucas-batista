@@ -1,7 +1,9 @@
 <!-- AGENTS.md — Portfólio Lucas Batista -->
 # AGENTS.md — Guia para Agentes de Código
 
-Guia completo para agentes de código (Cursor, Kimi Code, Codex, etc.) trabalhando neste repositório. **Leia este arquivo antes de fazer qualquer alteração.** O projeto usa principalmente **português do Brasil** em copy, comentários e documentação.
+Guia completo para agentes de código (Cursor, Kimi Code, Codex, etc.) trabalhando neste repositório. **Leia `docs/CANON.md` e `docs/ARQUITETURA.md` antes de qualquer alteração.** O projeto usa principalmente **português do Brasil** em copy, comentários e documentação.
+
+Índice de docs: [`docs/README.md`](docs/README.md).
 
 ---
 
@@ -130,7 +132,16 @@ portfolio-lucas-batista/
 │   ├── VERCEL.md           # Operação e auditoria Vercel
 │   ├── P0_P1_P2_CHECKLIST.md # Plano de refatoração progressiva
 │   ├── OPORTUNIDADES_DEMOS.md  # Backlog de demos
-│   ├── GAPS.md             # Gaps conhecidos
+│   ├── CANON.md            # Entrada única
+│   ├── ARQUITETURA.md      # Mapa estrutural
+│   ├── README.md           # Índice da pasta docs
+│   ├── AVALIACAO.md        # Estado / saúde
+│   ├── MAPEAMENTO.md       # Inventário do repo
+│   ├── DEPLOY.md / VERCEL.md
+│   ├── A11Y.md / MOBILE_SPEC.md
+│   ├── P0_P1_P2_CHECKLIST.md
+│   ├── OPORTUNIDADES_DEMOS.md  # backlog histórico
+│   └── archive/            # gaps e QA históricos
 │   ├── A11Y.md             # Acessibilidade
 │   └── MOBILE_SPEC.md      # Especificação mobile
 ├── public/                 # Assets estáticos
@@ -276,7 +287,7 @@ streamlit run app.py        # http://localhost:8501
 
 ```bash
 npm run validate && npm run lint && npm run typecheck && npm run build
-npm run test:e2e            # 8 testes Playwright
+npm run test:e2e            # 9 testes Playwright
 npm run cv:generate         # se content.ts foi alterado
 
 cd demos-logistica
@@ -295,7 +306,7 @@ python scripts/validate_slugs.py    # 10/10
 - `npm run lint` usa `eslint-config-next` (core-web-vitals + typescript).
 - `npm run typecheck` roda `tsc --noEmit`.
 - `npm run build` deve passar sem erros. O `prebuild` roda `validate` e `typecheck` automaticamente.
-- `npm run test:e2e` executa 8 testes Playwright contra build de produção (o `playwright.config.ts` sobe o servidor com `next build && next start`).
+- `npm run test:e2e` executa 9 testes Playwright contra build de produção (o `playwright.config.ts` sobe o servidor com `next build && next start`).
 - QA manual pós-deploy está documentado em `docs/VERCEL.md`.
 
 ### Demos
@@ -510,26 +521,19 @@ Fontes TTF candidatas: `scripts/assets/DejaVuSans.ttf`, `C:\Windows\Fonts\arial.
 | Doc | Função |
 |---|---|
 | `docs/CANON.md` | Porta de entrada única — leia primeiro |
-| `docs/AVALIACAO.md` | Snapshot de saúde, fases, bloqueadores, histórico |
+| `docs/ARQUITETURA.md` | Arquitetura do sistema |
+| `docs/README.md` | Índice da pasta docs |
+| `docs/AVALIACAO.md` | Snapshot de saúde, fases, bloqueadores |
+| `docs/MAPEAMENTO.md` | Inventário do repositório |
 | `docs/P0_P1_P2_CHECKLIST.md` | Plano de refatoração progressiva |
-| `docs/DEPLOY.md` | Guia completo de deploy Vercel + Streamlit |
-| `docs/VERCEL.md` | Operação, env vars, MCP e checklist QA na Vercel |
-| `docs/OPORTUNIDADES_DEMOS.md` | Backlog de demos |
-| `docs/A11Y.md` | Diretrizes de acessibilidade |
-| `docs/MOBILE_SPEC.md` | Especificação mobile-first |
-| `docs/GAPS.md` | Gaps conhecidos do projeto |
-| `design/design.md` | Spec visual ativa |
-| `design/tokens.md` | Resumo de tokens CSS/Streamlit |
-| `.cursorrules` | Regras do Cursor (auto-load) |
-| `.codex/AGENTS.md` | Guia específico para Codex |
-| `.cursor/MCP_SETUP.md` | Configuração dos MCPs do Cursor |
-| `.agents/skills/design-system.md` | Sistema visual |
-| `.agents/skills/component-patterns.md` | Padrões de componentes |
-| `.agents/skills/ux-writing.md` | Guia de copy |
-| `.agents/skills/a11y.md` / `.agents/skills/accessibility.md` | Acessibilidade |
-| `.agents/skills/mobile-first.md` | Mobile-first |
-| `.agents/skills/performance.md` | Performance Web |
-| `.agents/skills/seo-meta.md` | SEO e Meta Tags |
+| `docs/DEPLOY.md` | Deploy Vercel + Streamlit |
+| `docs/VERCEL.md` | Operação Vercel / QA |
+| `docs/OPORTUNIDADES_DEMOS.md` | Backlog histórico de demos |
+| `docs/A11Y.md` / `docs/MOBILE_SPEC.md` | Specs profundas |
+| `docs/archive/` | Gaps e QA históricos |
+| `design/design.md` / `design/tokens.md` | Spec visual e tokens |
+| `.cursorrules` / `.codex/AGENTS.md` | Regras Cursor / Codex |
+| `.agents/skills/` | Skills (apontam para docs canônicos) |
 
 ---
 
