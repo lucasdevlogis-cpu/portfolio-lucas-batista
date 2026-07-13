@@ -36,12 +36,10 @@ Prioridade:
   1. Nome (Source Serif 4, text-3xl)
   2. Posicionamento (1-2 linhas max)
   3. CTAs (stack vertical, largura total)
-  4. ProfileCockpit (opcional — esconder abaixo de 640px?)
 
-Decisao sobre ProfileCockpit:
-  - Opcao A: Esconder em mobile (ProfileCockpit e decorativo em telas pequenas)
-  - Opcao B: Reduzir para 60% da largura, posicionar abaixo dos CTAs
-  - Recomendacao: Opcao A — preservar 100vh para conteudo essencial
+Decisao sobre painel lateral:
+  - Esconder em mobile (painel e contexto secundario; stack e empresas ja resumidos no Hero)
+  - Preservar 100vh para conteudo essencial
 
 Altura maxima: 100vh - 56px (header)
 Padding: px-5 py-12
@@ -97,9 +95,8 @@ Filtros scroll:
 ```
 Layout: Single column
 Timeline: Linha a esquerda (8px margin), conteudo a direita
-Cards de stack: 2 colunas (grid-cols-2)
 Experiencias: Card unico, padding confortavel
-Formacao: Compacta (sem cards, lista simples)
+Formacao / Certificacoes / Idiomas: Empilhados em cards compactos
 
 Touch target: Cards de experiencia min 80px altura
 ```
@@ -107,8 +104,8 @@ Touch target: Cards de experiencia min 80px altura
 ### ContactPanel
 ```
 Layout: Single column
-Links: Stack vertical, largura total
-Cada link: Card com icone + texto + seta, min 56px altura
+CTAs: Stack vertical, largura total, min 72px altura
+Manifesto + Localizacao + Nota: Cards compactos abaixo dos CTAs
 Padding: px-5 py-12
 ```
 
@@ -164,11 +161,10 @@ Adicionar em `app/globals.css`:
 ## 4. Performance Mobile
 
 ### LCP (Largest Contentful Paint)
-Elemento LCP provavel: imagem do hero ou cockpit SVG.
+Elemento LCP provavel: texto do nome no hero ou imagem OG (quando compartilhada).
 
 **Otimizacoes:**
-- Hero: `priority={true}` na imagem principal
-- Cockpit SVG: Inline (ja e), mas se for grande, lazy load abaixo da fold
+- Hero: sem imagem principal; texto renderizado imediatamente
 - Fontes: `font-display: swap` ja deve estar configurado
 - Preconnect: `https://fonts.googleapis.com` e `https://fonts.gstatic.com`
 
@@ -176,7 +172,7 @@ Elemento LCP provavel: imagem do hero ou cockpit SVG.
 Causas comuns de CLS em mobile:
 - Fontes carregando com FOUT (Flash of Unstyled Text)
 - Imagens sem width/height explicito
-- Cockpit SVG redimensionando
+- SVG decorativos redimensionando
 - Conteudo dinamico (filtros de cases) empurrando layout
 
 **Correcoes:**

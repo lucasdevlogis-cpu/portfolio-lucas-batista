@@ -1,7 +1,7 @@
 # MAPEAMENTO — Portfólio Lucas Batista
 
-> Estado completo do repositório após rodada de densificação, tipografia e documentação (julho/2026).
-> Última atualização: 08/07/2026.
+> Estado completo do repositório após consolidação de conteúdo e refatoração da seção Contato (julho/2026).
+> Última atualização: 13/07/2026.
 
 ---
 
@@ -14,12 +14,15 @@
 | Branch de feature (a ser deletada após merge) | `redesign/premium-desktop` |
 | Branch remota obsoleta | `origin/copilot/analisar-projeto-ui-ux` |
 | Deploy target | Vercel — `portfolio-lucas-batista-murex.vercel.app` |
+| Deploy atual | `9FUG7tSarRquoDL66wRbnrBXMPHP` — 13/07/2026 |
 
 ### Histórico recente
 
 ```
-39efb80 refactor: redesign premium landing e demos Streamlit  ← main / redesign
-... (histórico canônico em docs/CANON.md e docs/AVALIACAO.md)
+1836291 organiza documentação e corrige testes após refatoração do Contato
+ffd5d0c refatora seção Contato: hierarquia, dimensão e ação prioritária
+5ec35d6 consolida conteúdo: remove redundâncias em Trajetória, Hero, Profile e Contato
+... (histórico completo em docs/CANON.md e docs/AVALIACAO.md)
 ```
 
 ---
@@ -47,6 +50,7 @@ npm run typecheck         # tsc --noEmit
 npm run build             # prebuild (validate + typecheck) + next build
 npm run test:e2e          # Playwright — 8 testes
 npm run cv:generate       # exporta content.ts → PDF
+npm run seo:generate      # gera sitemap.xml e robots.txt
 ```
 
 ---
@@ -72,16 +76,16 @@ BackToTop
 | Componente | Path | Função |
 |------------|------|--------|
 | `Header` | `components/Header.tsx` | Nav fixa, CTA contato |
-| `ExecutiveHero` | `components/sections/ExecutiveHero.tsx` | Hero escuro, nome, posicionamento, CTAs, painel de credibilidade |
-| `EvidenceStrip` | `components/sections/EvidenceStrip.tsx` | 4 métricas principais com ícones |
-| `ProfileBrief` | `components/sections/ProfileBrief.tsx` | Perfil em 60s, senioridade, diferenciais |
+| `ExecutiveHero` | `components/sections/ExecutiveHero.tsx` | Hero escuro, nome, posicionamento, CTAs, painel com stack e empresas |
+| `EvidenceStrip` | `components/sections/EvidenceStrip.tsx` | 3 métricas principais com ícones |
+| `ProfileBrief` | `components/sections/ProfileBrief.tsx` | Perfil em 60s, senioridade, 3 diferenciais, domínios como tags |
 | `SignatureCases` | `components/sections/SignatureCases.tsx` | 3 cases âncora em grid |
 | `CaseLibrary` | `components/sections/CaseLibrary.tsx` | Biblioteca filtrável de cases (desktop + mobile) |
 | `CaseThumbnail` | `components/CaseThumbnail.tsx` | Thumbnail SVG dos cases |
 | `CaseDemoLauncher` | `components/CaseDemoLauncher.tsx` | Botão + lazy load do modal de demo |
 | `DemoModal` | `components/DemoModal.tsx` | Modal com iframe Streamlit |
-| `TrajectoryBoard` | `components/sections/TrajectoryBoard.tsx` | Timeline, stack, impactos, formação |
-| `ContactPanel` | `components/sections/ContactPanel.tsx` | Links de contato em painel glass |
+| `TrajectoryBoard` | `components/sections/TrajectoryBoard.tsx` | Timeline de experiências, formação, certificações, idiomas |
+| `ContactPanel` | `components/sections/ContactPanel.tsx` | CTAs de contato em cards, manifesto e metadados compactos |
 | `Footer` | `components/Footer.tsx` | Rodapé |
 
 ### Primitivos de UI
@@ -89,18 +93,16 @@ BackToTop
 ```
 components/ui/
 ├── button.tsx, card.tsx, dialog.tsx, badge.tsx  # shadcn/ui
-├── PremiumCard.tsx   # card com gradient border
-├── MetricPill.tsx    # mini métrica visual
-├── EditorialBadge.tsx# badge de categoria/seção
-├── MetricPill.tsx    # mini métrica visual
-└── EditorialBadge.tsx# badge de categoria/seção
+├── PremiumCard.tsx      # card com gradient border
+├── MetricPill.tsx       # mini métrica visual
+└── EditorialBadge.tsx   # badge de categoria/seção
 ```
 
 ### Providers
 
 ```
 components/providers/
-└── MotionProvider.tsx   # LazyMotion + MotionConfig
+└── MotionProvider.tsx   # LazyMotion + MotionConfig + useReducedMotion
 ```
 
 ### Layout
@@ -115,18 +117,22 @@ components/layout/
 ```
 components/archive/
 ├── consultoria/             # landing comercial antiga
-└── legacy/                  # componentes pré-redesign
-    ├── Hero.tsx
-    ├── Cases.tsx
-    ├── ProfileSection.tsx
-    ├── TrajectorySection.tsx
-    ├── Contato.tsx
-    ├── AnimatedSection.tsx
-    ├── CaseCard.tsx
-    ├── CaseLibraryInteractive.tsx
-    ├── SectionHeader.tsx
-    ├── EditorialDarkPanel.tsx
-    └── LogisticsIntelligenceCockpit.tsx  # cockpit SVG estático arquivado 08/07
+├── legacy/                  # componentes pré-redesign (excluídos do typecheck)
+│   ├── Hero.tsx
+│   ├── Cases.tsx
+│   ├── ProfileSection.tsx
+│   ├── TrajectorySection.tsx
+│   ├── Contato.tsx
+│   ├── AnimatedSection.tsx
+│   ├── CaseCard.tsx
+│   ├── CaseLibraryInteractive.tsx
+│   ├── SectionHeader.tsx
+│   ├── EditorialDarkPanel.tsx
+│   └── LogisticsIntelligenceCockpit.tsx
+└── ui/
+    ├── FadeIn.tsx
+    ├── GlassCard.tsx
+    └── Stagger.tsx
 ```
 
 ---
@@ -173,22 +179,22 @@ components/archive/
 ## 7. Checklist de QA / E2E
 
 - [x] `npm run validate` OK
-- [x] `npm run validate:premium` OK
 - [x] `npm run lint` OK
 - [x] `npm run typecheck` OK
 - [x] `npm run build` OK
-- [ ] `npm run cv:generate` OK (pendente re-geração pós ajustes)
+- [x] `npm run cv:generate` OK
+- [x] `npx playwright test` OK — 8/8 passando
 - [x] Homepage carrega na URL de produção
-- [ ] Seções visíveis: Hero, Evidence, Perfil, Cases, Trajetória, Contato
-- [ ] Nav scrolla para âncoras corretas
-- [ ] 3 cases âncora + biblioteca filtrável + roadmap
-- [ ] Modal de demo abre com iframe Streamlit
-- [ ] "Abrir em nova aba" no modal funciona
-- [ ] LinkedIn, email, GitHub na seção Contato
-- [ ] `/robots.txt` e `/sitemap.xml` acessíveis
-- [ ] `/lucas-batista-cv.pdf` acessível
-- [ ] `/og-image.jpg` acessível
-- [ ] Lighthouse mobile ≥ 90
+- [x] Seções visíveis: Hero, Evidence, Perfil, Cases, Trajetória, Contato
+- [x] Nav scrolla para âncoras corretas
+- [x] 3 cases âncora + biblioteca filtrável + roadmap
+- [x] Modal de demo abre com iframe Streamlit
+- [x] "Abrir em nova aba" no modal funciona
+- [x] LinkedIn, email, GitHub e CV PDF na seção Contato
+- [x] `/robots.txt` e `/sitemap.xml` acessíveis
+- [x] `/lucas-batista-cv.pdf` acessível
+- [x] `/og-image.jpg` acessível
+- [ ] Lighthouse mobile ≥ 90 (a revalidar)
 
 ---
 
@@ -212,8 +218,11 @@ Localizados em `docs/audit/`:
 | `docs/CANON.md` | Entrada única — SSOT docs |
 | `docs/MAPEAMENTO.md` | Este arquivo — estado completo |
 | `docs/AVALIACAO.md` | Snapshot de saúde, fases, histórico |
+| `docs/P0_P1_P2_CHECKLIST.md` | Plano de refatoração progressiva |
 | `docs/DEPLOY.md` | Deploy Vercel + Streamlit |
 | `docs/VERCEL.md` | Operação e auditoria Vercel |
+| `docs/A11Y.md` | Guia de acessibilidade |
+| `docs/MOBILE_SPEC.md` | Spec mobile-first |
 | `design/design.md` | Spec visual ativa |
 | `design/tokens.md` | Tokens CSS |
 | `AGENTS.md` | Guia para agentes |
