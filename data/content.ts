@@ -498,20 +498,19 @@ export const CONTENT: Content = {
 
   contactLinks: {
     eyebrow: "Contato",
-    titulo: "Contato profissional direto",
-    descricao:
-      "Para oportunidades, triagem de perfil ou conversas com liderança de operações e dados, use LinkedIn ou email direto.",
+    titulo: "Contato profissional",
+    descricao: "LinkedIn ou email direto para oportunidades e triagem de perfil.",
     primaryLabel: "Conversar no LinkedIn",
     linkedinLabel: "LinkedIn",
     emailLabel: "Email",
     githubLabel: "GitHub",
     cvLabel: "CV em PDF",
     cvUrl: "/lucas-batista-cv.pdf",
-    nota: "CV executivo em PDF alinhado ao portfólio. Para detalhes completos de trajetória, use LinkedIn ou os cases demonstráveis.",
+    nota: "Dados sintéticos, públicos ou anonimizados. Cases demonstram método e capacidade de prototipagem.",
     manifesto: [
-      "Conecto execução operacional a decisão baseada em dados e protótipos rápidos.",
-      "Prefiro entregas mensuráveis a apresentações genéricas: cada case mostra métrica e limitação.",
-      "Trabalho bem em ambientes onde operação, tecnologia e financeiro precisam falar a mesma língua.",
+      "Operação, dados e tecnologia falando a mesma língua.",
+      "Protótipos rápidos com métrica e limitação declaradas.",
+      "Comunicação executiva: de indicador para decisão.",
     ],
   },
 
