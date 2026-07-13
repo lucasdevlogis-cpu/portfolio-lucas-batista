@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import {
   BarChart3,
   MessageSquareText,
-  Star,
-  Target,
   Zap,
 } from "lucide-react";
 
@@ -14,10 +12,11 @@ import { EditorialBadge } from "@/components/ui/EditorialBadge";
 import { PremiumCard } from "@/components/ui/PremiumCard";
 import { CONTENT } from "@/data/content";
 
-const itemIcons = [BarChart3, Zap, MessageSquareText, Star];
+const itemIcons = [BarChart3, Zap, MessageSquareText];
 
 export function ProfileBrief() {
   const { careerTarget, recruiterBrief, experienceSignals } = CONTENT;
+  const labels = careerTarget.labels;
 
   return (
     <SectionShell
@@ -50,7 +49,7 @@ export function ProfileBrief() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
-                      Senioridade
+                      {labels.senioridade}
                     </p>
                     <p className="mt-2 text-base leading-snug text-ink">
                       {careerTarget.senioridade}
@@ -58,7 +57,7 @@ export function ProfileBrief() {
                   </div>
                   <div>
                     <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
-                      Modelo de atuação
+                      {labels.modeloAtuacao}
                     </p>
                     <p className="mt-2 text-base leading-snug text-ink">
                       {careerTarget.modeloAtuacao}
@@ -67,7 +66,7 @@ export function ProfileBrief() {
                 </div>
                 <div>
                   <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
-                    Domínios de negócio
+                    {labels.dominiosNegocio}
                   </p>
                   <div className="mt-2.5 flex flex-wrap gap-2">
                     {experienceSignals.dominios.map((dominio) => (
@@ -75,7 +74,6 @@ export function ProfileBrief() {
                         key={dominio}
                         className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-sm font-semibold text-ink"
                       >
-                        <Target className="size-3 text-accent-contrast" aria-hidden />
                         {dominio}
                       </span>
                     ))}
@@ -83,7 +81,7 @@ export function ProfileBrief() {
                 </div>
                 <div>
                   <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
-                    Localização e abertura
+                    {labels.localizacaoAbertura}
                   </p>
                   <p className="mt-1.5 text-sm leading-snug text-ink">
                     {careerTarget.disponibilidade}
@@ -94,7 +92,7 @@ export function ProfileBrief() {
           </PremiumCard>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4">
           {recruiterBrief.itens.map((item, index) => {
             const Icon = itemIcons[index % itemIcons.length];
             return (
@@ -130,35 +128,6 @@ export function ProfileBrief() {
           })}
         </div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 1, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        className="mt-6 rounded-2xl border border-border bg-card p-6 shadow-card lg:p-7"
-      >
-        <p className="font-heading text-xl font-bold text-ink">
-          {recruiterBrief.perguntasTitulo}
-        </p>
-        <p className="mt-2 text-base text-muted-foreground">
-          {recruiterBrief.perguntasResumo}
-        </p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {recruiterBrief.perguntas.map((item) => (
-            <div
-              key={item.pergunta}
-              className="rounded-xl border border-primary/10 bg-card p-5"
-            >
-              <p className="text-base font-bold text-ink">{item.pergunta}</p>
-              <p className="mt-2 text-base leading-relaxed text-muted-foreground">
-                {item.resposta}
-              </p>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
     </SectionShell>
   );
 }

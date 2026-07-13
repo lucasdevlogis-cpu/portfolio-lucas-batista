@@ -82,6 +82,13 @@ export interface FooterConteudo {
   linksRapidosTitulo: string;
 }
 
+export interface FooterLabels {
+  stack: string;
+  recursos: string;
+  cvPdf: string;
+  repositorioDemos: string;
+}
+
 export interface NavLink {
   label: string;
   href: string;
@@ -97,16 +104,10 @@ export interface SecaoCopy {
   avaliacaoItens?: string[];
 }
 
-export interface HeroProva {
-  valor: string;
-  label: string;
-}
-
 export interface HeroConteudo {
   badge: string;
   ctaPrimario: string;
   ctaSecundario: string;
-  provas: HeroProva[];
 }
 
 export interface CareerTargetConteudo {
@@ -116,6 +117,12 @@ export interface CareerTargetConteudo {
   senioridade: string;
   disponibilidade: string;
   modeloAtuacao: string;
+  labels: {
+    senioridade: string;
+    modeloAtuacao: string;
+    dominiosNegocio: string;
+    localizacaoAbertura: string;
+  };
 }
 
 export interface ProofStat {
@@ -140,20 +147,6 @@ export interface RecruiterBriefConteudo {
   titulo: string;
   resumo: string;
   itens: RecruiterBriefItem[];
-  perguntasTitulo: string;
-  perguntasResumo: string;
-  perguntas: RecruiterBriefPergunta[];
-}
-
-export interface ExperienceSignal {
-  titulo: string;
-  descricao: string;
-}
-
-export interface Impacto {
-  valor: string;
-  label: string;
-  descricao: string;
 }
 
 export interface Experiencia {
@@ -174,13 +167,8 @@ export interface ExperienceSignalsConteudo {
   eyebrow: string;
   titulo: string;
   resumo: string;
-  trajetoria: ExperienceSignal[];
-  stackTitulo: string;
-  stackGrupos: { grupo: string; itens: string[] }[];
   dominiosTitulo: string;
   dominios: string[];
-  impactosTitulo: string;
-  impactos: Impacto[];
   experienciasTitulo: string;
   experiencias: Experiencia[];
   formacaoTitulo: string;
@@ -203,7 +191,6 @@ export interface ContactLinksConteudo {
   cvUrl: string;
   nota: string;
   manifesto: string[];
-  faq: { pergunta: string; resposta: string }[];
 }
 
 export interface DialogCopy {
@@ -260,6 +247,7 @@ export interface Content {
   navCta: string;
   cases: Case[];
   footer: FooterConteudo;
+  footerLabels: FooterLabels;
   siteMetadata: SiteMetadata;
   dialog: DialogCopy;
   mobileNav: MobileNavCopy;
@@ -325,20 +313,6 @@ export const CONTENT: Content = {
     badge: "Dossiê executivo",
     ctaPrimario: "Ver provas técnicas",
     ctaSecundario: "Contato profissional",
-    provas: [
-      {
-        valor: `+${ANOS_EXPERIENCIA} anos`,
-        label: "de operação em transporte, varejo, e-commerce e indústria",
-      },
-      {
-        valor: IMPACTO_PRINCIPAL,
-        label: "em working capital liberado e recuperação tributária",
-      },
-      {
-        valor: `${CASE_COUNT} demos`,
-        label: "navegáveis em frete, SLA, last mile e IA aplicada",
-      },
-    ],
   },
 
   careerTarget: {
@@ -352,6 +326,12 @@ export const CONTENT: Content = {
       "São Paulo/SP — aberto a conversas com headhunters, recrutadores e lideranças de operações e dados",
     modeloAtuacao:
       "Ambientes onde execução, processo, dados e tecnologia precisam conversar de forma pragmática",
+    labels: {
+      senioridade: "Senioridade",
+      modeloAtuacao: "Modelo de atuação",
+      dominiosNegocio: "Domínios de negócio",
+      localizacaoAbertura: "Localização e abertura",
+    },
   },
 
   proofStats: [
@@ -372,11 +352,6 @@ export const CONTENT: Content = {
       label: "demos navegáveis",
       detalhe:
         "Cases em Streamlit com contexto de negócio, métrica, decisão e limitação declarada.",
-    },
-    {
-      valor: "5",
-      label: "frentes de atuação",
-      detalhe: "Frete, SLA/OTD, last mile, CD e IA supervisionada aplicada à operação.",
     },
   ],
 
@@ -404,32 +379,6 @@ export const CONTENT: Content = {
           "Storytelling de dados para liderança: traduz métricas operacionais em decisão financeira e próxima ação.",
         evidencia: "Apresentações recorrentes à diretoria",
       },
-      {
-        titulo: "Stack pragmática",
-        descricao:
-          "Python, SQL, Power BI, Excel avançado, Power Automate, Streamlit, Next.js, TypeScript e IA aplicada.",
-        evidencia: "Do BI ao protótipo com IA supervisionada",
-      },
-    ],
-    perguntasTitulo: "Perguntas que este perfil responde",
-    perguntasResumo:
-      "Leitura rápida para transformar o portfólio em triagem objetiva, sem depender de interpretação genérica de currículo.",
-    perguntas: [
-      {
-        pergunta: "Onde o perfil gera mais valor?",
-        resposta:
-          "Em ambientes onde operação, processo, dados e tecnologia precisam virar decisão executiva sem perder pragmatismo.",
-      },
-      {
-        pergunta: "Como avaliar profundidade técnica?",
-        resposta:
-          "Pelos cases navegáveis: cada prova mostra pergunta de negócio, métrica, decisão apoiada e limitação declarada.",
-      },
-      {
-        pergunta: "Que tipo de conversa faz sentido?",
-        resposta:
-          "Triagem para posições em operações, transportes, inteligência logística, analytics operacional e produto interno.",
-      },
     ],
   },
 
@@ -440,71 +389,10 @@ export const CONTENT: Content = {
   ],
 
   experienceSignals: {
-    eyebrow: "Trajetória e stack",
-    titulo: "Evolução da carreira até 2026",
+    eyebrow: "Trajetória",
+    titulo: "Experiência profissional",
     resumo:
-      "Perfil que combina chão de fábrica, leitura de dados e prototipagem. Recrutadores conseguem avaliar fit sem depender de uma conversa inicial longa.",
-    trajetoria: [
-      {
-        titulo: `+${ANOS_EXPERIENCIA} anos em operações logísticas`,
-        descricao:
-          "Transporte, varejo, e-commerce, moda e indústria. Conectando execução diária a indicadores e decisões.",
-      },
-      {
-        titulo: "Transição para inteligência operacional",
-        descricao:
-          "Dados, automação e produtos internos para reduzir ambiguidade em frete, SLA, roteirização, last mile e visibilidade.",
-      },
-      {
-        titulo: "Portfólio com prova navegável",
-        descricao:
-          `${CASE_COUNT} cases publicados em Streamlit com contexto de negócio, métrica principal, decisão apoiada e limitação declarada.`,
-      },
-    ],
-    stackTitulo: "Stack por tipo de contribuição",
-    stackGrupos: [
-      {
-        grupo: "Dados & Analytics",
-        itens: [
-          "Python",
-          "SQL Server",
-          "BigQuery",
-          "Pandas",
-          "modelagem analítica",
-        ],
-      },
-      {
-        grupo: "BI e decisão",
-        itens: [
-          "Power BI",
-          "DAX",
-          "Power Query M",
-          "Oracle Analytics",
-          "Excel avançado",
-          "KPIs",
-        ],
-      },
-      {
-        grupo: "Automação & Produto",
-        itens: [
-          "Power Automate",
-          "Streamlit",
-          "Next.js",
-          "TypeScript",
-          "prototipagem",
-        ],
-      },
-      {
-        grupo: "IA aplicada",
-        itens: [
-          "LLMs",
-          "prompt engineering",
-          "classificação de textos (NLP)",
-          "assistentes supervisionados",
-          "documentação técnica",
-        ],
-      },
-    ],
+      "Evolução de operação para inteligência logística, com resultados mensuráveis em transporte, varejo e e-commerce.",
     dominiosTitulo: "Domínios de negócio",
     dominios: [
       "Frete e composição de custo",
@@ -513,40 +401,12 @@ export const CONTENT: Content = {
       "Roteirização urbana e dimensionamento de frota",
       "Operação de CD e integração WMS/TMS",
     ],
-    impactosTitulo: "Impactos quantificados",
-    impactos: [
-      {
-        valor: "+R$ 20M",
-        label: "Capital de giro liberado",
-        descricao: "Working capital +2 dias operacionais.",
-      },
-      {
-        valor: "-20%",
-        label: "Custo de frete cadeia fria",
-        descricao: "~R$ 150 mil mensais economizados.",
-      },
-      {
-        valor: "+R$ 600K",
-        label: "Recuperação de tributos",
-        descricao: "Identificação e revisão fiscal.",
-      },
-      {
-        valor: "-28%",
-        label: "Custo médio de frete",
-        descricao: "BID de última milha renegociado.",
-      },
-      {
-        valor: "-50%",
-        label: "Mudança de modal",
-        descricao: "Aéreo para rodoviário mantendo SLA.",
-      },
-    ],
     experienciasTitulo: "Experiência profissional",
     experiencias: [
       {
         cargo: "Analista de Transportes Sr — Processos & Dados",
         empresa: "GRUPO SBF (Centauro e Nike)",
-        periodo: "Fev/2025 — Atual",
+        periodo: "Fev/2025 — Jun/2026",
         atribuicoes: [
           "Análise de transporte e roteirização: eficiência de rotas (km/entrega, ocupação, custo por rota).",
           "Monitoramento de SLA, OTD, OTIF e custo por entrega com planos de ação e ajustes de malha.",
@@ -652,11 +512,6 @@ export const CONTENT: Content = {
       "Conecto execução operacional a decisão baseada em dados e protótipos rápidos.",
       "Prefiro entregas mensuráveis a apresentações genéricas: cada case mostra métrica e limitação.",
       "Trabalho bem em ambientes onde operação, tecnologia e financeiro precisam falar a mesma língua.",
-    ],
-    faq: [
-      { pergunta: "Você está aberto a relocation?", resposta: "Base em São Paulo/SP; aberto a conversas presenciais ou híbridas, dependendo do desafio." },
-      { pergunta: "Prefere CLT ou PJ?", resposta: "Flexível. O formato depende do escopo, senioridade da posição e modelo da empresa." },
-      { pergunta: "Qual o tempo de resposta?", resposta: "Costumo responder em até 24h em dias úteis. LinkedIn é o canal mais rápido." },
     ],
   },
 
@@ -956,6 +811,12 @@ export const CONTENT: Content = {
     voltarTopo: "Voltar ao topo",
     badgeCases: `${CASE_COUNT} provas navegáveis`,
     linksRapidosTitulo: "Links rápidos",
+  },
+  footerLabels: {
+    stack: "Stack",
+    recursos: "Recursos",
+    cvPdf: "CV em PDF",
+    repositorioDemos: "Repositório das demos",
   },
 
   siteMetadata: {

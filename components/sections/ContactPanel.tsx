@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle2, Code2, Download, ExternalLink, FileText, HelpCircle, Link, Mail, MapPin } from "lucide-react";
+import { CheckCircle2, Code2, Download, ExternalLink, FileText, Info, Link, Mail, MapPin } from "lucide-react";
 
 import { SectionShell } from "@/components/layout/SectionShell";
 import { PremiumCard } from "@/components/ui/PremiumCard";
@@ -71,17 +71,12 @@ export function ContactPanel() {
 
           <div className="rounded-xl border border-white/10 bg-white/[0.04] p-5 lg:p-6">
             <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-accent">
-              <HelpCircle className="size-3.5" aria-hidden />
-              Triagem rápida
+              <Info className="size-3.5" aria-hidden />
+              Sobre este dossiê
             </p>
-            <div className="mt-4 grid gap-4">
-              {contactLinks.faq.map((item) => (
-                <div key={item.pergunta}>
-                  <p className="text-base font-bold text-white">{item.pergunta}</p>
-                  <p className="mt-1.5 text-base leading-relaxed text-on-dark-muted">{item.resposta}</p>
-                </div>
-              ))}
-            </div>
+            <p className="mt-3 text-sm leading-relaxed text-on-dark-muted">
+              {contactLinks.nota}
+            </p>
           </div>
         </div>
       </motion.div>

@@ -24,8 +24,14 @@ const payload = {
   senioridade: careerTarget.senioridade,
   disponibilidade: careerTarget.disponibilidade,
   modeloAtuacao: careerTarget.modeloAtuacao,
-  trajetoria: experienceSignals.trajetoria.map((t) => t.titulo),
-  stackGrupos: experienceSignals.stackGrupos,
+  experiencias: experienceSignals.experiencias.map((e) => ({
+    cargo: e.cargo,
+    empresa: e.empresa,
+    periodo: e.periodo,
+    atribuicoes: e.atribuicoes,
+    destaques: e.destaques ?? [],
+  })),
+  stackTags: pessoal.stackTags,
   dominios: experienceSignals.dominios,
   casesDestaque: CASES_DESTAQUE.map((c) => ({
     titulo: c.titulo,

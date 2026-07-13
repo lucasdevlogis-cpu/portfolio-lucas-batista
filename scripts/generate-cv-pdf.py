@@ -112,16 +112,30 @@ def main() -> None:
     section_title(pdf, "Sinais de senioridade")
     bullet(pdf, data["senioridade"])
     bullet(pdf, data["modeloAtuacao"])
-    for item in data["trajetoria"]:
-        bullet(pdf, item)
+
+    section_title(pdf, "Trajetória")
+    for exp in data["experiencias"]:
+        pdf.set_font(FONT, "", 10)
+        pdf.set_text_color(*INK)
+        pdf.cell(0, 5.5, f"{exp['cargo']} — {exp['empresa']}", new_x="LMARGIN", new_y="NEXT")
+        pdf.set_font(FONT, "", 9)
+        pdf.set_text_color(*MUTED)
+        pdf.cell(0, 5, exp["periodo"], new_x="LMARGIN", new_y="NEXT")
+        for atrib in exp["atribuicoes"]:
+            bullet(pdf, atrib)
+        for destaque in exp.get("destaques", []):
+            pdf.set_font(FONT, "", 9)
+            pdf.set_text_color(*ACCENT)
+            width = pdf.w - pdf.l_margin - pdf.r_margin
+            pdf.multi_cell(width, 5.5, f"• {destaque}")
+        pdf.ln(1)
 
     section_title(pdf, "Domínios e frentes de fit")
     for item in data["dominios"]:
         bullet(pdf, item)
 
     section_title(pdf, "Stack")
-    for grupo in data["stackGrupos"]:
-        bullet(pdf, f"{grupo['grupo']}: {', '.join(grupo['itens'])}")
+    bullet(pdf, ", ".join(data["stackTags"]))
 
     section_title(pdf, "Provas técnicas (portfólio)")
     for case in data["casesDestaque"]:

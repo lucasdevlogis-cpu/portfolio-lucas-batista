@@ -3,29 +3,24 @@
 import { motion } from "framer-motion";
 import {
   ArrowRight,
-  BarChart3,
   Building2,
-  FolderOpen,
   Mail,
-  TrendingUp,
 } from "lucide-react";
 
 import { SectionShell } from "@/components/layout/SectionShell";
 import { analytics } from "@/lib/analytics";
 import { EditorialBadge } from "@/components/ui/EditorialBadge";
 import { buttonVariants } from "@/components/ui/button";
-import { CASE_COUNT, CONTENT, IMPACTO_PRINCIPAL } from "@/data/content";
+import { CONTENT } from "@/data/content";
 import { cn } from "@/lib/utils";
 
-const proofIcons = [TrendingUp, FolderOpen, BarChart3];
-
 export function ExecutiveHero() {
-  const { pessoal, hero, experienceSignals } = CONTENT;
+  const { pessoal, hero } = CONTENT;
 
   return (
     <SectionShell
-      className="relative overflow-hidden border-b border-white/10 bg-surface-dark pb-0 pt-12 text-white lg:pt-10"
-      innerClassName="relative grid max-w-[1440px] items-start gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.75fr)] lg:gap-8 xl:grid-cols-[minmax(0,1.35fr)_minmax(400px,0.65fr)] xl:gap-10"
+      className="relative overflow-hidden border-b border-white/10 bg-surface-dark pb-10 pt-12 text-white lg:pt-14 xl:pt-16"
+      innerClassName="relative grid max-w-[1440px] items-start gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(340px,0.75fr)] lg:gap-10 xl:grid-cols-[minmax(0,1.35fr)_minmax(380px,0.65fr)] xl:gap-12"
     >
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_82%_12%,rgba(20,184,166,0.14),transparent_58%),radial-gradient(ellipse_48%_42%_at_12%_86%,rgba(212,168,83,0.12),transparent_52%)]"
@@ -51,7 +46,7 @@ export function ExecutiveHero() {
           initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-3 max-w-full break-words font-heading text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+          className="mt-3 max-w-full break-words font-heading text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-6xl"
         >
           {pessoal.nome}
         </motion.h1>
@@ -69,15 +64,6 @@ export function ExecutiveHero() {
           initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-5 max-w-[820px] break-words text-lg font-semibold leading-snug text-white md:text-xl xl:text-2xl"
-        >
-          {pessoal.headline}
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 1, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="mt-4 max-w-[780px] break-words text-base leading-relaxed text-on-dark-muted md:text-lg"
         >
           {pessoal.subheadline}
@@ -86,7 +72,7 @@ export function ExecutiveHero() {
         <motion.div
           initial={{ opacity: 1, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="mt-6 flex flex-col gap-3 sm:flex-row"
         >
           <a
@@ -112,43 +98,6 @@ export function ExecutiveHero() {
             {hero.ctaSecundario}
           </a>
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 1, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-7 grid grid-cols-1 gap-3 border-t border-white/10 pt-5 sm:grid-cols-3"
-        >
-          {hero.provas.map((prova, index) => {
-            const Icon = proofIcons[index % proofIcons.length];
-            return (
-              <motion.div
-                key={prova.valor}
-                initial={{ opacity: 1, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.5,
-                  delay: 0.7 + index * 0.1,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                whileHover={{ y: -3, backgroundColor: "rgba(255,255,255,0.08)" }}
-                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] p-3.5 backdrop-blur-sm transition-colors"
-              >
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-white/10 text-on-dark-accent">
-                  <Icon className="size-4" aria-hidden />
-                </div>
-                <div className="min-w-0">
-                  <p className="font-heading text-xl font-bold leading-none text-white">
-                    {prova.valor}
-                  </p>
-                  <p className="mt-0.5 text-xs leading-snug text-on-dark-muted">
-                    {prova.label}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
       </div>
 
       <motion.div
@@ -157,18 +106,18 @@ export function ExecutiveHero() {
         transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="relative hidden min-w-0 lg:block"
       >
-        <div className="rounded-2xl border border-white/15 bg-white/[0.06] p-7 backdrop-blur-sm lg:p-8">
-          <div className="flex items-start gap-5 border-b border-white/10 pb-6">
-            <div className="relative flex size-22 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-primary to-accent shadow-lg">
-              <span className="font-heading text-xl font-bold text-white">LB</span>
+        <div className="rounded-2xl border border-white/15 bg-white/[0.06] p-6 backdrop-blur-sm">
+          <div className="flex items-start gap-4 border-b border-white/10 pb-5">
+            <div className="relative flex size-18 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-primary to-accent shadow-lg">
+              <span className="font-heading text-lg font-bold text-white">LB</span>
             </div>
             <div className="min-w-0">
-              <p className="font-heading text-2xl font-bold text-white">{pessoal.nomeCurto}</p>
-              <div className="mt-3.5 flex flex-wrap gap-2">
+              <p className="font-heading text-xl font-bold text-white">{pessoal.nomeCurto}</p>
+              <div className="mt-2.5 flex flex-wrap gap-1.5">
                 {pessoal.stackTags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-1.5 text-xs font-semibold text-on-dark-accent"
+                    className="rounded-full border border-white/10 bg-white/[0.07] px-2.5 py-1 text-[11px] font-semibold text-on-dark-accent"
                   >
                     {tag}
                   </span>
@@ -177,22 +126,9 @@ export function ExecutiveHero() {
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-4">
-            <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
-              <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-accent">Provas</p>
-              <p className="font-heading text-3xl font-bold text-white">{CASE_COUNT}</p>
-              <p className="text-xs text-on-dark-muted">demos navegáveis</p>
-            </div>
-            <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3">
-              <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-accent">Impacto</p>
-              <p className="font-heading text-3xl font-bold text-white">{IMPACTO_PRINCIPAL}</p>
-              <p className="text-xs text-on-dark-muted">resultado mensurável</p>
-            </div>
-          </div>
-
-          <div className="mt-6">
+          <div className="mt-5">
             <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-muted">Passagem por</p>
-            <div className="mt-3.5 flex flex-col gap-2.5 text-base font-semibold text-white/90">
+            <div className="mt-3 flex flex-col gap-2 text-sm font-semibold text-white/90">
               {pessoal.empresasResumo.map((empresa) => (
                 <span key={empresa.nome} className="flex items-center gap-2">
                   <Building2 className="size-4 shrink-0 text-on-dark-accent" aria-hidden />
@@ -204,12 +140,6 @@ export function ExecutiveHero() {
             </div>
           </div>
 
-          <div className="mt-6 border-t border-white/10 pt-5">
-            <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-on-dark-muted">Foco</p>
-            <p className="mt-2.5 text-base leading-relaxed text-on-dark-muted">
-              {experienceSignals.dominios.slice(0, 3).join(" · ")}
-            </p>
-          </div>
         </div>
       </motion.div>
     </SectionShell>
