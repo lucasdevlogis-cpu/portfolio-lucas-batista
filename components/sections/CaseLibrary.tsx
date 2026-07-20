@@ -67,7 +67,7 @@ export function CaseLibrary() {
           {filtroHint}
         </p>
 
-        <div className="mt-4 hidden rounded-xl border border-border bg-card/70 p-4 lg:block">
+        <div className="mt-4 hidden border-l-2 border-accent/40 pl-3 lg:block">
           <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
             <Info className="size-3.5" aria-hidden />
             Como usar
@@ -79,7 +79,7 @@ export function CaseLibrary() {
         </div>
 
         <div className="mt-4 hidden grid-cols-3 gap-2 lg:grid">
-          <div className="rounded-lg border border-border bg-card/70 p-2.5 text-center">
+          <div className="border-t border-border bg-card/50 p-2.5 text-center">
             <p className="font-heading text-xl font-bold text-ink">
               {CASES_DESTAQUE.length}
             </p>
@@ -87,7 +87,7 @@ export function CaseLibrary() {
               âncora
             </p>
           </div>
-          <div className="rounded-lg border border-border bg-card/70 p-2.5 text-center">
+          <div className="border-t border-border bg-card/50 p-2.5 text-center">
             <p className="font-heading text-xl font-bold text-ink">
               {CASES_BIBLIOTECA.length}
             </p>
@@ -95,7 +95,7 @@ export function CaseLibrary() {
               biblioteca
             </p>
           </div>
-          <div className="rounded-lg border border-border bg-card/70 p-2.5 text-center">
+          <div className="border-t border-border bg-card/50 p-2.5 text-center">
             <p className="font-heading text-xl font-bold text-ink">
               {CASES_ROADMAP.length}
             </p>
@@ -143,12 +143,12 @@ export function CaseLibrary() {
         </div>
       </aside>
 
-      <div className="overflow-hidden rounded-2xl border border-border bg-editorial shadow-card max-lg:border-0 max-lg:bg-transparent max-lg:shadow-none">
-        <div className="hidden grid-cols-[0.9fr_1.15fr_0.8fr_10rem] gap-4 border-b border-border bg-primary/[0.08] px-5 py-3 text-xs font-extrabold uppercase tracking-[0.12em] text-primary lg:grid">
-          <span>Case</span>
-          <span>Problema</span>
-          <span>Métrica</span>
-          <span className="text-right">Ações</span>
+      <div className="overflow-hidden border-y border-border bg-editorial max-lg:border-0 max-lg:bg-transparent">
+        <div className="hidden grid-cols-[minmax(0,0.9fr)_minmax(0,1.15fr)_minmax(0,0.8fr)_11.5rem] gap-4 border-b border-border bg-primary/[0.08] px-5 py-3 text-xs font-extrabold uppercase tracking-[0.12em] text-primary lg:grid">
+          <span className="min-w-0">Case</span>
+          <span className="min-w-0">Problema</span>
+          <span className="min-w-0">Métrica</span>
+          <span className="min-w-0 text-right">Ações</span>
         </div>
 
         <div className="divide-y divide-border max-lg:flex max-lg:flex-col max-lg:gap-3 max-lg:divide-y-0">
@@ -171,13 +171,13 @@ export function CaseLibrary() {
                 }}
                 whileHover={{ backgroundColor: "var(--card)" }}
                 className={cn(
-                  "group grid gap-3 px-5 py-4 transition-colors lg:grid-cols-[0.9fr_1.15fr_0.8fr_10rem] lg:items-center lg:py-3.5",
-                  "max-lg:rounded-2xl max-lg:border max-lg:border-border max-lg:bg-card max-lg:shadow-card",
+                  "group grid gap-3 px-5 py-4 transition-colors lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.15fr)_minmax(0,0.8fr)_11.5rem] lg:items-center lg:py-3.5",
+                  "max-lg:rounded-xl max-lg:border max-lg:border-border max-lg:bg-card",
                   "lg:hover:border-l-2 lg:hover:border-accent",
                   index % 2 === 0 ? "lg:bg-card" : "lg:bg-editorial/50",
                 )}
               >
-                <div>
+                <div className="min-w-0">
                   <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
                     {caseItem.categoria}
                   </p>
@@ -185,16 +185,17 @@ export function CaseLibrary() {
                     {caseItem.titulo}
                   </h3>
                 </div>
-                <p className="text-sm leading-snug text-muted-foreground">
+                <p className="min-w-0 text-sm leading-snug text-muted-foreground">
                   {caseItem.perguntaNegocio}
                 </p>
-                <p className="text-sm font-semibold leading-snug text-ink">
+                <p className="min-w-0 text-sm font-semibold leading-snug text-ink">
                   {caseItem.metricaResumo}
                 </p>
-                <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+                <div className="flex min-w-0 max-w-full flex-wrap items-center gap-2 max-lg:pt-1 lg:justify-end">
                   <CaseDemoLauncher
                     caseItem={caseItem}
-                    className="h-11 min-h-11 rounded-md px-3 text-xs lg:h-10 lg:min-h-10"
+                    labelOverride={secoes.caseLibraryDemoLabel}
+                    className="h-11 min-h-11 w-full min-w-0 max-w-full rounded-md px-3 text-center text-xs leading-tight whitespace-normal lg:h-10 lg:min-h-10 lg:w-auto lg:flex-1"
                     icon={<PlayCircle className="size-3.5" aria-hidden />}
                   />
                   {caseItem.linkGitHub ? (
@@ -205,7 +206,7 @@ export function CaseLibrary() {
                       aria-label={`${CONTENT.secoes.caseCodeLabel}: ${caseItem.titulo}`}
                       className={cn(
                         buttonVariants({ variant: "outline", size: "icon" }),
-                        "size-11 min-h-11 min-w-11 rounded-md border-primary/15 bg-transparent lg:size-10",
+                        "size-11 min-h-11 min-w-11 shrink-0 rounded-md border-primary/15 bg-transparent lg:size-10",
                       )}
                     >
                       <ExternalLink className="size-3.5" aria-hidden />

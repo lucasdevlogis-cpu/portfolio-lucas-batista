@@ -1,0 +1,212 @@
+{
+  "slug": "precificacao_frete",
+  "caseId": "01-precificacao-frete",
+  "title": "Precificação de frete rodoviário",
+  "question": "Onde o frete pesa na composição de custo e quanto se afasta do piso ANTT?",
+  "decision": "Priorizar negociações e investigar os corredores que concentram custo.",
+  "limitation": "Coeficientes ilustrativos; não substitui cotação comercial nem validação regulatória.",
+  "method": "Componentes de frete + piso ANTT demonstrativo + sensibilidade ao diesel.",
+  "frameworks": [
+    "NTC&Logística",
+    "Piso mínimo ANTT",
+    "Sensibilidade diesel"
+  ],
+  "kpis": [
+    {
+      "label": "Frete estimado",
+      "value": "R$ 224.711",
+      "tone": "accent"
+    },
+    {
+      "label": "Custo médio / kg",
+      "value": "R$ 0,51"
+    },
+    {
+      "label": "Vs. piso ANTT",
+      "value": "-30,5%",
+      "tone": "danger"
+    }
+  ],
+  "charts": [
+    {
+      "id": "freight-components",
+      "title": "Composição do frete",
+      "kind": "bar",
+      "unit": "BRL",
+      "data": [
+        {
+          "label": "Frete-peso",
+          "value": 88479.0
+        },
+        {
+          "label": "Pedágio",
+          "value": 30769.0
+        },
+        {
+          "label": "GRIS",
+          "value": 42997.0
+        },
+        {
+          "label": "Ad Valorem",
+          "value": 59106.0
+        },
+        {
+          "label": "Despacho/Taxas",
+          "value": 3360.0
+        }
+      ]
+    },
+    {
+      "id": "freight-by-uf",
+      "title": "Frete por origem",
+      "kind": "bar",
+      "unit": "BRL",
+      "data": [
+        {
+          "label": "SP",
+          "value": 100408.0
+        },
+        {
+          "label": "PR",
+          "value": 81809.0
+        },
+        {
+          "label": "BA",
+          "value": 42494.0
+        }
+      ]
+    }
+  ],
+  "map": {
+    "kind": "network",
+    "center": [
+      -18.0,
+      -47.0
+    ],
+    "zoom": 4,
+    "nodes": [
+      {
+        "id": "SP",
+        "lat": -22.0,
+        "lon": -48.5
+      },
+      {
+        "id": "RJ",
+        "lat": -22.9,
+        "lon": -43.2
+      },
+      {
+        "id": "MG",
+        "lat": -18.5,
+        "lon": -44.5
+      },
+      {
+        "id": "ES",
+        "lat": -19.6,
+        "lon": -40.3
+      },
+      {
+        "id": "PR",
+        "lat": -24.5,
+        "lon": -51.5
+      },
+      {
+        "id": "SC",
+        "lat": -27.2,
+        "lon": -50.5
+      },
+      {
+        "id": "RS",
+        "lat": -30.0,
+        "lon": -53.5
+      },
+      {
+        "id": "BA",
+        "lat": -12.5,
+        "lon": -41.5
+      },
+      {
+        "id": "PE",
+        "lat": -8.4,
+        "lon": -37.9
+      },
+      {
+        "id": "CE",
+        "lat": -5.2,
+        "lon": -39.6
+      },
+      {
+        "id": "GO",
+        "lat": -16.0,
+        "lon": -49.5
+      },
+      {
+        "id": "DF",
+        "lat": -15.8,
+        "lon": -47.8
+      }
+    ],
+    "edges": [
+      {
+        "from": [
+          -12.5,
+          -41.5
+        ],
+        "to": [
+          -8.4,
+          -37.9
+        ],
+        "label": "BA → PE",
+        "value": 42494.0
+      },
+      {
+        "from": [
+          -24.5,
+          -51.5
+        ],
+        "to": [
+          -30.0,
+          -53.5
+        ],
+        "label": "PR → RS",
+        "value": 81809.0
+      },
+      {
+        "from": [
+          -22.0,
+          -48.5
+        ],
+        "to": [
+          -18.5,
+          -44.5
+        ],
+        "label": "SP → MG",
+        "value": 68880.0
+      },
+      {
+        "from": [
+          -22.0,
+          -48.5
+        ],
+        "to": [
+          -22.9,
+          -43.2
+        ],
+        "label": "SP → RJ",
+        "value": 26385.0
+      },
+      {
+        "from": [
+          -22.0,
+          -48.5
+        ],
+        "to": [
+          -22.0,
+          -48.5
+        ],
+        "label": "SP → SP",
+        "value": 5143.0
+      }
+    ]
+  }
+}

@@ -2,7 +2,7 @@
 
 > Fonte da verdade visual do portfólio Lucas Batista. Esta versão substitui a leitura comercial antiga por uma peça premium para headhunters, recrutadores e lideranças que avaliam fit profissional.
 >
-> **Fluxo de design:** spec em Markdown + tokens CSS (`app/globals.css`) + paridade Streamlit (`demos-logistica/lib/brand.py`). **Figma não faz parte do fluxo** — alterações visuais entram pelo código e por este documento.
+> **Fluxo de design:** spec em Markdown + tokens fonte (`design/tokens.json`) gerados para CSS e Python. **Figma não faz parte do fluxo** — alterações visuais entram pelo código e por este documento.
 
 ---
 
@@ -70,11 +70,11 @@ Arquitetura detalhada: [`docs/ARQUITETURA.md`](../docs/ARQUITETURA.md).
 | Muted foreground | `#556070` | Texto secundário |
 | Border | `#c8c2b8` | Divisórias |
 
-Resumo vivo: [`design/tokens.md`](tokens.md). Runtime: `app/globals.css`.
+Resumo vivo: [`design/tokens.md`](tokens.md). Fonte editável: `design/tokens.json`. Runtime: `app/design-tokens.css` + `app/globals.css`.
 
 ### Tipografia
 
-- **Headings:** Source Serif 4 via `next/font/google` (`--font-source-serif` → `font-heading`).
+- **Headings:** Source Serif 4 via `next/font/google` (`--font-serif` → `font-heading`).
 - **Body:** Inter via `next/font/google` (`--font-inter` → `font-sans`).
 - Corpo mínimo: `text-sm` (14px) para metadados; `text-base` (16px) para leitura principal.
 - A combinação serif/sans cria contraste editorial e autoridade sem perder legibilidade.
@@ -82,15 +82,13 @@ Resumo vivo: [`design/tokens.md`](tokens.md). Runtime: `app/globals.css`.
 ### Princípios
 
 - Tipografia e hierarquia mandam mais que decoração.
-- **CTA sólido:** `ink` (`#07111f`) — variant `executive` em `button.tsx`; não usar `primary` para botões de ação principal.
-- Espaçamentos controlados (`py-18 lg:py-28`); blocos densos onde ajudam a triagem; nenhuma lacuna visual sem função.
+- **CTA sólido:** `ink` ou `accent-contrast`; branco sobre `accent` puro não atinge o contraste de texto normal.
+- Espaçamentos controlados (`py-14 lg:py-20`); blocos densos onde ajudam a triagem; nenhuma lacuna visual sem função.
 - Poucos ícones; ícone só quando melhora reconhecimento.
-- Motion discreto: entrada por translação sutil (conteúdo permanece visível), sem competir com leitura.
-- Glassmorphism real com backdrop-blur-xl, gradientes sutis e elevação hierárquica para criar dimensão.
-- Ambient orbs flutuantes com animate-float para profundidade no hero.
-- Shine effect em CTAs primários para hierarquia visual.
-- Custom scrollbar e selection brandada para polish final.
-- Conteúdo essencial não pode começar invisível por dependência de scroll/JS. Animações usam `opacity: 1` no estado inicial; o movimento vem de `y`/`scale`.
+- Motion discreto abaixo da primeira dobra, sem competir com leitura.
+- Gradientes e blur só em superfícies escuras e com função de hierarquia.
+- Conteúdo LCP do hero é estático; nenhuma animação pode atrasar a primeira dobra.
+- Sombras, bordas e badges são usados com parcimônia; tipografia e espaço sustentam a hierarquia.
 
 ---
 
@@ -106,14 +104,14 @@ Resumo vivo: [`design/tokens.md`](tokens.md). Runtime: `app/globals.css`.
 | `CaseLibrary` | Biblioteca complementar (tabela ≥1024px / cards <1024px); filtros só com count > 0 |
 | `CaseThumbnail` | WebP real (`public/cases/`) ou SVG fallback |
 | `CaseDemoLauncher` | CTA específico + lazy load do `DemoModal` |
-| `DemoModal` | Contexto completo + preview progressivo + iframe Streamlit |
+| `DemoModal` | Contexto completo + âncoras inline ou preview progressivo com iframe Streamlit |
 | `ContactPanel` | Canais profissionais diretos |
 | `Header` / `Footer` | Navegação e links |
 | `PremiumCard` / `MetricPill` / `EditorialBadge` / `SectionShell` | Blocos de UI reutilizáveis |
 
 **Shelved (não montar):** `FadeIn`, `Stagger`, `GlassCard` → `components/archive/ui/`. Cockpit → `components/archive/legacy/`.
 
-Todo copy vem de `data/content.ts`. CTAs de demo usam `ctaDemoLabel` + `aria-label` específico (`caseDemoCta`).
+Todo copy vem de `data/content.ts`. O nome acessível dos CTAs começa pelo rótulo visível e acrescenta o título do case.
 
 ---
 
@@ -127,11 +125,15 @@ Cases âncora:
 2. `02-torre-controle` — SLA, OTD e follow-up.
 3. `08-cvrp-urbano` — roteirização, frota e distância.
 
-Demais cases continuam acessíveis na biblioteca complementar. O modal preserva `?embed=true`, link de nova aba e lazy loading mobile.
+Demais cases continuam acessíveis na biblioteca complementar. As âncoras usam rotas `/provas/{slug}` com ECharts e MapLibre; somente as complementares usam Streamlit com `?embed=true`.
 
 ---
 
-## 6. Demos Streamlit
+## 6. Demos e provas âncora
+
+As três provas âncora (`precificacao_frete`, `mini_torre_controle` e `cvrp_urbano`) são renderizadas em React/Next.js com o contrato JSON exportado pelos cálculos Python. ECharts cuida dos gráficos analíticos e MapLibre dos mapas/rotas; ambos carregam sob demanda.
+
+As sete demos complementares permanecem em Streamlit para exploração Python e seguem o tema compartilhado.
 
 As demos não podem parecer outro produto visual. Elas são a camada interativa do mesmo dossiê profissional e devem sustentar a leitura headhunter-first.
 
@@ -181,19 +183,7 @@ As demos não podem parecer outro produto visual. Elas são a camada interativa 
 - Animações não escondem conteúdo essencial: estado inicial `opacity: 1`.
 - Selection brandada com cor primary e texto branco.
 - Custom scrollbar sutil com thumb cinza quente.
-- Ambient orbs flutuantes no hero para dimensão visual.
-- Hover states premium: elevação + shadow + border accent.
-
----
-
-## 8. Referências
-
-- `KpG782/3D_Portfolio` — conceito estrutural forte e cases como traces com trade-offs.
-- `fuaadabdullah/fuaad-portfolio` — apresentação employer-ready, resume e case studies.
-- `M-F-Tushar/My-Portfolio` — orientação explícita para recrutador entender direção, provas, links e contato.
-- `mohabbis/personal-portfolio` — estética editorial, neutros quentes, tipografia forte e mínimo chrome.
-- SitesPlaced / Portfolio Studio — princípios de recrutamento: projetos cedo, resultados, links funcionais, stack tags e performance.
-- Tendências 2025: glassmorphism, Bento layouts, oversized serif typography, subtle scroll reveals.
+- Hover states usam elevação curta, sombra sutil e borda de acento.
 
 ---
 

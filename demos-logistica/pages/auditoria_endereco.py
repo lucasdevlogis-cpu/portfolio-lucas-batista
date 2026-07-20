@@ -10,7 +10,7 @@ import streamlit as st
 
 from lib import brand, folium_maps, tables, ui
 
-ui.page_setup("10. Auditoria de Endereço", icon="✅")
+ui.page_setup("05. Auditoria de Endereço", icon="🔎")
 
 # Limites aproximados do território brasileiro.
 LAT_MIN, LAT_MAX = -34.0, 5.5
@@ -73,7 +73,7 @@ bloqueados = int((aud["nivel_confianca"] == "Baixa").sum())
 ui.breadcrumb("Case: Auditoria de Endereço · <b>Demo interativa</b>")
 
 ui.hero(
-    "10. Auditoria de Endereço / Geocoding BR",
+    "05. Auditoria de Endereço / Geocoding BR",
     "Quais endereços têm confiança suficiente para prometer e rotear?",
     frameworks=["DNE/CNEFE (produção)", "Geocoding", "Data quality"],
     selo=brand.maturidade(

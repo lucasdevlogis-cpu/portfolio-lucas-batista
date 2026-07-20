@@ -9,10 +9,12 @@ Guia de escrita para o portfolio Executive Proof System. Texto direto, profissio
 ## Princípios fundamentais
 
 ### 1. Economia máxima
+
 - Remova 50% do texto na primeira revisão, depois mais 20%
 - Parágrafos: máximo 3 linhas no desktop · Frases: máximo 20 palavras
 
 ### 2. Tom de voz
+
 - Direto, confiante, profissional, honesto (limitações declaradas), editorial
 
 ### 3. Estrutura de seções
@@ -20,6 +22,7 @@ Guia de escrita para o portfolio Executive Proof System. Texto direto, profissio
 **Hero (máx ~40 palavras)** — label + nome + headline + subheadline + CTAs (sem parede de métricas).
 
 **Card âncora (escaneável)**
+
 ```
 Case {id} · Categoria
 Título
@@ -27,14 +30,17 @@ Problema de negócio (1 linha)
 Métrica principal (resumo)
 CTA: Explorar {nome curto} · Ver repositório
 ```
+
 Detalhe completo (descrição, decisão, limitação, tags) vive no **modal**.
 
 **CTAs de demo**
+
 - Label: `ctaDemoLabel` (ex.: “Explorar Simulador de Frete”)
 - `aria-label`: `Abrir demonstração: {titulo}`
 - Evitar genéricos repetidos (“Abrir demo e leitura”)
 
 **Experiência profissional (máx 25 palavras por cargo)**
+
 ```
 Período: Fev/2025 — Jun/2026   # sem selo Atual se há data final
 Cargo: Analista de Transportes Sr
@@ -43,6 +49,7 @@ Bullets (máx 2, foco em resultado)
 ```
 
 ## Palavras Proibidas
+
 Substitua estas palavras/frases por alternativas mais diretas:
 
 | Em vez de... | Use... |
@@ -66,6 +73,7 @@ Substitua estas palavras/frases por alternativas mais diretas:
 ## Padrões por Elemento
 
 ### Labels de Secao (Eyebrows)
+
 - SEMPRE uppercase
 - SEMPRE tracking amplo (`tracking-[0.12em]` a `tracking-[0.18em]`)
 - SEMPRE `text-xs` (12px)
@@ -74,6 +82,7 @@ Substitua estas palavras/frases por alternativas mais diretas:
 - Exemplos: "PROVAS TÉCNICAS", "PERFIL PROFISSIONAL", "TRAJETÓRIA"
 
 ### Títulos de Secao
+
 - Máximo 6 palavras
 - Sem ponto final
 - Preferencialmente com verbo ou ação
@@ -82,6 +91,7 @@ Substitua estas palavras/frases por alternativas mais diretas:
 - Exemplos ruins: "A seção das provas técnicas que foram desenvolvidas"
 
 ### Subtítulos / Leads
+
 - Uma única frase
 - Máximo 15 palavras
 - Função: contextualizar o título, não explicar tudo
@@ -89,12 +99,14 @@ Substitua estas palavras/frases por alternativas mais diretas:
 - Exemplo ruim: "Nesta seção você encontrará dez provas técnicas que foram cuidadosamente desenvolvidas..."
 
 ### CTAs (Call to Action)
+
 - Verbo no infinitivo + objeto
 - Máximo 4 palavras
 - Exemplos: "Ver provas", "Abrir demo", "Ver no LinkedIn", "Baixar CV"
 - Sempre acompanhar com ícone (ArrowRight, ExternalLink, Download, PlayCircle)
 
 ### Estatísticas
+
 - Formato: número + contexto em 2-3 palavras
 - Exemplo: "+10 anos" / "+R$ 20M impacto" / "10 provas navegáveis"
 - Sempre usar o sinal + ou - para indicar direção
@@ -103,6 +115,7 @@ Substitua estas palavras/frases por alternativas mais diretas:
 ## Anti-Padrões (Nunca Faça)
 
 ### ❌ "Parede de Texto"
+
 ```
 // RUIM — 47 palavras, 4 linhas
 "Atuo na interseção entre logística, analytics e tecnologia para reduzir custo,
@@ -116,6 +129,7 @@ e indústria."
 ```
 
 ### ❌ "CV no Portfolio"
+
 ```
 // RUIM — Bullet com atividades
 - Realizava o acompanhamento diário dos KPIs de transporte
@@ -128,6 +142,7 @@ e indústria."
 ```
 
 ### ❌ "Tom Acadêmico"
+
 ```
 // RUIM
 "Portfólio reorganizado como dossiê de fit: evidências de julgamento operacional,
@@ -138,7 +153,9 @@ clareza analítica, capacidade de prototipagem e comunicação com diretoria."
 ```
 
 ## Checklist de Copy
+
 Antes de finalizar qualquer seção, verifique:
+
 - [ ] Texto total reduzido em pelo menos 50% da versão inicial
 - [ ] Todas as frases têm 20 palavras ou menos
 - [ ] Cada parágrafo tem 3 linhas ou menos

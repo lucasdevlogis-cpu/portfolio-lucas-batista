@@ -328,9 +328,16 @@ def _inject_css(embed: bool = False) -> None:
             box-shadow: 0 8px 20px rgba(15,23,42,.035);
             margin: .5rem 0;
           }}
-          .insight-icon {{
-            font-size: 1.1rem;
-            line-height: 1.4;
+          .insight-label {{
+            border-radius: 999px;
+            background: {brand.EDITORIAL_2};
+            color: {brand.ACCENT_CONTRAST};
+            font-size: .68rem;
+            font-weight: 850;
+            letter-spacing: .08em;
+            line-height: 1;
+            padding: .38rem .5rem;
+            text-transform: uppercase;
             flex-shrink: 0;
           }}
           .insight-text {{
@@ -592,7 +599,7 @@ def sidebar_brand() -> None:
         st.markdown(
             "<div class='demo-sidebar-section'>Método</div>", unsafe_allow_html=True
         )
-        nav_link("pages/sobre_dados_metodos.py", "Dados e métodos")
+        nav_link("pages/11_sobre_dados_metodos.py", "Dados e métodos")
         st.divider()
 
 
@@ -706,83 +713,6 @@ def hero(
     st.write("")
 
 
-def framework_badges(frameworks: Sequence[str]) -> None:
-    """Selos dos frameworks de produção citados na demo."""
-    if not frameworks:
-        return
-    pills = "".join(
-        f"<span class='demo-badge'>{escape(str(f))}</span>" for f in frameworks
-    )
-    st.markdown(pills, unsafe_allow_html=True)
-
-
-def maturity_selo(texto: str) -> None:
-    st.markdown(
-        f"<span class='demo-selo'>{escape(texto)}</span>",
-        unsafe_allow_html=True,
-    )
-
-
-def page_header(
-    title: str,
-    pergunta: str,
-    frameworks: Sequence[str] | None = None,
-    selo: str | None = None,
-) -> None:
-    """Cabeçalho padrão: título, selos de framework, pergunta de negócio e selo
-    de maturidade."""
-    hero(title, pergunta, frameworks=frameworks, selo=selo)
-
-
-def impact_metric(
-    label: str,
-    value: str,
-    delta: str | None = None,
-    help: str | None = None,
-    delta_color: str = "normal",
-) -> None:
-    """Número executivo de destaque (topo da demo)."""
-    severity = "danger" if delta_color == "inverse" else None
-    if delta_color == "off":
-        severity = "warning"
-    kpi_metric(label, value if delta is None else f"{value} · {delta}", severity)
-    if help:
-        st.caption(help)
-
-
-def _render_metric(col, item: tuple[str, str] | dict) -> None:
-    with col:
-        if isinstance(item, dict):
-            value = item["value"]
-            if item.get("delta"):
-                value = f"{value} · {item['delta']}"
-            kpi_metric(item["label"], value, item.get("severity"))
-            if item.get("help"):
-                st.caption(item["help"])
-        else:
-            kpi_metric(item[0], item[1])
-
-
-def kpi_row(
-    items: list[tuple[str, str]] | list[dict], columns: int | None = None
-) -> None:
-    """Linha de KPIs. Aceita tuplas (label, value) ou dicts com delta/help.
-
-    No embed (iframe estreito do modal) mais de 2 colunas ficam espremidas, então
-    caímos para uma grade 2×2. `columns` força um número específico se preciso.
-    """
-    n = len(items)
-    if n == 0:
-        return
-    if columns is None:
-        columns = 2 if (is_embed() and n > 2) else n
-    columns = max(1, min(columns, n))
-    for start in range(0, n, columns):
-        cols = st.columns(columns)
-        for offset, item in enumerate(items[start : start + columns]):
-            _render_metric(cols[offset], item)
-
-
 def kpi_grid(items: list[dict], columns: int | None = None) -> None:
     """Grade de KPIs com borda por severidade, responsiva no embed (2×2).
 
@@ -815,11 +745,11 @@ def kpi_metric(label: str, value: str, severity: str | None = None) -> None:
     )
 
 
-def insight(texto: str, icone: str = "💡") -> None:
+def insight(texto: str, rotulo: str = "Nota") -> None:
     """Bloco de insight padronizado para substituir `st.info` inline."""
     st.markdown(
         f"<div class='insight-box'>"
-        f"<span class='insight-icon'>{escape(icone)}</span>"
+        f"<span class='insight-label'>{escape(rotulo)}</span>"
         f"<span class='insight-text'>{escape(texto)}</span>"
         f"</div>",
         unsafe_allow_html=True,

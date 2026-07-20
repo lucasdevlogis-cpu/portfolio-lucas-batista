@@ -72,18 +72,95 @@ test.describe("Cases e biblioteca", () => {
 
     await expect(
       page.getByRole("button", {
-        name: "Abrir demonstração: Simulador de Custo de Frete",
+        name: "Explorar Frete: Simulador de Custo de Frete",
       }),
     ).toBeVisible();
     await expect(
       page.getByRole("button", {
-        name: "Abrir demonstração: Mini Torre de Controle de Entregas",
+        name: "Explorar Torre: Mini Torre de Controle de Entregas",
       }),
     ).toBeVisible();
     await expect(
       page.getByRole("button", {
-        name: "Abrir demonstração: Roteirização Urbana (CVRP)",
+        name: "Explorar CVRP: Roteirização Urbana (CVRP)",
       }),
     ).toBeVisible();
+  });
+
+  test("CTAs dos cases não estouram cards nem sobrepõem métricas", async ({
+    page,
+  }) => {
+    for (const width of [390, 768, 1024, 1280, 1366, 1440]) {
+      await page.setViewportSize({ width, height: 1100 });
+      await page.goto("/#cases");
+      await page.waitForLoadState("networkidle");
+
+      const overflow = await page.evaluate(() => {
+        const tolerance = 1;
+        const issues: string[] = [];
+        const pageRoot = document.documentElement;
+
+        if (pageRoot.scrollWidth > pageRoot.clientWidth + tolerance) {
+          issues.push(
+            `page:${pageRoot.scrollWidth}>${pageRoot.clientWidth}`,
+          );
+        }
+
+        for (const card of document.querySelectorAll(
+          '[data-testid="case-card"], [data-testid="case-library-item"]',
+        )) {
+          const cardRect = card.getBoundingClientRect();
+          const title =
+            card.querySelector("h3")?.textContent?.trim() ?? "case sem título";
+
+          for (const control of card.querySelectorAll("button, a")) {
+            const rect = control.getBoundingClientRect();
+            const label =
+              control.getAttribute("aria-label") ??
+              control.textContent?.trim() ??
+              "controle sem rótulo";
+
+            if (rect.left < cardRect.left - tolerance) {
+              issues.push(`${title}:${label}:overflow-left`);
+            }
+            if (rect.right > cardRect.right + tolerance) {
+              issues.push(`${title}:${label}:overflow-right`);
+            }
+            if (control.scrollWidth > control.clientWidth + tolerance) {
+              issues.push(`${title}:${label}:text-clipped`);
+            }
+          }
+        }
+
+        for (const item of document.querySelectorAll(
+          '[data-testid="case-library-item"]',
+        )) {
+          const children = Array.from(item.children);
+          const metric = children[2];
+          const actions = children[3];
+
+          if (!metric || !actions) continue;
+
+          const metricRect = metric.getBoundingClientRect();
+          const actionsRect = actions.getBoundingClientRect();
+          const title =
+            item.querySelector("h3")?.textContent?.trim() ??
+            "case de biblioteca";
+
+          if (actionsRect.top < metricRect.bottom - tolerance) {
+            for (const control of actions.querySelectorAll("button, a")) {
+              const controlRect = control.getBoundingClientRect();
+              if (controlRect.left < metricRect.right - tolerance) {
+                issues.push(`${title}:cta-overlaps-metric`);
+              }
+            }
+          }
+        }
+
+        return issues;
+      });
+
+      expect(overflow, `viewport ${width}px`).toEqual([]);
+    }
   });
 });

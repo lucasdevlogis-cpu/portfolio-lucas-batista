@@ -54,6 +54,7 @@ __pycache__/
 
 # audit artifacts
 lighthouse-*.json
+local-*.json
 cv-export.json
 .tmp-lh/
 wb-*.json
@@ -61,8 +62,12 @@ wb-*.json
 next-start.*.log
 scripts/tmp-captures/
 qa-captures/
+docs/audit/tmp-captures/
 
 # exceções ao gitignore global (*token* — secrets, não design docs)
+!app/design-tokens.css
+!design/tokens.json
 !design/tokens.md
 !design/archive/tokens-layout-comercial-2026-07.md
+!scripts/generate-design-tokens.mjs
 .playwright-mcp/

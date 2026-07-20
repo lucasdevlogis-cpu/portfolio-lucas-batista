@@ -1,244 +1,82 @@
-# MOBILE SPEC — Portfolio Lucas Batista
+# Especificação mobile
 
-> **Canônico para mobile.** Skill thin: [`.agents/skills/mobile-first.md`](../.agents/skills/mobile-first.md)  
-> **Entrada:** [`CANON.md`](CANON.md) · **Arquitetura:** [`ARQUITETURA.md`](ARQUITETURA.md)
->
-> **Aplica-se a:** landing Next.js (`components/`)  
-> **Breakpoints:** `sm:640` · `md:768` · `lg:1024` · `xl:1280`  
-> **Nota:** sem cockpit na homepage; biblioteca em cards abaixo de `lg`.
+> Mobile-first em 375 px. Breakpoints: `sm 640`, `md 768`, `lg 1024`, `xl 1280`.
 
----
+## Critérios globais
 
-## 1. Principios Mobile-First
+- Sem overflow horizontal.
+- Fonte mínima de 14 px; leitura principal em 16 px.
+- Alvos de toque com pelo menos 44×44 px; CTA principal entre 48 e 56 px.
+- LCP abaixo de 2,5 s como meta de campo; Lighthouse mobile nunca abaixo de 90.
+- CLS abaixo de 0,1 e INP abaixo de 200 ms.
+- Conteúdo essencial da primeira dobra não depende de animação ou biblioteca visual pesada.
 
-1. **Conteudo essencial primeiro**: Hero deve comunicar perfil em **1 tela (100vh)**
-2. **Touch targets**: Minimo 44x44px para todos os elementos interativos
-3. **Scroll economico**: Cada secao deve caber em **2-3 telas** no maximo
-4. **Gestos**: Swipe horizontal para carrossel de cases (se aplicavel)
-5. **Performance**: LCP < 2.5s em 4G, CLS < 0.1
+## Comportamento por área
 
----
+| Área | Mobile |
+|---|---|
+| Header | nome + menu de 44 px; nav desktop escondida |
+| Hero | uma coluna, painel lateral escondido, CTAs full-width |
+| EvidenceStrip | cards empilhados, leitura sequencial |
+| Perfil | uma coluna e blocos escaneáveis |
+| Âncoras | cards em uma coluna, thumbnail 16:9, CTAs sem colisão |
+| Biblioteca | filtros em pills horizontais; lista de cards, sem tabela |
+| Trajetória | timeline sem linha decorativa apertada; cards full-width |
+| Contato | links em grade que vira uma coluna quando necessário |
+| Footer | conteúdo empilhado e links com wrap |
 
-## 2. Spec por Componente (Mobile < 768px)
+## Modal híbrido
 
-### Header
-```
-Comportamento: Fixo no topo, altura 56px
-Fundo: bg-surface-dark/95 + backdrop-blur
-Logo/Nome: Escondido ou reduzido (apenas "LB" ou icone)
-Nav: Hamburger menu (MobileNav.tsx) — ja implementado ✅
-CTA Contato: Botao compacto (icone + texto curto) ou icone-only
-```
+### Prova âncora
 
-### ExecutiveHero
-```
-Layout: Single column, padding generoso
-Prioridade:
-  1. Nome (Source Serif 4, text-3xl)
-  2. Posicionamento (1-2 linhas max)
-  3. CTAs (stack vertical, largura total)
+- `DemoShell` é renderizado diretamente, sem iframe.
+- Contexto fica acima ou ao lado da visualização conforme a largura.
+- Gráficos e mapas ocupam a largura total e carregam sob demanda.
+- Link “Abrir em nova aba” aponta para `/provas/{slug}`.
 
-Decisao sobre painel lateral:
-  - Esconder em mobile (painel e contexto secundario; stack e empresas ja resumidos no Hero)
-  - Preservar 100vh para conteudo essencial
+### Prova complementar
 
-Altura maxima: 100vh - 56px (header)
-Padding: px-5 py-12
-CTAs: Stack vertical, largura total, gap-3
-```
+- Preview e contexto aparecem antes do iframe Streamlit.
+- Iframe usa `?embed=true`, título descritivo e altura controlada.
+- Fallback e link externo permanecem disponíveis.
 
-### EvidenceStrip
-```
-Layout: Stack vertical ou 2+1 grid
-Cada evidencia: Icono + numero + label em linha unica
-Padding: px-5 py-8
-Fonte: Numero text-2xl, label text-sm
-Separador: Divisoria horizontal (nao vertical)
-```
+Em ambos os casos: body bloqueado, ESC fecha, foco fica preso no diálogo e retorna ao acionador.
 
-### ProfileBrief
-```
-Layout: Single column
-Card de senioridade: Largura total, padding confortavel
-Grid de diferenciais: 2 colunas (grid-cols-2) ou 1 coluna se texto longo
-Faixa de credibilidade: Scroll horizontal se necessario
-Padding: px-5 py-12
-```
+## Provas âncora
 
-### SignatureCases (3 ancora)
-```
-Layout: Stack vertical (1 coluna)
-Card: Largura total, aspecto compacto
-Thumbnail: aspect-video (16:9) — usar screenshot da demo
-Titulo: text-lg, 1 linha com truncate
-Descricao: 2 linhas max com line-clamp-2
-CTA: Largura total
+- KPI row: até 3 itens; pode empilhar em telas estreitas.
+- Gráficos: rótulos rotacionam apenas quando necessário; tooltip usa pt-BR.
+- Mapas: altura de 300 px no mobile; controles não cobrem a legenda principal.
+- Método, decisão e limitação continuam visíveis sem esconder a leitura principal.
 
-Touch target do card: Minimo 120px de altura total
-Gap entre cards: gap-4
-```
+## Performance
 
-### CaseLibrary
-```
-Nome: CaseLibrary (responsivo: sidebar desktop + lista mobile)
-Layout: Stack vertical
-Filtros: Scroll horizontal com snap-x (pills compactos)
-Tabela: Converter para cards lista ou accordion
-Touch target por item: Minimo 64px de altura
+- ECharts e MapLibre são importados apenas ao abrir uma âncora.
+- `DemoModal` continua em import dinâmico pelo `CaseDemoLauncher`.
+- Thumbnails usam `next/image`, dimensões fixas e lazy loading.
+- Analytics só monta na Vercel.
+- O hero é estático; motion abaixo da dobra usa transform/opacity e reduced motion.
 
-Filtros scroll:
-<div className="flex gap-2 overflow-x-auto snap-x snap-mandatory pb-2 -mx-5 px-5">
-  {categories.map(c => <button className="snap-start shrink-0">{c}</button>)}
-</div>
-```
+## Matriz de aceite visual
 
-### TrajectoryBoard
-```
-Layout: Single column
-Timeline: Linha a esquerda (8px margin), conteudo a direita
-Experiencias: Card unico, padding confortavel
-Formacao / Certificacoes / Idiomas: Empilhados em cards compactos
+| Viewport | Uso |
+|---|---|
+| 375×812 | menor viewport obrigatório |
+| 768×1024 | transição tablet / menu desktop |
+| 1440×900 | referência desktop para comparação |
 
-Touch target: Cards de experiencia min 80px altura
-```
+Capturas atuais: [`audit/screenshots/after/`](audit/screenshots/after/). O comando `npm run qa:visual` valida o modal e recaptura os três viewports.
 
-### ContactPanel
-```
-Layout: Single column
-CTAs: Stack vertical, largura total, min 72px altura
-Manifesto + Localizacao + Nota: Cards compactos abaixo dos CTAs
-Padding: px-5 py-12
-```
+## Baseline atual
 
-### DemoModal
-```
-Layout: Full screen ou 95% da altura
-Header fixo: Titulo + botao fechar
-Iframe: Altura flexivel, min 400px
-Footer: Link "Abrir em nova aba" sticky
+Lighthouse local mobile em 20/07/2026: **91 performance, 100 acessibilidade, 100 boas práticas, 100 SEO**.
 
-Comportamento: 
-  - Scroll do body bloqueado quando aberto
-  - Fechar com gesto de swipe-down (opcional)
-  - Back button do navegador fecha modal (history API)
-```
-
-### Footer
-```
-Layout: Stack vertical, centralizado
-Links: Em linha (flex-wrap), gap-4
-Copyright: Texto menor, centralizado
-Padding: px-5 py-8
-```
-
----
-
-## 3. Tokens Mobile-Specific
-
-Adicionar em `app/globals.css`:
-
-```css
-@theme inline {
-  /* Touch targets */
-  --touch-min: 44px;
-  --touch-comfortable: 48px;
-  
-  /* Font sizes mobile */
-  --text-hero-mobile: 2rem;      /* 32px — Playfair */
-  --text-section-mobile: 1.75rem; /* 28px */
-  --text-card-mobile: 1.125rem;   /* 18px */
-  
-  /* Spacing mobile */
-  --section-py-mobile: 3rem;      /* 48px */
-  --card-py-mobile: 1.25rem;      /* 20px */
-  
-  /* Motion mobile — mais rapido */
-  --duration-mobile: 250ms;
-}
-```
-
----
-
-## 4. Performance Mobile
-
-### LCP (Largest Contentful Paint)
-Elemento LCP provavel: texto do nome no hero ou imagem OG (quando compartilhada).
-
-**Otimizacoes:**
-- Hero: sem imagem principal; texto renderizado imediatamente
-- Fontes: `font-display: swap` ja deve estar configurado
-- Preconnect: `https://fonts.googleapis.com` e `https://fonts.gstatic.com`
-
-### CLS (Cumulative Layout Shift)
-Causas comuns de CLS em mobile:
-- Fontes carregando com FOUT (Flash of Unstyled Text)
-- Imagens sem width/height explicito
-- SVG decorativos redimensionando
-- Conteudo dinamico (filtros de cases) empurrando layout
-
-**Correcoes:**
-```tsx
-// Sempre definir width/height em imagens
-<Image src="/og-image.jpg" width={1200} height={630} priority />
-
-// SVG cockpit com viewBox fixo
-<svg viewBox="0 0 400 300" className="w-full h-auto">
-
-// Container para conteudo dinamico com min-height
-<div className="min-h-[200px]">
-  {filteredCases.map(...)}
-</div>
-```
-
-### INP (Interaction to Next Paint)
-Com Framer Motion, animacoes pesadas podem bloquear a thread principal.
-
-**Otimizacoes:**
-- Usar `transform` e `opacity` apenas (GPU-accelerated)
-- `will-change: transform` em elementos animados
-- `LazyMotion` + `domAnimation` ja ajuda ✅
-- Debounce em filtros de cases (300ms)
-
----
-
-## 5. Testes Mobile
-
-### Device Testing Checklist
-- [ ] iPhone SE (375px) — menor tela comum
-- [ ] iPhone 14 Pro (393px)
-- [ ] Samsung Galaxy S23 (360px)
-- [ ] iPad Mini (768px) — breakpoint md
-- [ ] iPad Pro (1024px) — breakpoint lg
-
-### Ferramentas
 ```bash
-# Lighthouse mobile
-npx lighthouse https://portfolio-lucas-batista-murex.vercel.app 
-  --preset=desktop --formFactor=mobile --screenEmulation.mobile
-
-# Chrome DevTools
-# 1. Toggle device toolbar
-# 2. Selecionar "iPhone SE"
-# 3. Verificar touch targets (Settings > Show touch size rulers)
-
-# WebPageTest
-# URL: webpagetest.org
-# Config: Mobile 4G, Motorola G7, Chrome
+# com build servido em http://localhost:3000
+npm run lighthouse:mobile
+npm run qa:visual
 ```
 
 ---
 
-## 6. Meta: Lighthouse Mobile 100
-
-Para subir de 96 para 100, focar em:
-
-| Metrica | Valor Atual | Meta | Acao |
-|---------|:-----------:|:----:|------|
-| Performance | 96 | 100 | Verificar LCP e INP |
-| LCP | ? | < 2.5s | Otimizar imagem hero |
-| TBT | ? | < 200ms | Verificar JS long tasks |
-| CLS | ? | < 0.1 | Fixar dimensoes de SVG/fonts |
-
----
-
-*Atualizar quando novos componentes forem adicionados ou quando o score mudar.*
+*Atualize quando mudar primeira dobra, modal, breakpoints ou biblioteca visual pesada.*

@@ -69,7 +69,7 @@ export function Header() {
             onClick={() => analytics.ctaClick(CONTENT.navCta, "header")}
             className={cn(
               buttonVariants({ variant: "executive" }),
-              "hidden h-10 rounded-lg bg-accent px-5 text-white transition-all duration-normal ease-editorial hover:-translate-y-0.5 hover:bg-accent-contrast hover:shadow-glow md:inline-flex",
+              "hidden h-10 rounded-lg bg-accent-contrast px-5 text-white transition-all duration-normal ease-editorial hover:-translate-y-0.5 hover:bg-primary hover:shadow-glow md:inline-flex",
             )}
           >
             {CONTENT.navCta}

@@ -10,7 +10,7 @@ import streamlit as st
 from lib import brand, format as fmt, tables, ui, viz
 from lib import folium_maps as fmap
 
-ui.page_setup("04. Promessa por CEP", icon="📍")
+ui.page_setup("03. Promessa por CEP", icon="📍")
 
 ui.sidebar_brand()
 
@@ -67,7 +67,7 @@ else:
 ui.breadcrumb("Case: Promessa de Entrega por CEP · <b>Demo interativa</b>")
 
 ui.hero(
-    "04. Promessa de Entrega por CEP",
+    "03. Promessa de Entrega por CEP",
     "Qual praça concentra risco de atraso e insucesso na promessa?",
     frameworks=["Análise territorial", "H3 (produção)"],
     selo=brand.maturidade(
@@ -85,7 +85,7 @@ ui.hero(
 if f.empty:
     ui.insight(
         "Nenhum CEP com os filtros atuais. Selecione pelo menos uma região ou modalidade.",
-        icone="📍",
+        rotulo="Praça",
     )
     ui.footer()
     st.stop()
@@ -179,7 +179,7 @@ with tab_visao:
     ui.insight(
         f"A região **{pior_regiao}** concentra o maior risco médio ({score_max:.1f}). "
         "Praças com score alto pedem promessa mais conservadora, ponto de apoio ou troca de transportadora.",
-        icone="🎯",
+        rotulo="Decisão",
     )
 
 with tab_analise:

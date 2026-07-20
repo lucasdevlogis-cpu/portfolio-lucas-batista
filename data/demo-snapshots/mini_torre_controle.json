@@ -1,0 +1,1076 @@
+{
+  "slug": "mini_torre_controle",
+  "caseId": "02-torre-controle",
+  "title": "Mini torre de controle de entregas",
+  "question": "Quais entregas exigem ação imediata agora?",
+  "decision": "Priorizar follow-up por criticidade, transportadora e região.",
+  "limitation": "Amostra sintética; não substitui TMS completo, telemetria ou governança de ocorrências.",
+  "method": "Regras de status operacional, atraso, ocorrências e risco.",
+  "frameworks": [
+    "Torre de controle",
+    "Fleetbase",
+    "SLA / OTD"
+  ],
+  "kpis": [
+    {
+      "label": "Ação imediata",
+      "value": "53",
+      "tone": "danger"
+    },
+    {
+      "label": "Monitoradas",
+      "value": "140"
+    },
+    {
+      "label": "Em risco",
+      "value": "35",
+      "tone": "warning"
+    }
+  ],
+  "charts": [
+    {
+      "id": "carrier-risk",
+      "title": "Risco por transportadora",
+      "kind": "grouped-bar",
+      "data": [
+        {
+          "label": "Expresso Sul",
+          "value": 9,
+          "secondary": 48
+        },
+        {
+          "label": "LogBrasil",
+          "value": 7,
+          "secondary": 53
+        },
+        {
+          "label": "Rota Norte",
+          "value": 7,
+          "secondary": 56
+        },
+        {
+          "label": "TransFast",
+          "value": 4,
+          "secondary": 42
+        }
+      ],
+      "series": [
+        "Atrasadas",
+        "Ocorrências"
+      ]
+    },
+    {
+      "id": "status-distribution",
+      "title": "Distribuição de status",
+      "kind": "donut",
+      "data": [
+        {
+          "label": "No prazo",
+          "value": 52
+        },
+        {
+          "label": "Em risco",
+          "value": 35
+        },
+        {
+          "label": "Atrasado",
+          "value": 27
+        },
+        {
+          "label": "Ocorrência aberta",
+          "value": 26
+        }
+      ]
+    }
+  ],
+  "map": {
+    "kind": "points",
+    "center": [
+      -15.0,
+      -50.0
+    ],
+    "zoom": 4,
+    "points": [
+      {
+        "id": "PED-00001",
+        "lat": -9.78915,
+        "lon": -34.51631,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Nordeste"
+      },
+      {
+        "id": "PED-00002",
+        "lat": -7.67775,
+        "lon": -37.49737,
+        "label": "Ocorrência aberta",
+        "detail": "LogBrasil · Nordeste"
+      },
+      {
+        "id": "PED-00003",
+        "lat": -8.41387,
+        "lon": -38.51891,
+        "label": "Ocorrência aberta",
+        "detail": "TransFast · Nordeste"
+      },
+      {
+        "id": "PED-00004",
+        "lat": -8.32886,
+        "lon": -35.736,
+        "label": "No prazo",
+        "detail": "LogBrasil · Nordeste"
+      },
+      {
+        "id": "PED-00005",
+        "lat": -7.81342,
+        "lon": -59.06993,
+        "label": "No prazo",
+        "detail": "LogBrasil · Norte"
+      },
+      {
+        "id": "PED-00006",
+        "lat": -14.00052,
+        "lon": -51.6238,
+        "label": "Em risco",
+        "detail": "Expresso Sul · Centro-Oeste"
+      },
+      {
+        "id": "PED-00007",
+        "lat": -28.28647,
+        "lon": -50.84761,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Sul"
+      },
+      {
+        "id": "PED-00008",
+        "lat": -19.3208,
+        "lon": -42.98091,
+        "label": "No prazo",
+        "detail": "Rota Norte · Sudeste"
+      },
+      {
+        "id": "PED-00009",
+        "lat": -9.30174,
+        "lon": -36.53888,
+        "label": "Atrasado",
+        "detail": "Rota Norte · Nordeste"
+      },
+      {
+        "id": "PED-00010",
+        "lat": -13.19675,
+        "lon": -48.65098,
+        "label": "No prazo",
+        "detail": "LogBrasil · Centro-Oeste"
+      },
+      {
+        "id": "PED-00011",
+        "lat": -4.0596,
+        "lon": -59.6444,
+        "label": "Atrasado",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00012",
+        "lat": -26.98162,
+        "lon": -48.82332,
+        "label": "Em risco",
+        "detail": "TransFast · Sul"
+      },
+      {
+        "id": "PED-00013",
+        "lat": -9.56362,
+        "lon": -37.1354,
+        "label": "Ocorrência aberta",
+        "detail": "Expresso Sul · Nordeste"
+      },
+      {
+        "id": "PED-00014",
+        "lat": -28.12046,
+        "lon": -52.58976,
+        "label": "No prazo",
+        "detail": "TransFast · Sul"
+      },
+      {
+        "id": "PED-00015",
+        "lat": -15.78364,
+        "lon": -47.13276,
+        "label": "No prazo",
+        "detail": "TransFast · Centro-Oeste"
+      },
+      {
+        "id": "PED-00016",
+        "lat": -20.19289,
+        "lon": -45.75824,
+        "label": "Atrasado",
+        "detail": "Rota Norte · Sudeste"
+      },
+      {
+        "id": "PED-00017",
+        "lat": -26.23546,
+        "lon": -53.75916,
+        "label": "Atrasado",
+        "detail": "Rota Norte · Sul"
+      },
+      {
+        "id": "PED-00018",
+        "lat": -18.17409,
+        "lon": -48.7966,
+        "label": "Ocorrência aberta",
+        "detail": "Expresso Sul · Centro-Oeste"
+      },
+      {
+        "id": "PED-00019",
+        "lat": -2.87045,
+        "lon": -62.9878,
+        "label": "Ocorrência aberta",
+        "detail": "Rota Norte · Norte"
+      },
+      {
+        "id": "PED-00020",
+        "lat": -28.20706,
+        "lon": -51.32994,
+        "label": "Em risco",
+        "detail": "LogBrasil · Sul"
+      },
+      {
+        "id": "PED-00021",
+        "lat": -2.43169,
+        "lon": -59.49389,
+        "label": "Atrasado",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00022",
+        "lat": -5.3855,
+        "lon": -62.96549,
+        "label": "Em risco",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00023",
+        "lat": -16.45714,
+        "lon": -51.62186,
+        "label": "Ocorrência aberta",
+        "detail": "Expresso Sul · Centro-Oeste"
+      },
+      {
+        "id": "PED-00024",
+        "lat": -19.22405,
+        "lon": -42.05783,
+        "label": "Atrasado",
+        "detail": "TransFast · Sudeste"
+      },
+      {
+        "id": "PED-00025",
+        "lat": -31.22336,
+        "lon": -54.35015,
+        "label": "No prazo",
+        "detail": "LogBrasil · Sul"
+      },
+      {
+        "id": "PED-00026",
+        "lat": -8.8385,
+        "lon": -35.95918,
+        "label": "No prazo",
+        "detail": "LogBrasil · Nordeste"
+      },
+      {
+        "id": "PED-00027",
+        "lat": -21.02694,
+        "lon": -41.2203,
+        "label": "Ocorrência aberta",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00028",
+        "lat": -27.33604,
+        "lon": -51.43671,
+        "label": "Atrasado",
+        "detail": "LogBrasil · Sul"
+      },
+      {
+        "id": "PED-00029",
+        "lat": -10.57296,
+        "lon": -37.50245,
+        "label": "Em risco",
+        "detail": "TransFast · Nordeste"
+      },
+      {
+        "id": "PED-00030",
+        "lat": -14.68612,
+        "lon": -51.74891,
+        "label": "Ocorrência aberta",
+        "detail": "Rota Norte · Centro-Oeste"
+      },
+      {
+        "id": "PED-00031",
+        "lat": -4.60177,
+        "lon": -60.82455,
+        "label": "Em risco",
+        "detail": "Rota Norte · Norte"
+      },
+      {
+        "id": "PED-00032",
+        "lat": -9.64506,
+        "lon": -37.02596,
+        "label": "No prazo",
+        "detail": "Rota Norte · Nordeste"
+      },
+      {
+        "id": "PED-00033",
+        "lat": -14.0065,
+        "lon": -51.08828,
+        "label": "Em risco",
+        "detail": "Rota Norte · Centro-Oeste"
+      },
+      {
+        "id": "PED-00034",
+        "lat": -23.10107,
+        "lon": -44.7783,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Sudeste"
+      },
+      {
+        "id": "PED-00035",
+        "lat": -22.23854,
+        "lon": -45.29291,
+        "label": "Em risco",
+        "detail": "TransFast · Sudeste"
+      },
+      {
+        "id": "PED-00036",
+        "lat": -16.33764,
+        "lon": -50.77982,
+        "label": "Em risco",
+        "detail": "LogBrasil · Centro-Oeste"
+      },
+      {
+        "id": "PED-00037",
+        "lat": -20.94163,
+        "lon": -48.15692,
+        "label": "Atrasado",
+        "detail": "Rota Norte · Sudeste"
+      },
+      {
+        "id": "PED-00038",
+        "lat": -6.09356,
+        "lon": -39.58623,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Nordeste"
+      },
+      {
+        "id": "PED-00039",
+        "lat": -4.18292,
+        "lon": -59.80721,
+        "label": "No prazo",
+        "detail": "LogBrasil · Norte"
+      },
+      {
+        "id": "PED-00040",
+        "lat": -21.0036,
+        "lon": -43.03243,
+        "label": "No prazo",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00041",
+        "lat": -19.25494,
+        "lon": -40.52085,
+        "label": "No prazo",
+        "detail": "Rota Norte · Sudeste"
+      },
+      {
+        "id": "PED-00042",
+        "lat": -21.87692,
+        "lon": -42.28262,
+        "label": "Ocorrência aberta",
+        "detail": "Expresso Sul · Sudeste"
+      },
+      {
+        "id": "PED-00043",
+        "lat": -26.72487,
+        "lon": -48.80809,
+        "label": "Em risco",
+        "detail": "LogBrasil · Sul"
+      },
+      {
+        "id": "PED-00044",
+        "lat": -19.55158,
+        "lon": -45.05283,
+        "label": "Em risco",
+        "detail": "Expresso Sul · Sudeste"
+      },
+      {
+        "id": "PED-00045",
+        "lat": -2.71219,
+        "lon": -59.77727,
+        "label": "Atrasado",
+        "detail": "TransFast · Norte"
+      },
+      {
+        "id": "PED-00046",
+        "lat": -3.11162,
+        "lon": -63.08065,
+        "label": "Atrasado",
+        "detail": "Rota Norte · Norte"
+      },
+      {
+        "id": "PED-00047",
+        "lat": -14.7304,
+        "lon": -50.38483,
+        "label": "No prazo",
+        "detail": "Rota Norte · Centro-Oeste"
+      },
+      {
+        "id": "PED-00048",
+        "lat": -15.71202,
+        "lon": -50.66855,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Centro-Oeste"
+      },
+      {
+        "id": "PED-00049",
+        "lat": -13.76279,
+        "lon": -49.02405,
+        "label": "No prazo",
+        "detail": "LogBrasil · Centro-Oeste"
+      },
+      {
+        "id": "PED-00050",
+        "lat": -2.32698,
+        "lon": -61.55762,
+        "label": "Ocorrência aberta",
+        "detail": "Rota Norte · Norte"
+      },
+      {
+        "id": "PED-00051",
+        "lat": -20.23161,
+        "lon": -43.76609,
+        "label": "No prazo",
+        "detail": "Rota Norte · Sudeste"
+      },
+      {
+        "id": "PED-00052",
+        "lat": -15.67289,
+        "lon": -50.8768,
+        "label": "Em risco",
+        "detail": "Expresso Sul · Centro-Oeste"
+      },
+      {
+        "id": "PED-00053",
+        "lat": -8.20034,
+        "lon": -41.0224,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Nordeste"
+      },
+      {
+        "id": "PED-00054",
+        "lat": -14.97754,
+        "lon": -50.68407,
+        "label": "Atrasado",
+        "detail": "Expresso Sul · Centro-Oeste"
+      },
+      {
+        "id": "PED-00055",
+        "lat": -6.6158,
+        "lon": -37.35388,
+        "label": "No prazo",
+        "detail": "LogBrasil · Nordeste"
+      },
+      {
+        "id": "PED-00056",
+        "lat": -24.80819,
+        "lon": -48.95958,
+        "label": "Ocorrência aberta",
+        "detail": "Rota Norte · Sul"
+      },
+      {
+        "id": "PED-00057",
+        "lat": -23.89539,
+        "lon": -43.65515,
+        "label": "Em risco",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00058",
+        "lat": -15.30734,
+        "lon": -50.13179,
+        "label": "Em risco",
+        "detail": "TransFast · Centro-Oeste"
+      },
+      {
+        "id": "PED-00059",
+        "lat": -18.97391,
+        "lon": -42.02978,
+        "label": "Em risco",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00060",
+        "lat": -3.45631,
+        "lon": -59.17161,
+        "label": "Atrasado",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00061",
+        "lat": -15.10494,
+        "lon": -48.87647,
+        "label": "Atrasado",
+        "detail": "Rota Norte · Centro-Oeste"
+      },
+      {
+        "id": "PED-00062",
+        "lat": -19.8592,
+        "lon": -47.39473,
+        "label": "No prazo",
+        "detail": "Rota Norte · Sudeste"
+      },
+      {
+        "id": "PED-00063",
+        "lat": -12.06205,
+        "lon": -36.13108,
+        "label": "Ocorrência aberta",
+        "detail": "TransFast · Nordeste"
+      },
+      {
+        "id": "PED-00064",
+        "lat": -27.17247,
+        "lon": -48.87788,
+        "label": "Atrasado",
+        "detail": "Expresso Sul · Sul"
+      },
+      {
+        "id": "PED-00065",
+        "lat": -7.67652,
+        "lon": -40.39558,
+        "label": "Atrasado",
+        "detail": "LogBrasil · Nordeste"
+      },
+      {
+        "id": "PED-00066",
+        "lat": -9.62756,
+        "lon": -41.34226,
+        "label": "Em risco",
+        "detail": "Expresso Sul · Nordeste"
+      },
+      {
+        "id": "PED-00067",
+        "lat": -10.23397,
+        "lon": -35.01672,
+        "label": "Em risco",
+        "detail": "TransFast · Nordeste"
+      },
+      {
+        "id": "PED-00068",
+        "lat": -27.16166,
+        "lon": -51.99364,
+        "label": "Atrasado",
+        "detail": "Expresso Sul · Sul"
+      },
+      {
+        "id": "PED-00069",
+        "lat": -28.80687,
+        "lon": -51.07638,
+        "label": "Atrasado",
+        "detail": "LogBrasil · Sul"
+      },
+      {
+        "id": "PED-00070",
+        "lat": -8.99148,
+        "lon": -35.94762,
+        "label": "Ocorrência aberta",
+        "detail": "LogBrasil · Nordeste"
+      },
+      {
+        "id": "PED-00071",
+        "lat": -16.12674,
+        "lon": -50.38512,
+        "label": "No prazo",
+        "detail": "Rota Norte · Centro-Oeste"
+      },
+      {
+        "id": "PED-00072",
+        "lat": -14.65818,
+        "lon": -50.15823,
+        "label": "Atrasado",
+        "detail": "Rota Norte · Centro-Oeste"
+      },
+      {
+        "id": "PED-00073",
+        "lat": -9.25027,
+        "lon": -35.04736,
+        "label": "Em risco",
+        "detail": "Expresso Sul · Nordeste"
+      },
+      {
+        "id": "PED-00074",
+        "lat": -10.69182,
+        "lon": -41.41607,
+        "label": "Ocorrência aberta",
+        "detail": "Expresso Sul · Nordeste"
+      },
+      {
+        "id": "PED-00075",
+        "lat": -16.53747,
+        "lon": -49.51731,
+        "label": "Em risco",
+        "detail": "TransFast · Centro-Oeste"
+      },
+      {
+        "id": "PED-00076",
+        "lat": -10.61329,
+        "lon": -39.26015,
+        "label": "Atrasado",
+        "detail": "Expresso Sul · Nordeste"
+      },
+      {
+        "id": "PED-00077",
+        "lat": -27.30993,
+        "lon": -51.71919,
+        "label": "Atrasado",
+        "detail": "Expresso Sul · Sul"
+      },
+      {
+        "id": "PED-00078",
+        "lat": -14.4943,
+        "lon": -47.41524,
+        "label": "No prazo",
+        "detail": "TransFast · Centro-Oeste"
+      },
+      {
+        "id": "PED-00079",
+        "lat": -26.91522,
+        "lon": -48.1816,
+        "label": "Em risco",
+        "detail": "Rota Norte · Sul"
+      },
+      {
+        "id": "PED-00080",
+        "lat": -7.02742,
+        "lon": -38.39887,
+        "label": "No prazo",
+        "detail": "LogBrasil · Nordeste"
+      },
+      {
+        "id": "PED-00081",
+        "lat": -17.97686,
+        "lon": -49.7459,
+        "label": "Atrasado",
+        "detail": "LogBrasil · Centro-Oeste"
+      },
+      {
+        "id": "PED-00082",
+        "lat": -18.65562,
+        "lon": -52.30309,
+        "label": "No prazo",
+        "detail": "TransFast · Centro-Oeste"
+      },
+      {
+        "id": "PED-00083",
+        "lat": -18.76138,
+        "lon": -42.78217,
+        "label": "Ocorrência aberta",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00084",
+        "lat": -5.37917,
+        "lon": -58.45702,
+        "label": "Em risco",
+        "detail": "LogBrasil · Norte"
+      },
+      {
+        "id": "PED-00085",
+        "lat": -27.16262,
+        "lon": -51.31718,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Sul"
+      },
+      {
+        "id": "PED-00086",
+        "lat": -20.51639,
+        "lon": -44.70404,
+        "label": "Ocorrência aberta",
+        "detail": "Rota Norte · Sudeste"
+      },
+      {
+        "id": "PED-00087",
+        "lat": -22.82433,
+        "lon": -44.75452,
+        "label": "Atrasado",
+        "detail": "TransFast · Sudeste"
+      },
+      {
+        "id": "PED-00088",
+        "lat": -19.33701,
+        "lon": -46.45486,
+        "label": "No prazo",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00089",
+        "lat": -3.71257,
+        "lon": -61.05368,
+        "label": "No prazo",
+        "detail": "LogBrasil · Norte"
+      },
+      {
+        "id": "PED-00090",
+        "lat": -4.27128,
+        "lon": -56.68574,
+        "label": "Ocorrência aberta",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00091",
+        "lat": -6.23613,
+        "lon": -38.83221,
+        "label": "Ocorrência aberta",
+        "detail": "Expresso Sul · Nordeste"
+      },
+      {
+        "id": "PED-00092",
+        "lat": -15.97624,
+        "lon": -45.57516,
+        "label": "Atrasado",
+        "detail": "LogBrasil · Centro-Oeste"
+      },
+      {
+        "id": "PED-00093",
+        "lat": -5.33044,
+        "lon": -63.19746,
+        "label": "Em risco",
+        "detail": "TransFast · Norte"
+      },
+      {
+        "id": "PED-00094",
+        "lat": -9.75178,
+        "lon": -38.3002,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Nordeste"
+      },
+      {
+        "id": "PED-00095",
+        "lat": -16.22982,
+        "lon": -52.91433,
+        "label": "Atrasado",
+        "detail": "LogBrasil · Centro-Oeste"
+      },
+      {
+        "id": "PED-00096",
+        "lat": -26.47798,
+        "lon": -50.40322,
+        "label": "Em risco",
+        "detail": "LogBrasil · Sul"
+      },
+      {
+        "id": "PED-00097",
+        "lat": -6.58714,
+        "lon": -60.96034,
+        "label": "No prazo",
+        "detail": "Rota Norte · Norte"
+      },
+      {
+        "id": "PED-00098",
+        "lat": -22.11047,
+        "lon": -47.77843,
+        "label": "No prazo",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00099",
+        "lat": -25.95164,
+        "lon": -49.96192,
+        "label": "Em risco",
+        "detail": "Expresso Sul · Sul"
+      },
+      {
+        "id": "PED-00100",
+        "lat": 0.21559,
+        "lon": -58.99936,
+        "label": "Em risco",
+        "detail": "LogBrasil · Norte"
+      },
+      {
+        "id": "PED-00101",
+        "lat": -1.59279,
+        "lon": -61.18992,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00102",
+        "lat": -26.88437,
+        "lon": -50.82995,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Sul"
+      },
+      {
+        "id": "PED-00103",
+        "lat": -28.21917,
+        "lon": -48.33674,
+        "label": "No prazo",
+        "detail": "LogBrasil · Sul"
+      },
+      {
+        "id": "PED-00104",
+        "lat": -9.82608,
+        "lon": -36.01933,
+        "label": "Ocorrência aberta",
+        "detail": "Rota Norte · Nordeste"
+      },
+      {
+        "id": "PED-00105",
+        "lat": -21.41203,
+        "lon": -43.46795,
+        "label": "No prazo",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00106",
+        "lat": -19.60116,
+        "lon": -46.26744,
+        "label": "No prazo",
+        "detail": "Rota Norte · Sudeste"
+      },
+      {
+        "id": "PED-00107",
+        "lat": -24.73819,
+        "lon": -54.44802,
+        "label": "No prazo",
+        "detail": "Rota Norte · Sul"
+      },
+      {
+        "id": "PED-00108",
+        "lat": -22.01493,
+        "lon": -45.15597,
+        "label": "No prazo",
+        "detail": "Rota Norte · Sudeste"
+      },
+      {
+        "id": "PED-00109",
+        "lat": -20.98847,
+        "lon": -45.46346,
+        "label": "Em risco",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00110",
+        "lat": -26.15092,
+        "lon": -53.77332,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Sul"
+      },
+      {
+        "id": "PED-00111",
+        "lat": -20.98532,
+        "lon": -44.70928,
+        "label": "Ocorrência aberta",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00112",
+        "lat": -11.60972,
+        "lon": -51.64741,
+        "label": "Em risco",
+        "detail": "Expresso Sul · Centro-Oeste"
+      },
+      {
+        "id": "PED-00113",
+        "lat": -14.81077,
+        "lon": -50.19356,
+        "label": "No prazo",
+        "detail": "Rota Norte · Centro-Oeste"
+      },
+      {
+        "id": "PED-00114",
+        "lat": -7.08586,
+        "lon": -37.86428,
+        "label": "No prazo",
+        "detail": "Rota Norte · Nordeste"
+      },
+      {
+        "id": "PED-00115",
+        "lat": -2.8291,
+        "lon": -61.19626,
+        "label": "Ocorrência aberta",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00116",
+        "lat": -2.74208,
+        "lon": -58.24323,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00117",
+        "lat": -25.31045,
+        "lon": -50.56188,
+        "label": "No prazo",
+        "detail": "TransFast · Sul"
+      },
+      {
+        "id": "PED-00118",
+        "lat": -3.79814,
+        "lon": -60.61129,
+        "label": "Ocorrência aberta",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00119",
+        "lat": -22.25344,
+        "lon": -38.99284,
+        "label": "Em risco",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00120",
+        "lat": -1.5531,
+        "lon": -59.88374,
+        "label": "Em risco",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00121",
+        "lat": -5.71779,
+        "lon": -63.41108,
+        "label": "Em risco",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00122",
+        "lat": -21.85951,
+        "lon": -45.99631,
+        "label": "Ocorrência aberta",
+        "detail": "Rota Norte · Sudeste"
+      },
+      {
+        "id": "PED-00123",
+        "lat": -26.29619,
+        "lon": -48.94654,
+        "label": "No prazo",
+        "detail": "TransFast · Sul"
+      },
+      {
+        "id": "PED-00124",
+        "lat": -3.18158,
+        "lon": -59.74502,
+        "label": "No prazo",
+        "detail": "Rota Norte · Norte"
+      },
+      {
+        "id": "PED-00125",
+        "lat": -14.92541,
+        "lon": -50.16923,
+        "label": "Em risco",
+        "detail": "TransFast · Centro-Oeste"
+      },
+      {
+        "id": "PED-00126",
+        "lat": -28.55959,
+        "lon": -53.17872,
+        "label": "Ocorrência aberta",
+        "detail": "TransFast · Sul"
+      },
+      {
+        "id": "PED-00127",
+        "lat": -7.70632,
+        "lon": -39.00881,
+        "label": "No prazo",
+        "detail": "Rota Norte · Nordeste"
+      },
+      {
+        "id": "PED-00128",
+        "lat": -21.85936,
+        "lon": -45.23602,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Sudeste"
+      },
+      {
+        "id": "PED-00129",
+        "lat": -22.91859,
+        "lon": -43.52102,
+        "label": "Ocorrência aberta",
+        "detail": "Rota Norte · Sudeste"
+      },
+      {
+        "id": "PED-00130",
+        "lat": -7.57606,
+        "lon": -59.35674,
+        "label": "Atrasado",
+        "detail": "Expresso Sul · Norte"
+      },
+      {
+        "id": "PED-00131",
+        "lat": -22.63162,
+        "lon": -42.85813,
+        "label": "Em risco",
+        "detail": "TransFast · Sudeste"
+      },
+      {
+        "id": "PED-00132",
+        "lat": -10.03113,
+        "lon": -39.21724,
+        "label": "No prazo",
+        "detail": "TransFast · Nordeste"
+      },
+      {
+        "id": "PED-00133",
+        "lat": -20.55709,
+        "lon": -46.93076,
+        "label": "Em risco",
+        "detail": "LogBrasil · Sudeste"
+      },
+      {
+        "id": "PED-00134",
+        "lat": -19.1149,
+        "lon": -42.59851,
+        "label": "Ocorrência aberta",
+        "detail": "TransFast · Sudeste"
+      },
+      {
+        "id": "PED-00135",
+        "lat": -6.7254,
+        "lon": -38.72226,
+        "label": "Atrasado",
+        "detail": "TransFast · Nordeste"
+      },
+      {
+        "id": "PED-00136",
+        "lat": -8.96088,
+        "lon": -38.52813,
+        "label": "No prazo",
+        "detail": "TransFast · Nordeste"
+      },
+      {
+        "id": "PED-00137",
+        "lat": -14.92405,
+        "lon": -48.69315,
+        "label": "Atrasado",
+        "detail": "LogBrasil · Centro-Oeste"
+      },
+      {
+        "id": "PED-00138",
+        "lat": -16.07131,
+        "lon": -54.52897,
+        "label": "No prazo",
+        "detail": "Expresso Sul · Centro-Oeste"
+      },
+      {
+        "id": "PED-00139",
+        "lat": -8.15004,
+        "lon": -37.79516,
+        "label": "Em risco",
+        "detail": "LogBrasil · Nordeste"
+      },
+      {
+        "id": "PED-00140",
+        "lat": -15.64389,
+        "lon": -49.45202,
+        "label": "Em risco",
+        "detail": "Rota Norte · Centro-Oeste"
+      }
+    ]
+  }
+}

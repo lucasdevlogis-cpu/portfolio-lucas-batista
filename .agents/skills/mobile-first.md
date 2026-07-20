@@ -1,29 +1,13 @@
-# Skill: Mobile-First
+# Skill: Mobile-first
 
-> **Canônico:** [`docs/MOBILE_SPEC.md`](../../docs/MOBILE_SPEC.md) · Arquitetura: [`docs/ARQUITETURA.md`](../../docs/ARQUITETURA.md)
+> Canônico: [`docs/MOBILE_SPEC.md`](../../docs/MOBILE_SPEC.md).
 
-## Princípios
+1. Implementar em 375 px; validar também 768 e 1440 px.
+2. Sem overflow horizontal; fonte ≥14 px; alvo ≥44×44 px.
+3. Hero em uma coluna, painel lateral escondido e CTAs full-width.
+4. Âncoras empilhadas; biblioteca vira cards com filtros horizontais.
+5. Modal âncora renderiza `DemoShell`; complementar mantém preview + iframe.
+6. KPI row empilha quando necessário; gráfico e mapa usam largura total.
+7. Bibliotecas pesadas continuam lazy.
 
-1. Implementar primeiro em **375px**; depois desktop.
-2. Touch targets ≥ **44×44px** (CTAs principais preferem 48–56px).
-3. Fonte mínima **14px** no mobile.
-4. Sem overflow horizontal.
-5. Performance: LCP < 2.5s, CLS < 0.1.
-
-## Mapa rápido (< 1024px)
-
-| Área | Comportamento |
-|------|----------------|
-| Header | Sticky · `MobileNav` |
-| Hero | Stack vertical · sem cockpit (arquivado) |
-| EvidenceStrip | 3 métricas em stack/grid responsivo |
-| Cases âncora | 1 coluna · thumbs 16:9 · CTAs full-width |
-| CaseLibrary | Cards empilhados (tabela só ≥ `lg`) · filtros em pills |
-| DemoModal | Contexto colapsável · preview · “Abrir em tela cheia” |
-| Trajetória | Cards full-width · selo Atual só sem data final |
-| Contato | CTAs em cards tocáveis |
-
-## Nomes corretos
-
-- `CaseLibrary` (não `CaseLibraryDesktop`)
-- Sem `ProfileCockpit` / `LogisticsIntelligenceCockpit` na homepage
+Nomes ativos: `CaseLibrary`, `DemoModal`, `DemoShell`. Cockpit e componentes `archive/` não retornam.

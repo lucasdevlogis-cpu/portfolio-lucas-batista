@@ -153,7 +153,7 @@ def main() -> None:
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     pdf.output(str(OUT))
-    print(f"[generate-cv-pdf] OK — {OUT.relative_to(ROOT)}")
+    print(f"[generate-cv-pdf] OK - {OUT.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

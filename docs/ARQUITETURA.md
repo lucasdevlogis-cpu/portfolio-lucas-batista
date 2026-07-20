@@ -2,7 +2,7 @@
 
 > **SSOT de arquitetura.** Complementa [`CANON.md`](CANON.md) (entrada única) com o mapa estrutural do sistema.
 >
-> **Última atualização:** 13/07/2026 — pós-refinamento de cases (thumbnails reais, filtros dinâmicos, modal progressivo).
+> **Última atualização:** 20/07/2026 — camada React para 3 provas âncora, snapshots e tokens compartilhados.
 
 ---
 
@@ -16,6 +16,7 @@ flowchart LR
     HP --> Cases[SignatureCases]
     Cases --> Lib[CaseLibrary]
     Cases --> Modal[DemoModal]
+    Modal --> Anchor[DemoShell · /provas/:slug]
     HP --> Traj[TrajectoryBoard]
     HP --> Contato[ContactPanel]
   end
@@ -25,11 +26,16 @@ flowchart LR
   end
 
   subgraph Demos["Demos Streamlit · Streamlit Cloud"]
-    ST[app.py + pages/*.py]
+    ST[7 provas complementares + exploração Python]
+    PY[10 pages + cálculos das âncoras]
   end
 
   CT --> HP
-  Modal -->|iframe ?embed=true| ST
+  Modal -->|âncoras inline| Anchor
+  Modal -->|biblioteca · iframe ?embed=true| ST
+  PY --> Export[export_demo_snapshots.py]
+  Export --> Snap[data/demo-snapshots/*.json]
+  Snap --> Anchor
   CT -->|CASE_DEMO_SLUGS| Modal
 ```
 
@@ -88,9 +94,11 @@ HomePage
 |--------|-------|-------|
 | Copy, cases, CTAs, nav | `data/content.ts` | Nunca hardcode nos componentes |
 | Slugs demo | `CASE_DEMO_SLUGS` + `NEXT_PUBLIC_DEMOS_BASE_URL` | `linkDemo` derivado |
-| Âncora / biblioteca / roadmap | `featuredProofCases`, `CASES_*` | Contagens: 3 / 7 / 1 |
-| Tokens runtime | `app/globals.css` (`:root` + `@theme`) | Hex só via tokens |
-| Tokens demos | `demos-logistica/lib/brand.py` | Paridade visual |
+| Âncora / biblioteca / roadmap | `featuredProofCases`, `CASES_*` | Contagens públicas: 3 / 7 / 1 |
+| Tokens fonte | `design/tokens.json` | Editar somente aqui |
+| Tokens runtime | `app/design-tokens.css` + `app/globals.css` | Gerados via `npm run tokens:sync` |
+| Tokens demos | `demos-logistica/lib/brand.py` | Gerado da mesma fonte |
+| Contrato das âncoras | `demos-logistica/scripts/export_demo_snapshots.py` → `data/demo-snapshots/` → `lib/demo-contract.ts` | Sem cálculos duplicados na landing |
 
 Helpers relevantes em `content.ts`: `caseNumberFromId`, `caseDemoCta`, `isPeriodoAtual`, `CASE_CATEGORIAS` (só biblioteca).
 
@@ -99,14 +107,14 @@ Helpers relevantes em `content.ts`: `caseNumberFromId`, `caseDemoCta`, `isPeriod
 ## 5. Integração landing ↔ demos
 
 1. Card / linha → `CaseDemoLauncher` abre `DemoModal`.
-2. Modal mostra contexto (pergunta, métrica, descrição, decisão, tags, limitação).
-3. Preview: thumbnail real + “Inicializando demonstração…”; iframe após `onLoad`.
-4. URL: `{DEMOS_BASE}/{slug}?embed=true` (slug **sem** prefixo numérico).
-5. Fallback ~22s + link “Abrir em nova aba” sempre disponível.
+2. Âncoras (`01`, `02`, `08`) renderizam `DemoShell` com ECharts + MapLibre.
+3. Cada âncora tem rota estável `/provas/{slug}` e pode ser aberta em nova aba.
+4. Biblioteca complementar segue em `{DEMOS_BASE}/{slug}?embed=true` (slug **sem** prefixo numérico).
+5. Fallback ~22s + link “Abrir em nova aba” continuam disponíveis para Streamlit.
 
-Pages Streamlit ativas (slugs):
+Pages Python/Streamlit ativas (slugs):
 
-`precificacao_frete`, `mini_torre_controle`, `promessa_cep`, `ship_from_store`, `auditoria_endereco`, `classificador_ocorrencias`, `cvrp_urbano`, `vrptw_ultima_milha`, `rede_interhubs`, `tsp_baseline_sp` (+ `11_sobre_dados_metodos`).
+`precificacao_frete`, `mini_torre_controle`, `promessa_cep`, `ship_from_store`, `auditoria_endereco`, `classificador_ocorrencias`, `cvrp_urbano`, `vrptw_ultima_milha`, `rede_interhubs`, `tsp_baseline_sp` (+ `11_sobre_dados_metodos`). As três âncoras continuam existindo em Python como origem de cálculo, mas a superfície pública principal é React.
 
 ---
 
@@ -118,6 +126,9 @@ Pages Streamlit ativas (slugs):
 | CV PDF | `npm run cv:generate` | `public/lucas-batista-cv.pdf` |
 | Sitemap / robots | `npm run seo:generate` | `public/` |
 | OG | estático | `public/og-image.jpg` |
+| Capturas de QA | Playwright | `docs/audit/screenshots/{before,after}/` |
+| Lighthouse local | `npm run lighthouse:all` | `docs/audit/lighthouse/` (ignorado) |
+| QA visual | `npm run qa:visual` | `docs/audit/screenshots/after/` |
 
 Scripts de captura: `scripts/capture-demo-thumbnails.mjs`, `scripts/optimize-case-thumbnails.mjs`.
 
@@ -140,7 +151,9 @@ Scripts de captura: `scripts/capture-demo-thumbnails.mjs`, `scripts/optimize-cas
 
 ```bash
 npm run validate && npm run lint && npm run typecheck && npm run build
-npm run test:e2e   # 9 testes Playwright
+npm run test:e2e   # 14 testes Playwright
+npm run demos:export
+npm audit --audit-level=moderate
 
 cd demos-logistica
 python scripts/validate_slugs.py

@@ -1,140 +1,73 @@
-# Avaliação do Projeto — Julho 2026
+# Avaliação do projeto — 20/07/2026
 
-> **Uso:** Snapshot de saúde do portfólio. Consulte após cada fase ou deploy significativo.
->
-> **Entrada canônica:** [`docs/CANON.md`](CANON.md) · **Arquitetura:** [`docs/ARQUITETURA.md`](ARQUITETURA.md)
->
-> **Última atualização:** 13/07/2026 — organização de docs + refinamento de cases (thumbs, filtros, modal)
+> Snapshot de saúde comprovado localmente. Produção só é considerada atual após o checklist de [`VERCEL.md`](VERCEL.md).
 
----
+## Estado executivo
 
-## Estado atual
+| Área | Estado local | Evidência |
+|---|---|---|
+| Landing Executive Proof System | Pronta | ordem canônica e conteúdo revisados |
+| Provas âncora | Prontas | 3 rotas SSG em React/Next, ECharts e MapLibre |
+| Provas complementares | Prontas | 7 demos Streamlit no modal híbrido |
+| Roadmap | Declarado | `06-kpis-cd`, sem CTA de demo |
+| Contrato de snapshots | Válido | 3/3 JSONs validados pelo TypeScript |
+| Tokens compartilhados | Sincronizados | JSON → CSS + Python |
+| Acessibilidade | Aprovada localmente | Lighthouse 100 desktop/mobile |
+| Dependências | Sem achados | `npm audit`: 0 vulnerabilidades |
+| Deploy desta versão | Pendente | requer push e verificação Vercel/Streamlit |
 
-| Item | Valor |
-|------|-------|
-| **Layout oficial** | Executive Proof System — dossiê profissional para headhunters |
-| **Spec visual** | [`design/design.md`](../design/design.md) + tokens em `app/globals.css` |
-| **URL** | <https://portfolio-lucas-batista-murex.vercel.app> |
-| **Deploy Vercel** | Commit `9b57869` (13/07/2026) — confirmar com `npx vercel inspect` |
-| **Lighthouse prod** | **a revalidar** pós-refino |
+## Qualidade verificada
 
-### Homepage (ordem DOM = nav)
+| Verificação | Resultado |
+|---|---:|
+| `npm run validate` | OK — 10 demos + 1 roadmap + 3 snapshots |
+| `npm run lint` | OK |
+| `npm run typecheck` | OK |
+| `npm run build` | OK — Next.js 16.2.10, sem warnings de cache |
+| Playwright | 14/14 |
+| Smoke Streamlit | 13/13 |
+| Slugs landing ↔ Streamlit | 10/10 |
+| `npm audit --audit-level=moderate` | 0 vulnerabilidades |
 
-`Header` → `ExecutiveHero` → `EvidenceStrip` → `ProfileBrief` → `SignatureCases` → `TrajectoryBoard` → `ContactPanel` → `Footer`
+### Lighthouse local
 
-### Componentes ativos
+Medição em build de produção servido por `next start`:
 
-`Header`, `ExecutiveHero`, `EvidenceStrip`, `ProfileBrief`, `SignatureCases`, `CaseLibrary`, `CaseDemoLauncher`, `DemoModal`, `TrajectoryBoard`, `ContactPanel`, `Footer`, `HomePage`, `MobileNav`, `LucideIconByName`, `EditorialBadge`, `PremiumCard`, `MetricPill`, `SectionShell`, `CaseThumbnail`, `BackToTop`, `MotionProvider`
+| Perfil | Performance | Acessibilidade | Boas práticas | SEO |
+|---|---:|---:|---:|---:|
+| Desktop | 100 | 100 | 100 | 100 |
+| Mobile | 91 | 100 | 100 | 100 |
 
-### Arquivado (não montar)
+O gate em `scripts/run-lighthouse.mjs` falha se qualquer categoria ficar abaixo de 90. Relatórios JSON locais ficam em `docs/audit/lighthouse/` e são ignorados pelo Git.
 
-| Pasta | Conteúdo |
-|-------|----------|
-| `components/archive/consultoria/` | Landing comercial |
-| `components/archive/legacy/` | Cockpit e iterações anteriores |
-| `components/archive/ui/` | `FadeIn`, `Stagger`, `GlassCard` |
-| `data/archive/` | Copy shelved |
-| `design/archive/` | Specs históricos |
-| `docs/archive/` | QA e gaps históricos |
+## Mudanças consolidadas
 
----
+- Tokens de landing e Streamlit agora partem de `design/tokens.json`.
+- `public/profile.jpg` e a imagem correspondente no JSON-LD foram removidos.
+- As provas `01`, `02` e `08` ganharam rotas públicas e renderização direta no modal.
+- Gráficos e mapas das âncoras usam cores semânticas, tooltips legíveis, atribuição de mapa e carregamento sob demanda.
+- A pergunta de frete passou a dizer “quanto se afasta do piso ANTT”, compatível com resultados positivos ou negativos.
+- Numeração visual das demos Streamlit foi alinhada aos IDs dos cases da landing.
+- Emojis de status/insight foram substituídos por rótulos semânticos nas superfícies compartilhadas.
+- Contraste, nomes acessíveis de CTAs e carregamento local do Analytics foram corrigidos; Lighthouse a11y e boas práticas chegaram a 100.
+- O hero não anima o elemento LCP; mobile permanece acima do gate de 90.
+- Cache imutável customizado foi removido de assets não versionados e de `/_next/static`; o Next controla o cache interno.
+- Lighthouse foi instalado e encapsulado em scripts reproduzíveis; Next e ESLint estão alinhados em 16.2.10.
 
-## Matriz de status (honesta)
+## Auditoria visual
 
-| Área | Lançado | QA manual |
-|------|:-------:|:---------:|
-| Layout Executive Proof | ✅ | ✅ prod |
-| Cases âncora (WebP + compactação + CTAs) | ✅ | ✅ prod |
-| Filtros biblioteca dinâmicos | ✅ | ✅ |
-| Modal demo progressivo | ✅ | ✅ |
-| Demos Streamlit | ✅ | ✅ 13/13 smoke |
-| Deploy Vercel | ✅ | ✅ prod |
-| OG + CV PDF | ✅ | ✅ prod |
-| Lighthouse | ✅ local | 🟡 a revalidar |
-| Documentação / arquitetura | ✅ | ✅ reorganizada 13/07 |
-| Testes E2E | ✅ | ✅ **9/9** |
-| Analytics | ✅ parcial | `@vercel/analytics` + eventos tipados |
+Capturas atuais em [`audit/screenshots/after/`](audit/screenshots/after/) cobrem 375×812, 768×1024 e 1440×900, além do modal âncora. O navegador embutido não pôde ser usado por erro externo `sandboxPolicy`; Playwright Chromium foi o fallback já autorizado e validado.
 
----
+## Gaps reais restantes
 
-## Divergências — abertas vs resolvidas
+1. Publicar e validar esta versão em produção.
+2. Elevar as sete demos Streamlit secundárias na fase 2.
+3. Separar datasets gerados em `demos-logistica/data/generated/`.
+4. Adicionar regressão visual automatizada e teste com NVDA.
+5. Decidir domínio próprio e foto profissional somente com assets reais.
 
-### Abertas
-
-| # | Item | Impacto | Plano |
-|---|------|---------|-------|
-| A1 | Foto `public/profile.jpg` ainda placeholder | Credibilidade | Substituir (P0) |
-| A2 | Lighthouse pós-refino | Confiança | Revalidar desktop/mobile (P1) |
-| A3 | Domínio custom | Branding | Backlog (P2) |
-
-### Resolvidas (histórico recente)
-
-| Item | Quando |
-|------|--------|
-| Cockpit SVG no hero → arquivado | 08–13/07 |
-| FAQ no Perfil removido | 13/07 |
-| Cards âncora compactos (detalhe no modal) | 13/07 |
-| `CaseLibraryDesktop` → `CaseLibrary` | 08/07 |
-| Thumbnails reais WebP nos 3 âncora | 13/07 |
-| Filtros com count 0 removidos | 13/07 |
-| Numeração Case 08 unificada (landing + demo) | 13/07 |
-| Selo “Atual” só sem data final | 13/07 |
-| Token `--warm-accent-contrast` (≥ 4.5:1) | 13/07 |
-| `aria-live` nos filtros / `useReducedMotion` | 08/07 |
-| Analytics de cliques tipados | 08/07 |
-
-Checklist detalhado: [`P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md). Gaps históricos: [`archive/GAPS-2026-07-08.md`](archive/GAPS-2026-07-08.md).
+Fila e ordem de execução: [`P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md).
 
 ---
 
-## Mudanças da última rodada (13/07/2026)
-
-### Produto / landing
-
-- Thumbnails reais (`public/cases/*.webp`) nos 3 cases âncora.
-- Cards compactos; leitura completa no `DemoModal`.
-- CTAs específicos + `aria-label` por case.
-- Loading progressivo do iframe (preview + fallback).
-- Filtros da biblioteca só com categorias `count > 0`.
-- Contagem explícita 3 / 7 / 1 + hint de escopo dos filtros.
-- Contraste dourado via `--warm-accent-contrast`.
-
-### Demos
-
-- Slugs sem prefixo numérico nas pages.
-- Título CVRP alinhado a **Case 08**.
-
-### Documentação
-
-- Novo [`ARQUITETURA.md`](ARQUITETURA.md) e [`docs/README.md`](README.md).
-- CANON, design.md, tokens, skills e `.cursorrules` realinhados.
-- Artefatos órfãos movidos para `docs/archive/`.
-
-### Qualidade
-
-- `validate`, `lint`, `typecheck`, `build` OK.
-- E2E Playwright **9/9**.
-
----
-
-## Pendências desejáveis
-
-- Substituir foto placeholder (`public/profile.jpg`) — P0
-- Revalidar Lighthouse — P1
-- Thumbnails opcionais para biblioteca complementar — P2
-- Domínio custom — P2
-- Backlog demos: [`OPORTUNIDADES_DEMOS.md`](OPORTUNIDADES_DEMOS.md) (histórico)
-
----
-
-## Fases
-
-| Fase | Progresso | Pendências |
-|------|-----------|------------|
-| 0–5 Setup → Lançamento | ✅ | — |
-| 6 Refatoração P0/P1/P2 | 🟡 | Itens abertos acima |
-| 7 Docs / arquitetura | ✅ | Manter SSOT |
-
----
-
-*Atualize após cada deploy significativo. Não grave SHA de produção como verdade absoluta — use `vercel inspect`.*
+*Não grave SHA como verdade estática; confirme o deploy com `npx vercel inspect`.*

@@ -92,7 +92,7 @@ ui.kpi_grid(
 )
 
 if not rotas:
-    ui.insight("Ajuste capacidade/veículos na barra lateral.", icone="🚚")
+    ui.insight("Ajuste capacidade/veículos na barra lateral.", rotulo="Ação")
     ui.footer()
     st.stop()
 

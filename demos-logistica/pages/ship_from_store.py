@@ -11,7 +11,7 @@ import plotly.express as px
 import streamlit as st
 from lib import brand, folium_maps as fmap, format as fmt, geo, tables, ui
 
-ui.page_setup("08. Ship-from-Store BR", icon="🏬")
+ui.page_setup("04. Ship-from-Store BR", icon="🏬")
 
 
 def prazo_por_distancia(km: float) -> int:
@@ -99,7 +99,7 @@ pct_alternativa = (res["origem_tipo"] != "CD").mean() * 100
 ui.breadcrumb("Case: Ship-from-Store Brasil · <b>Demo interativa</b>")
 
 ui.hero(
-    "08. Ship-from-Store Brasil",
+    "04. Ship-from-Store Brasil",
     "Quando uma loja ou hub supera o CD como origem do pedido?",
     frameworks=["OMS / Fulfillment distribuído", "Fleetbase (LSOS)"],
     selo=brand.maturidade(

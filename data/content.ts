@@ -218,6 +218,7 @@ export interface SecoesCopy {
   casesBibliotecaFiltroHint: string;
   casesRoadmap: SecaoCopy;
   caseDemoLabel: string;
+  caseLibraryDemoLabel: string;
   caseDemoUnavailableLabel: string;
   caseCodeLabel: string;
   demoOpenExternalLabel: string;
@@ -549,6 +550,7 @@ export const CONTENT: Content = {
       ],
     },
     caseDemoLabel: "Explorar demonstração",
+    caseLibraryDemoLabel: "Explorar case",
     caseDemoUnavailableLabel: "Demo em preparação",
     caseCodeLabel: "Ver repositório",
     demoOpenExternalLabel: "Abrir em nova aba",
@@ -598,7 +600,7 @@ export const CONTENT: Content = {
       thumbnail: "/cases/01-precificacao-frete.webp",
       thumbnailAlt:
         "Dashboard do Simulador de Custo de Frete com frete estimado da carteira, custo por kg e comparação ao piso ANTT",
-      ctaDemoLabel: "Explorar Simulador de Frete",
+      ctaDemoLabel: "Explorar Frete",
       prioridade: "P0",
       perguntaNegocio: "Qual região concentra maior custo por entrega?",
       metricaPrincipal: "Custo por kg, custo por entrega, composição de frete",
@@ -622,7 +624,7 @@ export const CONTENT: Content = {
       thumbnail: "/cases/02-torre-controle.webp",
       thumbnailAlt:
         "Dashboard da Mini Torre de Controle com entregas em ação imediata, atraso médio e mapa de status por região",
-      ctaDemoLabel: "Explorar Torre de Controle",
+      ctaDemoLabel: "Explorar Torre",
       prioridade: "P0",
       perguntaNegocio: "Quais entregas exigem ação imediata?",
       metricaPrincipal:
@@ -756,7 +758,7 @@ export const CONTENT: Content = {
       thumbnail: "/cases/08-cvrp-urbano.webp",
       thumbnailAlt:
         "Dashboard de Roteirização Urbana CVRP com distância melhorada, veículos usados e economia versus ordem de cadastro",
-      ctaDemoLabel: "Explorar Roteirização Urbana",
+      ctaDemoLabel: "Explorar CVRP",
       prioridade: "P0",
       perguntaNegocio:
         "Quantos veículos atendem as entregas e quanta distância dá para economizar?",

@@ -76,7 +76,6 @@ export default function RootLayout({
     jobTitle,
     description,
     url: siteUrl,
-    image: `${siteUrl}/profile.jpg`,
     sameAs: [CONTENT.pessoal.linkedin, CONTENT.pessoal.github],
     knowsAbout: [
       "Logística",
@@ -126,7 +125,7 @@ export default function RootLayout({
           <main id="conteudo">{children}</main>
         </MotionProvider>
         <BackToTop />
-        <Analytics />
+        {process.env.VERCEL === "1" ? <Analytics /> : null}
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 /**
  * Exporta campos do content.ts para geração do CV PDF (SSOT).
- * Saída: public/cv-export.json (gitignored seria ideal; regen no cv:generate).
+ * Saída versionada: public/cv-export.json, regenerada por `npm run cv:generate`.
  */
 
 import { writeFileSync } from "node:fs";
@@ -41,4 +41,4 @@ const payload = {
 };
 
 writeFileSync(outPath, JSON.stringify(payload, null, 2), "utf8");
-console.log(`[export-cv-content] OK — ${outPath}`);
+console.log(`[export-cv-content] OK - ${outPath}`);

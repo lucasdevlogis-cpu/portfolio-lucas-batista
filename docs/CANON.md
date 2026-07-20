@@ -47,10 +47,10 @@ Detalhes estruturais: [`ARQUITETURA.md`](ARQUITETURA.md). Spec visual: [`design/
 | Copy shelved (comercial) | [`data/archive/content-consultoria.ts`](../data/archive/content-consultoria.ts) | Remontar sem aprovação |
 | Arquitetura do sistema | [`docs/ARQUITETURA.md`](ARQUITETURA.md) | Specs obsoletas / audits soltos |
 | Spec visual + IA | [`design/design.md`](../design/design.md) | Figma |
-| Tokens landing | [`app/globals.css`](../app/globals.css) + [`design/tokens.md`](../design/tokens.md) | Hex inline |
+| Tokens compartilhados | [`design/tokens.json`](../design/tokens.json) → `app/design-tokens.css` + `demos-logistica/lib/brand.py` | Hex inline |
 | Inventário do repo | [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | — |
 | Checklist de refatoração | [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md) | — |
-| Tokens demos Streamlit | [`demos-logistica/lib/brand.py`](../demos-logistica/lib/brand.py) | — |
+| Tokens runtime Streamlit | [`demos-logistica/lib/brand.py`](../demos-logistica/lib/brand.py), gerado | Editar manualmente |
 | Padrões para agentes | [`.agents/skills/`](../.agents/skills/) (apontam para docs canônicos) | Specs obsoletas em archive |
 | Estado do projeto | [`docs/AVALIACAO.md`](AVALIACAO.md) | Claims "100%" sem QA |
 | Deploy / Vercel | [`docs/DEPLOY.md`](DEPLOY.md), [`docs/VERCEL.md`](VERCEL.md) | SHAs hardcoded |
@@ -64,10 +64,12 @@ Detalhes estruturais: [`ARQUITETURA.md`](ARQUITETURA.md). Spec visual: [`design/
 - **1 roadmap** — `06-kpis-cd` (sem demo Streamlit)
 - **3 âncora** — `featuredProofCases` (`01`, `02`, `08`) com thumbnails em `public/cases/*.webp`
 - **7 biblioteca** — filtros dinâmicos só com `count > 0` (não incluem âncora/roadmap)
-- Embed: `DemoModal` + preview progressivo + iframe `?embed=true`
+- Âncoras: `app/provas/[slug]/page.tsx` + `components/demos/` com snapshots exportados do Python
+- Modal âncora: `DemoModal` renderiza `DemoShell` diretamente, sem iframe
+- Biblioteca: `DemoModal` mantém preview progressivo + iframe Streamlit `?embed=true`
 - Env obrigatória no build: `NEXT_PUBLIC_DEMOS_BASE_URL`
 
-Validação: `npm run validate` (10 demos + slug ↔ `demos-logistica/pages/`)
+Validação: `npm run validate` (cases, slugs, contrato JSON das 3 âncoras)
 
 ---
 
@@ -86,30 +88,35 @@ Validação: `npm run validate` (10 demos + slug ↔ `demos-logistica/pages/`)
 
 ## 6. Matriz de status (honesta)
 
-| Área | Lançado | QA | Polimento | Notas |
+| Área | Implementado | QA local | Polimento | Notas |
 |------|:-------:|:--:|:---------:|-------|
-| Layout Executive Proof | ✅ | ✅ | ✅ | Densidade revisada 13/07 |
-| Cases âncora (thumbs + compactação) | ✅ | ✅ | ✅ | WebP reais + CTAs específicos |
+| Layout Executive Proof | ✅ | ✅ | ✅ | Revisado em 20/07 |
+| Cases âncora (rotas React + snapshots) | ✅ | ✅ | ✅ | WebP, ECharts, MapLibre e CTAs específicos |
 | Filtros biblioteca dinâmicos | ✅ | ✅ | ✅ | Sem categorias com 0 |
-| Modal demo progressivo | ✅ | ✅ | ✅ | Preview + fallback ~22s |
-| Demos Streamlit (10 + roadmap) | ✅ | ✅ | — | smoke 13/13 |
-| Deploy Vercel | ✅ | ✅ | — | ver `npx vercel inspect` |
-| OG + CV PDF | ✅ | ✅ | — | prod 200 |
-| Lighthouse | ✅ local | 🟡 | — | a revalidar pós-refino |
-| E2E Playwright | ✅ | ✅ | — | **9/9** |
-| Domínio custom | — | — | 🟡 | Backlog |
-| Analytics | ✅ parcial | — | 🟡 | `@vercel/analytics` + `lib/analytics.ts` |
+| Modal demo híbrido | ✅ | ✅ | ✅ | Âncoras inline; biblioteca com preview + fallback |
+| Demos Streamlit | ✅ | ✅ | 🟡 | 7 complementares + 3 origens de cálculo; smoke 13/13 |
+| Deploy desta versão | — | — | — | publicar e confirmar com `npx vercel inspect` |
+| OG + CV PDF | ✅ | ✅ local | — | validar novamente pós-deploy |
+| Lighthouse | ✅ local | ✅ | ✅ | desktop 100/100/100/100; mobile 91/100/100/100 |
+| E2E Playwright | ✅ | ✅ | — | **14/14** |
+| Domínio custom | — | — | 🟡 | backlog opcional |
+| Analytics | ✅ | ✅ local | 🟡 | carregado apenas na Vercel |
 
-**Regra:** "Lançado" = código em produção. QA pós-deploy: [`VERCEL.md`](VERCEL.md).
+**Regra:** esta matriz descreve o repositório local. Produção só é confirmada pelo checklist em [`VERCEL.md`](VERCEL.md).
 
 ---
 
 ## 7. Verificação
 
 ```bash
+npm run tokens:sync
+npm run demos:export
 npm run validate && npm run lint && npm run typecheck && npm run build
 npm run test:e2e
-npm run cv:generate          # se content.ts mudou
+npm run lighthouse:all   # build servido em http://localhost:3000
+npm run qa:visual        # mesmo servidor; modal + 375/768/1440 px
+npm audit --audit-level=moderate
+npm run cv:generate       # se content.ts mudou
 
 cd demos-logistica
 python scripts/build_datasets.py

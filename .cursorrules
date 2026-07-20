@@ -1,121 +1,70 @@
-# Cursor Rules — Portfolio Lucas Batista
+# Cursor Rules — Portfólio Lucas Batista
 
-# Regras globais para vibe coding do portfólio profissional (Executive Proof System)
+## Leitura obrigatória
 
-## Contexto do Projeto
+1. `docs/CANON.md`
+2. `docs/ARQUITETURA.md`
+3. `AGENTS.md`
+4. skill relevante em `.agents/skills/`
 
-- Portfolio profissional de Lucas Farias Batista (Analista de Transportes Senior)
-- Stack: Next.js 16.2.9 + React 19 + TypeScript 5 + Tailwind CSS v4 + shadcn/ui + Vercel
-- Objetivo: Dossiê executivo headhunter-first — conversão profissional
-- Público-alvo: Headhunters, recrutadores, diretores de operações e dados
-- URL: <https://portfolio-lucas-batista-murex.vercel.app>
+## Norte do produto
 
-## Fonte da Verdade (SSOT)
+Executive Proof System para headhunters e lideranças de operações/dados. Não transformar em landing comercial, currículo genérico ou vitrine SaaS.
 
-- **Copy ativo:** `data/content.ts` — nunca hardcode textos nos componentes
-- **Arquitetura:** `docs/ARQUITETURA.md`
-- **Entrada docs:** `docs/CANON.md`
-- **Spec visual:** `design/design.md` + `app/globals.css`
-- **Tokens:** `design/tokens.md` + `:root`/`@theme` em `app/globals.css`
-- **Estado do projeto:** `docs/AVALIACAO.md`
-- **Deploy:** `docs/DEPLOY.md` + `docs/VERCEL.md`
-- **Demos Streamlit:** pasta `demos-logistica/` (repo separado)
+Ordem: `Header → ExecutiveHero → EvidenceStrip → ProfileBrief → SignatureCases → TrajectoryBoard → ContactPanel → Footer`.
 
-## Design System (Obrigatório)
+## Fontes da verdade
 
-- **Paleta ativa:**
-  - Editorial `#f5f2ed` — fundo principal
-  - Card `#ffffff` — blocos claros
-  - Ink `#07111f` — texto forte, CTA primário
-  - Primary `#153451` — azul petróleo técnico
-  - Surface dark `#07111f` — hero/contato
-  - Accent `#16a99c` — sinal técnico
-  - Warm accent `#c9983f` — acento editorial decorativo
-  - Warm accent contrast `#7a5a1a` — eyebrows e labels dourados em fundos claros (≥ 4.5:1)
-  - Muted foreground `#556070` — texto secundário
-  - Border `#c8c2b8` — divisórias
-- **Arquitetura:** `docs/ARQUITETURA.md` · **Entrada:** `docs/CANON.md`- **Fontes:** Source Serif 4 (headings, `--font-heading`) + Inter (body, `--font-body`)
-- **Containers:** max-w-[1440px] centralizado. Padding responsivo: px-5 sm:px-8 lg:px-10 xl:px-12
-- **Cards:** bg-card, border border-border/primary, shadow-card, rounded-xl. Hover: hover:-translate-y-1 hover:shadow-elevated
-- **Transições:** usar tokens `--duration-fast/normal/slow` + `--ease-editorial`
-- **Dark sections:** Hero e Contato usam bg-surface-dark com texto branco
-- **Light sections:** demais usam bg-editorial com texto ink
+- Copy, cases, CTAs e links: `data/content.ts`.
+- Tokens editáveis: `design/tokens.json`.
+- Spec visual: `design/design.md`.
+- Estado: `docs/AVALIACAO.md`.
+- Fila: `docs/P0_P1_P2_CHECKLIST.md`.
+- Deploy: `docs/DEPLOY.md` e `docs/VERCEL.md`.
 
-## Regras de Código
+Nunca editar manualmente `app/design-tokens.css`, `demos-logistica/lib/brand.py` ou `data/demo-snapshots/*.json`; use os geradores.
 
-- Usar componentes shadcn/ui + wrappers internos (`PremiumCard`, `SectionShell`, `EditorialBadge`, etc.)
-- Server Components por padrão. `'use client'` apenas para interação real (filtros, modal, mobile nav)
-- Imagens: `next/image` com `priority={true}` para hero/OG, `loading="lazy"` para o resto
-- Links externos: sempre `target="_blank"`, `rel="noopener noreferrer"` e `aria-label` descritivo
-- Ícones: usar Lucide React exclusivamente. Padrão: size-5 (20px)
-- Nunca usar `any`. Tipar todas as props com interfaces
-- Nunca usar inline styles. Tudo via Tailwind classes ou tokens CSS
-- Variáveis de ambiente: `NEXT_PUBLIC_*` apenas para dados não sensíveis
+## Stack e arquitetura
 
-## Regras de UX/UI
+- Next.js 16.2.10, React 19, TypeScript 5, Node 24, Tailwind CSS v4.
+- Não criar `tailwind.config.ts`.
+- 3 âncoras React em `/provas/{slug}` com ECharts/MapLibre lazy.
+- 7 complementares em Streamlit via modal híbrido.
+- Cálculos permanecem em Python; snapshots evitam duplicação no TypeScript.
 
-- **Menos texto, mais impacto:** cada seção deve ser escaneável em 10 segundos
-- **Hero:** label + nome (Source Serif 4) + headline curta + subheadline de 1-2 linhas + CTAs + provas rápidas
-- **Cards:** título curto + descrição enxuta + ação
-- **CTAs primários:** botão sólido (executive/accent). CTAs secundários: outline
-- **Navegação:** smooth scroll obrigatório (já em `globals.css`)
-- **Mobile-first:** toda implementação deve funcionar em 375px antes do desktop
-- **Microinterações:** hover nos cards/botões, focus visível, motion discreto
+## Código
 
-## Regras de Performance
+- Server Components por padrão; `'use client'` só para interação.
+- Props tipadas; sem `any`.
+- Lucide é a única biblioteca de ícones React.
+- Links externos: nova aba, `noopener noreferrer` e nome acessível coerente com o texto visível.
+- `next/image`, dimensões explícitas e lazy loading abaixo da dobra.
+- Sem secrets, APIs pagas obrigatórias ou `console.log` de produção.
+- Preserve `components/archive/`, `data/archive/`, `design/archive/` e `docs/archive/` como histórico.
 
-- Imagens: formato WebP/AVIF, max 200KB cada, usar placeholder quando possível
-- Fonts: `next/font/google` com `display: 'swap'`
-- Componentes: lazy load do `DemoModal` já implementado
-- Framer Motion: `LazyMotion` + `domAnimation` já ativo; respeitar `prefers-reduced-motion`
+## Design e acessibilidade
 
-## Regras de Acessibilidade
+- Mobile-first em 375 px; alvos de toque ≥44 px; texto ≥14 px.
+- Tipografia: Source Serif 4 + Inter.
+- Sem hex inline; use tokens.
+- `accent` e `warmAccent` são decorativos em fundo claro; texto usa variantes `Contrast`.
+- Reduzir cards, badges, sombras e gradientes quando não houver função.
+- Conteúdo LCP do hero não recebe animação.
+- Foco visível, ESC em modal, reduced motion, HTML semântico e nomes acessíveis que incluam o rótulo visível.
 
-- Contraste mínimo 4.5:1 em todo texto (usar tokens verificados)
-- Todos os botões/links devem ter min-height 44px no mobile
-- Focus visible: `focus-ring` (tokens em `globals.css`)
-- Skip link no topo da página (`layout.tsx`)
-- Semântica HTML correta: nav, main, section, article, footer
-- `prefers-reduced-motion` respeitado em todas as animações
-- Ícones: `aria-hidden` quando com texto, `aria-label` quando sozinhos
+## Gate antes de commit
 
-## Proibido
+```bash
+npm run tokens:sync
+npm run demos:export
+npm run validate && npm run lint && npm run typecheck && npm run build
+npm run test:e2e
+npm audit --audit-level=moderate
 
-- ❌ Cores fora do design system (sem exceção)
-- ❌ Fontes que não sejam Source Serif 4/Inter
-- ❌ Texto sem hierarquia (paredes de texto)
-- ❌ Componentes interativos falsos (cockpit estático sem propósito)
-- ❌ Ícones misturando bibliotecas
-- ❌ Hex inline fora dos tokens CSS
-- ❌ `console.log` em produção
-- ❌ Imagens sem alt text
-- ❌ Hardcode de copy fora de `data/content.ts`
+cd demos-logistica
+python scripts/build_datasets.py
+python scripts/smoke_test.py
+python scripts/validate_slugs.py
+```
 
-## Workflow de Vibe Coding
-
-1. Sempre ler o `.cursorrules` e `docs/CANON.md` antes de qualquer mudança
-2. Antes de implementar, verificar se a mudança está no checklist de prioridade (`docs/P0_P1_P2_CHECKLIST.md`)
-3. Cada prompt deve focar em UMA seção ou UMA funcionalidade
-4. Após implementar, verificar: responsivo (375px), contraste, acessibilidade, performance
-5. Rodar `npm run validate && npm run lint && npm run typecheck && npm run build && npm run test:e2e` antes de commit
-6. Commit após cada feature completa com mensagem descritiva em português
-
-## Dados do Portfolio
-
-- Nome: Lucas Farias Batista
-- Cargo: Analista de Transportes Senior | Operações, Dados e IA Aplicada
-- Localização: São Paulo/SP
-- Contato: <lucas.farias.log@outlook.com> | linkedin.com/in/lucasfariaslog
-- Github: github.com/lucasdevlogis-cpu
-- Estatísticas: +10 anos, +R$ 20M impacto, 10 provas navegáveis
-- Provas: Simulador de Custo de Frete, Mini Torre de Controle, CVRP Urbano + 7 outras
-
-## Ordem Canônica da Homepage
-
-`Header` → `ExecutiveHero` → `EvidenceStrip` → `ProfileBrief` → `SignatureCases` → `TrajectoryBoard` → `ContactPanel` → `Footer`
-
-## Referências Rápidas
-
-- Skills: `.agents/skills/design-system.md`, `.agents/skills/component-patterns.md`, `.agents/skills/ux-writing.md`, `.agents/skills/a11y.md`, `.agents/skills/mobile-first.md`
-- Checklist de prioridade: `docs/P0_P1_P2_CHECKLIST.md`
-- Revisão crítica base: `docs/GAPS.md` + `docs/AVALIACAO.md`
+Mudanças visuais também exigem capturas em 375, 768 e 1440 px. Lighthouse deve ficar ≥90 em todas as categorias.

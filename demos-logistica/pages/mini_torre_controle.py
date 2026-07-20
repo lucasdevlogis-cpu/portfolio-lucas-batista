@@ -62,7 +62,7 @@ ui.hero(
 if f.empty:
     ui.insight(
         "Nenhuma entrega com os filtros atuais. Ajuste transportadora ou região.",
-        icone="📡",
+        rotulo="Ação",
     )
     ui.footer()
     st.stop()

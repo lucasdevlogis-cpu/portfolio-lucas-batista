@@ -14,36 +14,31 @@ PROFUNDAS = [
         "pages/precificacao_frete.py",
         "01",
         "Precificação de Frete BR",
-        "Onde o frete pesa e quanto fica acima do piso ANTT?",
-        "🚚",
+        "Onde o frete pesa e quanto se afasta do piso ANTT?",
     ),
     (
         "pages/cvrp_urbano.py",
-        "03",
+        "08",
         "Roteirização Urbana CVRP",
         "Quantos veículos e quanta distância economizar?",
-        "🗺️",
     ),
     (
         "pages/vrptw_ultima_milha.py",
-        "05",
+        "09",
         "VRPTW Última Milha",
         "A sequência respeita as janelas prometidas?",
-        "⏱️",
     ),
     (
         "pages/rede_interhubs.py",
-        "06",
+        "10",
         "Rede Inter-hubs",
         "Qual corredor tem melhor custo por tonelada?",
-        "🕸️",
     ),
     (
         "pages/ship_from_store.py",
-        "08",
+        "04",
         "Ship-from-Store",
         "Quando loja/hub supera o CD como origem?",
-        "🏬",
     ),
 ]
 PONTUAIS = [
@@ -52,35 +47,30 @@ PONTUAIS = [
         "02",
         "Mini Torre de Controle",
         "Quais entregas exigem ação imediata?",
-        "📡",
     ),
     (
         "pages/promessa_cep.py",
-        "04",
+        "03",
         "Promessa por CEP",
         "Qual praça concentra risco de atraso?",
-        "📍",
     ),
     (
         "pages/classificador_ocorrencias.py",
         "07",
         "Classificador de Ocorrências",
         "Como triar textos operacionais?",
-        "🏷️",
     ),
     (
         "pages/tsp_baseline_sp.py",
-        "09",
+        "11",
         "TSP Baseline SP",
         "Qual a melhor sequência de visitas?",
-        "🧭",
     ),
     (
         "pages/auditoria_endereco.py",
-        "10",
+        "05",
         "Auditoria de Endereço",
         "Endereços têm confiança para prometer?",
-        "✅",
     ),
 ]
 
@@ -90,7 +80,7 @@ def render_cards(demos: list[tuple]) -> None:
     for inicio in range(0, len(demos), por_linha):
         linha = demos[inicio : inicio + por_linha]
         cols = st.columns(por_linha)
-        for col, (path, num, titulo, pergunta, _icon) in zip(cols, linha):
+        for col, (path, num, titulo, pergunta) in zip(cols, linha):
             with col.container(border=True):
                 st.markdown(
                     f"<p style='margin:0;color:{brand.WARM_ACCENT};font-size:.72rem;"
@@ -164,7 +154,7 @@ try:
 except FileNotFoundError:
     ui.insight(
         "Rode `python scripts/build_datasets.py` para gerar os dados das demos.",
-        icone="📦",
+        rotulo="Dados",
     )
 
 ui.section(
@@ -188,10 +178,10 @@ with col_fw:
     )
 with col_prov:
     ui.section("Transparência")
-    ui.nav_link("pages/sobre_dados_metodos.py", "Dados e métodos")
+    ui.nav_link("pages/11_sobre_dados_metodos.py", "Dados e métodos")
 
 ui.insight(
     "**Limitação:** dados sintéticos/curados para demonstração. Para decisão real, validar premissas, integração e governança da operação.",
-    icone="🛡️",
+    rotulo="Limite",
 )
 ui.footer()

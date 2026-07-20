@@ -22,7 +22,7 @@ for (const id of ids) {
     .toFile(output);
 
   const size = fs.statSync(output).size;
-  console.log(`${id}.webp → ${(size / 1024).toFixed(1)} KB`);
+  console.log(`${id}.webp - ${(size / 1024).toFixed(1)} KB`);
   if (size > 200 * 1024) {
     console.warn("Warning: above 200KB target");
   }

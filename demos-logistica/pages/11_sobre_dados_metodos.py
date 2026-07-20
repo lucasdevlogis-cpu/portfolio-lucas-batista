@@ -5,14 +5,14 @@ import streamlit as st
 
 from lib import tables, ui
 
-ui.page_setup("11. Sobre os dados e métodos", icon="📚")
+ui.page_setup("Sobre os dados e métodos", icon="📚")
 
 ui.sidebar_brand()
 
 ui.breadcrumb("Portfólio · <b>Sobre os dados e métodos</b>")
 
 ui.hero(
-    "11. Sobre os dados e métodos",
+    "Sobre os dados e métodos",
     "De onde vêm os dados de cada demo e qual seria o método em produção?",
     frameworks=["Transparência", "Proveniência"],
     selo="Honestidade calibrada: amostras curadas, métodos demonstrativos, produção sinalizada",
@@ -105,7 +105,7 @@ tables.format_dataframe(
 ui.download_csv_button(
     proveniencia,
     "proveniencia_demos.csv",
-    label="⬇️ Baixar índice de proveniência (CSV)",
+    label="Baixar índice de proveniência (CSV)",
 )
 
 ui.section("Frameworks de referência")
@@ -127,7 +127,7 @@ ui.section("Princípio")
 ui.insight(
     "Ferramentas aceleram o diagnóstico; a decisão crítica (promessa, penalidade, "
     "pagamento) permanece com validação humana e dados do cliente.",
-    icone="🛡️",
+    rotulo="Limite",
 )
 
 ui.demo_cta(next_demo_path="pages/precificacao_frete.py")

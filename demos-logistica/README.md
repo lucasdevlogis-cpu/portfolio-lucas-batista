@@ -1,94 +1,69 @@
-# Demos Logística — Streamlit Cloud
+# Demos Logística — motor Python
 
-Demos interativas embedadas no portfólio Lucas Batista via iframe (`?embed=true`).
+Subprojeto Streamlit das provas de logística. As três âncoras também exportam snapshots para a camada React; as sete complementares continuam embedadas na landing com `?embed=true`.
 
-**READMEs por case:** [`docs/cases/README.md`](docs/cases/README.md) (10 cases demonstráveis).
+## Cases
 
-## Pages (11)
+| Case | Slug | Superfície pública principal |
+|---:|---|---|
+| 01 | `precificacao_frete` | React + Streamlit |
+| 02 | `mini_torre_controle` | React + Streamlit |
+| 03 | `promessa_cep` | Streamlit |
+| 04 | `ship_from_store` | Streamlit |
+| 05 | `auditoria_endereco` | Streamlit |
+| 07 | `classificador_ocorrencias` | Streamlit |
+| 08 | `cvrp_urbano` | React + Streamlit |
+| 09 | `vrptw_ultima_milha` | Streamlit |
+| 10 | `rede_interhubs` | Streamlit |
+| 11 | `tsp_baseline_sp` | Streamlit |
 
-| Slug | Case | Tipo | Frameworks (produção) |
-|------|------|------|-----------------------|
-| `01_precificacao_frete` | Precificação de Frete BR | Profunda | NTC · ANTT · ANP |
-| `02_mini_torre_controle` | Mini Torre de Controle | Pontual | TMS/WMS |
-| `03_cvrp_urbano` | Roteirização Urbana CVRP | Profunda | PyVRP · OR-Tools |
-| `04_promessa_cep` | Promessa por CEP | Pontual | H3 |
-| `05_vrptw_ultima_milha` | VRPTW Última Milha | Profunda | PyVRP |
-| `06_rede_interhubs` | Rede Inter-hubs | Profunda | NetworkX |
-| `07_classificador_ocorrencias` | Classificador de Ocorrências | Pontual | NLP supervisionado |
-| `08_ship_from_store` | Ship-from-Store | Profunda | OMS (Fleetbase) |
-| `09_tsp_baseline_sp` | TSP Baseline SP | Pontual | OR-Tools · OSMnx |
-| `10_auditoria_endereco` | Auditoria de Endereço | Pontual | DNE · CNEFE |
-| `11_sobre_dados_metodos` | Proveniência e métodos | Índice | — |
-
-## Mapeamento landing → demo
-
-A landing Next.js usa `CASE_DEMO_SLUGS` em `data/content.ts` (10 cases demonstráveis).
-
-**Importante:** a URL Streamlit **não** inclui o prefixo numérico do arquivo. Ex.: `pages/ship_from_store.py` → `/ship_from_store?embed=true`.
-
-| Case ID (landing) | Arquivo page | URL embed |
-|-------------------|--------------|-----------|
-| `04-ship-from-store` | `08_ship_from_store.py` | `/ship_from_store` |
-| `08-cvrp-urbano` | `03_cvrp_urbano.py` | `/cvrp_urbano` |
-| `09-vrptw-ultima-milha` | `05_vrptw_ultima_milha.py` | `/vrptw_ultima_milha` |
-| `10-rede-interhubs` | `06_rede_interhubs.py` | `/rede_interhubs` |
-| `11-tsp-baseline-sp` | `09_tsp_baseline_sp.py` | `/tsp_baseline_sp` |
+`11_sobre_dados_metodos.py` é documentação de proveniência, não um case numerado. O prefixo do arquivo não aparece na URL.
 
 ## Estrutura
 
+```text
+app.py                            índice das demos
+paths.py                          DATA_DIR
+data/raw/                         amostras curadas
+data/*.csv                        datasets gerados atualmente
+lib/                              domínio, UI, gráficos, mapas e tabelas
+pages/                            demos e página de métodos
+scripts/build_datasets.py         geração determinística
+scripts/export_demo_snapshots.py  Python → JSON das 3 âncoras
+scripts/smoke_test.py             13 checagens
+scripts/validate_slugs.py         10 slugs
+.streamlit/config.toml            tema e toolbar mínima
 ```
-demos-logistica/
-  app.py                 # home (mapa herói + cards navegáveis)
-  paths.py               # DATA_DIR
-  lib/                   # brand, viz, geo, frete, ui
-  data/raw/              # amostras curadas do Brasil (fonte)
-  data/*.csv             # datasets construídos (build_datasets)
-  pages/                 # 11 demos
-  scripts/
-    build_datasets.py    # gera CSVs com seed fixa
-    smoke_test.py        # 13 checagens (12 scripts + 1 borda torre)
-  .streamlit/config.toml # tema marca + toolbarMode minimal
-```
 
-## UI compartilhada (`lib/ui.py`)
+A separação dos CSVs gerados para `data/generated/` está na próxima fase e exige migração coordenada de todos os leitores.
 
-| Função | Uso |
-|--------|-----|
-| `page_setup()` | Config + tema + CSS |
-| `hero()` | Primeira dobra: título, frameworks, pergunta, métrica |
-| `section()` | Cabeçalho de seção padronizado |
-| `plot()` | Plotly sem modebar, largura total |
-| `sidebar_brand()` | Marca + link "Todas as demos" |
-| `kpi_row()` | Linha de KPIs |
-| `method_expander()` / `provenance_expander()` | Expanders padrão |
-| `footer()` | Rodapé com disclaimer |
+## UI compartilhada
 
-## Rodar localmente
+`lib/ui.py` concentra setup, hero, KPIs, seções, gráficos, insights semânticos, método, proveniência, navegação e footer. Cores e dimensões vêm de `lib/brand.py`, gerado por `npm run tokens:sync` na raiz.
+
+## Rodar
 
 ```bash
-cd demos-logistica
 pip install -r requirements.txt
 python scripts/build_datasets.py
-python scripts/smoke_test.py   # meta: 13 checagens
+python scripts/smoke_test.py
+python scripts/validate_slugs.py
 streamlit run app.py
 ```
 
-Abra <http://localhost:8501>.
+Abra <http://localhost:8501>. Para conferir embed, adicione `?embed=true` à URL da page.
 
-## Dados
+## Exportar âncoras
 
-CSVs curados em `data/raw/`. O `build_datasets.py` expande com seed fixa (reprodutível) para densidade de mapas e escreve em `data/`.
+Na raiz do monorepo:
 
-**Limitação:** todos os resultados são demonstrativos — não substituem tabela comercial, ANTT vigente, TMS/WMS ou base postal.
-
-## Embed na landing
-
-O componente `DemoModal` adiciona `?embed=true`. Ex.:
-
-```
-https://SUA-URL.streamlit.app/rede_interhubs?embed=true
+```bash
+npm run demos:export
+npm run demos:validate
 ```
 
-(Use o slug **sem** prefixo numérico: `06_rede_interhubs.py` → `/rede_interhubs`.)
+Os JSONs em `data/demo-snapshots/` são artefatos de apresentação. Cálculos permanecem em Python; não os replique no TypeScript.
 
-O modal também oferece link "Abrir em nova aba" (URL sem `?embed=true`).
+## Limitação
+
+Dados são sintéticos, públicos ou anonimizados. Resultados não substituem tabela comercial, ANTT vigente, malha viária real, TMS/WMS ou governança operacional.

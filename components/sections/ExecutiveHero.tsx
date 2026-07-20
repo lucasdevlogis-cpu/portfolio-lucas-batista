@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   Building2,
@@ -34,53 +33,29 @@ export function ExecutiveHero() {
       />
 
       <div className="relative flex min-w-0 flex-col justify-center">
-        <motion.div
-          initial={{ opacity: 1, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
+        <div>
           <EditorialBadge tone="dark">{hero.badge}</EditorialBadge>
-        </motion.div>
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 1, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-3 max-w-full break-words font-heading text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-6xl"
-        >
+        <h1 className="mt-3 max-w-full break-words font-heading text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-6xl">
           {pessoal.nome}
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 1, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-4 max-w-[820px] break-words text-xl font-semibold leading-tight text-on-dark-accent sm:text-2xl"
-        >
+        <p className="mt-4 max-w-[820px] break-words text-xl font-semibold leading-tight text-on-dark-accent sm:text-2xl">
           {pessoal.titulo}
-        </motion.p>
+        </p>
 
-        <motion.p
-          initial={{ opacity: 1, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-4 max-w-[780px] break-words text-base leading-relaxed text-on-dark-muted md:text-lg"
-        >
+        <p className="mt-4 max-w-[780px] break-words text-base leading-relaxed text-on-dark-muted md:text-lg">
           {pessoal.subheadline}
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 1, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 flex flex-col gap-3 sm:flex-row"
-        >
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <a
             href="#cases"
             onClick={() => analytics.ctaClick(hero.ctaPrimario, "hero")}
             className={cn(
               buttonVariants({ variant: "executive", size: "lg" }),
-              "group/button h-12 w-full gap-2 rounded-lg bg-accent px-6 text-base font-bold text-white shadow-glow transition-all duration-normal ease-editorial hover:-translate-y-0.5 hover:bg-accent-contrast sm:w-auto",
+              "group/button h-12 w-full gap-2 rounded-lg bg-accent-contrast px-6 text-base font-bold text-white shadow-glow transition-all duration-normal ease-editorial hover:-translate-y-0.5 hover:bg-primary sm:w-auto",
             )}
           >
             {hero.ctaPrimario}
@@ -97,15 +72,10 @@ export function ExecutiveHero() {
             <Mail className="size-4" aria-hidden />
             {hero.ctaSecundario}
           </a>
-        </motion.div>
+        </div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 1, x: 40 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="relative hidden min-w-0 lg:block"
-      >
+      <div className="relative hidden min-w-0 lg:block">
         <div className="rounded-2xl border border-white/15 bg-white/[0.06] p-6 backdrop-blur-sm">
           <div className="flex items-start gap-4 border-b border-white/10 pb-5">
             <div className="relative flex size-18 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-primary to-accent shadow-lg">
@@ -141,7 +111,7 @@ export function ExecutiveHero() {
           </div>
 
         </div>
-      </motion.div>
+      </div>
     </SectionShell>
   );
 }

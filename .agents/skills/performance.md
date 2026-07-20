@@ -1,31 +1,15 @@
-# Skill: Performance Web
+# Skill: Performance web
 
-> **Canônico:** [`docs/CANON.md`](../../docs/CANON.md) · Arquitetura: [`docs/ARQUITETURA.md`](../../docs/ARQUITETURA.md)
+> Canônico: [`docs/AVALIACAO.md`](../../docs/AVALIACAO.md) · [`docs/MOBILE_SPEC.md`](../../docs/MOBILE_SPEC.md).
 
-## Checklist essencial
+- Baseline local: desktop 100/100/100/100; mobile 91/100/100/100.
+- Gate: nenhuma categoria Lighthouse abaixo de 90.
+- LCP do hero não recebe Framer Motion.
+- `DemoModal`, ECharts e MapLibre carregam apenas sob demanda.
+- Analytics só monta quando `VERCEL=1`.
+- `next/image`, WebP/AVIF, dimensões fixas e lazy abaixo da dobra.
+- Inter + Source Serif 4 via `next/font`, `display: swap`.
+- Não sobrescrever cache de `/_next/static`; o Next gerencia assets com hash.
+- Não aplicar cache imutável a assets públicos com nome estável, como o CV.
 
-### Imagens
-
-- WebP/AVIF · ≤ 200KB · `next/image`
-- `priority` só above-the-fold · `loading="lazy"` abaixo
-- Thumbs de cases: `public/cases/*.webp` (960×540 otimizado)
-
-### Fonts
-
-- `next/font/google` · Inter + Source Serif 4 · `display: 'swap'` · subset `latin`
-
-### Componentes
-
-- Lazy real: **`DemoModal`** via `CaseDemoLauncher` (`import()` dinâmico)
-- Não existe `ProvasSection` — seções ativas estão em `components/sections/`
-- Framer Motion: `LazyMotion` + `domAnimation` · respeitar `prefers-reduced-motion`
-
-### Metas
-
-| Métrica | Alvo |
-|---------|------|
-| LCP | < 2.5s |
-| CLS | < 0.1 |
-| INP | < 200ms |
-
-Revalidar Lighthouse após deploys grandes (`docs/AVALIACAO.md`).
+Com build em `next start`, rode `npm run lighthouse:all` e investigue LCP, TBT, CLS e console antes de aceitar regressão.

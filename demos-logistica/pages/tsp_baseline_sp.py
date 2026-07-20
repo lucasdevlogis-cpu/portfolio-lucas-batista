@@ -10,7 +10,7 @@ import plotly.express as px
 import streamlit as st
 from lib import brand, folium_maps as fm, format as fmt, geo, tables, ui
 
-ui.page_setup("09. TSP Baseline SP", icon="🧭")
+ui.page_setup("11. TSP Baseline SP", icon="🧭")
 
 VELOCIDADE_KMH = 25
 
@@ -42,7 +42,7 @@ tempo_min = d_final / VELOCIDADE_KMH * 60 + visitas["service_time_min"].sum()
 ui.breadcrumb("Case: TSP Baseline SP · <b>Demo interativa</b>")
 
 ui.hero(
-    "09. TSP Baseline SP — Sequência de Visitas",
+    "11. TSP Baseline SP — Sequência de Visitas",
     "Qual a melhor sequência para visitar os pontos a partir do CD?",
     frameworks=["OSMnx (malha viária)", "2-opt", "OR-Tools (produção)"],
     selo=brand.maturidade(

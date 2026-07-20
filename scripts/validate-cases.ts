@@ -110,13 +110,22 @@ if (
   );
 }
 
-// 0b. Cases âncora devem ser demonstráveis (ter demo Streamlit).
+// 0b. Cases âncora devem ter rota demonstrável e imagem editorial real.
 if (Array.isArray(featuredProofCases)) {
   for (const id of featuredProofCases) {
     if (typeof id === "string" && !(id in CASE_DEMO_SLUGS)) {
       fail(
-        `Case âncora "${id}" em featuredProofCases não está em CASE_DEMO_SLUGS (sem demo publicada).`,
+        `Case âncora "${id}" em featuredProofCases não está em CASE_DEMO_SLUGS (sem rota publicada).`,
       );
+    }
+
+    if (typeof id === "string") {
+      const featuredCase = caseById.get(id);
+      if (!featuredCase?.thumbnail || !featuredCase.thumbnailAlt) {
+        fail(
+          `Case âncora "${id}" deve declarar thumbnail e thumbnailAlt em CONTENT.cases.`,
+        );
+      }
     }
   }
 }
@@ -244,11 +253,11 @@ for (const w of warnings) {
 if (errors.length > 0) {
   console.error(`\n[validate-cases] ${errors.length} erro(s):`);
   for (const e of errors) {
-    console.error(`  ✗ ${e}`);
+    console.error(`  [ERRO] ${e}`);
   }
   process.exit(1);
 }
 
 console.log(
-  `[validate-cases] OK — ${CASES_DEMONSTRAVEIS.length} cases demonstráveis, ${CASES_ROADMAP.length} em roadmap.`,
+  `[validate-cases] OK - ${CASES_DEMONSTRAVEIS.length} cases demonstráveis, ${CASES_ROADMAP.length} em roadmap.`,
 );

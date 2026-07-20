@@ -4,6 +4,7 @@ Além do happy-path, cobre um cenário de borda conhecido: filtro vazio na
 Mini Torre de Controle (page 02), que já derrubou a demo em produção.
 """
 
+import logging
 import sys
 from pathlib import Path
 
@@ -11,6 +12,11 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from streamlit.testing.v1 import AppTest  # noqa: E402
+
+# O AppTest cria contextos temporários fora do runner normal. O Streamlit emite
+# warnings de bare mode nessa transição; erros continuam visíveis e as exceções
+# de cada app seguem sendo verificadas explicitamente abaixo.
+logging.disable(logging.WARNING)
 
 scripts = [ROOT / "app.py"] + sorted((ROOT / "pages").glob("*.py"))
 

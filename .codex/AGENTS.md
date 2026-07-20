@@ -10,16 +10,17 @@
 
 - Copy: `data/content.ts` · shelved: `data/archive/`
 - Design: `design/design.md` + `app/globals.css`
-- Tokens: `design/tokens.md` (inclui `--warm-accent-contrast`)
+- Tokens: `design/tokens.json` → CSS + Python via `npm run tokens:sync`
 - Skills: `.agents/skills/` (apontam para docs canônicos)
 - Shelved: `components/archive/`, `design/archive/`, `docs/archive/`
 
 ## Stack
 
-- Next.js 16.2.9 + React 19 + TypeScript 5 · Node 24.x
+- Next.js 16.2.10 + React 19 + TypeScript 5 · Node 24.x
 - Tailwind CSS v4 (CSS-only em `app/globals.css`)
 - shadcn/ui + Lucide + Framer Motion
-- Playwright E2E (**9** testes)
+- ECharts + MapLibre nas 3 âncoras; Streamlit nas 7 complementares
+- Playwright E2E (**14** testes) + Lighthouse local
 
 ## Produção
 
@@ -29,8 +30,12 @@
 ## Verificação
 
 ```bash
+npm run tokens:sync && npm run demos:export
 npm run validate && npm run lint && npm run typecheck && npm run build
 npm run test:e2e
+npm audit --audit-level=moderate
+npm run lighthouse:all  # com `next start` ativo
+npm run qa:visual       # com `next start` ativo
 npm run cv:generate
 
 cd demos-logistica && python scripts/smoke_test.py && python scripts/validate_slugs.py

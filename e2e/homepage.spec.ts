@@ -36,7 +36,7 @@ test.describe("Homepage", () => {
   test("exibe CTAs de contato na seção Contato", async ({ page }) => {
     await page.goto("/");
     await expect(
-      page.getByRole("link", { name: /linkedin\.com\/in\/lucasfariaslog/i }),
+      page.getByRole("link", { name: /LinkedIn.*Abrir perfil/i }),
     ).toBeVisible();
   });
 });

@@ -8,36 +8,9 @@ import streamlit as st
 from lib import brand
 
 
-def status_icon(status: str) -> str:
-    """Retorna emoji de status para uso em colunas de texto."""
-    mapping = {
-        "No prazo": "🟢",
-        "Atrasado": "🔴",
-        "Em risco": "🟡",
-        "Ocorrência aberta": "🔴",
-        "Entregue": "🟢",
-        "Em transito": "🔵",
-        "Alta": "🟢",
-        "Média": "🟡",
-        "Baixa": "🔴",
-        "Crítico": "🔴",
-        "Atenção": "🟡",
-        "OK": "🟢",
-        "Acima do piso": "🟢",
-        "Apto": "🟢",
-        "Abaixo do piso": "🟡",
-        "Violou SLA": "🔴",
-        "Apto a prometer/rotear": "🟢",
-        "Revisar antes de prometer": "🟡",
-        "Bloquear até corrigir cadastro": "🔴",
-    }
-    return mapping.get(status, "")
-
-
 def status_text(status: str) -> str:
-    """Texto de status prefixado com emoji."""
-    icon = status_icon(status)
-    return f"{icon} {status}".strip()
+    """Status textual; a semântica visual fica no mapa/KPI, não em emoji."""
+    return status
 
 
 def currency_column(label: str | None = None, decimals: int = 2) -> st.column_config.NumberColumn:

@@ -9,7 +9,7 @@ import plotly.express as px
 import streamlit as st
 from lib import brand, folium_maps as fm, format as fmt, tables, ui
 
-ui.page_setup("06. Rede Inter-hubs", icon="🕸️")
+ui.page_setup("10. Rede Inter-hubs", icon="🕸️")
 
 ui.sidebar_brand()
 
@@ -30,7 +30,7 @@ ui.breadcrumb("Case: Rede Inter-hubs · <b>Demo interativa</b>")
 
 if base.empty:
     ui.hero(
-        "06. Rede Inter-hubs / Corredores",
+        "10. Rede Inter-hubs / Corredores",
         "Qual corredor tem melhor custo por tonelada e onde priorizar consolidação?",
         frameworks=["NetworkX", "Desenho de rede", "Custo por tonelada"],
         selo=brand.maturidade(
@@ -45,7 +45,7 @@ if base.empty:
     )
     ui.insight(
         "Nenhum corredor com os filtros atuais. Selecione pelo menos um nível de serviço para visualizar a rede.",
-        icone="🕸️",
+        rotulo="Rede",
     )
     ui.footer()
     st.stop()
@@ -61,7 +61,7 @@ melhor = base.iloc[0]
 media_ton = base["custo_por_ton"].mean()
 
 ui.hero(
-    "06. Rede Inter-hubs / Corredores",
+    "10. Rede Inter-hubs / Corredores",
     "Qual corredor tem melhor custo por tonelada e onde priorizar consolidação?",
     frameworks=["NetworkX", "Desenho de rede", "Custo por tonelada"],
     selo=brand.maturidade(
@@ -237,7 +237,7 @@ with tab_analise:
     ui.insight(
         f"Priorize negociação/consolidação nas lanes de maior custo/ton: "
         f"**{pior['lane']}** a {fmt.fmt_currency(pior['custo_por_ton'], decimals=0)}/t.",
-        icone="💡",
+        rotulo="Leitura",
     )
 
 with tab_exportar:

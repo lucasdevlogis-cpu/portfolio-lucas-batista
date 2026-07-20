@@ -17,8 +17,8 @@ Este repositório contém o **portfólio profissional de Lucas Batista**, posici
 
 **Estrutura de alto nível:**
 
-- Landing one-page em **Next.js 16.2.9 + React 19 + TypeScript + Tailwind CSS v4**.
-- Demos interativas em **Streamlit** (pasta `demos-logistica/`), embedadas na landing via iframe.
+- Landing one-page em **Next.js 16.2.10 + React 19 + TypeScript + Tailwind CSS v4**.
+- 3 provas âncora em **React/Next.js** e 7 demos exploratórias em **Streamlit** (pasta `demos-logistica/`).
 - CV PDF gerado automaticamente a partir do mesmo conteúdo da landing (`data/content.ts`).
 - Deploy na **Vercel** (landing) e **Streamlit Cloud** (demos).
 
@@ -39,7 +39,7 @@ Este repositório contém o **portfólio profissional de Lucas Batista**, posici
 
 | Tecnologia | Versão / Configuração |
 |---|---|
-| Framework | Next.js `16.2.9` (App Router) |
+| Framework | Next.js `16.2.10` (App Router) |
 | React | `19.2.4` |
 | TypeScript | `^5` |
 | Node.js | `24.x` (`engines` no `package.json`) |
@@ -51,8 +51,10 @@ Este repositório contém o **portfólio profissional de Lucas Batista**, posici
 | Fontes | Inter (corpo) + Source Serif 4 (títulos) via `next/font/google` |
 | Bundler | Turbopack (`next dev`) |
 | E2E | Playwright `^1.61.1` |
+| Visualização | ECharts `^6.1.0` + MapLibre GL JS `^5.24.0` |
+| Auditoria | Lighthouse `^13.4.1` |
 
-**Importante:** Tailwind v4 não usa `tailwind.config.ts`. Todas as variáveis, cores e tokens customizados estão em `app/globals.css` dentro do bloco `@theme inline` e `:root`. **Não crie um `tailwind.config.ts`.**
+**Importante:** Tailwind v4 não usa `tailwind.config.ts`. Tokens editáveis vivem em `design/tokens.json`; `npm run tokens:sync` gera `app/design-tokens.css` e `demos-logistica/lib/brand.py`, e `app/globals.css` importa o CSS gerado. **Não crie um `tailwind.config.ts`.**
 
 ### Demos (Streamlit)
 
@@ -92,7 +94,7 @@ portfolio-lucas-batista/
 │   ├── BackToTop.tsx       # Botão flutuante voltar ao topo
 │   ├── CaseDemoLauncher.tsx# Botão que abre DemoModal
 │   ├── CaseThumbnail.tsx   # Thumbnail ou SVG gradiente por categoria
-│   ├── DemoModal.tsx       # Modal com iframe Streamlit
+│   ├── DemoModal.tsx       # Modal híbrido: âncoras React + iframe Streamlit
 │   ├── LucideIconByName.tsx# Resolução dinâmica de ícones
 │   └── ...
 ├── data/
@@ -140,7 +142,7 @@ portfolio-lucas-batista/
 │   ├── DEPLOY.md / VERCEL.md
 │   ├── A11Y.md / MOBILE_SPEC.md
 │   ├── P0_P1_P2_CHECKLIST.md
-│   ├── OPORTUNIDADES_DEMOS.md  # backlog histórico
+│   ├── OPORTUNIDADES_DEMOS.md  # backlog técnico das demos
 │   └── archive/            # gaps e QA históricos
 │   ├── A11Y.md             # Acessibilidade
 │   └── MOBILE_SPEC.md      # Especificação mobile
@@ -187,9 +189,8 @@ Componentes arquivados em `components/archive/ui/`: `FadeIn`, `Stagger`, `GlassC
 |---|---|---|
 | Copy ativo (landing) | `data/content.ts` | Hardcode nos componentes |
 | Copy shelved (comercial) | `data/archive/content-consultoria.ts` | Remontar sem aprovação |
-| Spec visual + IA | `design/design.md` + `app/globals.css` | Figma |
-| Tokens landing | `app/globals.css` + `design/tokens.md` | Hex inline |
-| Tokens demos Streamlit | `demos-logistica/lib/brand.py` | — |
+| Spec visual + IA | `design/design.md` + `design/tokens.json` | Figma |
+| Tokens compartilhados | `design/tokens.json` → `app/design-tokens.css` + `demos-logistica/lib/brand.py` | Hex inline |
 | Padrões de componentes | `.agents/skills/design-system.md`, `.agents/skills/component-patterns.md` | Specs obsoletas |
 | Estado do projeto | `docs/AVALIACAO.md` | Claims "100%" sem QA |
 | Deploy / Vercel | `docs/DEPLOY.md`, `docs/VERCEL.md` | SHAs hardcoded |
@@ -246,7 +247,7 @@ npm run typecheck           # tsc --noEmit
 # SEO
 npm run seo:generate        # gera public/sitemap.xml e public/robots.txt
 
-# Build de produção (prebuild roda validate + typecheck automaticamente)
+# Build de produção (prebuild roda validate + typecheck + SEO automaticamente)
 npm run build
 
 # Servir build local
@@ -286,8 +287,12 @@ streamlit run app.py        # http://localhost:8501
 ### Verificação completa recomendada
 
 ```bash
+npm run tokens:sync
+npm run demos:export
 npm run validate && npm run lint && npm run typecheck && npm run build
-npm run test:e2e            # 9 testes Playwright
+npm run test:e2e            # 14 testes Playwright
+npm run qa:visual           # com `next start` ativo; modal + 3 viewports
+npm audit --audit-level=moderate
 npm run cv:generate         # se content.ts foi alterado
 
 cd demos-logistica
@@ -305,14 +310,14 @@ python scripts/validate_slugs.py    # 10/10
 - `npm run validate` é o teste principal: valida contagem de cases, slugs, ícones Lucide, campos obrigatórios, consistência `linkDemo`, correspondência com arquivos `demos-logistica/pages/*.py` e frescor dos artefatos de CV.
 - `npm run lint` usa `eslint-config-next` (core-web-vitals + typescript).
 - `npm run typecheck` roda `tsc --noEmit`.
-- `npm run build` deve passar sem erros. O `prebuild` roda `validate` e `typecheck` automaticamente.
-- `npm run test:e2e` executa 9 testes Playwright contra build de produção (o `playwright.config.ts` sobe o servidor com `next build && next start`).
+- `npm run build` deve passar sem erros. O `prebuild` roda `validate`, `typecheck` e `seo:generate` automaticamente.
+- `npm run test:e2e` executa 14 testes Playwright contra build de produção (o `playwright.config.ts` sobe o servidor com `next build && next start`).
 - QA manual pós-deploy está documentado em `docs/VERCEL.md`.
 
 ### Demos
 
 - `python scripts/smoke_test.py` executa `app.py` e todas as `pages/*.py` via `AppTest` e reporta exceções.
-- Inclui um teste de borda: filtro vazio na `02_mini_torre_controle.py` (`at.multiselect[0].set_value([]).run()`).
+- Inclui um teste de borda: filtro vazio na `mini_torre_controle.py` (`at.multiselect[0].set_value([]).run()`).
 - Meta: **13/13 checagens OK**.
 - Sempre rode `build_datasets.py` antes de `smoke_test.py` se os datasets ainda não existirem.
 - `python scripts/validate_slugs.py` garante que os 10 slugs esperados pela landing existam como pages.
@@ -365,7 +370,7 @@ python scripts/validate_slugs.py    # 10/10
 
 ### Acessibilidade
 
-- Meta: Lighthouse a11y 100 (atual 96 — pendência documentada).
+- Meta: Lighthouse a11y 100 (baseline local atual: 100 desktop/mobile).
 - Contraste mínimo WCAG AA: texto normal 4.5:1, texto grande/bold 3:1, componentes interativos 3:1.
 - Skip link (`#conteudo`), ordem de foco lógica, `.focus-ring` visível, ESC fecha modais.
 - Ícones com `aria-hidden` quando acompanhados de texto ou `aria-label` quando sozinhos.
@@ -386,7 +391,7 @@ python scripts/validate_slugs.py    # 10/10
 - Componentes: dynamic import/lazy para seções abaixo da fold e bibliotecas pesadas (`DemoModal` já lazy).
 - Framer Motion: `LazyMotion` + `domAnimation` ativo.
 - Core Web Vitals: LCP < 2.5s, FID < 100ms, CLS < 0.1, TTFB < 600ms, FCP < 1.8s, INP < 200ms.
-- Lighthouse atual: desktop 100/96/100/100, mobile 96/96/100/100.
+- Lighthouse local atual: desktop 100/100/100/100, mobile 91/100/100/100.
 
 ### Proibições explícitas
 
@@ -433,7 +438,7 @@ NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.stream
 - **Não crie** `vercel.json` com override de output directory.
 - Configuração correta do painel:
   - Framework Preset: **Next.js**
-  - Build Command: **vazio** (usa `npm run build`, que roda `prebuild` → `validate` + `typecheck`)
+  - Build Command: **vazio** (usa `npm run build`, que roda `prebuild` → `validate` + `typecheck` + `seo:generate`)
   - Output Directory: **vazio** (usa `.next/` nativo)
   - Install Command: **vazio** (usa `npm install`)
 - Env vars obrigatórias em Production, Preview e Development.
@@ -461,7 +466,8 @@ git push origin main
 
 - [ ] Site abre na URL Vercel.
 - [ ] 3 cases âncora + biblioteca filtrável + roadmap visíveis.
-- [ ] Demos abrem no modal (iframe) com contexto de negócio.
+- [ ] 3 âncoras abrem inline no modal e em `/provas/{slug}`.
+- [ ] 7 complementares abrem no modal via iframe `?embed=true`.
 - [ ] Link "Abrir em nova aba" no modal funciona.
 - [ ] LinkedIn, email, GitHub e CV PDF funcionam na seção Contato.
 - [ ] `robots.txt` e `sitemap.xml` acessíveis.
@@ -496,10 +502,10 @@ Alguns componentes e copy foram deliberadamente retirados da homepage no pivot p
 
 ## 12. Integração landing ↔ demos
 
-- As demos são embedadas via `DemoModal` usando iframe: `src="{demoUrl}?embed=true"`.
-- O parâmetro `?embed=true` remove a toolbar do Streamlit (complementado por `toolbarMode = "minimal"` no `.streamlit/config.toml`).
-- `DemoModal` inclui link "Abrir em nova aba" (URL sem `?embed=true`).
-- O modal abre ao clicar no card; mobile reduz altura do iframe para ~500px.
+- Âncoras `01`, `02` e `08` renderizam `DemoShell` diretamente no `DemoModal` e possuem rotas `/provas/{slug}`.
+- As 7 complementares usam iframe `src="{demoUrl}?embed=true"`; `toolbarMode = "minimal"` reduz o chrome do Streamlit.
+- `DemoModal` inclui link "Abrir em nova aba": rota Next nas âncoras e URL Streamlit sem `?embed=true` nas complementares.
+- ECharts e MapLibre são importados somente quando a âncora é aberta.
 - O mapeamento de slugs está em `data/content.ts` → `CASE_DEMO_SLUGS`.
 
 ---
@@ -528,7 +534,7 @@ Fontes TTF candidatas: `scripts/assets/DejaVuSans.ttf`, `C:\Windows\Fonts\arial.
 | `docs/P0_P1_P2_CHECKLIST.md` | Plano de refatoração progressiva |
 | `docs/DEPLOY.md` | Deploy Vercel + Streamlit |
 | `docs/VERCEL.md` | Operação Vercel / QA |
-| `docs/OPORTUNIDADES_DEMOS.md` | Backlog histórico de demos |
+| `docs/OPORTUNIDADES_DEMOS.md` | Backlog técnico das demos |
 | `docs/A11Y.md` / `docs/MOBILE_SPEC.md` | Specs profundas |
 | `docs/archive/` | Gaps e QA históricos |
 | `design/design.md` / `design/tokens.md` | Spec visual e tokens |

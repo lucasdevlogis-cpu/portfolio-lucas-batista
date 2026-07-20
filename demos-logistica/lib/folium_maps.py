@@ -68,24 +68,6 @@ def _brand_icon(tipo: str, color: str) -> folium.DivIcon:
     )
 
 
-def _icon_for(tipo: str) -> folium.Icon:
-    """Ícone FontAwesome por tipo de ponto usando cores próximas à marca."""
-    mapping = {
-        "cd": ("warehouse", "darkblue"),
-        "depot": ("warehouse", "darkblue"),
-        "origem": ("warehouse", "darkblue"),
-        "entrega": ("box", "cadetblue"),
-        "cliente": ("box", "cadetblue"),
-        "hub": ("store", "orange"),
-        "loja": ("store", "orange"),
-        "critico": ("exclamation-triangle", "red"),
-        "critica": ("exclamation-triangle", "red"),
-        "veiculo": ("truck", "green"),
-    }
-    icon_name, color = mapping.get(tipo.lower(), ("circle", "blue"))
-    return folium.Icon(prefix="fa", icon=icon_name, color=color, icon_color="white")
-
-
 def _popup(row: pd.Series, fields: Sequence[str]) -> str:
     """HTML simples para popup com campos selecionados."""
     lines = []
@@ -335,9 +317,6 @@ def add_heatmap(
         data.append(entry)
     HeatMap(data, radius=radius, blur=blur, name="Heatmap").add_to(m)
     return m
-
-
-icon_for = _icon_for
 
 
 def add_legend(

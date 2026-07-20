@@ -17,12 +17,14 @@ interface CaseDemoLauncherProps {
   caseItem: Case;
   className?: string;
   icon?: ReactNode;
+  labelOverride?: string;
 }
 
 export function CaseDemoLauncher({
   caseItem,
   className,
   icon,
+  labelOverride,
 }: CaseDemoLauncherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [Modal, setModal] = useState<ComponentType<DemoModalProps> | null>(
@@ -31,6 +33,9 @@ export function CaseDemoLauncher({
   const labels = CONTENT.secoes;
   const hasDemo = Boolean(caseItem.linkDemo);
   const cta = caseDemoCta(caseItem);
+  const visibleLabel = hasDemo
+    ? (labelOverride ?? cta.label)
+    : labels.caseDemoUnavailableLabel;
 
   const handleOpen = async () => {
     if (!hasDemo) return;
@@ -47,16 +52,20 @@ export function CaseDemoLauncher({
       <Button
         variant={hasDemo ? "executive" : "outline"}
         className={cn(
-          "h-10 min-h-10 flex-1 rounded-lg",
+          "h-10 min-h-10 min-w-0 max-w-full shrink flex-1 rounded-lg",
           !hasDemo && "cursor-not-allowed opacity-60",
           className,
         )}
         onClick={handleOpen}
         aria-disabled={!hasDemo}
-        aria-label={hasDemo ? cta.ariaLabel : labels.caseDemoUnavailableLabel}
+        aria-label={
+          hasDemo
+            ? `${visibleLabel}: ${caseItem.titulo}`
+            : labels.caseDemoUnavailableLabel
+        }
       >
         {icon}
-        {hasDemo ? cta.label : labels.caseDemoUnavailableLabel}
+        {visibleLabel}
       </Button>
       {Modal ? (
         <Modal

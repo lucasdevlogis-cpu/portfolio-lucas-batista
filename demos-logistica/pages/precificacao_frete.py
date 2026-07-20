@@ -53,7 +53,7 @@ ui.breadcrumb("Case: Precificação de Frete · <b>Demo interativa</b>")
 if base.empty:
     ui.hero(
         "01. Precificação de Frete Rodoviário BR",
-        "Onde o frete pesa na composição de custo e quanto isso fica acima do piso ANTT?",
+        "Onde o frete pesa na composição de custo e quanto isso se afasta do piso ANTT?",
         frameworks=["NTC&Logística", "Piso mínimo ANTT", "Sensibilidade diesel (ANP)"],
         selo=brand.maturidade(
             metodo="coeficientes curados", producao="tabela contratada + ANTT vigente"
@@ -67,7 +67,7 @@ if base.empty:
     )
     ui.insight(
         "Nenhum embarque com os filtros atuais. Selecione pelo menos uma UF de origem.",
-        icone="🚚",
+        rotulo="Ação",
     )
     ui.footer()
     st.stop()
@@ -112,7 +112,7 @@ custo_kg = frete_total / max(calc["peso_taxavel_kg"].sum(), 1)
 
 ui.hero(
     "01. Precificação de Frete Rodoviário BR",
-    "Onde o frete pesa na composição de custo e quanto isso fica acima do piso ANTT?",
+    "Onde o frete pesa na composição de custo e quanto isso se afasta do piso ANTT?",
     frameworks=["NTC&Logística", "Piso mínimo ANTT", "Sensibilidade diesel (ANP)"],
     selo=brand.maturidade(
         metodo="coeficientes curados", producao="tabela contratada + ANTT vigente"

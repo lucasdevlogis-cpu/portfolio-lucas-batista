@@ -32,15 +32,15 @@ function SignatureCase({ caseItem }: { caseItem: Case }) {
         duration: 0.7,
         ease: [0.22, 1, 0.36, 1],
       }}
-      whileHover={{ y: -6 }}
+      whileHover={{ y: -3 }}
       data-testid="case-card"
       className={cn(
-        "group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-normal ease-editorial hover:border-accent/30 hover:shadow-elevated",
-        "border-l-4",
+        "group flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-editorial transition-all duration-normal ease-editorial hover:border-accent/40 hover:shadow-card",
+        "border-t-2",
         prioridadeCor,
       )}
     >
-      <div className="shine relative z-0 overflow-hidden">
+      <div className="relative z-0 overflow-hidden">
         <CaseThumbnail caseItem={caseItem} />
       </div>
 
@@ -49,7 +49,7 @@ function SignatureCase({ caseItem }: { caseItem: Case }) {
           <EditorialBadge className="w-fit">
             {caseItem.categoria}
           </EditorialBadge>
-          <span className="shrink-0 font-heading text-sm font-bold uppercase tracking-[0.08em] text-primary/45">
+          <span className="shrink-0 font-heading text-sm font-bold uppercase tracking-[0.08em] text-primary/80">
             Case {caseNumber}
           </span>
         </div>
@@ -78,10 +78,10 @@ function SignatureCase({ caseItem }: { caseItem: Case }) {
           </div>
         </div>
 
-        <div className="mt-auto flex flex-col gap-2 pt-5 sm:flex-row">
+        <div className="mt-auto flex min-w-0 flex-col gap-2 pt-5 xl:flex-row">
           <CaseDemoLauncher
             caseItem={caseItem}
-            className="h-11 min-h-11 flex-1 rounded-md"
+            className="h-11 min-h-11 w-full min-w-0 max-w-full flex-1 rounded-md px-3 text-center leading-tight whitespace-normal"
             icon={<PlayCircle className="size-4" aria-hidden />}
           />
           {caseItem.linkGitHub ? (
@@ -92,7 +92,7 @@ function SignatureCase({ caseItem }: { caseItem: Case }) {
               aria-label={`${labels.caseCodeLabel}: ${caseItem.titulo}`}
               className={cn(
                 buttonVariants({ variant: "outline" }),
-                "h-11 min-h-11 rounded-md border-primary/15 bg-transparent px-3",
+                "h-11 min-h-11 w-full min-w-0 max-w-full shrink flex-1 rounded-md border-primary/15 bg-transparent px-3 text-center leading-tight whitespace-normal",
               )}
             >
               <ExternalLink className="size-4" aria-hidden />
@@ -152,7 +152,7 @@ export function SignatureCases() {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             data-testid="case-roadmap"
-            className="mt-8 rounded-2xl border border-dashed border-warm-accent/30 bg-warm-accent/[0.04] p-5"
+            className="mt-8 rounded-xl border border-dashed border-warm-accent/30 bg-warm-accent/[0.04] p-5"
           >
             <div className="grid gap-5 lg:grid-cols-[0.32fr_1fr] lg:items-start">
               <div>

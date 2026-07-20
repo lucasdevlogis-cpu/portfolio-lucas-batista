@@ -6,6 +6,8 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 
+import { ANCHOR_DEMO_SLUGS } from "../lib/demo-contract";
+
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
   "https://portfolio-lucas-batista-murex.vercel.app";
@@ -13,6 +15,14 @@ const SITE_URL =
 const normalized = SITE_URL.replace(/\/$/, "");
 
 const today = new Date().toISOString().split("T")[0];
+const anchorUrls = ANCHOR_DEMO_SLUGS.map(
+  (slug) => `  <url>
+    <loc>${normalized}/provas/${slug}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>`,
+).join("\n");
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -28,6 +38,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+${anchorUrls}
 </urlset>
 `;
 

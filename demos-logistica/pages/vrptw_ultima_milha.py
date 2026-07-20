@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 import streamlit as st
 from lib import brand, folium_maps as fmap, format as fmt, geo, tables, ui, viz
 
-ui.page_setup("05. VRPTW — Última Milha", icon="⏱️")
+ui.page_setup("09. VRPTW — Última Milha", icon="⏱️")
 
 DEPOT = (-23.51, -46.72)
 
@@ -81,7 +81,7 @@ with st.spinner("Simulando rotas e janelas..."):
 ui.breadcrumb("Case: VRPTW Última Milha · <b>Demo interativa</b>")
 
 ui.hero(
-    "05. VRPTW — Última Milha com Janelas de Tempo",
+    "09. VRPTW — Última Milha com Janelas de Tempo",
     "A sequência de entregas respeita as janelas prometidas ao cliente?",
     frameworks=["PyVRP", "OR-Tools"],
     selo=brand.maturidade(

@@ -1,152 +1,79 @@
-# Checklist de Prioridade — Refatoração do Portfolio
+# Fila de continuidade — Portfólio Lucas Batista
 
-> **Base:** [`docs/AVALIACAO.md`](AVALIACAO.md) · Gaps históricos: [`archive/GAPS-2026-07-08.md`](archive/GAPS-2026-07-08.md)  
-> **Entrada:** [`CANON.md`](CANON.md) · **Arquitetura:** [`ARQUITETURA.md`](ARQUITETURA.md)  
-> **Princípio:** P0 (fundação) > P1 (refinamento) > P2 (polish)  
-> **Regra:** nenhuma mudança P1/P2 antes dos P0 abertos estarem estáveis.
->
-> Muitas linhas ✅ abaixo são **histórico de entrega**. Itens ainda abertos: foto placeholder, Lighthouse revalidação, domínio custom.
+> Fila ativa após a consolidação de 20/07/2026. O estado comprovado fica em [`AVALIACAO.md`](AVALIACAO.md); decisões estruturais ficam em [`CANON.md`](CANON.md) e [`ARQUITETURA.md`](ARQUITETURA.md).
 
----
+## Entrega consolidada
 
-## Legenda
+| Frente | Estado | Evidência |
+|---|---|---|
+| Landing mais seletiva e menos decorativa | Concluída | Hero, perfil, provas, trajetória e contato revisados |
+| 3 provas âncora em React/Next | Concluída | `/provas/precificacao_frete`, `/provas/mini_torre_controle`, `/provas/cvrp_urbano` |
+| Modal híbrido | Concluído | Âncoras inline; 7 complementares em iframe Streamlit |
+| Contrato Python → JSON → TypeScript | Concluído | `export_demo_snapshots.py` + `validate-demo-contract.ts` |
+| Tokens compartilhados | Concluídos | `design/tokens.json` gera CSS e `brand.py` |
+| Limpeza de legado e helpers | Concluída | helpers sem referência removidos; artefatos de QA isolados em `docs/audit/` |
+| Foto placeholder | Resolvida | asset e JSON-LD removidos; só voltar com foto profissional real |
+| Dependências e segurança | Concluídas | Next 16.2.10; `npm audit` com 0 vulnerabilidades |
+| Qualidade automatizada | Concluída | build limpo, E2E 14/14, demos 13/13, slugs 10/10 |
+| Lighthouse local | Concluído | desktop 100/100/100/100; mobile 91/100/100/100 |
 
-| Status | Significado |
-|--------|-------------|
-| ✅ | Implementado e validado |
-| 🟡 | Parcial / precisa de ajuste |
-| ❌ | Não implementado |
-| ⏸️ | Deliberadamente adiado |
+## P0 — liberar a versão
 
----
+Estas ações dependem do ciclo de publicação, não de correção local adicional.
 
-## Fase 1: Fundação (P0) — Essencial
+1. Publicar o commit de consolidação na branch `main`.
+2. Confirmar deploy Vercel `READY` e as três rotas `/provas/{slug}`.
+3. Sincronizar `demos-logistica/` com o repositório de deploy do Streamlit.
+4. Executar smoke em produção: landing, modal âncora, iframe complementar, contatos, CV, OG, robots e sitemap.
+5. Repetir Lighthouse na URL pública; registrar o resultado em `AVALIACAO.md` sem substituir a medição local.
 
-| # | Tarefa | Onde | Status | Notas |
-|---|--------|------|--------|-------|
-| 1 | Definir paleta de cores unificada | `app/globals.css`, `design/tokens.md` | ✅ | Tokens editoriais ativos |
-| 2 | Definir escala tipográfica (Source Serif 4 + Inter) | `app/globals.css`, `layout.tsx` | ✅ | Fontes atualizadas; corpo mínimo 14px, leitura 16px |
-| 3 | Redesenhar hero: reduzir texto, CTAs claros | `components/sections/ExecutiveHero.tsx` | ✅ | Layout denso com painel de credibilidade à direita |
-| 4 | Remover/substituir cockpit estático do hero | `components/visual/LogisticsIntelligenceCockpit.tsx` | ✅ | Componente arquivado em `components/archive/legacy/`; substituído por painel com stack, empresas e provas |
-| 5 | Densificar seção Perfil | `components/sections/ProfileBrief.tsx` | ✅ | Card de direção de carreira + 3 diferenciais + domínios como tags + metadados de carreira |
-| 6 | Adicionar screenshots/thumbnails nos cards de provas | `SignatureCases`, `public/cases/` | ✅ | WebP reais nos 3 âncora; SVG fallback só sem `thumbnail` |
-| 7 | Cards de provas escaneáveis | `SignatureCases` + `DemoModal` | ✅ | Card compacto; detalhe (decisão/limitação/tags) no modal |
-| 8 | Redesenhar timeline de trajetória (visual vertical) | `components/sections/TrajectoryBoard.tsx` | ✅ | Timeline visual implementada |
-| 9 | Resumir experiências (foco em resultado) | `data/content.ts` + `TrajectoryBoard.tsx` | ✅ | `atribuicoes` enxutas; impactos por empresa como badges |
-| 10 | Ajustar contraste em todas as seções (WCAG AA) | Todo o site | 🟡 | Lighthouse a11y 96/100 |
-| 11 | Alinhar documentação de agentes com código real | `.cursorrules`, `.agents/skills/`, `.codex/AGENTS.md` | ✅ | Atualizado nesta rodada |
-| 12 | Configurar MCPs do Cursor sem expor tokens | `.cursor/mcp.json`, `.cursor/MCP_SETUP.md` | ✅ | Placeholders + instruções |
+## P1 — próxima fase de produto
 
-### Bloqueadores P0
-- **Foto do hero:** placeholder em `public/profile.jpg`. Substituir por foto profissional real.
-- **Lighthouse a11y 96:** revalidar após ajustes de densidade/tipografia.
-- **Cache CSS:** rebuild limpo resolveu problema de estilos não aplicados em `next start` local.
-- **Cockpit estático no hero:** ✅ resolvido (arquivado e substituído por painel de credibilidade).
+| Ordem | Trabalho | Resultado esperado |
+|---:|---|---|
+| 1 | Elevar as 7 demos Streamlit secundárias | Mesma linguagem visual das âncoras, menos CSS frágil e leitura executiva mais curta |
+| 2 | Separar `data/raw/` de `data/generated/` | Origem, artefatos reprodutíveis e limpeza do diretório de dados explícitas |
+| 3 | Criar baseline de regressão visual | Capturas comparáveis em 375, 768 e 1440 px no CI |
+| 4 | Testar acessibilidade assistiva | NVDA, foco, nomes acessíveis e leitura dos mapas/gráficos |
+| 5 | Medir Web Vitals em produção | Decidir se Vercel Speed Insights agrega valor antes de instalar |
 
----
+## P2 — diferenciação opcional
 
-## Fase 2: Refinamento (P1) — Importante
+- Domínio próprio.
+- Foto profissional real; não usar avatar, stock ou placeholder.
+- Thumbnails autorais para as 7 provas complementares.
+- Estado compartilhável por query string nas provas âncora, somente se houver necessidade real de exploração.
+- Componente React compartilhado com Streamlit apenas se reduzir manutenção; não introduzir por estética isolada.
 
-| # | Tarefa | Onde | Status | Notas |
-|---|--------|------|--------|-------|
-| 1 | Implementar filtros funcionais na seção de provas | `components/sections/CaseLibraryDesktop.tsx` | ✅ | Filtros laterais funcionais |
-| 2 | Destacar 3 provas âncora visualmente | `components/sections/SignatureCases.tsx` | ✅ | Cards maiores com ícone gradiente |
-| 3 | Adicionar smooth scroll na navegação | `app/globals.css` | ✅ | `scroll-behavior: smooth` |
-| 4 | Adicionar indicador de seção ativa no menu | `components/Header.tsx`, `lib/use-active-section.ts` | ✅ | Scroll spy via IntersectionObserver; underline accent na seção ativa |
-| 5 | Implementar hover states em todos os cards e botões | Todo o site | 🟡 | Parcial; revisar inconsistências |
-| 6 | Converter stack para badges/tags coloridos | `components/sections/TrajectoryBoard.tsx` | ⏸️ | Adiado — stack atual em texto agrupado já é legível; badges podem virar noise |
-| 7 | Destacar cargo atual na timeline | `components/sections/TrajectoryBoard.tsx` | ✅ | Badge "Atual", borda e fundo accent sutil no primeiro cargo |
-| 8 | Adicionar botão "Voltar ao topo" flutuante | `components/BackToTop.tsx`, `app/layout.tsx` | ✅ | Botão fixed bottom-right aparece após 500px de scroll |
-| 9 | Implementar grid responsivo inteligente para provas | `SignatureCases.tsx` + `CaseLibrary.tsx` | ✅ | Cards âncora empilham em mobile; biblioteca tem filtros pills horizontais |
-| 10 | Padronizar ícones (Lucide, um peso) | Todo o site | ✅ | Lucide React exclusivo |
-| 11 | Renomear `CaseLibraryDesktop` → `CaseLibrary` | `components/sections/CaseLibrary.tsx` | ✅ | Arquivo renomeado; layout mobile adicionado |
-| 12 | Remover FAQ e reduzir densidade textual | `components/sections/ProfileBrief.tsx`, `components/sections/ContactPanel.tsx` | ✅ | FAQ removido; copy enxuta em Perfil e Contato |
-| 13 | Adicionar `useReducedMotion` no MotionProvider | `components/providers/MotionProvider.tsx` | ✅ | Respeita `prefers-reduced-motion` via MotionConfig |
-| 14 | Adicionar `aria-live` nos filtros da biblioteca | `components/sections/CaseLibrary.tsx` | ✅ | Container com `aria-live="polite"` anuncia mudanças |
+## Decisões preservadas
 
----
+- Next.js é a superfície pública e hospeda as três provas âncora.
+- Streamlit continua como motor exploratório das sete provas complementares.
+- ECharts e MapLibre carregam apenas quando uma prova âncora é aberta.
+- `data/content.ts` continua como SSOT de copy e metadados da landing.
+- `design/tokens.json` é a única fonte editável de cor, raio e dimensões compartilhadas.
+- Nenhuma correção automática forçada de dependências; upgrades são explícitos e verificados.
+- O navegador embutido segue como limitação externa quando retorna `sandboxPolicy`; Playwright Chromium é o fallback operacional já validado.
 
-## Fase 3: Polish (P2) — Diferenciador
+## Critério de pronto da próxima rodada
 
-| # | Tarefa | Onde | Status | Notas |
-|---|--------|------|--------|-------|
-| 1 | Adicionar microanimações (fade-in, hover) | Todo o site | ✅ | Framer Motion em todas as seções |
-| 2 | Implementar analytics (cliques em CTAs, provas, contato) | `lib/analytics.ts` | ✅ | Helper `analytics` com eventos de CTA, demo, filtro, contato, CV, LinkedIn, GitHub |
-| 3 | Adicionar Open Graph tags para LinkedIn | `app/layout.tsx` | ✅ | OG + Twitter Card implementados |
-| 4 | Implementar schema.org/Person para SEO | `app/layout.tsx` | ✅ | JSON-LD Person presente |
-| 5 | Adicionar calendly ou formulário de contato | `components/sections/ContactPanel.tsx` | ⏸️ | Decisão: manter links diretos por ora |
-| 6 | Converter cards "em preparação" para visual desaturado | `components/sections/SignatureCases.tsx` | ✅ | Roadmap com visual dashed/warm-accent |
-| 7 | Adicionar transição gradiente entre tema escuro e claro | `components/sections/ExecutiveHero.tsx` | ✅ | Gradient `from-transparent to-editorial` de 128px na base do hero |
-| 8 | Otimizar carregamento (lazy load nas imagens de provas) | `components/CaseThumbnail.tsx` | ✅ | `loading="lazy"` explicitado nas thumbnails reais |
-| 9 | Adicionar Vercel Analytics | `app/layout.tsx` | ✅ | `<Analytics />` do `@vercel/analytics/react` adicionado ao body |
-| 10 | Implementar testes E2E para modal e filtros | `e2e/`, Playwright | ✅ | 8 testes passando: homepage, navegação, cases, biblioteca, modal |
+Uma rodada só termina com:
+
+```bash
+npm run tokens:sync
+npm run demos:export
+npm run validate && npm run lint && npm run typecheck && npm run build
+npm run test:e2e
+npm audit --audit-level=moderate
+
+cd demos-logistica
+python scripts/build_datasets.py
+python scripts/smoke_test.py
+python scripts/validate_slugs.py
+```
+
+Para mudanças visuais, servir o build com `npm run start` e executar `npm run qa:visual` e `npm run lighthouse:all`.
 
 ---
 
-## Fase 4: Auditoria e Correções nas Demos Streamlit
-
-> Status após rodada de correções visuais/UX em `demos-logistica/`.
-
-| # | Problema | Arquivos | Status | Notas |
-|---|----------|----------|--------|-------|
-| 1 | "Ocorrencia aberta" sem acento | `lib/brand.py`, `lib/tables.py`, `scripts/build_datasets.py`, `pages/02_mini_torre_controle.py` | ✅ | Corrigido para "Ocorrência aberta"; datasets regenerados |
-| 2 | Mapas Folium sem legendas de cor/espessura | `pages/01_precificacao_frete.py`, `pages/02_mini_torre_controle.py`, `pages/03_cvrp_urbano.py`, `pages/04_promessa_cep.py`, `pages/05_vrptw_ultima_milha.py`, `pages/06_rede_interhubs.py`, `pages/08_ship_from_store.py`, `pages/09_tsp_baseline_sp.py`, `pages/10_auditoria_endereco.py` | ✅ | `folium_maps.add_legend()` aplicado em todos os mapas com semântica de cor ou espessura |
-| 3 | Cluster anulando semântica de cor | `pages/02_mini_torre_controle.py`, `pages/04_promessa_cep.py`, `pages/10_auditoria_endereco.py` | ✅ | Threshold de cluster elevado para >60 pontos; legenda mantida |
-| 4 | Embed: rotas perdem setas/números | `pages/03_cvrp_urbano.py`, `pages/05_vrptw_ultima_milha.py`, `pages/09_tsp_baseline_sp.py` | 🟡 | `show_numbers/arrows=False` no embed por espaço; legendas ajudam, mas ainda recomenda-se abrir em nova aba |
-| 5 | "Apto" na tabela 01 com semântica confusa | `pages/01_precificacao_frete.py`, `lib/tables.py` | ✅ | Renomeado para "Acima do piso"; coluna renomeada para "Status vs piso ANTT" |
-| 6 | Acurácia do classificador 07 medindo overfit | `pages/07_classificador_ocorrencias.py` | ✅ | Label alterado para "Concordância na amostra de desenvolvimento" com help explicativo |
-| 7 | Score de risco 04 com fórmula caixa-preta | `pages/04_promessa_cep.py` | ✅ | Fórmula exposta no caption do mapa e no `method_expander` |
-| 8 | "Otimizado" no TSP/CVRP/VRPTW exagerando | `pages/03_cvrp_urbano.py`, `pages/05_vrptw_ultima_milha.py`, `pages/09_tsp_baseline_sp.py` | ✅ | Substituído por "Melhorado" ou "EDF (heurístico)"; helps reforçam que não é ótimo global |
-| 9 | `@st.cache_data` nos carregamentos | `lib/ui.py` | ✅ | `load_csv()` já utiliza `@st.cache_data(show_spinner=False)` |
-| 10 | Padronizar `ui.insight` | diversas pages | 🟡 | Uso consistente, mas sem guia formal de quando usar vs `st.info` |
-| 11 | Remover helpers Plotly não usados em `viz.py` | `lib/viz.py` | ⏸️ | `map_points`, `map_routes`, `network_map` não são usados; remoção adiada para evitar regressão |
-
-### Validação das demos
-- `python scripts/build_datasets.py` ✅
-- `python scripts/smoke_test.py` ✅ 13/13 checagens OK
-
----
-
-## Sequência Recomendada de Execução
-
-### Sprint 1 — Fundação (P0)
-1. ✅ Resolver cockpit do hero (arquivado; painel de credibilidade no lugar)
-2. ✅ Densificar seção Perfil com FAQ de triagem
-3. ✅ Ajustar tipografia e espaçamentos para melhor legibilidade
-4. Substituir foto placeholder em `public/profile.jpg`
-5. Subir Lighthouse a11y de 96 para 100
-
-### Sprint 2 — Refinamento (P1)
-1. Adicionar indicador de seção ativa no Header
-2. Renomear `CaseLibraryDesktop` → `CaseLibrary` + layout mobile
-3. Adicionar `useReducedMotion` no MotionProvider
-4. Adicionar `aria-live` nos filtros
-5. Destacar cargo atual na timeline
-6. Botão "Voltar ao topo" flutuante
-
-### Sprint 3 — Polish (P2)
-1. Implementar analytics básico
-2. Adicionar Vercel Analytics
-3. Testes E2E críticos (modal, filtros, scroll)
-4. Otimizações finais de performance
-
-### Sprint 4 — Demos Streamlit
-1. Corrigir acentuação e honestidade de comunicação ("Otimizado", "Apto", acurácia)
-2. Adicionar legendas em todos os mapas Folium
-3. Revisar clusters e espessuras de aresta
-4. Validar com `build_datasets.py` + `smoke_test.py`
-
----
-
-## Critérios de Pronto por Fase
-
-| Fase | Critérios |
-|------|-----------|
-| P0 | `npm run validate && npm run lint && npm run typecheck && npm run build` passando; Lighthouse a11y >= 98; nenhum componente falso/interativo estático |
-| P1 | Testes manuais em 375px e 1440px; indicador de seção funcional; a11y 100; mobile da biblioteca funcional |
-| P2 | Analytics coletando eventos; testes E2E passando; Lighthouse mobile >= 98; deploy em produção validado |
-| Demos | `python scripts/build_datasets.py` e `python scripts/smoke_test.py` passando; todas as pages com legenda nos mapas; copy honesta sobre heuristicidade |
-
----
-
-*Documento vivo. Atualizar após cada sprint ou deploy.*
+*Atualize esta fila ao concluir um item ou quando uma decisão de produto mudar; não replique backlog em outros documentos.*

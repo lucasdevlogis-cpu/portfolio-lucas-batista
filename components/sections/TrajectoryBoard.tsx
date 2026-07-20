@@ -46,13 +46,13 @@ export function TrajectoryBoard() {
                     <span
                       className={cn(
                         "text-sm font-bold",
-                        isCurrent ? "text-accent" : "text-primary",
+                        isCurrent ? "text-accent-contrast" : "text-primary",
                       )}
                     >
                       {exp.periodo}
                     </span>
                     {isCurrent ? (
-                      <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white">
+                      <span className="rounded-full bg-accent-contrast px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white">
                         Atual
                       </span>
                     ) : null}

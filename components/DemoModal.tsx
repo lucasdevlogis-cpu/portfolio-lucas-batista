@@ -4,6 +4,7 @@ import { ChevronDown, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+import { DemoShell } from "@/components/demos/DemoShell";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,7 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { CONTENT, type Case } from "@/data/content";
+import { CASE_DEMO_SLUGS, CONTENT, type Case } from "@/data/content";
+import { getDemoSnapshot } from "@/lib/demo-contract";
 import { cn } from "@/lib/utils";
 
 interface DemoModalProps {
@@ -133,7 +135,10 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
   };
 
   const demoUrl = caseItem?.linkDemo ?? "";
-  const embedUrl = demoUrl
+  const demoSlug = caseItem ? CASE_DEMO_SLUGS[caseItem.id] : undefined;
+  const snapshot = demoSlug ? getDemoSnapshot(demoSlug) : null;
+  const openDemoUrl = snapshot && demoSlug ? `/provas/${demoSlug}` : demoUrl;
+  const embedUrl = !snapshot && demoUrl
     ? `${demoUrl}${demoUrl.includes("?") ? "&" : "?"}embed=true`
     : "";
 
@@ -183,7 +188,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
             </div>
             {demoUrl ? (
               <a
-                href={demoUrl}
+                href={openDemoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-11 shrink-0 items-center gap-1 text-xs font-bold text-accent-contrast hover:underline"
@@ -207,7 +212,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
             {isMobile && demoUrl ? (
               <div className="border-b border-border bg-accent/5 px-5 py-3">
                 <a
-                  href={demoUrl}
+                  href={openDemoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
@@ -222,7 +227,11 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
             ) : null}
 
             <div className="relative flex-1">
-              {embedUrl && !shouldMountIframe ? (
+              {snapshot ? (
+                <div className="min-h-[520px] overflow-y-auto bg-editorial">
+                  <DemoShell snapshot={snapshot} compact />
+                </div>
+              ) : embedUrl && !shouldMountIframe ? (
                 <div className="flex flex-col items-center gap-3 px-6 py-10 text-center">
                   {thumbnailSrc ? (
                     <div className="relative mb-2 aspect-video w-full max-w-lg overflow-hidden rounded-xl border border-border">
@@ -290,7 +299,7 @@ export function DemoModal({ isOpen, onClose, caseItem }: DemoModalProps) {
                           {demoUrl &&
                           (status === "timeout" || status === "error") ? (
                             <a
-                              href={demoUrl}
+                              href={openDemoUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               className={cn(

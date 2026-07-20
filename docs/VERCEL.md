@@ -1,6 +1,6 @@
 # Vercel — Operação e auditoria
 
-> Referência operacional do projeto `portfolio-lucas-batista` na Vercel. Atualizado em 06/07/2026.
+> Referência operacional do projeto `portfolio-lucas-batista` na Vercel. Atualizado em 20/07/2026. Confirme o estado remoto com a CLI; IDs históricos não provam o deploy atual.
 
 ---
 
@@ -10,7 +10,7 @@
 |-------|-------|
 | **Team** | `lucasdevlogis-5294s-projects` (`team_lFpQBhlME8YgCExqLddidyuL`) |
 | **Project ID** | `prj_9RX6OAg0tm1cLBEXOToIiEFh6hRq` |
-| **Framework** | Next.js 16.2.9 (Turbopack no build) |
+| **Framework** | Next.js 16.2.10 (Turbopack no build) |
 | **Node** | 24.x (`package.json` `engines`) |
 | **Região runtime** | `iad1` |
 | **Integração** | GitHub `lucasdevlogis-cpu/portfolio-lucas-batista` → branch `main` |
@@ -37,10 +37,10 @@ Configuração **correta** para Next.js App Router — confirmada via CLI, MCP e
 | Install Command | vazio (usa `npm install`) | ✅ |
 | `output: 'export'` | **não** usar | ✅ ausente em `next.config.ts` |
 | `vercel.json` com override | **não** usar | ✅ ausente no repo |
-| `prebuild` | `validate-cases.ts` | ✅ roda no deploy |
+| `prebuild` | cases + contrato + typecheck + SEO | ✅ roda no deploy |
 | Bundler | Turbopack | ✅ |
 
-Build log típico: `validate-cases OK` → `next build` → rotas estáticas `/`, `/_not-found`, `/icon.png`.
+Build log típico: cases e snapshots válidos → typecheck → `next build` → `/` + 3 rotas SSG `/provas/{slug}`.
 
 ---
 
@@ -74,7 +74,7 @@ npx vercel env pull .env.local
 
 ## Produção
 
-Deploy atual: `dpl_AeSkethQEEq4UasUAQgVXhEXNUHV` (07/07/2026 18:16 UTC-3).
+Consulte o deploy atual em vez de registrar um ID fixo:
 
 ```bash
 npx vercel inspect portfolio-lucas-batista-murex.vercel.app
@@ -134,27 +134,28 @@ npx vercel inspect <deployment-url> --logs
 
 Sincronizado com [`docs/CANON.md`](CANON.md) §6 e [`docs/AVALIACAO.md`](AVALIACAO.md).
 
-- [x] Build `READY` (Next.js nativo, validate-cases no prebuild)
-- [x] Env `NEXT_PUBLIC_*` em Production, Preview e Development
-- [x] Homepage: Hero + Evidence + `#perfil` + `#cases` + `#trajetoria` + `#contato` (ordem scroll = nav) — validado E2E 07/07
-- [x] Nav: Perfil · Provas · Trajetória · Contato — validado E2E 07/07
-- [x] Modal demo + iframe `?embed=true` — validado E2E 07/07
-- [x] `robots.txt` e `sitemap.xml` → 200 — validado E2E 07/07
-- [x] OG preview (`public/og-image.jpg`) — asset 200 em prod — validado E2E 07/07
-- [x] Lighthouse mobile ≥ 90 — prod **96/96/100/100** 07/07
-- [x] Preview de PR — env Preview configurada 06/07 (herda `NEXT_PUBLIC_*`)
-- [x] CV PDF em `/lucas-batista-cv.pdf` — validado E2E 07/07
+- [ ] Build `READY` (Next.js nativo, validação e typecheck no prebuild)
+- [ ] Env `NEXT_PUBLIC_*` em Production, Preview e Development
+- [ ] Homepage: Hero + Evidence + `#perfil` + `#cases` + `#trajetoria` + `#contato`
+- [ ] Nav: Perfil · Provas · Trajetória · Contato
+- [ ] Âncoras inline + 3 rotas `/provas/{slug}` — validar após publicar esta versão
+- [ ] Complementares em iframe `?embed=true` — validar após publicar esta versão
+- [ ] `robots.txt` e `sitemap.xml` → 200
+- [ ] OG preview (`public/og-image.jpg`) correto
+- [ ] Lighthouse produção ≥ 90 — baseline local: **91/100/100/100** mobile e **100/100/100/100** desktop
+- [ ] Preview de PR herda `NEXT_PUBLIC_*`
+- [ ] CV PDF em `/lucas-batista-cv.pdf`
 
 ---
 
-## O que **não** está configurado (backlog)
+## Observabilidade e branding
 
 | Item | Impacto | Prioridade |
 |------|---------|------------|
-| Vercel Analytics | Sem métricas de visita | Baixa |
+| Vercel Analytics | Implementado; confirmar eventos em produção | Baixa |
 | Speed Insights | Sem Web Vitals contínuos | Baixa |
 | Domínio custom | URL `*.vercel.app` provisória | Média |
-| Sitemap dinâmico via `NEXT_PUBLIC_SITE_URL` | ✅ `npm run seo:generate` | Baixa |
+| Sitemap das âncoras | Gerado no `prebuild` por `npm run seo:generate` | Implementado |
 
 ---
 

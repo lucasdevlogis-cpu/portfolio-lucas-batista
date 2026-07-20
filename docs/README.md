@@ -10,15 +10,17 @@
 | 1 | [`ARQUITETURA.md`](ARQUITETURA.md) | Mapa estrutural do sistema |
 | 1 | [`../data/content.ts`](../data/content.ts) | Copy, cases, CTAs |
 | 1 | [`../design/design.md`](../design/design.md) | Spec visual |
-| 1 | [`../app/globals.css`](../app/globals.css) + [`../design/tokens.md`](../design/tokens.md) | Tokens |
+| 1 | [`../design/tokens.json`](../design/tokens.json) + [`../design/tokens.md`](../design/tokens.md) | Fonte e catálogo de tokens |
 | 1 | [`AVALIACAO.md`](AVALIACAO.md) | Saúde / status |
 | 2 | [`DEPLOY.md`](DEPLOY.md), [`VERCEL.md`](VERCEL.md) | Como publicar |
-| 2 | [`P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md) | Trabalho aberto / histórico de refatoração |
+| 2 | [`P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md) | Fila ativa e próximos passos |
 | 3 | [`A11Y.md`](A11Y.md), [`MOBILE_SPEC.md`](MOBILE_SPEC.md) | Specs profundas |
 | 3 | [`MAPEAMENTO.md`](MAPEAMENTO.md) | Inventário detalhado do repo |
 | 3 | [`../AGENTS.md`](../AGENTS.md) | Guia completo para agentes |
+| 3 | [`audit/`](audit/README.md) | Evidências e automações de QA |
+| 3 | [`OPORTUNIDADES_DEMOS.md`](OPORTUNIDADES_DEMOS.md) | Backlog técnico das demos |
 | 4 | [`.agents/skills/`](../.agents/skills/) | Skills (apontam para docs canônicos) |
-| 5 | [`archive/`](archive/), [`audit/`](audit/), [`OPORTUNIDADES_DEMOS.md`](OPORTUNIDADES_DEMOS.md) | Histórico — não usar como verdade |
+| 5 | [`archive/`](archive/) | Histórico — não usar como verdade |
 
 ## Leitura rápida por persona
 

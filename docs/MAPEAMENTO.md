@@ -1,118 +1,106 @@
-# MAPEAMENTO — Portfólio Lucas Batista
+# Mapeamento do repositório
 
-> Inventário detalhado do repositório. **Entrada:** [`CANON.md`](CANON.md) · **Arquitetura:** [`ARQUITETURA.md`](ARQUITETURA.md)
->
-> Última atualização: 13/07/2026.
+> Inventário operacional. Entrada: [`CANON.md`](CANON.md) · arquitetura: [`ARQUITETURA.md`](ARQUITETURA.md) · atualizado em 20/07/2026.
 
----
-
-## 1. Repositório
-
-| Item | Valor |
-|------|-------|
-| Landing | `lucasdevlogis-cpu/portfolio-lucas-batista` · branch `main` |
-| Demos (deploy) | `lucasdevlogis-cpu/demos-logistica` |
-| Produção | <https://portfolio-lucas-batista-murex.vercel.app> |
-| Commit de refino | `9b57869` — confirmar deploy com `npx vercel inspect` |
-
----
-
-## 2. Stack
+## Stack
 
 | Camada | Tecnologia |
-|--------|------------|
-| Framework | Next.js 16.2.9 (App Router) |
-| React | 19.2.4 |
-| TypeScript | 5.x · Node 24.x |
-| Estilo | Tailwind CSS v4 (`app/globals.css`) |
-| UI | shadcn/ui + wrappers (`PremiumCard`, `EditorialBadge`, …) |
-| Motion | Framer Motion (`LazyMotion` + `domAnimation`) |
-| Ícones | Lucide React |
-| Fontes | Inter + Source Serif 4 |
-| E2E | Playwright — **9** testes |
-| Demos | Streamlit + Pandas/Plotly/Folium |
+|---|---|
+| App pública | Next.js 16.2.10, React 19.2.4, TypeScript 5, Node 24 |
+| Estilo | Tailwind CSS v4, tokens CSS-only, Source Serif 4 + Inter |
+| UI | Base UI, shadcn/ui, Lucide, Framer Motion |
+| Visualização âncora | ECharts 6 + MapLibre GL JS 5 |
+| Demos complementares | Streamlit, Pandas, Plotly, Folium |
+| QA | Playwright 14 testes, Lighthouse 13, smoke Streamlit 13 checagens |
+| Deploy | Vercel + Streamlit Cloud |
 
-### Scripts
+## Áreas ativas
 
-```bash
-npm run validate && npm run lint && npm run typecheck && npm run build
-npm run test:e2e
-npm run cv:generate
-npm run seo:generate
+```text
+app/
+  page.tsx                     homepage
+  provas/[slug]/page.tsx       3 rotas SSG de prova
+components/
+  sections/                    seções da landing
+  demos/                       shell, KPI, gráfico, mapa, método e navegação
+  ui/                          primitives e wrappers
+data/
+  content.ts                   SSOT de copy e cases
+  demo-snapshots/              contrato gerado das 3 âncoras
+design/
+  tokens.json                  fonte editável dos tokens
+  design.md                    direção visual
+demos-logistica/
+  pages/                       10 demos + página de métodos
+  lib/                         UI, mapas, visualização e domínio
+  scripts/                     datasets, snapshots, smoke e slugs
+docs/
+  audit/                       capturas, scripts e evidências
+  archive/                     histórico não canônico
+e2e/                           fluxos críticos Playwright
+scripts/                       validação, geração e Lighthouse
 ```
 
----
+## Componentes públicos
 
-## 3. Árvore de componentes (ativos)
-
-```
+```text
 HomePage
 ├── Header → MobileNav
 ├── ExecutiveHero
-├── EvidenceStrip          # 3 métricas
-├── ProfileBrief           # #perfil
-├── SignatureCases         # #cases
-│   ├── CaseThumbnail      # public/cases/*.webp nos âncora
+├── EvidenceStrip
+├── ProfileBrief
+├── SignatureCases
+│   ├── CaseThumbnail
 │   ├── CaseDemoLauncher → DemoModal (lazy)
-│   ├── CaseLibrary        # filtros dinâmicos
+│   ├── CaseLibrary
 │   └── Roadmap
-├── TrajectoryBoard        # #trajetoria
-├── ContactPanel           # #contato
+├── TrajectoryBoard
+├── ContactPanel
 ├── Footer
 └── BackToTop
+
+DemoShell
+├── DemoHero
+├── KpiRow
+├── ChartCard → import dinâmico de ECharts
+├── MapCard → import dinâmico de MapLibre
+├── MethodDisclosure
+└── DemoNavigation
 ```
 
-Detalhes e contrato demos: [`ARQUITETURA.md`](ARQUITETURA.md).
+## Contagens canônicas
 
-### UI primitives (`components/ui/`)
+| Conjunto | Quantidade | Fonte |
+|---|---:|---|
+| Cases em `CONTENT.cases` | 11 | `data/content.ts` |
+| Demos publicadas | 10 | `CASE_DEMO_SLUGS` |
+| Âncoras React | 3 | `featuredProofCases` + snapshots |
+| Complementares Streamlit | 7 | `CASES_BIBLIOTECA` |
+| Roadmap sem demo | 1 | `06-kpis-cd` |
 
-`button`, `card`, `dialog`, `badge`, `PremiumCard`, `MetricPill`, `EditorialBadge`
+## Artefatos gerados
 
-### Shelved
+| Artefato | Comando | Commitar? |
+|---|---|---|
+| `app/design-tokens.css` | `npm run tokens:sync` | Sim |
+| `demos-logistica/lib/brand.py` | `npm run tokens:sync` | Sim |
+| `data/demo-snapshots/*.json` | `npm run demos:export` | Sim |
+| `public/lucas-batista-cv.pdf` | `npm run cv:generate` | Sim |
+| Lighthouse JSON local | `npm run lighthouse:all` | Não |
+| Playwright report / test-results | `npm run test:e2e` | Não |
 
-`components/archive/{consultoria,legacy,ui}/` — não montar.
+## Shelved
 
----
+`components/archive/`, `data/archive/`, `design/archive/` e `docs/archive/` preservam histórico e não entram na montagem ativa.
 
-## 4. Dados e cases
+## QA rápido
 
-| Conjunto | Origem | Qtd |
-|----------|--------|-----|
-| Âncora | `featuredProofCases` | 3 |
-| Biblioteca | demos não âncora | 7 |
-| Roadmap | sem `linkDemo` | 1 |
-| Demos publicadas | `CASE_DEMO_SLUGS` | 10 |
-
-Thumbnails âncora: `public/cases/01-precificacao-frete.webp`, `02-torre-controle.webp`, `08-cvrp-urbano.webp`.
-
----
-
-## 5. Documentação
-
-Índice: [`docs/README.md`](README.md).
-
-| Doc | Papel |
-|-----|-------|
-| CANON | Entrada única |
-| ARQUITETURA | Mapa estrutural |
-| AVALIACAO | Saúde |
-| DEPLOY / VERCEL | Publicação |
-| A11Y / MOBILE_SPEC | Specs profundas |
-| archive/ | Histórico |
+- 3 rotas `/provas/{slug}` respondem sem Streamlit.
+- Âncora abre inline no modal; complementar abre em iframe `?embed=true`.
+- Filtros anunciam resultados e não exibem categorias vazias.
+- ESC, foco, links de contato, CV, robots, sitemap e OG permanecem funcionais.
+- Capturas obrigatórias: 375, 768 e 1440 px.
 
 ---
 
-## 6. QA rápido pós-deploy
-
-- [ ] Site abre na URL Vercel
-- [ ] 3 âncora com WebP + Case ID correto (incl. **Case 08**)
-- [ ] Filtros sem categorias zeradas
-- [ ] Modal: preview → iframe; ESC fecha; “Abrir em nova aba”
-- [ ] LinkedIn, email, GitHub, CV PDF
-- [ ] `robots.txt` / `sitemap.xml` / `og-image.jpg`
-
-Checklist completo: [`VERCEL.md`](VERCEL.md).
-
----
-
-*Atualize quando mudar a árvore de montagem, scripts ou contagens de cases.*
+*Atualize quando mudar stack, árvore ativa, artefatos gerados ou contagens.*
