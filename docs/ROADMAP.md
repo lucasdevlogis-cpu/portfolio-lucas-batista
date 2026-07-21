@@ -2,94 +2,67 @@
 
 Atualizado em 21/07/2026. Esta é a única fila operacional do projeto.
 
-## Concluído nesta refatoração
+## Norte atual
 
-- [x] confirmar a causa do reinício e restaurar o arquivo de workspace;
-- [x] inventariar as três cópias locais das demos;
-- [x] definir arquitetura de repositório único;
-- [x] mover o Streamlit para `apps/demos/`;
-- [x] separar domínio, apresentação, pages e settings Python;
-- [x] separar datasets `raw/` e `generated/`;
-- [x] criar catálogo compartilhado e remover lista duplicada de slugs;
-- [x] mover snapshots para `contracts/` e validar o schema;
+Transformar o portfólio em um **Executive Proof System** de nível premium. A
+landing deve vender julgamento e impacto; as demos devem comprovar o raciocínio
+sem parecer aplicativos Streamlit genéricos.
+
+## Concluído — fundação técnica
+
+- [x] consolidar landing, demos, contratos e documentação em um repositório;
+- [x] mover o Python para `apps/demos/` e separar domínio de apresentação;
+- [x] criar catálogo e snapshots compartilhados;
 - [x] consolidar tokens para CSS, Python e Streamlit;
-- [x] adotar `st.navigation` com URLs explícitas;
-- [x] dividir o modal e impedir iframe automático no mobile;
-- [x] reduzir fronteiras cliente e remover Framer Motion;
-- [x] remover componentes, helpers, CSS e arquivos históricos sem uso;
-- [x] usar sitemap e robots nativos do Next.js;
-- [x] mover QA e intermediários para `.artifacts/`;
-- [x] regenerar CV a partir de `data/content.ts`;
-- [x] corrigir dependências: `npm audit` com 0 vulnerabilidades;
-- [x] adicionar CI única para contratos, Node, Python, smoke e E2E;
-- [x] validar build, TypeScript, ESLint, Ruff, pytest e smoke 13/13;
-- [x] executar Playwright completo: 17/17, incluindo ESC, retorno de foco,
-      reduced motion e gate mobile do iframe;
-- [x] capturar e revisar landing, modal e 3 âncoras em 375, 768 e 1440 px;
-- [x] validar 12 rotas Streamlit desktop e 7 embeds complementares mobile;
-- [x] executar Lighthouse: desktop 100/100/100/100 e mobile 93/100/100/100;
-- [x] arquivar os dois clones locais antigos em
-      `C:\Users\Lucas\Dev\archive\portfolio-demos-legacy\2026-07-20`;
-- [x] consolidar documentação e regras do repositório.
-- [x] publicar a refatoração pela PR arquitetural e mesclar em `main`;
-- [x] corrigir CI Linux, smoke isolado e validação de filtro vazio;
-- [x] normalizar as variáveis Vercel sem entradas duplicadas por ambiente;
-- [x] publicar a landing na Vercel e confirmar CI `Quality` verde;
-- [x] executar QA público da landing e Lighthouse: desktop 100/100/100/100 e
-      mobile 99/100/100/100.
-- [x] criar a app Streamlit canônica a partir de `main` e
-      `apps/demos/app.py`;
-- [x] validar a nova origem em 12 rotas desktop e 7 embeds mobile;
-- [x] corrigir a grade responsiva de KPIs, a duplicação no TSP e a leitura da
-      página de métodos.
-- [x] atualizar a origem das demos nos três ambientes Vercel e validar o modal
-      público em iframe e nova aba.
+- [x] publicar 3 âncoras React e 7 complementares Streamlit;
+- [x] estabilizar build, CI, contratos, smoke e deploy;
+- [x] registrar a referência visual fornecida e auditar seus acertos e riscos.
 
-## P0 — fechar e publicar esta arquitetura
+## P0 — refatoração visual em execução
 
-- [x] revisar, publicar e mesclar o commit arquitetural;
-- [x] publicar Next e executar o checklist pós-deploy da landing;
-- [x] criar a app Streamlit canônica com repo `portfolio-lucas-batista`, branch
-      `main` e entrypoint `apps/demos/app.py`;
-- [x] executar `qa:streamlit` na nova URL;
-- [x] atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` na Vercel, redeployar e validar a
-      integração pública;
-- [ ] remover a app/repositório legado somente após o corte validado.
+- [x] definir o norte “Executivo Brutalista Refinado”;
+- [x] selecionar paleta, tipografia, geometria e regras de movimento;
+- [x] reconstruir shell, header, hero e evidências;
+- [x] redesenhar perfil, provas, biblioteca, trajetória e contato;
+- [x] atualizar as três provas React, ECharts e MapLibre;
+- [x] aplicar o mesmo sistema ao laboratório Streamlit;
+- [x] revisar desktop e mobile contra a referência fornecida;
+- [ ] publicar preview e colher decisão visual antes de merge.
 
-Não há bloqueador técnico local. A política persistente do Codex foi corrigida;
-o navegador integrado exige recarregar o host para abandonar os metadados da
-sessão antiga. O QA seguiu pelo Playwright do projeto, com evidência equivalente.
+## P1 — retirar Streamlit da apresentação pública
 
-## P1 — elevar as provas complementares
+Ordem de migração orientada a valor de recrutamento e variedade visual:
 
-- [ ] priorizar as 2 complementares com maior valor para recrutamento usando
-      evidência de uso, não preferência estética;
-- [ ] aplicar o mesmo roteiro das âncoras: pergunta, decisão, 3 KPIs, visual,
-      método, limitação e CTA;
-- [ ] reduzir dependência de CSS interno do Streamlit onde ainda existir;
-- [ ] avaliar migração React apenas quando iframe, performance ou controle
-      visual forem um problema comprovado;
-- [ ] adicionar regressão visual estável para componentes críticos, evitando
-      snapshots frágeis de página inteira.
+1. Promessa de entrega por CEP — mapa territorial e risco.
+2. Ship from Store — comparação multicritério de origem.
+3. Rede inter-hubs — mapa de rede e custo por corredor.
+4. VRPTW — sequência temporal e violações de janela.
+5. Auditoria de endereço — qualidade e exceções territoriais.
+6. TSP — baseline didático de otimização.
+7. Classificador de ocorrências — NLP com governança humana.
+
+Cada migração exige snapshot Python, schema validado, rota React, modal inline,
+estado de loading/erro e retirada do iframe correspondente.
 
 ## P2 — diferenciação
 
-- [ ] criar o case de KPIs de CD apenas quando houver narrativa causal entre
-      ocupação, picking, expedição e transporte;
-- [ ] instrumentar abertura de provas e filtros para orientar priorização;
-- [ ] avaliar um componente Streamlit React compartilhado somente se reduzir
-      manutenção real;
-- [ ] revisar copy e CV com dados profissionais novos, mantendo a mesma fonte.
+- [ ] criar uma visão comparativa entre provas por decisão e método;
+- [ ] instrumentar abertura, permanência e CTA das provas;
+- [ ] publicar o case de KPIs de CD apenas com narrativa causal completa;
+- [x] atualizar OG image, ícone e CV para o mesmo sistema visual;
+- [ ] avaliar domínio próprio após aprovação do produto.
 
-## Ordem da próxima execução
+## Próximos passos após esta entrega
 
-1. Retirar a app legada após confirmação explícita do corte.
-2. Priorizar as 2 provas complementares de maior valor para recrutamento.
-3. Instrumentar abertura de provas e filtros para substituir preferência por uso.
-4. Executar o P1 com regressão visual focada nos componentes alterados.
+1. Publicar e aprovar a linguagem visual em um preview isolado.
+2. Migrar Promessa por CEP e Ship from Store para React.
+3. Instrumentar abertura das provas e CTAs sem coletar dados sensíveis.
+4. Desativar cada iframe somente depois de sua rota pública equivalente.
 
-## Critério de pronto
+## Critério de pronto do P0
 
-Nenhum P0 local aberto, `npm audit` zerado, 13/13 no Streamlit, E2E verde,
-Lighthouse ≥ 90, evidência visual aprovada nos três viewports e Community Cloud
-consumindo `apps/demos/app.py` do repositório canônico.
+- landing e três âncoras parecem partes do mesmo produto;
+- não há cardismo, arco-íris, texto minúsculo ou placeholder visual;
+- mapas e gráficos têm tema autoral, legenda e decisão explícita;
+- teclado, foco, reduced motion e contraste permanecem íntegros;
+- preview público aprovado antes do merge na `main`.

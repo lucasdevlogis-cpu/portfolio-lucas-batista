@@ -34,11 +34,11 @@ ${[...cssLines, ...radiusLines].join("\n")}
   --duration-fast: 150ms;
   --duration-normal: 250ms;
   --duration-slow: 400ms;
-  --shadow-editorial-token: 0 1px 3px rgba(7, 17, 31, 0.05);
-  --shadow-card-token: 0 8px 24px rgba(7, 17, 31, 0.06);
-  --shadow-elevated-token: 0 16px 40px rgba(7, 17, 31, 0.1);
-  --shadow-premium-token: 0 24px 64px rgba(7, 17, 31, 0.14);
-  --shadow-glow-token: 0 0 36px rgba(22, 169, 156, 0.16);
+  --shadow-editorial-token: 0 1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-card-token: 0 16px 40px rgba(0, 0, 0, 0.22);
+  --shadow-elevated-token: 0 22px 56px rgba(0, 0, 0, 0.32);
+  --shadow-premium-token: 0 28px 72px rgba(0, 0, 0, 0.42);
+  --shadow-glow-token: 0 0 40px rgba(249, 115, 22, 0.16);
   --sidebar: var(--card);
   --sidebar-foreground: var(--foreground);
   --sidebar-primary: var(--primary);
@@ -78,6 +78,7 @@ MAP_FULL_HEIGHT = ${tokens.dimensions.mapFull}
 MAP_EMBED_HEIGHT = ${tokens.dimensions.mapEmbed}
 FONT_FAMILY = ${JSON.stringify(tokens.typography.body)}
 HEADING_FONT_FAMILY = ${JSON.stringify(tokens.typography.heading)}
+MONO_FONT_FAMILY = ${JSON.stringify(tokens.typography.mono)}
 SEQ = [PRIMARY, ACCENT, WARM_ACCENT, CHART4, INK, WARNING, DANGER]
 ROUTE_COLORS = [PRIMARY, ACCENT, WARM_ACCENT, CHART4, DANGER, WARNING]
 STATUS_COLORS = {
@@ -118,7 +119,7 @@ gatherUsageStats = false
 toolbarMode = "minimal"
 
 [theme]
-base = "light"
+base = "dark"
 primaryColor = ${JSON.stringify(tokens.colors.primary)}
 backgroundColor = ${JSON.stringify(tokens.colors.background)}
 secondaryBackgroundColor = ${JSON.stringify(tokens.colors.card)}

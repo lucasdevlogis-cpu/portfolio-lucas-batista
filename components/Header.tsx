@@ -34,16 +34,17 @@ export function Header({
   const activeSection = useActiveSection(sectionIds);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-surface-dark/90 backdrop-blur-xl transition-colors duration-normal ease-editorial">
-      <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-10 xl:px-12 2xl:px-16">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/94 backdrop-blur-md">
+      <div className="executive-container flex h-[4.25rem] items-center justify-between">
         <a
           href="#conteudo"
-          className="font-heading text-lg font-bold text-white transition-colors hover:text-on-dark-accent"
+          className="focus-ring inline-flex min-h-11 items-center font-mono text-xs font-bold uppercase tracking-[0.08em] text-foreground transition-colors hover:text-primary"
         >
-          {name}
+          <span className="mr-2 bg-primary px-1.5 py-1 text-primary-foreground">LB</span>
+          <span className="hidden sm:inline">{name}</span>
         </a>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label={primaryNavigationLabel}>
+        <nav className="hidden h-full items-center md:flex" aria-label={primaryNavigationLabel}>
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.replace("#", "");
             return (
@@ -52,16 +53,13 @@ export function Header({
                 href={link.href}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "relative rounded-md px-3 py-2 text-base font-semibold transition-colors duration-normal ease-editorial focus-ring",
-                  isActive ? "text-white" : "text-on-dark-muted hover:bg-white/10 hover:text-white",
+                  "focus-ring relative inline-flex h-full items-center px-4 font-mono text-[0.72rem] font-semibold uppercase tracking-[0.1em] transition-colors",
+                  isActive ? "text-primary" : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {link.label}
                 {isActive ? (
-                  <span
-                    className="absolute bottom-1 left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-accent"
-                    aria-hidden
-                  />
+                  <span className="absolute inset-x-4 bottom-0 h-0.5 bg-primary" aria-hidden />
                 ) : null}
               </a>
             );
@@ -76,7 +74,7 @@ export function Header({
               rel="noopener noreferrer"
               aria-label={linkedinAriaLabel}
               onClick={() => analytics.linkedinClick("header")}
-              className="hidden size-10 items-center justify-center rounded-md text-on-dark-muted transition-all duration-normal ease-editorial hover:bg-white/10 hover:text-white hover:scale-110 focus-ring md:inline-flex"
+              className="focus-ring hidden size-10 items-center justify-center border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary md:inline-flex"
             >
               <LinkIcon className="size-5" aria-hidden />
             </a>
@@ -86,7 +84,7 @@ export function Header({
             onClick={() => analytics.ctaClick(navCta, "header")}
             className={cn(
               buttonVariants({ variant: "executive" }),
-              "hidden h-10 rounded-lg bg-accent-contrast px-5 text-white transition-all duration-normal ease-editorial hover:-translate-y-0.5 hover:bg-primary hover:shadow-glow md:inline-flex",
+              "hidden h-10 px-5 md:inline-flex",
             )}
           >
             {navCta}

@@ -1,23 +1,27 @@
 # Portfólio Lucas Batista
 
-Casebook técnico para avaliação profissional de Lucas Batista em operações,
-analytics e inteligência logística. A landing prioriza leitura executiva; as
-provas mostram método, decisão apoiada, métrica e limitação.
+Executive Proof System para avaliação profissional de Lucas Batista em
+operações, analytics e inteligência logística. A direção visual é “Executivo
+Brutalista Refinado”: tipografia forte, densidade controlada e provas centradas
+em decisão.
 
 ## Arquitetura
 
 O projeto é um único repositório com dois runtimes e contratos compartilhados:
 
-| Camada                    | Tecnologia                                    | Caminho                 |
-| ------------------------- | --------------------------------------------- | ----------------------- |
-| Landing e 3 provas âncora | Next.js 16, React 19, TypeScript              | `app/`, `components/`   |
-| 7 provas complementares   | Streamlit, Pandas, Plotly, Folium             | `apps/demos/`           |
-| Catálogo e snapshots      | JSON validado por TypeScript e Python         | `contracts/`            |
-| Tokens                    | JSON com geração para CSS, Python e Streamlit | `design/tokens.json`    |
-| Testes e QA               | Playwright, Lighthouse, pytest e Ruff         | `tests/`, `scripts/qa/` |
+| Camada                  | Tecnologia                                    | Caminho                 |
+| ----------------------- | --------------------------------------------- | ----------------------- |
+| Experiência pública     | Next.js 16, React 19, TypeScript, Motion      | `app/`, `components/`   |
+| Laboratório transitório | Streamlit, Pandas, Plotly, Folium             | `apps/demos/`           |
+| Catálogo e snapshots    | JSON validado por TypeScript e Python         | `contracts/`            |
+| Tokens                  | JSON com geração para CSS, Python e Streamlit | `design/tokens.json`    |
+| Testes e QA             | Playwright, Lighthouse, pytest e Ruff         | `tests/`, `scripts/qa/` |
 
 Não existe mais sincronização manual entre duas cópias das demos. O entrypoint
 canônico do Streamlit é `apps/demos/app.py` neste repositório.
+
+As três âncoras já são React. As sete complementares serão migradas para rotas
+React; Streamlit permanece como laboratório e fallback até cada substituição.
 
 ## Preparação local
 

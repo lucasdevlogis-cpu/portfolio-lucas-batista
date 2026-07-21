@@ -1,15 +1,11 @@
-import { BarChart3, MessageSquareText, Zap } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 import { SectionShell } from "@/components/layout/SectionShell";
-import { EditorialBadge } from "@/components/ui/EditorialBadge";
-import { PremiumCard } from "@/components/ui/PremiumCard";
+import { Reveal } from "@/components/motion/Reveal";
 import { CONTENT } from "@/data/content";
-
-const itemIcons = [BarChart3, Zap, MessageSquareText];
 
 export function ProfileBrief() {
   const { careerTarget, recruiterBrief, experienceSignals } = CONTENT;
-  const labels = careerTarget.labels;
 
   return (
     <SectionShell
@@ -17,83 +13,84 @@ export function ProfileBrief() {
       eyebrow={recruiterBrief.eyebrow}
       title={recruiterBrief.titulo}
       lead={recruiterBrief.resumo}
-      className="relative border-b border-border/70"
-      headerClassName="mb-8"
+      className="border-b border-border bg-surface-dark-2"
     >
-      <div className="grid gap-6 lg:grid-cols-[1fr_1fr] xl:grid-cols-[1.05fr_1fr]">
-        <div>
-          <PremiumCard className="flex h-full flex-col p-6 lg:p-8">
-            <div className="relative flex h-full flex-col">
-              <EditorialBadge tone="gold">{careerTarget.eyebrow}</EditorialBadge>
-              <h3 className="mt-5 max-w-2xl font-heading text-2xl font-bold leading-[1.1] tracking-tight text-ink sm:text-3xl">
-                {careerTarget.titulo}
-              </h3>
-              <p className="mt-3 text-base leading-relaxed text-muted-foreground md:text-lg">
-                {careerTarget.resumo}
-              </p>
-              <div className="mt-6 grid gap-4 border-t border-border pt-6">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
-                      {labels.senioridade}
-                    </p>
-                    <p className="mt-2 text-base leading-snug text-ink">
-                      {careerTarget.senioridade}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
-                      {labels.modeloAtuacao}
-                    </p>
-                    <p className="mt-2 text-base leading-snug text-ink">
-                      {careerTarget.modeloAtuacao}
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
-                    {labels.dominiosNegocio}
-                  </p>
-                  <p className="mt-2.5 text-sm font-semibold leading-relaxed text-ink">
-                    {experienceSignals.dominios.join(" · ")}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
-                    {labels.localizacaoAbertura}
-                  </p>
-                  <p className="mt-1.5 text-sm leading-snug text-ink">
-                    {careerTarget.disponibilidade}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </PremiumCard>
-        </div>
+      <Reveal className="grid border border-border lg:grid-cols-[1.05fr_0.95fr]">
+        <article className="border-b border-border p-6 sm:p-8 lg:border-r lg:border-b-0 lg:p-10 xl:p-12">
+          <p className="technical-label text-primary">{careerTarget.eyebrow}</p>
+          <h3 className="mt-5 max-w-2xl font-heading text-[clamp(2rem,5vw,4.5rem)] font-black uppercase leading-[0.9] tracking-[-0.05em] text-foreground">
+            {careerTarget.titulo}
+          </h3>
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            {careerTarget.resumo}
+          </p>
 
-        <div className="grid grid-cols-1 gap-4">
-          {recruiterBrief.itens.map((item, index) => {
-            const Icon = itemIcons[index % itemIcons.length];
-            return (
-              <article
-                key={item.titulo}
-                className="group flex flex-col rounded-xl border border-border bg-card p-6 shadow-card transition-colors duration-normal ease-editorial hover:border-primary/25 lg:p-7"
-              >
-                <div className="mb-3 flex size-10 items-center justify-center rounded-lg bg-accent/10 text-accent-contrast">
-                  <Icon className="size-5" aria-hidden />
-                </div>
-                <h3 className="font-heading text-xl font-bold text-ink">{item.titulo}</h3>
-                <p className="mt-2 text-base leading-relaxed text-muted-foreground">
+          <dl className="mt-10 grid border-t border-border sm:grid-cols-2">
+            <div className="border-b border-border py-5 sm:border-r sm:pr-5">
+              <dt className="technical-label text-muted-foreground">
+                {careerTarget.labels.senioridade}
+              </dt>
+              <dd className="mt-2 text-sm font-semibold leading-relaxed text-foreground">
+                {careerTarget.senioridade}
+              </dd>
+            </div>
+            <div className="border-b border-border py-5 sm:pl-5">
+              <dt className="technical-label text-muted-foreground">
+                {careerTarget.labels.modeloAtuacao}
+              </dt>
+              <dd className="mt-2 text-sm font-semibold leading-relaxed text-foreground">
+                {careerTarget.modeloAtuacao}
+              </dd>
+            </div>
+            <div className="border-b border-border py-5 sm:border-r sm:pr-5 sm:border-b-0">
+              <dt className="technical-label text-muted-foreground">
+                {careerTarget.labels.dominiosNegocio}
+              </dt>
+              <dd className="mt-2 text-sm leading-relaxed text-foreground">
+                {experienceSignals.dominios.join(" / ")}
+              </dd>
+            </div>
+            <div className="py-5 sm:pl-5">
+              <dt className="technical-label text-muted-foreground">
+                {careerTarget.labels.localizacaoAbertura}
+              </dt>
+              <dd className="mt-2 text-sm leading-relaxed text-foreground">
+                {careerTarget.disponibilidade}
+              </dd>
+            </div>
+          </dl>
+        </article>
+
+        <div className="divide-y divide-border">
+          {recruiterBrief.itens.map((item, index) => (
+            <article
+              key={item.titulo}
+              className="group grid gap-5 p-6 sm:grid-cols-[3.5rem_1fr] sm:p-8 lg:block lg:p-10 xl:p-12"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <span className="font-mono text-xs font-bold text-primary">0{index + 1}</span>
+                <ArrowUpRight
+                  className="size-5 text-border transition-colors group-hover:text-primary"
+                  aria-hidden
+                />
+              </div>
+              <div className="mt-0 lg:mt-6">
+                <h3 className="font-heading text-2xl font-extrabold uppercase leading-none text-foreground">
+                  {item.titulo}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
                   {item.descricao}
                 </p>
-                {item.evidencia && (
-                  <p className="mt-3 text-sm font-bold text-accent-contrast">{item.evidencia}</p>
-                )}
-              </article>
-            );
-          })}
+                {item.evidencia ? (
+                  <p className="mt-5 border-l-2 border-accent pl-3 font-mono text-xs font-semibold uppercase leading-relaxed tracking-[0.06em] text-accent">
+                    {item.evidencia}
+                  </p>
+                ) : null}
+              </div>
+            </article>
+          ))}
         </div>
-      </div>
+      </Reveal>
     </SectionShell>
   );
 }

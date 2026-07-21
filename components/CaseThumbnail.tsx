@@ -16,17 +16,22 @@ export function CaseThumbnail({ caseItem, className }: CaseThumbnailProps) {
   }
 
   return (
-    <div className={cn("relative aspect-video overflow-hidden rounded-t-xl bg-card", className)}>
+    <div
+      className={cn(
+        "relative aspect-video overflow-hidden border-b border-border bg-card",
+        className,
+      )}
+    >
       <Image
         src={caseItem.thumbnail}
         alt={alt}
         fill
         loading="lazy"
-        className="pointer-events-none object-cover object-top"
+        className="pointer-events-none object-cover object-top transition-transform duration-slow ease-editorial group-hover:scale-[1.015]"
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface-dark/35 to-transparent"
+        className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/5"
         aria-hidden
       />
     </div>

@@ -4,6 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 
 import { useEffect, useRef } from "react";
 
+import designTokens from "@/design/tokens.json";
 import type { DemoMap } from "@/lib/demo-contract";
 
 type Feature = {
@@ -153,43 +154,59 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
       if (!mapElement.current) return;
       const maplibre = await import("maplibre-gl");
       if (disposed || !mapElement.current) return;
-      const primary = token("--primary", "currentColor");
-      const accent = token("--accent", "teal");
-      const warm = token("--warm-accent", "goldenrod");
-      const danger = token("--danger", "firebrick");
-      const success = token("--success", "seagreen");
-      const warning = token("--warning", "darkorange");
-      const card = token("--card", "white");
+      const primary = token("--primary", designTokens.colors.primary);
+      const accent = token("--accent", designTokens.colors.accent);
+      const warm = token("--warm-accent", designTokens.colors.warmAccent);
+      const danger = token("--danger", designTokens.colors.danger);
+      const success = token("--success", designTokens.colors.success);
+      const warning = token("--warning", designTokens.colors.warning);
+      const card = token("--card", designTokens.colors.card);
+      const surface = token("--surface-dark", designTokens.colors.surfaceDark);
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const features = featuresForMap(mapData);
       map = new maplibre.Map({
         container: mapElement.current,
         center: [mapData.center[1], mapData.center[0]],
         zoom: mapData.zoom,
         attributionControl: { compact: true },
-        style: {
-          version: 8,
-          sources: {
-            osm: {
-              type: "raster",
-              tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-              tileSize: 256,
-              attribution: "© OpenStreetMap contributors",
-            },
-          },
-          layers: [{ id: "osm", type: "raster", source: "osm" }],
-        },
+        cooperativeGestures: true,
+        canvasContextAttributes: { antialias: true },
+        style: "https://tiles.openfreemap.org/styles/dark",
       });
       map.on("load", () => {
         if (!map) return;
         map.addSource("demo-data", {
           type: "geojson",
-          data: featureCollection(featuresForMap(mapData)) as never,
+          data: featureCollection(features) as never,
+        });
+        map.addLayer({
+          id: "edges-casing",
+          type: "line",
+          source: "demo-data",
+          filter: ["==", ["get", "kind"], "edge"],
+          paint: {
+            "line-color": surface,
+            "line-width": ["+", ["get", "width"], 3],
+            "line-opacity": 0.88,
+          },
         });
         map.addLayer({
           id: "edges",
           type: "line",
           source: "demo-data",
           filter: ["==", ["get", "kind"], "edge"],
-          paint: { "line-color": accent, "line-width": ["get", "width"], "line-opacity": 0.68 },
+          paint: { "line-color": accent, "line-width": ["get", "width"], "line-opacity": 0.84 },
+        });
+        map.addLayer({
+          id: "routes-casing",
+          type: "line",
+          source: "demo-data",
+          filter: ["==", ["get", "kind"], "route"],
+          paint: {
+            "line-color": surface,
+            "line-width": 7,
+            "line-opacity": 0.9,
+          },
         });
         map.addLayer({
           id: "routes",
@@ -198,8 +215,8 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
           filter: ["==", ["get", "kind"], "route"],
           paint: {
             "line-color": ["match", ["get", "tone"], "accent", accent, primary],
-            "line-width": 3,
-            "line-opacity": 0.82,
+            "line-width": 4,
+            "line-opacity": 0.95,
           },
         });
         map.addLayer({
@@ -227,12 +244,29 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
                 primary,
               ],
             ],
-            "circle-radius": ["match", ["get", "kind"], "depot", 7, 4],
+            "circle-radius": ["match", ["get", "kind"], "depot", 8, "node", 6, 4.5],
             "circle-stroke-color": card,
-            "circle-stroke-width": 1.5,
+            "circle-stroke-width": 2,
           },
         });
         map.addControl(new maplibre.NavigationControl({ showCompass: false }), "top-right");
+        const bounds = new maplibre.LngLatBounds();
+        for (const feature of features) {
+          if (feature.geometry.type === "Point") {
+            bounds.extend(feature.geometry.coordinates as [number, number]);
+          } else {
+            for (const coordinate of feature.geometry.coordinates as [number, number][]) {
+              bounds.extend(coordinate);
+            }
+          }
+        }
+        if (!bounds.isEmpty()) {
+          map.fitBounds(bounds, {
+            padding: { top: 52, right: 52, bottom: 52, left: 52 },
+            maxZoom: Math.max(mapData.zoom + 0.75, 10),
+            duration: reducedMotion ? 0 : 700,
+          });
+        }
         map.on("click", "nodes", (event) => {
           const feature = event.features?.[0];
           if (!feature || feature.geometry.type !== "Point") return;
@@ -261,18 +295,18 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
 
   return (
     <article className="demo-panel overflow-hidden p-0">
-      <div className="p-5 pb-3 sm:p-6 sm:pb-3">
-        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-warm-accent-contrast">
-          Contexto espacial
-        </p>
-        <h2 className="mt-1 font-heading text-xl font-bold text-ink">{title}</h2>
+      <div className="border-b border-border p-5 sm:p-6">
+        <p className="technical-label text-primary">Contexto espacial</p>
+        <h2 className="mt-2 font-heading text-xl font-extrabold uppercase text-foreground">
+          {title}
+        </h2>
         <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2" aria-label="Legenda do mapa">
           {legend.map((item) => (
             <li
               key={item.label}
               className="inline-flex items-center gap-2 text-xs text-muted-foreground"
             >
-              <span className={`size-2.5 rounded-full ${legendToneClass[item.tone]}`} aria-hidden />
+              <span className={`size-2.5 ${legendToneClass[item.tone]}`} aria-hidden />
               {item.label}
             </li>
           ))}
@@ -280,11 +314,11 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
       </div>
       <div
         ref={mapElement}
-        className="h-[300px] w-full bg-editorial sm:h-[360px]"
+        className="h-[340px] w-full bg-surface-dark sm:h-[430px]"
         role="region"
         aria-label={`${title}. Mapa interativo com dados demonstrativos.`}
       />
-      <p className="px-5 py-3 text-xs text-muted-foreground sm:px-6">
+      <p className="border-t border-border px-5 py-3 font-mono text-[0.68rem] leading-relaxed text-muted-foreground sm:px-6">
         Dados sintéticos e coordenadas aproximadas. O mapa apoia a leitura; não representa
         rastreamento em tempo real.
       </p>

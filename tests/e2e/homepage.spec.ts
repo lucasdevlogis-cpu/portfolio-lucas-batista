@@ -13,11 +13,11 @@ test.describe("Homepage", () => {
     await expect(page.getByRole("link", { name: /Ver provas técnicas/i })).toBeVisible();
 
     await expect(
-      page.getByRole("heading", { name: "O que um headhunter precisa entender rápido", level: 2 }),
+      page.getByRole("heading", { name: "O que sustenta o perfil", level: 2 }),
     ).toBeVisible();
 
     await expect(
-      page.getByRole("heading", { name: "Cases âncora para avaliação profissional", level: 2 }),
+      page.getByRole("heading", { name: "Três provas. Decisões reais.", level: 2 }),
     ).toBeVisible();
 
     await expect(
@@ -25,7 +25,7 @@ test.describe("Homepage", () => {
     ).toBeVisible();
 
     await expect(
-      page.getByRole("heading", { name: "Contato profissional", level: 2 }),
+      page.getByRole("heading", { name: "Vamos falar de operação", level: 2 }),
     ).toBeVisible();
   });
 

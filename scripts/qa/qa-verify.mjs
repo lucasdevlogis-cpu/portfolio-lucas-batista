@@ -16,7 +16,7 @@ fs.mkdirSync(out, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
-await page.waitForSelector("text=Case 08");
+await page.waitForSelector("text=08 / P0");
 await page.locator("#cases h2").scrollIntoViewIfNeeded();
 await page.waitForTimeout(500);
 await page.screenshot({ path: path.join(out, "verify-anchor-cards.png"), fullPage: false });
@@ -34,7 +34,7 @@ const summary = {
     .getByTestId("case-card")
     .nth(2)
     .innerText()
-    .then((text) => /case 08/i.test(text)),
+    .then((text) => /08\s*\/\s*P0/i.test(text)),
   filterCount: await page.getByRole("button", { name: /^Todos/ }).count(),
 };
 await page.keyboard.press("Escape");

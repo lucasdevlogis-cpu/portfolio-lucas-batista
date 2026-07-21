@@ -1,5 +1,33 @@
 # Qualidade
 
+## Corte visual em execução
+
+O redesign “Executivo Brutalista Refinado” está sendo desenvolvido na branch
+`agent/redesign-executivo-brutalista`. Os resultados públicos abaixo são o
+baseline técnico anterior e não aprovam automaticamente a nova interface. O
+novo corte já passou por comparação visual em 375, 768 e 1440 px, revisão das
+três âncoras e novo Lighthouse; aguarda apenas o preview público para decisão.
+
+## Corte local — Executivo Brutalista Refinado
+
+Rodada final de 21/07/2026 na branch `agent/redesign-executivo-brutalista`:
+
+| Evidência                                    | Resultado                              |
+| -------------------------------------------- | -------------------------------------- |
+| `npm run build`                              | aprovado; 10 rotas estáticas           |
+| `npm run test:e2e`                           | 17/17                                  |
+| `npm run demos:smoke`                        | 13/13                                  |
+| `npm audit --audit-level=moderate`           | 0 vulnerabilidades                     |
+| capturas Playwright em 375, 768 e 1440 px    | landing, modal e 3 âncoras aprovados   |
+| comparação referência × implementação 335 px | revisada no mesmo artefato lado a lado |
+| Lighthouse desktop                           | 100/100/100/100                        |
+| Lighthouse mobile                            | 92/100/100/100                         |
+
+O passe visual encontrou e corrigiu dois problemas antes do aceite: conteúdo
+de `Reveal` invisível com `prefers-reduced-motion` e compressão de CTAs das
+provas no breakpoint de 1024 px. O único gate restante do P0 é publicar um
+preview isolado e obter a decisão visual antes do merge.
+
 ## Gate técnico
 
 | Área                    | Comando                            | Critério               |
@@ -73,6 +101,10 @@ Critérios:
 - linhas de referência não achatam a série;
 - mapa tem atribuição, foco útil e limitação declarada;
 - movimento respeita `prefers-reduced-motion`.
+- referência e implementação são comparadas lado a lado no mesmo viewport;
+- Hanken Grotesk, Inter e JetBrains Mono carregam sem salto visual indevido;
+- laranja indica ação e verde não é usado como decoração;
+- Streamlit e rotas React compartilham tokens, apesar de terem runtimes distintos.
 
 ## Acessibilidade
 
