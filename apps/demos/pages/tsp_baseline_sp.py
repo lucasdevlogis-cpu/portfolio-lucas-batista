@@ -71,26 +71,6 @@ ui.kpi_grid(
     ]
 )
 
-col_a, col_b, col_c = st.columns(3)
-with col_a:
-    ui.kpi_metric(
-        "Economia vs cadastro",
-        fmt.fmt_percent(economia_pct, decimals=1),
-        severity="success",
-    )
-with col_b:
-    ui.kpi_metric(
-        "Ganho do 2-opt",
-        fmt.fmt_number(d_nn - d_final, decimals=1) + " km",
-        severity="success",
-    )
-with col_c:
-    ui.kpi_metric(
-        "Tempo estimado",
-        f"{tempo_min / 60:.1f} h",
-        severity="success",
-    )
-
 route_coords = [coords[i] for i in ordem_final] + [coords[ordem_final[0]]]
 route_labels = [nomes[i] for i in ordem_final] + [nomes[ordem_final[0]]]
 

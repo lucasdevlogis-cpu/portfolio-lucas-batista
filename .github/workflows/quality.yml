@@ -11,7 +11,7 @@ permissions:
 env:
   CI: "true"
   NEXT_PUBLIC_SITE_URL: https://portfolio-lucas-batista-murex.vercel.app
-  NEXT_PUBLIC_DEMOS_BASE_URL: https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
+  NEXT_PUBLIC_DEMOS_BASE_URL: https://portfolio-lucas-batista-asbsqusjhhbyje6pktjpvw.streamlit.app
 
 jobs:
   verify:

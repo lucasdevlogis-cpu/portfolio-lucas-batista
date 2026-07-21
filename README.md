@@ -67,7 +67,7 @@ npm run cv:generate      # atualiza o CV a partir de data/content.ts
 
 ```env
 NEXT_PUBLIC_SITE_URL=https://portfolio-lucas-batista-murex.vercel.app
-NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
+NEXT_PUBLIC_DEMOS_BASE_URL=https://portfolio-lucas-batista-asbsqusjhhbyje6pktjpvw.streamlit.app
 ```
 
 As variáveis `NEXT_PUBLIC_*` são incorporadas no build e exigem novo deploy
@@ -75,11 +75,11 @@ quando alteradas.
 
 ## Produção
 
-| Serviço | URL                                                            |
-| ------- | -------------------------------------------------------------- |
-| Landing | <https://portfolio-lucas-batista-murex.vercel.app>             |
-| Demos   | <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app> |
-| Código  | <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista> |
+| Serviço | URL                                                                    |
+| ------- | ---------------------------------------------------------------------- |
+| Landing | <https://portfolio-lucas-batista-murex.vercel.app>                     |
+| Demos   | <https://portfolio-lucas-batista-asbsqusjhhbyje6pktjpvw.streamlit.app> |
+| Código  | <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista>         |
 
 Para a configuração de Vercel e Streamlit Cloud, consulte
 [`docs/OPERACAO.md`](docs/OPERACAO.md).

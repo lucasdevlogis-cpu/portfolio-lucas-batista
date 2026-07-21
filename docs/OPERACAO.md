@@ -14,7 +14,7 @@ Variáveis obrigatórias na Vercel, em Production, Preview e Development:
 
 ```env
 NEXT_PUBLIC_SITE_URL=https://portfolio-lucas-batista-murex.vercel.app
-NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
+NEXT_PUBLIC_DEMOS_BASE_URL=https://portfolio-lucas-batista-asbsqusjhhbyje6pktjpvw.streamlit.app
 ```
 
 ## Desenvolvimento
@@ -91,18 +91,17 @@ fica em `.streamlit/config.toml` na raiz, pois o serviço executa a aplicação 
 partir da raiz do repositório.
 
 O Community Cloud identifica cada app por repositório, branch e entrypoint e
-não permite editar essas coordenadas. A migração do repositório antigo exige um
-novo deploy.
+não permite editar essas coordenadas. Por isso, a origem canônica foi publicada
+como uma nova aplicação.
 
-Runbook recomendado, sem indisponibilidade:
+Estado do corte, sem indisponibilidade:
 
-1. criar uma nova app com as coordenadas canônicas acima e subdomínio
-   temporário;
-2. aguardar o build e executar `npm run qa:streamlit` contra a nova URL;
-3. atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` nos três ambientes da Vercel e
-   redeployar a landing;
-4. validar modal, embed e abertura em nova aba;
-5. somente depois remover a app legada.
+1. [x] criar a nova app com as coordenadas canônicas;
+2. [x] executar `npm run qa:streamlit` na nova URL;
+3. [ ] atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` nos três ambientes da Vercel e
+       redeployar a landing;
+4. [ ] validar modal, embed e abertura em nova aba;
+5. [ ] somente depois remover a app legada.
 
 Se preservar exatamente o subdomínio atual for obrigatório, remova a app antiga
 e redeploye pedindo o mesmo custom subdomain. Esse caminho implica uma janela de
@@ -157,7 +156,7 @@ $env:LIGHTHOUSE_URL=$env:QA_BASE_URL
 $env:LIGHTHOUSE_SCOPE='production'
 npm run lighthouse:all
 
-$env:STREAMLIT_QA_BASE_URL='https://sua-app.streamlit.app'
+$env:STREAMLIT_QA_BASE_URL='https://portfolio-lucas-batista-asbsqusjhhbyje6pktjpvw.streamlit.app'
 npm run qa:streamlit
 ```
 

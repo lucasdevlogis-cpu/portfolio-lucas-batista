@@ -37,21 +37,26 @@ Atualizado em 21/07/2026. Esta é a única fila operacional do projeto.
 - [x] publicar a landing na Vercel e confirmar CI `Quality` verde;
 - [x] executar QA público da landing e Lighthouse: desktop 100/100/100/100 e
       mobile 99/100/100/100.
+- [x] criar a app Streamlit canônica a partir de `main` e
+      `apps/demos/app.py`;
+- [x] validar a nova origem em 12 rotas desktop e 7 embeds mobile;
+- [x] corrigir a grade responsiva de KPIs, a duplicação no TSP e a leitura da
+      página de métodos.
 
 ## P0 — fechar e publicar esta arquitetura
 
 - [x] revisar, publicar e mesclar o commit arquitetural;
 - [x] publicar Next e executar o checklist pós-deploy da landing;
-- [ ] criar a app Streamlit canônica com repo `portfolio-lucas-batista`, branch
+- [x] criar a app Streamlit canônica com repo `portfolio-lucas-batista`, branch
       `main` e entrypoint `apps/demos/app.py`;
-- [ ] executar `qa:streamlit` na nova URL e atualizar a Vercel se o subdomínio
-      mudar;
+- [x] executar `qa:streamlit` na nova URL;
+- [ ] atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` na Vercel, redeployar e validar a
+      integração pública;
 - [ ] remover a app/repositório legado somente após o corte validado.
 
-Bloqueador atual: o Community Cloud exige delete/redeploy para trocar as
-coordenadas GitHub e não oferece API pública de administração. O controle da
-sessão autenticada ficou indisponível nesta execução por `sandboxPolicy`; o
-runbook exato está em `OPERACAO.md`.
+Não há bloqueador técnico local. A política persistente do Codex foi corrigida;
+o navegador integrado exige recarregar o host para abandonar os metadados da
+sessão antiga. O QA seguiu pelo Playwright do projeto, com evidência equivalente.
 
 ## P1 — elevar as provas complementares
 
@@ -76,10 +81,10 @@ runbook exato está em `OPERACAO.md`.
 
 ## Ordem da próxima execução
 
-1. Criar a nova app Streamlit a partir do repositório canônico.
-2. Rodar `qa:streamlit` na URL nova antes do corte.
-3. Atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` e redeployar a Vercel se a URL mudar.
-4. Validar modal, embed e nova aba; então retirar a app legada.
+1. Publicar o polimento das demos na `main` e aguardar o redeploy Streamlit.
+2. Atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` e redeployar a Vercel.
+3. Validar modal, embed e nova aba contra a origem canônica.
+4. Retirar a app legada após confirmação explícita do corte.
 5. Fechar o P0 e iniciar o P1 com base em valor de recrutamento e uso.
 
 ## Critério de pronto

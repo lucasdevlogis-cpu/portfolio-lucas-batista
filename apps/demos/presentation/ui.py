@@ -214,18 +214,51 @@ def kpi_grid(items: list[dict[str, Any]], columns: int | None = None) -> None:
         return
     column_count = columns or (2 if is_embed() and len(items) > 2 else len(items))
     column_count = max(1, min(column_count, len(items)))
-    for start in range(0, len(items), column_count):
-        cols = st.columns(column_count)
-        for offset, item in enumerate(items[start : start + column_count]):
-            with cols[offset]:
-                kpi_metric(item["label"], item["value"], item.get("severity"))
+    cards = "".join(
+        _kpi_markup(item["label"], item["value"], item.get("severity")) for item in items
+    )
+    st.markdown(
+        "<section class='demo-kpi-grid' aria-label='Indicadores principais' "
+        f"style='--demo-kpi-columns: {column_count}'>{cards}</section>",
+        unsafe_allow_html=True,
+    )
+
+
+def _kpi_markup(label: str, value: str, severity: str | None = None) -> str:
+    tone = severity if severity in {"success", "warning", "danger"} else "neutral"
+    return (
+        f"<article class='demo-kpi demo-kpi--{tone}'>"
+        f"<span>{escape(str(label))}</span>"
+        f"<strong>{escape(str(value))}</strong></article>"
+    )
 
 
 def kpi_metric(label: str, value: str, severity: str | None = None) -> None:
-    tone = severity if severity in {"success", "warning", "danger"} else "neutral"
+    st.markdown(_kpi_markup(label, value, severity), unsafe_allow_html=True)
+
+
+def record_grid(
+    items: Sequence[dict[str, Any]],
+    title_key: str,
+    fields: Sequence[tuple[str, str]],
+) -> None:
+    """Apresenta registros editoriais sem depender da grade rígida do dataframe."""
+    cards = []
+    for item in items:
+        details = "".join(
+            f"<div><dt>{escape(label)}</dt><dd>{escape(str(item.get(key, '—')))}</dd></div>"
+            for key, label in fields
+        )
+        cards.append(
+            "<article class='demo-record'>"
+            f"<h3>{escape(str(item.get(title_key, '—')))}</h3>"
+            f"<dl>{details}</dl>"
+            "</article>"
+        )
     st.markdown(
-        f"<article class='demo-kpi demo-kpi--{tone}'>"
-        f"<span>{escape(label)}</span><strong>{escape(value)}</strong></article>",
+        "<section class='demo-record-grid' aria-label='Índice de dados e métodos'>"
+        + "".join(cards)
+        + "</section>",
         unsafe_allow_html=True,
     )
 
