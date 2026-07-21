@@ -1,6 +1,6 @@
 # Roadmap e fila ativa
 
-Atualizado em 20/07/2026. Esta é a única fila operacional do projeto.
+Atualizado em 21/07/2026. Esta é a única fila operacional do projeto.
 
 ## Concluído nesta refatoração
 
@@ -31,15 +31,27 @@ Atualizado em 20/07/2026. Esta é a única fila operacional do projeto.
 - [x] arquivar os dois clones locais antigos em
       `C:\Users\Lucas\Dev\archive\portfolio-demos-legacy\2026-07-20`;
 - [x] consolidar documentação e regras do repositório.
+- [x] publicar a refatoração pela PR arquitetural e mesclar em `main`;
+- [x] corrigir CI Linux, smoke isolado e validação de filtro vazio;
+- [x] normalizar as variáveis Vercel sem entradas duplicadas por ambiente;
+- [x] publicar a landing na Vercel e confirmar CI `Quality` verde;
+- [x] executar QA público da landing e Lighthouse: desktop 100/100/100/100 e
+      mobile 99/100/100/100.
 
 ## P0 — fechar e publicar esta arquitetura
 
-- [x] revisar o diff final e criar o commit arquitetural local;
-- [ ] migrar no Streamlit Cloud a origem para este repositório e
-      `apps/demos/app.py`;
-- [ ] publicar Next e Streamlit, então executar o checklist pós-deploy.
+- [x] revisar, publicar e mesclar o commit arquitetural;
+- [x] publicar Next e executar o checklist pós-deploy da landing;
+- [ ] criar a app Streamlit canônica com repo `portfolio-lucas-batista`, branch
+      `main` e entrypoint `apps/demos/app.py`;
+- [ ] executar `qa:streamlit` na nova URL e atualizar a Vercel se o subdomínio
+      mudar;
+- [ ] remover a app/repositório legado somente após o corte validado.
 
-Os dois últimos itens alteram serviços externos e exigem autorização explícita.
+Bloqueador atual: o Community Cloud exige delete/redeploy para trocar as
+coordenadas GitHub e não oferece API pública de administração. O controle da
+sessão autenticada ficou indisponível nesta execução por `sandboxPolicy`; o
+runbook exato está em `OPERACAO.md`.
 
 ## P1 — elevar as provas complementares
 
@@ -64,14 +76,14 @@ Os dois últimos itens alteram serviços externos e exigem autorização explíc
 
 ## Ordem da próxima execução
 
-1. Com autorização, enviar o commit canônico ao GitHub.
-2. Migrar a origem do Streamlit Cloud para este repositório.
-3. Publicar Next e Streamlit.
-4. Executar QA e Lighthouse novamente nas URLs públicas.
-5. Iniciar o P1 com base em valor de recrutamento e evidência de uso.
+1. Criar a nova app Streamlit a partir do repositório canônico.
+2. Rodar `qa:streamlit` na URL nova antes do corte.
+3. Atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` e redeployar a Vercel se a URL mudar.
+4. Validar modal, embed e nova aba; então retirar a app legada.
+5. Fechar o P0 e iniciar o P1 com base em valor de recrutamento e uso.
 
 ## Critério de pronto
 
 Nenhum P0 local aberto, `npm audit` zerado, 13/13 no Streamlit, E2E verde,
-Lighthouse ≥ 90 e evidência visual aprovada nos três viewports. Publicação não
-faz parte do pronto local porque exige autorização externa.
+Lighthouse ≥ 90, evidência visual aprovada nos três viewports e Community Cloud
+consumindo `apps/demos/app.py` do repositório canônico.

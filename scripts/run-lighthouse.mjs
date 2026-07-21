@@ -9,14 +9,18 @@ if (!mode || !["desktop", "mobile"].includes(mode)) {
   process.exit(2);
 }
 
-const outputPath = `.artifacts/lighthouse/lighthouse-${mode}-local.json`;
+const targetUrl = process.env.LIGHTHOUSE_URL ?? "http://localhost:3000";
+const targetHost = new URL(targetUrl).hostname;
+const defaultScope = ["localhost", "127.0.0.1"].includes(targetHost) ? "local" : "production";
+const outputScope = (process.env.LIGHTHOUSE_SCOPE ?? defaultScope).replace(/[^a-z0-9-]/gi, "-");
+const outputPath = `.artifacts/lighthouse/lighthouse-${mode}-${outputScope}.json`;
 mkdirSync(dirname(outputPath), { recursive: true });
 rmSync(outputPath, { force: true });
 
 const command = process.execPath;
 const cliPath = fileURLToPath(import.meta.resolve("lighthouse/cli/index.js"));
 const args = [
-  "http://localhost:3000",
+  targetUrl,
   ...(mode === "desktop" ? ["--preset=desktop"] : []),
   "--output=json",
   `--output-path=${outputPath}`,

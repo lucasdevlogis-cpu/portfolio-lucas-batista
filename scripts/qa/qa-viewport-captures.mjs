@@ -2,7 +2,7 @@ import { chromium } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
-const baseUrl = process.env.QA_BASE_URL ?? "http://127.0.0.1:3000";
+const baseUrl = (process.env.QA_BASE_URL ?? "http://127.0.0.1:3000").replace(/\/$/, "");
 const outDir = path.join(process.cwd(), ".artifacts", "qa", "viewports");
 const viewports = [
   { name: "1440x900", width: 1440, height: 900 },
