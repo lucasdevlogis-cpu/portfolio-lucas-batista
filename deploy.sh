@@ -1,1 +1,0 @@
-git add -A  ngit commit -m  ngit push origin main  n

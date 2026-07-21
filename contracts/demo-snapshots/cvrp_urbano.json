@@ -1,0 +1,204 @@
+{
+  "slug": "cvrp_urbano",
+  "caseId": "08-cvrp-urbano",
+  "title": "Roteirização urbana — CVRP",
+  "question": "Quantos veículos atendem as entregas e quanta distância dá para economizar?",
+  "decision": "Dimensionar frota e sequenciar paradas respeitando capacidade.",
+  "limitation": "Distâncias Haversine em linha reta; produção usaria malha viária, trânsito e solver dedicado.",
+  "method": "Heurística nearest-neighbor com restrição de capacidade e baseline na ordem de cadastro.",
+  "frameworks": [
+    "PyVRP",
+    "OR-Tools",
+    "Capacidade de frota"
+  ],
+  "kpis": [
+    {
+      "label": "Distância melhorada",
+      "value": "109,5 km",
+      "tone": "accent"
+    },
+    {
+      "label": "Veículos usados",
+      "value": "2"
+    },
+    {
+      "label": "Atendimento",
+      "value": "24/24",
+      "tone": "success"
+    }
+  ],
+  "charts": [
+    {
+      "id": "distance-by-vehicle",
+      "title": "Distância por veículo",
+      "kind": "bar",
+      "unit": "KM",
+      "data": [
+        {
+          "label": "V1",
+          "value": 44.9
+        },
+        {
+          "label": "V2",
+          "value": 64.7
+        }
+      ]
+    },
+    {
+      "id": "capacity-by-vehicle",
+      "title": "Ocupação da capacidade",
+      "kind": "bar",
+      "unit": "PERCENT",
+      "data": [
+        {
+          "label": "V1",
+          "value": 97.4
+        },
+        {
+          "label": "V2",
+          "value": 63.8
+        }
+      ],
+      "reference": 100
+    }
+  ],
+  "map": {
+    "kind": "routes",
+    "center": [
+      -23.51,
+      -46.72
+    ],
+    "zoom": 10,
+    "depot": {
+      "lat": -23.51,
+      "lon": -46.72,
+      "label": "CD"
+    },
+    "routes": [
+      {
+        "id": "route-1",
+        "label": "V1 · 44,9 km",
+        "points": [
+          {
+            "lat": -23.51,
+            "lon": -46.72
+          },
+          {
+            "lat": -23.548396,
+            "lon": -46.71619
+          },
+          {
+            "lat": -23.552933,
+            "lon": -46.715567
+          },
+          {
+            "lat": -23.562232,
+            "lon": -46.721971
+          },
+          {
+            "lat": -23.585122,
+            "lon": -46.710771
+          },
+          {
+            "lat": -23.58189,
+            "lon": -46.693194
+          },
+          {
+            "lat": -23.595129,
+            "lon": -46.672425
+          },
+          {
+            "lat": -23.592619,
+            "lon": -46.661846
+          },
+          {
+            "lat": -23.620184,
+            "lon": -46.645527
+          },
+          {
+            "lat": -23.638202,
+            "lon": -46.652891
+          },
+          {
+            "lat": -23.652625,
+            "lon": -46.632621
+          },
+          {
+            "lat": -23.598516,
+            "lon": -46.626801
+          },
+          {
+            "lat": -23.570251,
+            "lon": -46.626799
+          },
+          {
+            "lat": -23.560791,
+            "lon": -46.63547
+          },
+          {
+            "lat": -23.556938,
+            "lon": -46.627236
+          },
+          {
+            "lat": -23.51,
+            "lon": -46.72
+          }
+        ]
+      },
+      {
+        "id": "route-2",
+        "label": "V2 · 64,7 km",
+        "points": [
+          {
+            "lat": -23.51,
+            "lon": -46.72
+          },
+          {
+            "lat": -23.542689,
+            "lon": -46.692528
+          },
+          {
+            "lat": -23.532815,
+            "lon": -46.611851
+          },
+          {
+            "lat": -23.547084,
+            "lon": -46.598036
+          },
+          {
+            "lat": -23.562285,
+            "lon": -46.601968
+          },
+          {
+            "lat": -23.560422,
+            "lon": -46.581084
+          },
+          {
+            "lat": -23.553535,
+            "lon": -46.565606
+          },
+          {
+            "lat": -23.488188,
+            "lon": -46.602894
+          },
+          {
+            "lat": -23.488247,
+            "lon": -46.616899
+          },
+          {
+            "lat": -23.468921,
+            "lon": -46.644003
+          },
+          {
+            "lat": -23.623944,
+            "lon": -46.689585
+          },
+          {
+            "lat": -23.51,
+            "lon": -46.72
+          }
+        ]
+      }
+    ]
+  }
+}

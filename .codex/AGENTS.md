@@ -1,43 +1,34 @@
-# Portfolio Lucas Batista — Codex (projeto)
+# Portfólio Lucas Batista — regras Codex do projeto
 
-> Paridade com Cursor. **Entrada:** [`docs/CANON.md`](../docs/CANON.md) · **Arquitetura:** [`docs/ARQUITETURA.md`](../docs/ARQUITETURA.md)
+Leia primeiro [`AGENTS.md`](../AGENTS.md), depois
+[`docs/CANON.md`](../docs/CANON.md) e
+[`docs/ARQUITETURA.md`](../docs/ARQUITETURA.md). Não mantenha uma segunda
+versão dessas regras aqui.
 
-## Norte
+## Contexto essencial
 
-**Executive Proof System** — dossiê headhunter-first.
+- Produto: _Executive Proof System_ headhunter-first.
+- Repositório único: Next.js na raiz e Streamlit em `apps/demos/`.
+- Copy: `data/content.ts`.
+- Catálogo: `contracts/demo-catalog.json`.
+- Snapshots Python → React: `contracts/demo-snapshots/`.
+- Tokens: `design/tokens.json` → `npm run tokens:sync`.
+- Estado e fila: `docs/ROADMAP.md`.
+- Operação: `docs/OPERACAO.md`.
 
-`Header` → `ExecutiveHero` → `EvidenceStrip` → `ProfileBrief` → `SignatureCases` → `TrajectoryBoard` → `ContactPanel` → `Footer`
+Não recrie `demos-logistica/`, arquivos `archive/`, Framer Motion ou listas
+paralelas de slugs. Não publique nem faça push sem autorização explícita.
 
-- Copy: `data/content.ts` · shelved: `data/archive/`
-- Design: `design/design.md` + `app/globals.css`
-- Tokens: `design/tokens.md` (inclui `--warm-accent-contrast`)
-- Skills: `.agents/skills/` (apontam para docs canônicos)
-- Shelved: `components/archive/`, `design/archive/`, `docs/archive/`
+## Gate local
 
-## Stack
-
-- Next.js 16.2.9 + React 19 + TypeScript 5 · Node 24.x
-- Tailwind CSS v4 (CSS-only em `app/globals.css`)
-- shadcn/ui + Lucide + Framer Motion
-- Playwright E2E (**9** testes)
-
-## Produção
-
-- Landing: <https://portfolio-lucas-batista-murex.vercel.app>
-- Demos: <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app>
-
-## Verificação
-
-```bash
-npm run validate && npm run lint && npm run typecheck && npm run build
+```powershell
+npm run format
+npm run verify
+npm run demos:smoke
 npm run test:e2e
-npm run cv:generate
-
-cd demos-logistica && python scripts/smoke_test.py && python scripts/validate_slugs.py
+npm audit --audit-level=moderate
 ```
 
-## Deploy
-
-- Env: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_DEMOS_BASE_URL`
-- Guias: `docs/DEPLOY.md`, `docs/VERCEL.md`
-- Estado: `docs/AVALIACAO.md`
+Para mudanças visuais, execute ainda `npm run qa:visual`,
+`npm run qa:streamlit` e `npm run lighthouse:all` com os serviços locais
+ativos. O critério e os resultados ficam em `docs/QUALIDADE.md`.

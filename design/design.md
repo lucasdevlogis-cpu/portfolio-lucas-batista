@@ -1,200 +1,99 @@
 # Design — Executive Proof System
 
-> Fonte da verdade visual do portfólio Lucas Batista. Esta versão substitui a leitura comercial antiga por uma peça premium para headhunters, recrutadores e lideranças que avaliam fit profissional.
->
-> **Fluxo de design:** spec em Markdown + tokens CSS (`app/globals.css`) + paridade Streamlit (`demos-logistica/lib/brand.py`). **Figma não faz parte do fluxo** — alterações visuais entram pelo código e por este documento.
+## Norte
 
----
+O visual deve comunicar repertório executivo e capacidade técnica sem parecer
+template SaaS. A referência é um casebook editorial: tipografia forte, densidade
+controlada, superfícies claras e contraste alto.
 
-## 1. Norte
+## Hierarquia
 
-O site deve funcionar como um dossiê profissional de leitura rápida. Em até 60 segundos, a pessoa recrutadora precisa entender:
+1. Nome e posicionamento.
+2. Evidências quantitativas.
+3. Fit profissional.
+4. Três provas âncora.
+5. Biblioteca complementar.
+6. Trajetória e contato.
 
-- quem é Lucas Batista;
-- para quais posições o perfil faz sentido;
-- quais sinais de senioridade existem;
-- quais provas técnicas estão disponíveis;
-- qual stack e quais domínios operacionais aparecem no trabalho;
-- como entrar em contato.
+Cada seção precisa justificar sua presença. Informação repetida é removida, não
+reembalada em outro card.
 
-Não é uma landing de consultoria, não é currículo comum e não é vitrine genérica de apps. Os cases são evidência de julgamento profissional.
+## Linguagem visual
 
----
+- base editorial quente e superfícies brancas;
+- azul escuro para autoridade e estrutura;
+- teal para ação, seleção e dados primários;
+- dourado somente para ênfase editorial;
+- verde, âmbar e vermelho apenas para estado semântico;
+- Source Serif 4 para títulos e Inter para interface/corpo;
+- raio moderado, borda discreta e sombra curta.
 
-## 2. Estrutura da One-Page
+Evitar:
 
-| Ordem | Seção | ID | Função |
-|---|---|---|---|
-| 1 | Header | — | Navegação curta e CTA de contato |
-| 2 | Hero executivo | — | Nome, posicionamento, CTAs e painel de stack/empresas |
-| 3 | Provas rápidas | — | 3 métricas de impacto (`EvidenceStrip`) |
-| 4 | Perfil em 60s | `perfil` | Fit, senioridade, diferenciais e domínios |
-| 5 | Provas técnicas | `cases` | 3 âncora + biblioteca filtrável + roadmap |
-| 6 | Trajetória | `trajetoria` | Experiência, formação, certificações, idiomas |
-| 7 | Contato profissional | `contato` | LinkedIn, email, GitHub e CV PDF |
-| 8 | Footer | — | Links, declaração e retorno ao topo |
+- gradientes em todos os blocos;
+- glassmorphism e blur decorativo;
+- pilhas de badges para texto que cabe em uma linha;
+- cards dentro de cards;
+- animação de entrada que atrasa leitura;
+- dashboards com muitas cores ou métricas sem ação.
 
-**Mapeamento componentes React:**
+## Componentes
 
-| Seção | Componente |
-|-------|------------|
-| Header | `Header` |
-| Hero | `ExecutiveHero` |
-| Provas rápidas | `EvidenceStrip` |
-| Perfil em 60s | `ProfileBrief` (`#perfil`) |
-| Provas técnicas | `SignatureCases` (`#cases`) — inclui `CaseLibrary` + roadmap |
-| Trajetória | `TrajectoryBoard` (`#trajetoria`) |
-| Contato | `ContactPanel` (`#contato`) |
-| Footer | `Footer` |
+### Landing
 
-Ordem em `HomePage.tsx`: Header → ExecutiveHero → EvidenceStrip → ProfileBrief → SignatureCases → TrajectoryBoard → ContactPanel → Footer (DOM = nav = esta tabela).
+- `SectionShell`: largura, ritmo e cabeçalho de seção;
+- `EditorialBadge`: eyebrow pontual, não categoria repetida em massa;
+- `PremiumCard`: agrupamento editorial simples;
+- `CaseThumbnail`: evidência visual somente nas âncoras;
+- `CaseLibrary`: lista filtrável, tabela no desktop e cards compactos no mobile;
+- `ContactPanel`: caminhos diretos sem formulário decorativo.
 
-Arquitetura detalhada: [`docs/ARQUITETURA.md`](../docs/ARQUITETURA.md).
+### Provas
 
----
+- `DemoShell`: estrutura comum;
+- `DemoHero`: pergunta e decisão;
+- `KpiRow`: no máximo 3 indicadores;
+- `ChartCard`: ECharts analítico;
+- `MapCard`: MapLibre com atribuição e limitação;
+- `MethodDisclosure`: método e limite;
+- `DemoNavigation`: retorno ao casebook.
 
-## 3. Direção Visual
+As âncoras usam esses componentes no modal e na rota pública. Complementares
+usam o sistema de apresentação em `apps/demos/presentation/`.
 
-### Paleta
+## Gráficos
 
-| Token | Hex | Uso |
-|---|---:|---|
-| Editorial | `#f5f2ed` | Fundo principal — bege neutro refinado |
-| Card | `#ffffff` | Blocos claros e áreas de leitura |
-| Ink | `#07111f` | Texto forte, CTA principal |
-| Primary | `#153451` | Azul petróleo técnico |
-| Surface dark | `#07111f` | Blocos premium escuros |
-| Accent | `#16a99c` | Sinal técnico mínimo |
-| Warm accent | `#c9983f` | Acento editorial decorativo (bordas, fundos escuros) |
-| Warm accent contrast | `#7a5a1a` | Eyebrows e labels dourados em fundos claros (≥ 4.5:1) |
-| Muted foreground | `#556070` | Texto secundário |
-| Border | `#c8c2b8` | Divisórias |
+- Começar pela comparação que sustenta a decisão.
+- Preferir barras, linha temporal e mapa quando forem a forma mais direta.
+- Até duas séries principais; estado semântico pode usar três cores.
+- Tooltips em português e unidade em eixo/legenda.
+- Referência em traço discreto e domínio calculado para não achatar os dados.
+- Tabela é fallback de detalhe, não visual principal.
 
-Resumo vivo: [`design/tokens.md`](tokens.md). Runtime: `app/globals.css`.
+## Mapas
 
-### Tipografia
+- Usar mapa apenas quando distância, cobertura, corredor ou região importam.
+- Teal e azul para rede/rota; cores semânticas para status.
+- Informar que coordenadas são aproximadas quando aplicável.
+- Preservar atribuição do OpenStreetMap.
 
-- **Headings:** Source Serif 4 via `next/font/google` (`--font-source-serif` → `font-heading`).
-- **Body:** Inter via `next/font/google` (`--font-inter` → `font-sans`).
-- Corpo mínimo: `text-sm` (14px) para metadados; `text-base` (16px) para leitura principal.
-- A combinação serif/sans cria contraste editorial e autoridade sem perder legibilidade.
+## Responsividade
 
-### Princípios
+- 375 px: uma coluna, CTA 44 px+, contexto recolhível e iframe sob demanda;
+- 768 px: transição sem saltos de hierarquia;
+- 1440 px: largura editorial, sem esticar texto ou gráfico indefinidamente.
 
-- Tipografia e hierarquia mandam mais que decoração.
-- **CTA sólido:** `ink` (`#07111f`) — variant `executive` em `button.tsx`; não usar `primary` para botões de ação principal.
-- Espaçamentos controlados (`py-18 lg:py-28`); blocos densos onde ajudam a triagem; nenhuma lacuna visual sem função.
-- Poucos ícones; ícone só quando melhora reconhecimento.
-- Motion discreto: entrada por translação sutil (conteúdo permanece visível), sem competir com leitura.
-- Glassmorphism real com backdrop-blur-xl, gradientes sutis e elevação hierárquica para criar dimensão.
-- Ambient orbs flutuantes com animate-float para profundidade no hero.
-- Shine effect em CTAs primários para hierarquia visual.
-- Custom scrollbar e selection brandada para polish final.
-- Conteúdo essencial não pode começar invisível por dependência de scroll/JS. Animações usam `opacity: 1` no estado inicial; o movimento vem de `y`/`scale`.
+## Movimento
 
----
+Somente feedback curto de hover, foco, dialog e carregamento. Todo movimento
+deve respeitar `prefers-reduced-motion`. Não usar biblioteca de animação para
+efeitos que CSS resolve.
 
-## 4. Componentes-Chave
+## Critério de aceite
 
-| Componente | Responsabilidade |
-|---|---|
-| `ExecutiveHero` | Briefing executivo: nome, posicionamento, CTAs, stack e empresas |
-| `EvidenceStrip` | Faixa de **3** métricas principais |
-| `ProfileBrief` | Fit profissional em 60s (`#perfil`) — sem FAQ |
-| `TrajectoryBoard` | Experiência, formação, certificações e idiomas (`#trajetoria`) |
-| `SignatureCases` | 3 cases âncora compactos + thumbnails reais + CTAs específicos |
-| `CaseLibrary` | Biblioteca complementar (tabela ≥1024px / cards <1024px); filtros só com count > 0 |
-| `CaseThumbnail` | WebP real (`public/cases/`) ou SVG fallback |
-| `CaseDemoLauncher` | CTA específico + lazy load do `DemoModal` |
-| `DemoModal` | Contexto completo + preview progressivo + iframe Streamlit |
-| `ContactPanel` | Canais profissionais diretos |
-| `Header` / `Footer` | Navegação e links |
-| `PremiumCard` / `MetricPill` / `EditorialBadge` / `SectionShell` | Blocos de UI reutilizáveis |
-
-**Shelved (não montar):** `FadeIn`, `Stagger`, `GlassCard` → `components/archive/ui/`. Cockpit → `components/archive/legacy/`.
-
-Todo copy vem de `data/content.ts`. CTAs de demo usam `ctaDemoLabel` + `aria-label` específico (`caseDemoCta`).
-
----
-
-## 5. Cases Como Prova
-
-Os cases devem responder: que problema Lucas entendeu, qual decisão apoiou, qual métrica usou, qual stack aparece e qual limitação foi declarada.
-
-Cases âncora:
-
-1. `01-precificacao-frete` — frete e custo.
-2. `02-torre-controle` — SLA, OTD e follow-up.
-3. `08-cvrp-urbano` — roteirização, frota e distância.
-
-Demais cases continuam acessíveis na biblioteca complementar. O modal preserva `?embed=true`, link de nova aba e lazy loading mobile.
-
----
-
-## 6. Demos Streamlit
-
-As demos não podem parecer outro produto visual. Elas são a camada interativa do mesmo dossiê profissional e devem sustentar a leitura headhunter-first.
-
-### Direção
-
-- Home das demos como índice de provas técnicas, não catálogo genérico.
-- Hero escuro editorial com pergunta de negócio, stack, maturidade e métricas compactas.
-- Sidebar desktop curada, com agrupamento por cases âncora, biblioteca e método; a navegação automática padrão do Streamlit não deve aparecer.
-- Tabs em estilo controle segmentado editorial, não underline padrão cru.
-- Cards claros com borda editorial e acentos mínimos em teal ou warm accent.
-- Charts Plotly com fundo alinhado ao editorial, grid discreto, hover escuro e legenda contida.
-- Linhas de referência em gráficos devem usar o mesmo recorte analítico exibido; não podem distorcer escala a ponto de achatar as séries principais.
-- Todos os gráficos Plotly passam por acabamento final compartilhado (`ui.plot`/`viz.polish`) para manter margem, fundo, hover e eixo consistentes.
-- Mapas Folium com tiles neutros, círculos e rotas sem excesso de ícones decorativos.
-- Embed compacto para modal da landing: altura controlada, sem UI poluída e com contexto visível.
-- No embed, a sidebar Streamlit deve sumir e os filtros usam defaults ocultos; o case study deve começar por breadcrumb, pergunta, KPI e contexto. Ajuste fino de filtros pertence à demo em página completa/nova aba.
-
-### Alturas e Densidade
-
-| Elemento | Desktop | Embed |
-|---|---:|---:|
-| Chart meia coluna | `340px` | `320px` |
-| Chart full width | `430px` | `360px` |
-| Mapa full width | `460px` | `330px` |
-| Container principal | `1180px` máx. | largura disponível |
-
-### Critérios
-
-- Cada demo precisa deixar visível: problema, abordagem, stack, trade-off, métrica e limite.
-- KPIs e gráficos devem apoiar decisão, não decorar a tela.
-- Tabelas precisam ter formatação de moeda, percentual, score e status quando aplicável.
-- Links de contato nas demos devem ser profissionais: LinkedIn, email, GitHub ou CV.
-- Não usar CTA de venda consultiva como centro da experiência.
-
----
-
-## 7. Critérios de Qualidade
-
-- Primeira dobra comunica perfil para headhunter sem depender de rolagem longa.
-- CTA de LinkedIn/email fica claro.
-- 3 provas técnicas aparecem cedo.
-- Biblioteca não parece coleção de clones; deve apoiar repertório.
-- Contraste AA em fundos claros e escuros.
-- Demos Streamlit preservam a mesma paleta, densidade e linguagem da landing.
-- Performance continua como sinal profissional: build limpo e Lighthouse ≥90.
-- Mobile precisa ser escaneável para triagem via LinkedIn.
-- Animações não escondem conteúdo essencial: estado inicial `opacity: 1`.
-- Selection brandada com cor primary e texto branco.
-- Custom scrollbar sutil com thumb cinza quente.
-- Ambient orbs flutuantes no hero para dimensão visual.
-- Hover states premium: elevação + shadow + border accent.
-
----
-
-## 8. Referências
-
-- `KpG782/3D_Portfolio` — conceito estrutural forte e cases como traces com trade-offs.
-- `fuaadabdullah/fuaad-portfolio` — apresentação employer-ready, resume e case studies.
-- `M-F-Tushar/My-Portfolio` — orientação explícita para recrutador entender direção, provas, links e contato.
-- `mohabbis/personal-portfolio` — estética editorial, neutros quentes, tipografia forte e mínimo chrome.
-- SitesPlaced / Portfolio Studio — princípios de recrutamento: projetos cedo, resultados, links funcionais, stack tags e performance.
-- Tendências 2025: glassmorphism, Bento layouts, oversized serif typography, subtle scroll reveals.
-
----
-
-*Documento vivo. Atualize quando a direção de carreira, paleta, tipografia ou estrutura principal mudar.*
+- leitura principal compreensível sem interação;
+- cada prova explicita pergunta, decisão, métrica, método e limite;
+- nenhuma seção usa decoração para compensar conteúdo fraco;
+- contraste, foco e touch targets aprovados;
+- capturas em 375, 768 e 1440 px revisadas em navegador real;
+- Lighthouse ≥ 90 nas quatro categorias.

@@ -1,21 +1,22 @@
 /**
  * Valida a integridade do registro de cases da landing e sua correspondência
- * com as pages Streamlit em `demos-logistica/pages`.
+ * com o catálogo compartilhado e as pages Streamlit em `apps/demos/pages`.
  *
  * Uso: `npm run validate` (roda antes do build via `prebuild`).
  * Falha com código 1 e mensagem clara em qualquer inconsistência.
  */
 
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import demoCatalog from "../contracts/demo-catalog.json";
 import type { Case } from "../data/content";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
-const PAGES_DIR = join(ROOT, "demos-logistica", "pages");
+const DEMO_APP_DIR = join(ROOT, "apps", "demos");
 
 function loadLocalEnv(fileName: string): void {
   const envPath = join(ROOT, fileName);
@@ -42,13 +43,8 @@ loadLocalEnv(".env.local");
 loadLocalEnv(".env");
 
 const require = createRequire(import.meta.url);
-const {
-  CASE_DEMO_SLUGS,
-  CONTENT,
-  DEMOS_BASE_URL,
-  demoUrl,
-  LUCIDE_ICON_NAMES,
-} = require("../data/content") as typeof import("../data/content");
+const { CASE_DEMO_SLUGS, CONTENT, DEMOS_BASE_URL, demoUrl, LUCIDE_ICON_NAMES } =
+  require("../data/content") as typeof import("../data/content");
 
 const EXPECTED_DEMO_COUNT = 10;
 const EXPECTED_ROADMAP_IDS = ["06-kpis-cd"];
@@ -86,6 +82,7 @@ function warn(msg: string): void {
 
 const caseById = new Map(CONTENT.cases.map((c) => [c.id, c]));
 const demoIds = Object.keys(CASE_DEMO_SLUGS);
+const publishedCatalogEntries = demoCatalog.entries.filter((entry) => entry.published);
 
 // Derive CASES_DEMONSTRAVEIS e CASES_ROADMAP do CONTENT
 const CASES_DEMONSTRAVEIS = CONTENT.cases.filter((c) => c.id in CASE_DEMO_SLUGS);
@@ -105,27 +102,30 @@ if (
   (featuredProofCases.length !== 3 ||
     featuredProofCases.some((id) => typeof id !== "string" || !caseById.has(id)))
 ) {
-  fail(
-    "featuredProofCases deve conter exatamente 3 ids existentes em CONTENT.cases.",
-  );
+  fail("featuredProofCases deve conter exatamente 3 ids existentes em CONTENT.cases.");
 }
 
-// 0b. Cases âncora devem ser demonstráveis (ter demo Streamlit).
+// 0b. Cases âncora devem ter rota demonstrável e imagem editorial real.
 if (Array.isArray(featuredProofCases)) {
   for (const id of featuredProofCases) {
     if (typeof id === "string" && !(id in CASE_DEMO_SLUGS)) {
       fail(
-        `Case âncora "${id}" em featuredProofCases não está em CASE_DEMO_SLUGS (sem demo publicada).`,
+        `Case âncora "${id}" em featuredProofCases não está em CASE_DEMO_SLUGS (sem rota publicada).`,
       );
+    }
+
+    if (typeof id === "string") {
+      const featuredCase = caseById.get(id);
+      if (!featuredCase?.thumbnail || !featuredCase.thumbnailAlt) {
+        fail(`Case âncora "${id}" deve declarar thumbnail e thumbnailAlt em CONTENT.cases.`);
+      }
     }
   }
 }
 
 // 1. Contagem de cases demonstráveis.
 if (demoIds.length !== EXPECTED_DEMO_COUNT) {
-  fail(
-    `CASE_DEMO_SLUGS tem ${demoIds.length} entradas, esperado ${EXPECTED_DEMO_COUNT}.`,
-  );
+  fail(`CASE_DEMO_SLUGS tem ${demoIds.length} entradas, esperado ${EXPECTED_DEMO_COUNT}.`);
 }
 
 // 2. Toda key de CASE_DEMO_SLUGS existe em CONTENT.cases.
@@ -148,9 +148,7 @@ if (
   roadmapIds.length !== EXPECTED_ROADMAP_IDS.length ||
   roadmapIds.some((id, i) => id !== EXPECTED_ROADMAP_IDS[i])
 ) {
-  fail(
-    `Roadmap esperado [${EXPECTED_ROADMAP_IDS.join(", ")}], obtido [${roadmapIds.join(", ")}].`,
-  );
+  fail(`Roadmap esperado [${EXPECTED_ROADMAP_IDS.join(", ")}], obtido [${roadmapIds.join(", ")}].`);
 }
 
 // 5. Cada case demonstrável tem campos de modal preenchidos e ícone válido.
@@ -173,16 +171,13 @@ for (const c of CASES_DEMONSTRAVEIS) {
 }
 
 // 6. Consistência linkDemo ↔ CASE_DEMO_SLUGS (só quando base URL está definida).
-const isCiOrProduction =
-  process.env.CI === "true" || process.env.NODE_ENV === "production";
+const isCiOrProduction = process.env.CI === "true" || process.env.NODE_ENV === "production";
 
 if (DEMOS_BASE_URL) {
   for (const c of CASES_DEMONSTRAVEIS) {
     const expected = demoUrl(CASE_DEMO_SLUGS[c.id] ?? "");
     if (c.linkDemo !== expected) {
-      fail(
-        `Case "${c.id}" linkDemo="${c.linkDemo}" difere do esperado "${expected}".`,
-      );
+      fail(`Case "${c.id}" linkDemo="${c.linkDemo}" difere do esperado "${expected}".`);
     }
   }
 } else if (isCiOrProduction) {
@@ -195,45 +190,57 @@ if (DEMOS_BASE_URL) {
   );
 }
 
-// 7. Slug ↔ arquivo de page Streamlit ({slug}.py → /{slug}).
-if (existsSync(PAGES_DIR)) {
-  const pageFiles = readdirSync(PAGES_DIR).filter((f) => f.endsWith(".py"));
-  const slugFromFile = (file: string): string => file.replace(/\.py$/, "");
-  const availableSlugs = new Set(pageFiles.map(slugFromFile));
-  for (const [id, slug] of Object.entries(CASE_DEMO_SLUGS)) {
-    if (!availableSlugs.has(slug)) {
-      fail(
-        `Case "${id}" mapeia slug "${slug}" sem page correspondente em demos-logistica/pages (esperado ${slug}.py).`,
-      );
-    }
+// 7. Catálogo é único e cada rota publicada aponta para uma page existente.
+const catalogCaseIds = new Set<string>();
+const catalogSlugs = new Set<string>();
+for (const entry of demoCatalog.entries) {
+  if (catalogCaseIds.has(entry.caseId)) {
+    fail(`Catálogo contém caseId duplicado: "${entry.caseId}".`);
   }
-} else {
-  warn(
-    `Diretório de pages não encontrado (${PAGES_DIR}): pulando checagem slug ↔ arquivo.`,
+  catalogCaseIds.add(entry.caseId);
+
+  if (!caseById.has(entry.caseId)) {
+    fail(`Catálogo referencia case inexistente em CONTENT.cases: "${entry.caseId}".`);
+  }
+
+  if (!entry.published) continue;
+  if (!entry.slug || !entry.page) {
+    fail(`Case publicado "${entry.caseId}" precisa declarar slug e page.`);
+    continue;
+  }
+  if (catalogSlugs.has(entry.slug)) {
+    fail(`Catálogo contém slug duplicado: "${entry.slug}".`);
+  }
+  catalogSlugs.add(entry.slug);
+  if (!existsSync(join(DEMO_APP_DIR, entry.page))) {
+    fail(`Page ausente para "${entry.caseId}": apps/demos/${entry.page}.`);
+  }
+  if (CASE_DEMO_SLUGS[entry.caseId] !== entry.slug) {
+    fail(`Slug derivado diverge do catálogo para "${entry.caseId}".`);
+  }
+}
+
+if (publishedCatalogEntries.length !== EXPECTED_DEMO_COUNT) {
+  fail(
+    `Catálogo tem ${publishedCatalogEntries.length} demos publicadas, esperado ${EXPECTED_DEMO_COUNT}.`,
   );
 }
 
 // 8. CV freshness — garantir que PDF/JSON reflitam content.ts atual.
 const contentPath = join(ROOT, "data", "content.ts");
-const cvJsonPath = join(ROOT, "public", "cv-export.json");
 const cvPdfPath = join(ROOT, "public", "lucas-batista-cv.pdf");
 
 if (existsSync(contentPath)) {
   const contentMtime = statSync(contentPath).mtimeMs;
-  for (const [label, path] of [
-    ["cv-export.json", cvJsonPath],
-    ["lucas-batista-cv.pdf", cvPdfPath],
-  ] as const) {
-    if (existsSync(path)) {
-      const assetMtime = statSync(path).mtimeMs;
-      if (assetMtime < contentMtime) {
-        warn(
-          `${label} está desatualizado em relação a data/content.ts. Rode \`npm run cv:generate\` antes do deploy.`,
-        );
-      }
-    } else {
-      warn(`${label} não encontrado em public/. Rode \`npm run cv:generate\`.`);
+  if (existsSync(cvPdfPath)) {
+    const assetMtime = statSync(cvPdfPath).mtimeMs;
+    if (assetMtime < contentMtime) {
+      warn(
+        "lucas-batista-cv.pdf está desatualizado em relação a data/content.ts. Rode `npm run cv:generate` antes do deploy.",
+      );
     }
+  } else {
+    warn("lucas-batista-cv.pdf não encontrado em public/. Rode `npm run cv:generate`.");
   }
 }
 
@@ -244,11 +251,11 @@ for (const w of warnings) {
 if (errors.length > 0) {
   console.error(`\n[validate-cases] ${errors.length} erro(s):`);
   for (const e of errors) {
-    console.error(`  ✗ ${e}`);
+    console.error(`  [ERRO] ${e}`);
   }
   process.exit(1);
 }
 
 console.log(
-  `[validate-cases] OK — ${CASES_DEMONSTRAVEIS.length} cases demonstráveis, ${CASES_ROADMAP.length} em roadmap.`,
+  `[validate-cases] OK - ${CASES_DEMONSTRAVEIS.length} cases demonstráveis, ${CASES_ROADMAP.length} em roadmap.`,
 );

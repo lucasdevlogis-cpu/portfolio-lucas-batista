@@ -1,14 +1,15 @@
 /**
  * Exporta campos do content.ts para geração do CV PDF (SSOT).
- * Saída: public/cv-export.json (gitignored seria ideal; regen no cv:generate).
+ * Saída intermediária ignorada: .artifacts/cv/cv-export.json.
  */
 
-import { writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { CASES_DESTAQUE, CONTENT, SITE_URL } from "../data/content";
 
-const outPath = join(process.cwd(), "public", "cv-export.json");
+const artifactDir = join(process.cwd(), ".artifacts", "cv");
+const outPath = join(artifactDir, "cv-export.json");
 
 const { pessoal, careerTarget, experienceSignals, contactLinks } = CONTENT;
 
@@ -40,5 +41,6 @@ const payload = {
   cvNota: contactLinks.nota,
 };
 
+mkdirSync(artifactDir, { recursive: true });
 writeFileSync(outPath, JSON.stringify(payload, null, 2), "utf8");
-console.log(`[export-cv-content] OK — ${outPath}`);
+console.log(`[export-cv-content] OK - ${outPath}`);

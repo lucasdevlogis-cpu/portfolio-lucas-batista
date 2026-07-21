@@ -1,8 +1,8 @@
 {
   "folders": [
     {
-      "path": "."
-    }
+      "path": ".",
+    },
   ],
   "settings": {
     "typescript.tsdk": "node_modules/typescript/lib",
@@ -11,7 +11,7 @@
     "files.exclude": {
       "**/node_modules": true,
       "**/dist": true,
-      "**/.next": true
-    }
-  }
+      "**/.next": true,
+    },
+  },
 }

@@ -1,159 +1,97 @@
 # CANON — Executive Proof System
 
-> **Porta de entrada única** do repositório. Todo agente ou humano começa aqui. Os demais docs **referenciam** este arquivo — não contradizem.
->
-> Índice: [`docs/README.md`](README.md) · Arquitetura: [`docs/ARQUITETURA.md`](ARQUITETURA.md)
+Atualizado em 20/07/2026.
 
----
+## Objetivo
 
-## 1. Objetivo
+O portfólio é um casebook técnico _headhunter-first_. Em até 60 segundos deve
+responder:
 
-Dossiê profissional **headhunter-first**: em até 60 segundos, quem avalia fit entende quem é Lucas Batista, para quais posições o perfil faz sentido, quais provas técnicas existem, stack/domínios e como contatar.
+1. Quem é Lucas e qual posição faz sentido?
+2. Que resultados e repertório sustentam o perfil?
+3. Quais provas podem ser abertas e verificadas?
+4. Como entrar em contato?
 
-**Público:** headhunters, recrutadores, lideranças de operações e dados.
+Não é landing comercial, currículo genérico, catálogo de tecnologias ou
+dashboard sem decisão associada.
 
-**Não é:** landing comercial, currículo genérico, vitrine SaaS, fluxo Figma/Formspree.
+## Experiência canônica
 
----
-
-## 2. Homepage — ordem canônica (DOM = nav = spec)
-
-| Ordem | Seção | ID | Componente | Função |
-|------:|-------|-----|------------|--------|
-| 1 | Header | — | `Header` | Nav + CTA contato |
-| 2 | Hero executivo | — | `ExecutiveHero` | Nome, posicionamento, CTAs, painel stack/empresas |
-| 3 | Provas rápidas | — | `EvidenceStrip` | **3** evidências de impacto |
-| 4 | Perfil em 60s | `perfil` | `ProfileBrief` | Fit, senioridade, sinais (sem FAQ) |
-| 5 | Provas técnicas | `cases` | `SignatureCases` + `CaseLibrary` | 3 âncora + 7 biblioteca + 1 roadmap |
-| 6 | Trajetória | `trajetoria` | `TrajectoryBoard` | Experiências, formação, certificações, idiomas |
-| 7 | Contato | `contato` | `ContactPanel` | LinkedIn, email, GitHub, CV PDF |
-| 8 | Footer | — | `Footer` | Links, declaração, topo |
-
-**Mount tree (`HomePage.tsx`):**
-
-`Header` → `ExecutiveHero` → `EvidenceStrip` → `ProfileBrief` → `SignatureCases` → `TrajectoryBoard` → `ContactPanel` → `Footer`
-
-**Nav (`data/content.ts`):** Perfil · Provas · Trajetória · Contato
-
-Detalhes estruturais: [`ARQUITETURA.md`](ARQUITETURA.md). Spec visual: [`design/design.md`](../design/design.md).
-
----
-
-## 3. Hierarquia SSOT (fonte da verdade)
-
-| Domínio | Fonte | Não usar |
-|---------|-------|----------|
-| Copy ativo (landing) | [`data/content.ts`](../data/content.ts) | Hardcode nos componentes |
-| Copy shelved (comercial) | [`data/archive/content-consultoria.ts`](../data/archive/content-consultoria.ts) | Remontar sem aprovação |
-| Arquitetura do sistema | [`docs/ARQUITETURA.md`](ARQUITETURA.md) | Specs obsoletas / audits soltos |
-| Spec visual + IA | [`design/design.md`](../design/design.md) | Figma |
-| Tokens landing | [`app/globals.css`](../app/globals.css) + [`design/tokens.md`](../design/tokens.md) | Hex inline |
-| Inventário do repo | [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | — |
-| Checklist de refatoração | [`docs/P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md) | — |
-| Tokens demos Streamlit | [`demos-logistica/lib/brand.py`](../demos-logistica/lib/brand.py) | — |
-| Padrões para agentes | [`.agents/skills/`](../.agents/skills/) (apontam para docs canônicos) | Specs obsoletas em archive |
-| Estado do projeto | [`docs/AVALIACAO.md`](AVALIACAO.md) | Claims "100%" sem QA |
-| Deploy / Vercel | [`docs/DEPLOY.md`](DEPLOY.md), [`docs/VERCEL.md`](VERCEL.md) | SHAs hardcoded |
-| CV PDF | Gerado de `content.ts` via `npm run cv:generate` | Copy manual no Python |
-
----
-
-## 4. Demos e cases
-
-- **10 cases demonstráveis** — `CASE_DEMO_SLUGS` em `data/content.ts`
-- **1 roadmap** — `06-kpis-cd` (sem demo Streamlit)
-- **3 âncora** — `featuredProofCases` (`01`, `02`, `08`) com thumbnails em `public/cases/*.webp`
-- **7 biblioteca** — filtros dinâmicos só com `count > 0` (não incluem âncora/roadmap)
-- Embed: `DemoModal` + preview progressivo + iframe `?embed=true`
-- Env obrigatória no build: `NEXT_PUBLIC_DEMOS_BASE_URL`
-
-Validação: `npm run validate` (10 demos + slug ↔ `demos-logistica/pages/`)
-
----
-
-## 5. Shelved (não montar na homepage)
-
-| Path | Conteúdo |
-|------|----------|
-| [`components/archive/consultoria/`](../components/archive/consultoria/) | Dores, Serviços, Método, Sobre, IA |
-| [`components/archive/legacy/`](../components/archive/legacy/) | Cockpit e iterações anteriores |
-| [`components/archive/ui/`](../components/archive/ui/) | `FadeIn`, `Stagger`, `GlassCard` |
-| [`data/archive/`](../data/archive/) | Copy da landing comercial |
-| [`design/archive/`](../design/archive/) | Specs históricos |
-| [`docs/archive/`](archive/) | QA e gaps históricos |
-
----
-
-## 6. Matriz de status (honesta)
-
-| Área | Lançado | QA | Polimento | Notas |
-|------|:-------:|:--:|:---------:|-------|
-| Layout Executive Proof | ✅ | ✅ | ✅ | Densidade revisada 13/07 |
-| Cases âncora (thumbs + compactação) | ✅ | ✅ | ✅ | WebP reais + CTAs específicos |
-| Filtros biblioteca dinâmicos | ✅ | ✅ | ✅ | Sem categorias com 0 |
-| Modal demo progressivo | ✅ | ✅ | ✅ | Preview + fallback ~22s |
-| Demos Streamlit (10 + roadmap) | ✅ | ✅ | — | smoke 13/13 |
-| Deploy Vercel | ✅ | ✅ | — | ver `npx vercel inspect` |
-| OG + CV PDF | ✅ | ✅ | — | prod 200 |
-| Lighthouse | ✅ local | 🟡 | — | a revalidar pós-refino |
-| E2E Playwright | ✅ | ✅ | — | **9/9** |
-| Domínio custom | — | — | 🟡 | Backlog |
-| Analytics | ✅ parcial | — | 🟡 | `@vercel/analytics` + `lib/analytics.ts` |
-
-**Regra:** "Lançado" = código em produção. QA pós-deploy: [`VERCEL.md`](VERCEL.md).
-
----
-
-## 7. Verificação
-
-```bash
-npm run validate && npm run lint && npm run typecheck && npm run build
-npm run test:e2e
-npm run cv:generate          # se content.ts mudou
-
-cd demos-logistica
-python scripts/build_datasets.py
-python scripts/smoke_test.py   # 13 checagens
-python scripts/validate_slugs.py
+```text
+Header
+→ Hero executivo
+→ Evidências rápidas
+→ Perfil em 60 segundos
+→ 3 provas âncora + biblioteca de 7 provas
+→ Trajetória
+→ Contato
+→ Footer
 ```
 
-**Env** (`.env.example`):
+A navegação pública usa `Perfil · Provas · Trajetória · Contato`.
 
-```env
-NEXT_PUBLIC_SITE_URL=https://portfolio-lucas-batista-murex.vercel.app
-NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
-```
+## Inventário de provas
 
-**Deploy atual:** `npx vercel inspect portfolio-lucas-batista-murex.vercel.app` — não confiar em SHA fixo nos docs.
+| Grupo          | Quantidade | Renderização                                     |
+| -------------- | ---------: | ------------------------------------------------ |
+| Âncoras        |          3 | React/Next em `/provas/{slug}` e dentro do modal |
+| Complementares |          7 | Streamlit em iframe ou nova aba                  |
+| Roadmap        |          1 | conteúdo editorial, sem link publicado           |
 
----
+Âncoras: precificação de frete, torre de controle e CVRP urbano.
 
-## 8. Índice de documentação
+O catálogo completo está em `contracts/demo-catalog.json`. Um case só é
+publicado se catálogo, `data/content.ts`, page Python e URL derivada forem
+consistentes.
 
-Ver [`docs/README.md`](README.md). Principais:
+## Fontes da verdade
 
-| Doc | Papel |
-|-----|-------|
-| **`docs/CANON.md`** | Este arquivo — entrada única |
-| [`docs/ARQUITETURA.md`](ARQUITETURA.md) | Arquitetura do sistema |
-| [`docs/AVALIACAO.md`](AVALIACAO.md) | Snapshot de saúde |
-| [`docs/MAPEAMENTO.md`](MAPEAMENTO.md) | Inventário do repositório |
-| [`docs/DEPLOY.md`](DEPLOY.md) / [`VERCEL.md`](VERCEL.md) | Publicação |
-| [`design/design.md`](../design/design.md) | Spec visual |
-| [`AGENTS.md`](../AGENTS.md) | Guia agentes |
-| [`.cursorrules`](../.cursorrules) | Regras Cursor |
+| Domínio                               | Editar                        | Gerado/consumidor                 |
+| ------------------------------------- | ----------------------------- | --------------------------------- |
+| Copy, carreira, cases, CTA e metadata | `data/content.ts`             | componentes, metadata e CV        |
+| Slug, page, tier e publicação         | `contracts/demo-catalog.json` | Next, validações e Streamlit      |
+| Cálculos das âncoras                  | Python em `apps/demos/`       | `contracts/demo-snapshots/*.json` |
+| Tokens                                | `design/tokens.json`          | CSS, Python e config Streamlit    |
+| Fila                                  | `docs/ROADMAP.md`             | execução e handoff                |
 
----
+Arquivos gerados não devem ser editados manualmente.
 
-## 9. URLs de produção
+## Princípios de produto
 
-| Serviço | URL |
-|---------|-----|
-| Landing | <https://portfolio-lucas-batista-murex.vercel.app> |
-| Demos | <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app> |
-| GitHub landing | <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista> |
-| GitHub demos | <https://github.com/lucasdevlogis-cpu/demos-logistica> |
+- Uma prova começa pela pergunta de negócio, não pela biblioteca usada.
+- Cada prova mostra decisão, até 3 KPIs, visual principal, método e limitação.
+- Visualizações usam paleta semântica curta; nada de arco-íris.
+- A landing é seletiva; profundidade fica nas provas.
+- Dados são sintéticos, públicos ou anonimizados.
+- O modal não replica um site nas âncoras: renderiza o shell React diretamente.
+- Streamlit continua como motor exploratório das complementares.
 
----
+## Estado confirmado nesta refatoração
 
-*Atualize este arquivo quando mudar ordem de seções, SSOT ou critérios de status.*
+- topologia de repositório único validada;
+- clones locais antigos arquivados fora da árvore ativa, sem perda de histórico;
+- tokens sincronizados;
+- catálogo e 3 snapshots válidos;
+- datasets reproduzíveis;
+- TypeScript, ESLint, Ruff, pytest e build aprovados;
+- smoke Streamlit 13/13;
+- Playwright 17/17;
+- QA visual renovado em 375, 768 e 1440 px;
+- QA Streamlit em 12 rotas desktop e 7 embeds mobile;
+- Lighthouse desktop 100/100/100/100 e mobile 93/100/100/100;
+- `npm audit` com 0 vulnerabilidades;
+- CV regenerado a partir do conteúdo atual.
+
+Resultados detalhados e próximos passos ficam em `QUALIDADE.md` e `ROADMAP.md`.
+Deploy e migração da origem no Streamlit Cloud permanecem pendentes porque
+alteram serviços externos.
+
+## URLs públicas
+
+- Landing: <https://portfolio-lucas-batista-murex.vercel.app>
+- Demos: <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app>
+- Repositório canônico:
+  <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista>
+
+A URL pública das demos pode ser preservada; a origem do Streamlit Cloud deve
+ser migrada para este repositório e `apps/demos/app.py`.

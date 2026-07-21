@@ -1,38 +1,24 @@
-# Documentação — índice
+# Documentação
 
-> Comece em **[`CANON.md`](CANON.md)**. Este índice só organiza a leitura.
+Documentação curta e canônica. Histórico de código permanece no Git; relatórios
+gerados pertencem a `.artifacts/`, não a `docs/`.
 
-## Hierarquia SSOT
+| Documento                                                                    | Função                                            |
+| ---------------------------------------------------------------------------- | ------------------------------------------------- |
+| [`CANON.md`](CANON.md)                                                       | objetivo, escopo, fontes da verdade e estado      |
+| [`ARQUITETURA.md`](ARQUITETURA.md)                                           | topologia, camadas e fluxos                       |
+| [`OPERACAO.md`](OPERACAO.md)                                                 | setup, comandos, deploy e troubleshooting         |
+| [`QUALIDADE.md`](QUALIDADE.md)                                               | critérios técnicos, visuais e de acessibilidade   |
+| [`ROADMAP.md`](ROADMAP.md)                                                   | concluído, pendências e próxima ordem de execução |
+| [`../design/design.md`](../design/design.md)                                 | direção visual ativa                              |
+| [`decisions/0001-single-repository.md`](decisions/0001-single-repository.md) | decisão de repositório único                      |
 
-| Tier | Doc | Papel |
-|------|-----|-------|
-| 0 | [`CANON.md`](CANON.md) | Entrada única — o que é oficial |
-| 1 | [`ARQUITETURA.md`](ARQUITETURA.md) | Mapa estrutural do sistema |
-| 1 | [`../data/content.ts`](../data/content.ts) | Copy, cases, CTAs |
-| 1 | [`../design/design.md`](../design/design.md) | Spec visual |
-| 1 | [`../app/globals.css`](../app/globals.css) + [`../design/tokens.md`](../design/tokens.md) | Tokens |
-| 1 | [`AVALIACAO.md`](AVALIACAO.md) | Saúde / status |
-| 2 | [`DEPLOY.md`](DEPLOY.md), [`VERCEL.md`](VERCEL.md) | Como publicar |
-| 2 | [`P0_P1_P2_CHECKLIST.md`](P0_P1_P2_CHECKLIST.md) | Trabalho aberto / histórico de refatoração |
-| 3 | [`A11Y.md`](A11Y.md), [`MOBILE_SPEC.md`](MOBILE_SPEC.md) | Specs profundas |
-| 3 | [`MAPEAMENTO.md`](MAPEAMENTO.md) | Inventário detalhado do repo |
-| 3 | [`../AGENTS.md`](../AGENTS.md) | Guia completo para agentes |
-| 4 | [`.agents/skills/`](../.agents/skills/) | Skills (apontam para docs canônicos) |
-| 5 | [`archive/`](archive/), [`audit/`](audit/), [`OPORTUNIDADES_DEMOS.md`](OPORTUNIDADES_DEMOS.md) | Histórico — não usar como verdade |
+Leitura mínima para alterar código: `CANON.md` → `ARQUITETURA.md` → documento
+específico da tarefa.
 
-## Leitura rápida por persona
+## Anti-deriva
 
-| Persona | Caminho |
-|---------|---------|
-| Humano (clone/run) | [`../README.md`](../README.md) → CANON → DEPLOY |
-| Agente de código | CANON → ARQUITETURA → AGENTS → skill relevante |
-| Design / UX | design.md → tokens.md → A11Y / MOBILE_SPEC |
-| Deploy | DEPLOY → VERCEL |
-| Demos | [`../demos-logistica/README.md`](../demos-logistica/README.md) + `docs/cases/` |
-
-## Regras anti-deriva
-
-1. **Não duplique** hex, ordem de seções ou contagem de cases fora da SSOT.
-2. Skills e `.cursorrules` **espelham** `tokens.md` / CANON — não inventam valores.
-3. Status de saúde vive em `AVALIACAO.md` — não em relatórios soltos na raiz.
-4. Artefatos de QA pontuais vão para `docs/archive/` ou `docs/audit/`.
+- Não duplicar comandos ou status em novos relatórios datados.
+- Atualizar o documento canônico quando arquitetura, deploy ou gate mudar.
+- Não commitar screenshots, Lighthouse JSON, logs ou export intermediário do CV.
+- Usar `docs/ROADMAP.md` como única fila ativa.

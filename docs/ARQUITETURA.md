@@ -1,152 +1,110 @@
-# Arquitetura — Portfólio Lucas Batista
+# Arquitetura
 
-> **SSOT de arquitetura.** Complementa [`CANON.md`](CANON.md) (entrada única) com o mapa estrutural do sistema.
->
-> **Última atualização:** 13/07/2026 — pós-refinamento de cases (thumbnails reais, filtros dinâmicos, modal progressivo).
+## Decisão central
 
----
+Landing, demos, contratos, datasets e documentação vivem em um único
+repositório. O Next.js permanece na raiz para não introduzir configuração
+especial na Vercel; o aplicativo Python vive em `apps/demos/`.
 
-## 1. Visão do sistema
+```text
+portfolio-lucas-batista/
+├── app/                         rotas Next.js, sitemap e robots
+├── components/
+│   ├── demos/                   modal e provas React
+│   ├── sections/                seções da homepage
+│   ├── layout/                  estrutura compartilhada
+│   └── ui/                      primitives mínimos
+├── data/content.ts              conteúdo editorial
+├── apps/demos/
+│   ├── app.py                   entrypoint Streamlit
+│   ├── catalog.py               leitor do catálogo JSON
+│   ├── domain/                  cálculo sem dependência de UI
+│   ├── presentation/            tema, charts, mapas, tabelas e formatadores
+│   ├── pages/                   composição de cada prova
+│   ├── data/raw/                amostras curadas
+│   ├── data/generated/          datasets determinísticos
+│   ├── scripts/                 geração, export e smoke
+│   └── tests/                   pytest
+├── contracts/
+│   ├── demo-catalog.json        identidade e publicação
+│   └── demo-snapshots/          dados das âncoras
+├── design/tokens.json           tokens editáveis
+├── scripts/                     automação transversal
+├── tests/e2e/                   Playwright
+└── .artifacts/                  saídas locais ignoradas
+```
+
+## Fluxos de dados
 
 ```mermaid
 flowchart LR
-  subgraph Landing["Landing Next.js · Vercel"]
-    HP[HomePage]
-    HP --> Hero[ExecutiveHero]
-    HP --> Cases[SignatureCases]
-    Cases --> Lib[CaseLibrary]
-    Cases --> Modal[DemoModal]
-    HP --> Traj[TrajectoryBoard]
-    HP --> Contato[ContactPanel]
-  end
+  T[design/tokens.json] --> G[scripts/generate-design-tokens.mjs]
+  G --> CSS[app/design-tokens.css]
+  G --> PY[apps/demos/presentation/tokens.py]
+  G --> ST[.streamlit/config.toml]
 
-  subgraph Content["SSOT de conteúdo"]
-    CT[data/content.ts]
-  end
+  C[contracts/demo-catalog.json] --> NEXT[data/content.ts e lib/demo-catalog.ts]
+  C --> NAV[apps/demos/catalog.py]
 
-  subgraph Demos["Demos Streamlit · Streamlit Cloud"]
-    ST[app.py + pages/*.py]
-  end
-
-  CT --> HP
-  Modal -->|iframe ?embed=true| ST
-  CT -->|CASE_DEMO_SLUGS| Modal
+  RAW[apps/demos/data/raw] --> BUILD[build_datasets.py]
+  BUILD --> DATA[apps/demos/data/generated]
+  DATA --> EXPORT[export_demo_snapshots.py]
+  EXPORT --> SNAP[contracts/demo-snapshots]
+  SNAP --> PROOFS[3 provas React]
+  DATA --> STREAMLIT[7 provas Streamlit]
 ```
 
-| Serviço | Repo | Deploy |
-|---------|------|--------|
-| Landing | `portfolio-lucas-batista` | Vercel |
-| Demos | `demos-logistica` (sync a partir de `demos-logistica/`) | Streamlit Cloud |
+## Next.js
 
----
+- `app/page.tsx` possui o `<main id="conteudo">` da homepage.
+- `app/provas/[slug]/page.tsx` gera somente os 3 slugs âncora.
+- `app/sitemap.ts` e `app/robots.ts` substituem arquivos estáticos gerados.
+- `data/content.ts` é importado por Server Components; Client Components recebem
+  props mínimos.
+- `CaseDemoLauncher` carrega `DemoModal` apenas no primeiro clique.
+- ECharts e MapLibre são importados dentro de `useEffect`, quando a prova abre.
+- No mobile, iframe Streamlit só monta após ação explícita do usuário.
 
-## 2. Ordem canônica da homepage
+## Streamlit
 
-DOM = nav = spec. Fonte: `components/HomePage.tsx`.
+`apps/demos/app.py` usa `st.navigation` e `st.Page`. As URLs são explícitas e
+derivadas do catálogo compartilhado. Pages devem apenas compor filtros,
+apresentação e chamadas ao domínio.
 
-| # | Seção | ID | Componente | Função |
-|---|-------|-----|------------|--------|
-| 1 | Header | — | `Header` + `MobileNav` | Nav + CTA contato |
-| 2 | Hero | — | `ExecutiveHero` | Nome, fit, CTAs, stack/empresas |
-| 3 | Provas rápidas | — | `EvidenceStrip` | **3** métricas de impacto |
-| 4 | Perfil | `perfil` | `ProfileBrief` | Fit em 60s (sem FAQ) |
-| 5 | Provas | `cases` | `SignatureCases` → `CaseLibrary` + roadmap | 3 âncora + 7 biblioteca + 1 roadmap |
-| 6 | Trajetória | `trajetoria` | `TrajectoryBoard` | Experiência, formação, certs, idiomas |
-| 7 | Contato | `contato` | `ContactPanel` | LinkedIn, email, GitHub, CV |
-| 8 | Footer | — | `Footer` + `BackToTop` | Links e declaração |
+Dependências entre camadas:
 
-Nav: **Perfil · Provas · Trajetória · Contato**.
-
----
-
-## 3. Árvore de montagem
-
-```
-HomePage
-├── Header → MobileNav
-├── ExecutiveHero
-├── EvidenceStrip
-├── ProfileBrief
-├── SignatureCases
-│   ├── CaseThumbnail (WebP real nos 3 âncora)
-│   ├── CaseDemoLauncher → DemoModal (lazy)
-│   ├── CaseLibrary (filtros só com count > 0)
-│   └── Roadmap (06-kpis-cd)
-├── TrajectoryBoard
-├── ContactPanel
-├── Footer
-└── BackToTop
+```text
+pages → domain
+pages → presentation
+presentation → settings/tokens
+domain ↛ streamlit
 ```
 
-`CaseLibrary` **não** é seção top-level em `HomePage` — vive dentro de `SignatureCases`.
+## Contratos
 
----
+`DemoSnapshot` é produzido pelo Python e validado no TypeScript. React não
+recalcula frete, SLA ou roteirização. Alterações de schema exigem:
 
-## 4. Camadas de dados
+1. atualizar exporter e tipos;
+2. rodar `npm run demos:export`;
+3. rodar `npm run demos:validate`;
+4. revisar as 3 rotas públicas.
 
-| Camada | Fonte | Regra |
-|--------|-------|-------|
-| Copy, cases, CTAs, nav | `data/content.ts` | Nunca hardcode nos componentes |
-| Slugs demo | `CASE_DEMO_SLUGS` + `NEXT_PUBLIC_DEMOS_BASE_URL` | `linkDemo` derivado |
-| Âncora / biblioteca / roadmap | `featuredProofCases`, `CASES_*` | Contagens: 3 / 7 / 1 |
-| Tokens runtime | `app/globals.css` (`:root` + `@theme`) | Hex só via tokens |
-| Tokens demos | `demos-logistica/lib/brand.py` | Paridade visual |
+## Artefatos
 
-Helpers relevantes em `content.ts`: `caseNumberFromId`, `caseDemoCta`, `isPeriodoAtual`, `CASE_CATEGORIAS` (só biblioteca).
+| Artefato                   | Destino                       | Git |
+| -------------------------- | ----------------------------- | --- |
+| CV final                   | `public/lucas-batista-cv.pdf` | sim |
+| export intermediário do CV | `.artifacts/cv/`              | não |
+| capturas Playwright        | `.artifacts/qa/`              | não |
+| relatórios Lighthouse      | `.artifacts/lighthouse/`      | não |
+| resultados Playwright      | `.artifacts/playwright/`      | não |
 
----
+Legado removido continua recuperável no histórico Git. Clones e relatórios
+locais antigos são arquivados fora do repositório.
 
-## 5. Integração landing ↔ demos
+## Proteção contra regressão
 
-1. Card / linha → `CaseDemoLauncher` abre `DemoModal`.
-2. Modal mostra contexto (pergunta, métrica, descrição, decisão, tags, limitação).
-3. Preview: thumbnail real + “Inicializando demonstração…”; iframe após `onLoad`.
-4. URL: `{DEMOS_BASE}/{slug}?embed=true` (slug **sem** prefixo numérico).
-5. Fallback ~22s + link “Abrir em nova aba” sempre disponível.
-
-Pages Streamlit ativas (slugs):
-
-`precificacao_frete`, `mini_torre_controle`, `promessa_cep`, `ship_from_store`, `auditoria_endereco`, `classificador_ocorrencias`, `cvrp_urbano`, `vrptw_ultima_milha`, `rede_interhubs`, `tsp_baseline_sp` (+ `11_sobre_dados_metodos`).
-
----
-
-## 6. Assets e artefatos gerados
-
-| Artefato | Origem | Path |
-|----------|--------|------|
-| Thumbnails âncora | Captura demos → WebP | `public/cases/*.webp` |
-| CV PDF | `npm run cv:generate` | `public/lucas-batista-cv.pdf` |
-| Sitemap / robots | `npm run seo:generate` | `public/` |
-| OG | estático | `public/og-image.jpg` |
-
-Scripts de captura: `scripts/capture-demo-thumbnails.mjs`, `scripts/optimize-case-thumbnails.mjs`.
-
----
-
-## 7. Shelved (não montar)
-
-| Path | Conteúdo |
-|------|----------|
-| `components/archive/consultoria/` | Landing comercial |
-| `components/archive/legacy/` | Cockpit e iterações antigas |
-| `components/archive/ui/` | `FadeIn`, `Stagger`, `GlassCard` |
-| `data/archive/` | Copy comercial |
-| `design/archive/` | Specs históricos |
-| `docs/archive/` | QA e gaps históricos |
-
----
-
-## 8. Verificação de arquitetura
-
-```bash
-npm run validate && npm run lint && npm run typecheck && npm run build
-npm run test:e2e   # 9 testes Playwright
-
-cd demos-logistica
-python scripts/validate_slugs.py
-python scripts/smoke_test.py   # 13/13
-```
-
----
-
-*Atualize este arquivo quando mudar a árvore de montagem, o contrato landing↔demos ou as contagens de cases.*
+`scripts/validate-architecture.mjs` exige a topologia acima e falha se caminhos
+legados reaparecerem. A decisão completa está em
+`docs/decisions/0001-single-repository.md`.

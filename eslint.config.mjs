@@ -14,9 +14,11 @@ const eslintConfig = defineConfig([
     ".vercel/**",
     "build/**",
     "next-env.d.ts",
-    // App Streamlit (Python) — não deve ser lintado; o .venv tem JS empacotado
-    // gigante que estoura a memória do ESLint.
-    "demos-logistica/**",
+    // Aplicação Python e artefatos locais não pertencem ao grafo JavaScript.
+    "apps/demos/**",
+    ".artifacts/**",
+    ".pytest_cache/**",
+    ".ruff_cache/**",
   ]),
 ]);
 

@@ -9,13 +9,21 @@ from pathlib import Path
 from fpdf import FPDF
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPORT = ROOT / "public" / "cv-export.json"
+EXPORT = ROOT / ".artifacts" / "cv" / "cv-export.json"
 OUT = ROOT / "public" / "lucas-batista-cv.pdf"
+TOKENS = ROOT / "design" / "tokens.json"
 
-PRIMARY = (23, 50, 77)
-INK = (17, 24, 39)
-MUTED = (75, 85, 99)
-ACCENT = (15, 118, 110)
+
+def hex_to_rgb(value: str) -> tuple[int, int, int]:
+    normalized = value.lstrip("#")
+    return tuple(int(normalized[index : index + 2], 16) for index in (0, 2, 4))
+
+
+token_colors = json.loads(TOKENS.read_text(encoding="utf-8"))["colors"]
+PRIMARY = hex_to_rgb(token_colors["primary"])
+INK = hex_to_rgb(token_colors["ink"])
+MUTED = hex_to_rgb(token_colors["mutedForeground"])
+ACCENT = hex_to_rgb(token_colors["accentContrast"])
 
 
 def find_font() -> Path:
@@ -69,7 +77,7 @@ def bullet(pdf: CvPdf, text: str) -> None:
 def main() -> None:
     if not EXPORT.is_file():
         print(
-            "[generate-cv-pdf] cv-export.json ausente. Rode: npm run cv:export",
+            "[generate-cv-pdf] export do CV ausente. Rode: npm run cv:export",
             file=sys.stderr,
         )
         sys.exit(1)
@@ -153,7 +161,7 @@ def main() -> None:
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     pdf.output(str(OUT))
-    print(f"[generate-cv-pdf] OK — {OUT.relative_to(ROOT)}")
+    print(f"[generate-cv-pdf] OK - {OUT.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
