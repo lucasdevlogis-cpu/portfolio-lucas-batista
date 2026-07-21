@@ -42,6 +42,8 @@ Atualizado em 21/07/2026. Esta é a única fila operacional do projeto.
 - [x] validar a nova origem em 12 rotas desktop e 7 embeds mobile;
 - [x] corrigir a grade responsiva de KPIs, a duplicação no TSP e a leitura da
       página de métodos.
+- [x] atualizar a origem das demos nos três ambientes Vercel e validar o modal
+      público em iframe e nova aba.
 
 ## P0 — fechar e publicar esta arquitetura
 
@@ -50,7 +52,7 @@ Atualizado em 21/07/2026. Esta é a única fila operacional do projeto.
 - [x] criar a app Streamlit canônica com repo `portfolio-lucas-batista`, branch
       `main` e entrypoint `apps/demos/app.py`;
 - [x] executar `qa:streamlit` na nova URL;
-- [ ] atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` na Vercel, redeployar e validar a
+- [x] atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` na Vercel, redeployar e validar a
       integração pública;
 - [ ] remover a app/repositório legado somente após o corte validado.
 
@@ -81,11 +83,10 @@ sessão antiga. O QA seguiu pelo Playwright do projeto, com evidência equivalen
 
 ## Ordem da próxima execução
 
-1. Publicar o polimento das demos na `main` e aguardar o redeploy Streamlit.
-2. Atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` e redeployar a Vercel.
-3. Validar modal, embed e nova aba contra a origem canônica.
-4. Retirar a app legada após confirmação explícita do corte.
-5. Fechar o P0 e iniciar o P1 com base em valor de recrutamento e uso.
+1. Retirar a app legada após confirmação explícita do corte.
+2. Priorizar as 2 provas complementares de maior valor para recrutamento.
+3. Instrumentar abertura de provas e filtros para substituir preferência por uso.
+4. Executar o P1 com regressão visual focada nos componentes alterados.
 
 ## Critério de pronto
 

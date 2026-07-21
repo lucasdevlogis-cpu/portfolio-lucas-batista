@@ -84,9 +84,9 @@ Arquivos gerados não devem ser editados manualmente.
 - CV regenerado a partir do conteúdo atual.
 
 Resultados detalhados e próximos passos ficam em `QUALIDADE.md` e `ROADMAP.md`.
-A PR arquitetural foi mesclada, a CI da `main` está verde e a landing está em
-produção na Vercel. A aplicação Streamlit canônica já está publicada e validada;
-o P0 externo restante é recompilar a landing com a nova origem e validar o corte.
+A CI da `main` está verde, a landing foi recompilada com a origem Streamlit
+canônica e a integração pública foi validada. A aplicação legada permanece
+somente como rollback até sua retirada deliberada.
 
 ## URLs públicas
 
