@@ -43,11 +43,11 @@ Rodada de 21/07/2026 após o merge e o deploy Vercel:
 | `npm run qa:visual`    | landing, modal e âncoras aprovados em 375, 768 e 1440 px         |
 | Lighthouse desktop     | 100/100/100/100                                                  |
 | Lighthouse mobile      | 99/100/100/100                                                   |
-| `npm run qa:streamlit` | bloqueado no legado: case `promessa_cep` ainda numerado como 04  |
+| `npm run qa:streamlit` | nova origem aprovada: 12 rotas desktop e 7 embeds mobile         |
 
-A falha pública do Streamlit é evidência de origem antiga, não regressão no
-código canônico: o QA local do app novo permanece 12 rotas desktop + 7 embeds
-mobile. O gate será repetido após o novo deploy do Community Cloud.
+A nova aplicação Streamlit foi validada diretamente no Community Cloud. Não
+houve exceção, rota divergente ou regressão de layout nas 19 capturas. O corte
+da landing permanece separado porque `NEXT_PUBLIC_*` é incorporada no build.
 
 ## Aceite visual
 
@@ -93,7 +93,7 @@ Critérios:
 
 O baseline público aceito desta refatoração é 100/100/100/100 em desktop e
 99/100/100/100 em mobile. Resultados locais continuam como evidência rápida de
-regressão; o aceite final das demos depende da migração do Streamlit.
+regressão; a origem Streamlit canônica também passou no gate visual público.
 
 ## Evidências
 

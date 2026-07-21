@@ -3,6 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 
 const baseUrl = (process.env.STREAMLIT_QA_BASE_URL ?? "http://127.0.0.1:8501").replace(/\/$/, "");
+const requestedSettleMs = Number(process.env.STREAMLIT_QA_SETTLE_MS ?? 2500);
+const settleMs =
+  Number.isFinite(requestedSettleMs) && requestedSettleMs >= 0 ? requestedSettleMs : 2500;
 const outDir = path.join(process.cwd(), ".artifacts", "qa", "streamlit");
 const catalog = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), "contracts", "demo-catalog.json"), "utf8"),
@@ -55,6 +58,8 @@ async function capture(browser, target, viewport, suffix, embed = false) {
   await surface.locator('[data-testid="stAppViewContainer"]').waitFor({ timeout: 60_000 });
   const heading = surface.locator("h1").first();
   await heading.waitFor({ timeout: 60_000 });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await surface.locator("html").evaluate(() => window.scrollTo(0, 0));
   const headingText = (await heading.textContent())?.trim() ?? "";
   if (target.expectedPrefix && !headingText.startsWith(target.expectedPrefix)) {
     throw new Error(
@@ -64,7 +69,7 @@ async function capture(browser, target, viewport, suffix, embed = false) {
   if ((await surface.locator('[data-testid="stException"]').count()) > 0) {
     throw new Error(`${target.name}: exceção Streamlit renderizada em ${url}`);
   }
-  await page.waitForTimeout(900);
+  await page.waitForTimeout(settleMs);
   await page.screenshot({
     path: path.join(outDir, `${target.name}-${suffix}.png`),
     fullPage: false,

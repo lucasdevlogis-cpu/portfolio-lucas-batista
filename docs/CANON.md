@@ -78,23 +78,24 @@ Arquivos gerados não devem ser editados manualmente.
 - Playwright 17/17;
 - QA visual renovado em 375, 768 e 1440 px;
 - QA Streamlit local em 12 rotas desktop e 7 embeds mobile;
+- QA Streamlit público na origem canônica em 12 rotas desktop e 7 embeds mobile;
 - Lighthouse de produção desktop 100/100/100/100 e mobile 99/100/100/100;
 - `npm audit` com 0 vulnerabilidades;
 - CV regenerado a partir do conteúdo atual.
 
 Resultados detalhados e próximos passos ficam em `QUALIDADE.md` e `ROADMAP.md`.
 A PR arquitetural foi mesclada, a CI da `main` está verde e a landing está em
-produção na Vercel. A URL Streamlit ainda entrega o repositório legado; a troca
-para a origem canônica permanece como o único P0 externo aberto.
+produção na Vercel. A aplicação Streamlit canônica já está publicada e validada;
+o P0 externo restante é recompilar a landing com a nova origem e validar o corte.
 
 ## URLs públicas
 
 - Landing: <https://portfolio-lucas-batista-murex.vercel.app>
-- Demos: <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app>
+- Demos:
+  <https://portfolio-lucas-batista-asbsqusjhhbyje6pktjpvw.streamlit.app>
 - Repositório canônico:
   <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista>
 
-A origem do Streamlit Cloud deve ser migrada para este repositório e
-`apps/demos/app.py`. O Community Cloud trata repositório, branch e entrypoint
-como coordenadas imutáveis; a migração exige novo deploy, conforme o runbook de
-`OPERACAO.md`.
+A aplicação Streamlit usa este repositório, a branch `main` e o entrypoint
+`apps/demos/app.py`. A aplicação legada permanece apenas como rollback até o
+corte da landing ser confirmado, conforme `OPERACAO.md`.

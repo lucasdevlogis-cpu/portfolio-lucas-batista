@@ -2,7 +2,7 @@
 
 import pandas as pd
 import streamlit as st
-from presentation import tables, ui
+from presentation import ui
 
 ui.page_setup("Sobre os dados e métodos", icon="📚")
 
@@ -89,15 +89,14 @@ proveniencia = pd.DataFrame(
     ],
     columns=["Demo", "Fonte da amostra", "Tipo de dado", "Método em produção"],
 )
-tables.format_dataframe(
-    proveniencia,
-    config={
-        "Demo": tables.text_column("Demo", width="small"),
-        "Fonte da amostra": tables.text_column("Fonte da amostra", width="large"),
-        "Tipo de dado": tables.text_column("Tipo de dado", width="medium"),
-        "Método em produção": tables.text_column("Método em produção", width="large"),
-    },
-    hide_index=True,
+ui.record_grid(
+    proveniencia.to_dict(orient="records"),
+    title_key="Demo",
+    fields=[
+        ("Fonte da amostra", "Fonte da amostra"),
+        ("Tipo de dado", "Tipo de dado"),
+        ("Método em produção", "Método em produção"),
+    ],
 )
 ui.download_csv_button(
     proveniencia,
