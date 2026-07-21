@@ -66,8 +66,21 @@ async function capture(browser, target, viewport, suffix, embed = false) {
       `${target.name}: rota incorreta; esperado H1 iniciado por ${target.expectedPrefix}, recebido "${headingText}"`,
     );
   }
-  if ((await surface.locator('[data-testid="stException"]').count()) > 0) {
-    throw new Error(`${target.name}: exceção Streamlit renderizada em ${url}`);
+  const exceptions = surface.locator('[data-testid="stException"]');
+  if ((await exceptions.count()) > 0) {
+    const details = (await exceptions.allTextContents())
+      .join(" ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 1600);
+    await page.screenshot({
+      path: path.join(outDir, `${target.name}-${suffix}-error.png`),
+      fullPage: false,
+      animations: "disabled",
+    });
+    throw new Error(
+      `${target.name}: exceção Streamlit renderizada em ${url}${details ? ` — ${details}` : ""}`,
+    );
   }
   await page.waitForTimeout(settleMs);
   await page.screenshot({
