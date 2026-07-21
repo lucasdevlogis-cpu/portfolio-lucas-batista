@@ -2,7 +2,9 @@ import { chromium } from "@playwright/test";
 import path from "path";
 import fs from "fs";
 
-const baseUrl = (process.env.QA_BASE_URL ?? "http://127.0.0.1:3000").replace(/\/$/, "");
+import { resolveQaUrls } from "./qa-url.mjs";
+
+const { baseUrl, entryUrl } = resolveQaUrls();
 const envExample = fs.readFileSync(path.join(process.cwd(), ".env.example"), "utf8");
 const configuredDemosBaseUrl =
   process.env.EXPECTED_DEMOS_BASE_URL ??
@@ -15,7 +17,7 @@ const out = path.join(process.cwd(), ".artifacts", "qa", "screenshots");
 fs.mkdirSync(out, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
+await page.goto(entryUrl, { waitUntil: "networkidle" });
 await page.waitForSelector("text=08 / P0");
 await page.locator("#cases h2").scrollIntoViewIfNeeded();
 await page.waitForTimeout(500);
@@ -35,10 +37,14 @@ const summary = {
     .nth(2)
     .innerText()
     .then((text) => /08\s*\/\s*P0/i.test(text)),
-  filterCount: await page.getByRole("button", { name: /^Todos/ }).count(),
 };
 await page.keyboard.press("Escape");
 await page.waitForTimeout(300);
+await page
+  .getByRole("button", { name: /^Todos/ })
+  .first()
+  .waitFor();
+summary.filterCount = await page.getByRole("button", { name: /^Todos/ }).count();
 
 const complementaryItem = page
   .getByTestId("case-library-item")

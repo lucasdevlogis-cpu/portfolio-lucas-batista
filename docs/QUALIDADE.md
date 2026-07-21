@@ -6,7 +6,8 @@ O redesign “Executivo Brutalista Refinado” está sendo desenvolvido na branc
 `agent/redesign-executivo-brutalista`. Os resultados públicos abaixo são o
 baseline técnico anterior e não aprovam automaticamente a nova interface. O
 novo corte já passou por comparação visual em 375, 768 e 1440 px, revisão das
-três âncoras e novo Lighthouse; aguarda apenas o preview público para decisão.
+três âncoras e novo Lighthouse. O preview isolado foi publicado e aguarda a
+decisão visual antes do merge.
 
 ## Corte local — Executivo Brutalista Refinado
 
@@ -25,8 +26,26 @@ Rodada final de 21/07/2026 na branch `agent/redesign-executivo-brutalista`:
 
 O passe visual encontrou e corrigiu dois problemas antes do aceite: conteúdo
 de `Reveal` invisível com `prefers-reduced-motion` e compressão de CTAs das
-provas no breakpoint de 1024 px. O único gate restante do P0 é publicar um
-preview isolado e obter a decisão visual antes do merge.
+provas no breakpoint de 1024 px. O preview já foi publicado; o único gate
+restante do P0 é obter a decisão visual antes do merge.
+
+## Preview Vercel — redesign
+
+Deployment `dpl_71b9Zcfu9amkjomZYHPwk5kmw8Ly`, publicado em 21/07/2026 sem
+promover para produção:
+
+| Evidência                     | Resultado                                 |
+| ----------------------------- | ----------------------------------------- |
+| Vercel                        | target `preview`, estado `Ready`          |
+| homepage, prova e OG          | HTTP 200                                  |
+| `npm run qa:visual`           | fluxo completo e 3 viewports aprovados    |
+| Lighthouse desktop do preview | 100/100/100; SEO 69 informativo           |
+| Lighthouse mobile do preview  | 92/100/100; SEO 69 informativo            |
+| proteção                      | Shareable Link temporário, não versionado |
+
+O SEO do preview protegido não participa do gate porque a Vercel aplica
+`noindex` deliberadamente. O gate de produção continua exigindo pelo menos 90
+nas quatro categorias. O único item restante do P0 é a decisão visual.
 
 ## Gate técnico
 

@@ -27,7 +27,8 @@ sem parecer aplicativos Streamlit genéricos.
 - [x] atualizar as três provas React, ECharts e MapLibre;
 - [x] aplicar o mesmo sistema ao laboratório Streamlit;
 - [x] revisar desktop e mobile contra a referência fornecida;
-- [ ] publicar preview e colher decisão visual antes de merge.
+- [x] publicar preview isolado na Vercel;
+- [ ] colher decisão visual antes de merge.
 
 ## P1 — retirar Streamlit da apresentação pública
 
@@ -54,7 +55,7 @@ estado de loading/erro e retirada do iframe correspondente.
 
 ## Próximos passos após esta entrega
 
-1. Publicar e aprovar a linguagem visual em um preview isolado.
+1. Aprovar a linguagem visual no preview isolado.
 2. Migrar Promessa por CEP e Ship from Store para React.
 3. Instrumentar abertura das provas e CTAs sem coletar dados sensíveis.
 4. Desativar cada iframe somente depois de sua rota pública equivalente.
