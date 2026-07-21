@@ -79,7 +79,7 @@ Arquivos gerados não devem ser editados manualmente.
 - QA visual renovado em 375, 768 e 1440 px;
 - QA Streamlit local em 12 rotas desktop e 7 embeds mobile;
 - QA Streamlit público na origem canônica em 12 rotas desktop e 7 embeds mobile;
-- Lighthouse de produção desktop 100/100/100/100 e mobile 99/100/100/100;
+- Lighthouse de produção desktop 100/100/100/100 e mobile 96/100/100/100;
 - `npm audit` com 0 vulnerabilidades;
 - CV regenerado a partir do conteúdo atual.
 

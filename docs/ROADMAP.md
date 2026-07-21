@@ -36,7 +36,7 @@ Atualizado em 21/07/2026. Esta é a única fila operacional do projeto.
 - [x] normalizar as variáveis Vercel sem entradas duplicadas por ambiente;
 - [x] publicar a landing na Vercel e confirmar CI `Quality` verde;
 - [x] executar QA público da landing e Lighthouse: desktop 100/100/100/100 e
-      mobile 99/100/100/100.
+      mobile 96/100/100/100 pela mediana de três execuções.
 - [x] criar a app Streamlit canônica a partir de `main` e
       `apps/demos/app.py`;
 - [x] validar a nova origem em 12 rotas desktop e 7 embeds mobile;
