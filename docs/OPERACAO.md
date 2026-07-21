@@ -163,6 +163,11 @@ npm run qa:streamlit
 O QA Streamlit suporta tanto execução direta local quanto o wrapper com iframe
 usado pelo Community Cloud.
 
+Em URLs públicas, o Lighthouse executa três rodadas por modo e aplica o gate à
+mediana, preservando os JSON individuais em `.artifacts/lighthouse/runs/`. Em
+localhost, a execução padrão é única. Use `LIGHTHOUSE_RUNS` entre 1 e 5 apenas
+quando precisar controlar explicitamente a amostragem.
+
 ## Checklist pós-deploy
 
 - homepage, `robots.txt`, `sitemap.xml`, OG image e CV respondem;

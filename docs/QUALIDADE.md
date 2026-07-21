@@ -42,7 +42,7 @@ Rodada de 21/07/2026 após o merge e o deploy Vercel:
 | Vercel                 | produção `Ready`; homepage, SEO e 3 rotas de prova respondem 200 |
 | `npm run qa:visual`    | landing, modal e âncoras aprovados em 375, 768 e 1440 px         |
 | Lighthouse desktop     | 100/100/100/100                                                  |
-| Lighthouse mobile      | 99/100/100/100                                                   |
+| Lighthouse mobile      | mediana 96/100/100/100 em 3 execuções                            |
 | `npm run qa:streamlit` | nova origem aprovada: 12 rotas desktop e 7 embeds mobile         |
 | Modal complementar     | iframe e nova aba apontam para a origem canônica                 |
 
@@ -94,8 +94,9 @@ Critérios:
 - metas de campo: LCP < 2,5 s, CLS < 0,1 e INP < 200 ms.
 
 O baseline público aceito desta refatoração é 100/100/100/100 em desktop e
-99/100/100/100 em mobile. Resultados locais continuam como evidência rápida de
-regressão; a origem Streamlit canônica também passou no gate visual público.
+96/100/100/100 em mobile, usando a mediana de três execuções. Resultados locais
+continuam como evidência rápida de regressão; a origem Streamlit canônica também
+passou no gate visual público.
 
 ## Evidências
 
