@@ -98,9 +98,9 @@ Estado do corte, sem indisponibilidade:
 
 1. [x] criar a nova app com as coordenadas canônicas;
 2. [x] executar `npm run qa:streamlit` na nova URL;
-3. [ ] atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` nos três ambientes da Vercel e
+3. [x] atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` nos três ambientes da Vercel e
        redeployar a landing;
-4. [ ] validar modal, embed e abertura em nova aba;
+4. [x] validar modal, embed e abertura em nova aba;
 5. [ ] somente depois remover a app legada.
 
 Se preservar exatamente o subdomínio atual for obrigatório, remova a app antiga

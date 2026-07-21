@@ -44,10 +44,12 @@ Rodada de 21/07/2026 após o merge e o deploy Vercel:
 | Lighthouse desktop     | 100/100/100/100                                                  |
 | Lighthouse mobile      | 99/100/100/100                                                   |
 | `npm run qa:streamlit` | nova origem aprovada: 12 rotas desktop e 7 embeds mobile         |
+| Modal complementar     | iframe e nova aba apontam para a origem canônica                 |
 
 A nova aplicação Streamlit foi validada diretamente no Community Cloud. Não
-houve exceção, rota divergente ou regressão de layout nas 19 capturas. O corte
-da landing permanece separado porque `NEXT_PUBLIC_*` é incorporada no build.
+houve exceção, rota divergente ou regressão de layout nas 19 capturas. A landing
+foi recompilada após a troca de `NEXT_PUBLIC_DEMOS_BASE_URL`, e o modal público
+confirmou o novo domínio em iframe e nova aba.
 
 ## Aceite visual
 
