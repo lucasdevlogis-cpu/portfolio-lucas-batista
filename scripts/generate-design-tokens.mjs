@@ -102,6 +102,7 @@ SEVERITY_COLORS = {
     "Alto": SUCCESS,
 }
 
+
 def maturidade(metodo: str = "heurístico", producao: str = "solver dedicado") -> str:
     return f"Amostra curada · método {metodo} · produção usaria {producao}"
 `;

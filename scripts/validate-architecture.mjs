@@ -1,12 +1,15 @@
 import { existsSync } from "node:fs";
 
-const requiredPaths = [
-  "apps/demos/app.py",
-  "apps/demos/data/raw",
-  "apps/demos/data/generated",
+const deploymentRequiredPaths = [
   "contracts/demo-catalog.json",
   "contracts/demo-snapshots",
   "design/tokens.json",
+];
+
+const repositoryRequiredPaths = [
+  "apps/demos/app.py",
+  "apps/demos/data/raw",
+  "apps/demos/data/generated",
   "docs/CANON.md",
   "docs/ARQUITETURA.md",
   "docs/OPERACAO.md",
@@ -16,6 +19,13 @@ const requiredPaths = [
   "requirements-dev.txt",
   "tests/e2e",
 ];
+
+// A Vercel aplica `.vercelignore` antes do build. Documentação e testes não
+// pertencem ao artefato de runtime, mas continuam obrigatórios no repositório.
+const requiredPaths =
+  process.env.VERCEL === "1"
+    ? deploymentRequiredPaths
+    : [...deploymentRequiredPaths, ...repositoryRequiredPaths];
 
 const forbiddenPaths = [
   "demos-logistica",
