@@ -1,17 +1,17 @@
 """02. Mini Torre de Controle de Entregas — demo pontual."""
 
-import numpy as np
+from math import isnan
+
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+from domain.control_tower import filter_deliveries, summarize_deliveries
 from presentation import formatters as fmt
 from presentation import maps as folium_maps
 from presentation import tables, ui
 from presentation import tokens as brand
 
 ui.page_setup("02. Mini Torre de Controle", icon="📡")
-
-CRITICOS = ["Atrasado", "Ocorrência aberta"]
 
 df = ui.load_csv("torre_entregas.csv")
 
@@ -27,18 +27,16 @@ with ui.filter_container("Filtros"):
     )
     so_criticos = st.checkbox("Somente ação imediata", value=False)
 
-f = df[df["transportadora"].isin(transportadora) & df["regiao"].isin(regiao)].copy()
-if so_criticos:
-    f = f[f["status"].isin(CRITICOS + ["Em risco"])]
-
-if f.empty:
-    criticos = 0
-    atraso_medio = float("nan")
-    em_risco = 0
-else:
-    criticos = int(f["status"].isin(CRITICOS).sum())
-    atraso_medio = f.loc[f["horas_atraso"] > 0, "horas_atraso"].mean()
-    em_risco = int((f["status"] == "Em risco").sum())
+f = filter_deliveries(
+    df,
+    transportadora,
+    regiao,
+    only_immediate=so_criticos,
+)
+summary = summarize_deliveries(f)
+criticos = summary.critical
+atraso_medio = summary.average_delay
+em_risco = summary.at_risk
 
 ui.breadcrumb("Case: Mini Torre de Controle · <b>Demo interativa</b>")
 
@@ -68,7 +66,7 @@ if f.empty:
 
 # KPIs com severidade ---------------------------------------------------------
 com_ocorrencia = int((f["ocorrencias"] > 0).sum())
-atraso_ok = not np.isnan(atraso_medio)
+atraso_ok = not isnan(atraso_medio)
 severity_risco = "danger" if em_risco > 3 else "warning" if em_risco > 0 else "success"
 ui.kpi_grid(
     [

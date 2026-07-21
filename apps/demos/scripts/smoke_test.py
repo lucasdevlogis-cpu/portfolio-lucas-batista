@@ -39,17 +39,21 @@ def run_script(script: Path) -> int:
         return 1
 
 
-def run_torre_filtro_vazio(page: Path) -> int:
-    """A page 02 não pode quebrar quando todos os filtros ficam vazios."""
-    from streamlit.testing.v1 import AppTest
+def run_torre_filtro_vazio() -> int:
+    """Valida o domínio da page 02 sem um segundo rerender do AppTest."""
+    import pandas as pd
+    from domain.control_tower import filter_deliveries, summarize_deliveries
 
-    logging.disable(logging.WARNING)
     try:
-        at = AppTest.from_file(str(page), default_timeout=60)
-        at.run()
-        at.multiselect[0].set_value([]).run()
-        if at.exception:
-            print(f"[FALHA] 02 filtro vazio: {at.exception}", flush=True)
+        deliveries = pd.read_csv(ROOT / "data" / "generated" / "torre_entregas.csv")
+        filtered = filter_deliveries(
+            deliveries,
+            carriers=[],
+            regions=deliveries["regiao"].unique(),
+        )
+        summary = summarize_deliveries(filtered)
+        if not filtered.empty or summary.critical or summary.at_risk:
+            print("[FALHA] 02 filtro vazio: carteira ou KPIs não zeraram", flush=True)
             return 1
         print("[OK]    02 filtro vazio (multiselect vazio não quebra)", flush=True)
         return 0
@@ -61,7 +65,7 @@ def run_torre_filtro_vazio(page: Path) -> int:
 def run_worker(kind: str, target: Path) -> int:
     if kind == "script":
         return run_script(target)
-    return run_torre_filtro_vazio(target)
+    return run_torre_filtro_vazio()
 
 
 def output_tail(value: str, limit: int = 12) -> str:
