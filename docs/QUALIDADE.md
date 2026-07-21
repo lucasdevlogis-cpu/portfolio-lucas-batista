@@ -8,7 +8,7 @@
 | TypeScript              | `npm run typecheck`                | zero erro              |
 | React/Next              | `npm run lint`                     | zero erro              |
 | Python                  | `npm run lint:python`              | zero erro              |
-| Unidade Python          | `npm run demos:test`               | 5/5                    |
+| Unidade Python          | `npm run demos:test`               | 6/6                    |
 | Runtime Streamlit       | `npm run demos:smoke`              | 13/13                  |
 | Build                   | `npm run build`                    | todas as rotas geradas |
 | Navegação real          | `npm run test:e2e`                 | suíte completa verde   |
@@ -19,18 +19,35 @@ continuam separados para deixar a intenção explícita.
 
 ## Última execução local
 
-Rodada de 20/07/2026, após a consolidação arquitetural:
+Rodada de 21/07/2026, após a consolidação arquitetural e os ajustes de CI:
 
 | Evidência                          | Resultado                                     |
 | ---------------------------------- | --------------------------------------------- |
-| `npm run verify`                   | aprovado; pytest 5/5 e build com 10 rotas     |
+| `npm run verify`                   | aprovado; pytest 6/6 e build com 10 rotas     |
 | `npm run demos:smoke`              | 13/13                                         |
 | `npm run test:e2e`                 | 17/17 no Chromium                             |
 | `npm run qa:visual`                | landing, modal e 3 âncoras em 3 viewports     |
 | `npm run qa:streamlit`             | 12 rotas desktop e 7 complementares em mobile |
-| `npm run lighthouse:all`           | desktop 100/100/100/100                       |
-| Lighthouse mobile                  | 93/100/100/100                                |
+| `npm run lighthouse:all`           | baseline local desktop 100/100/100/100        |
+| Lighthouse mobile                  | baseline local 93/100/100/100                 |
 | `npm audit --audit-level=moderate` | 0 vulnerabilidades                            |
+
+## Última execução pública
+
+Rodada de 21/07/2026 após o merge e o deploy Vercel:
+
+| Evidência              | Resultado                                                        |
+| ---------------------- | ---------------------------------------------------------------- |
+| CI `Quality` na `main` | verde; contratos, build, smoke, audit e 17 E2E                   |
+| Vercel                 | produção `Ready`; homepage, SEO e 3 rotas de prova respondem 200 |
+| `npm run qa:visual`    | landing, modal e âncoras aprovados em 375, 768 e 1440 px         |
+| Lighthouse desktop     | 100/100/100/100                                                  |
+| Lighthouse mobile      | 99/100/100/100                                                   |
+| `npm run qa:streamlit` | bloqueado no legado: case `promessa_cep` ainda numerado como 04  |
+
+A falha pública do Streamlit é evidência de origem antiga, não regressão no
+código canônico: o QA local do app novo permanece 12 rotas desktop + 7 embeds
+mobile. O gate será repetido após o novo deploy do Community Cloud.
 
 ## Aceite visual
 
@@ -74,9 +91,9 @@ Critérios:
 - meta Lighthouse: pelo menos 90 nas quatro categorias em desktop e mobile;
 - metas de campo: LCP < 2,5 s, CLS < 0,1 e INP < 200 ms.
 
-O baseline aceito desta refatoração é 100/100/100/100 em desktop e
-93/100/100/100 em mobile. Resultados locais são evidência de regressão; a
-publicação ainda exige nova medição pós-deploy.
+O baseline público aceito desta refatoração é 100/100/100/100 em desktop e
+99/100/100/100 em mobile. Resultados locais continuam como evidência rápida de
+regressão; o aceite final das demos depende da migração do Streamlit.
 
 ## Evidências
 
@@ -85,6 +102,9 @@ npm run qa:visual
 npm run qa:streamlit
 npm run lighthouse:all
 ```
+
+Para produção, defina `QA_BASE_URL`, `STREAMLIT_QA_BASE_URL` e
+`LIGHTHOUSE_URL` conforme o runbook em `OPERACAO.md`.
 
 Capturas e JSON ficam em `.artifacts/qa/` e `.artifacts/lighthouse/`. Não
 commitar resultados binários. Os scripts de captura limpam somente o próprio

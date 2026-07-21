@@ -2,7 +2,7 @@ import { chromium } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
-const baseUrl = process.env.STREAMLIT_QA_BASE_URL ?? "http://127.0.0.1:8501";
+const baseUrl = (process.env.STREAMLIT_QA_BASE_URL ?? "http://127.0.0.1:8501").replace(/\/$/, "");
 const outDir = path.join(process.cwd(), ".artifacts", "qa", "streamlit");
 const catalog = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), "contracts", "demo-catalog.json"), "utf8"),
@@ -25,6 +25,16 @@ const embedTargets = published
     expectedPrefix: `${entry.caseId.slice(0, 2)}.`,
   }));
 
+async function appSurface(page) {
+  const directContainer = page.locator('[data-testid="stAppViewContainer"]');
+  const cloudWrapper = page.locator('iframe[title="streamlitApp"]');
+  const surface = await Promise.race([
+    directContainer.waitFor({ timeout: 60_000 }).then(() => "direct"),
+    cloudWrapper.waitFor({ timeout: 60_000 }).then(() => "wrapped"),
+  ]);
+  return surface === "wrapped" ? page.frameLocator('iframe[title="streamlitApp"]') : page;
+}
+
 fs.rmSync(outDir, { recursive: true, force: true });
 fs.mkdirSync(outDir, { recursive: true });
 
@@ -41,8 +51,9 @@ async function capture(browser, target, viewport, suffix, embed = false) {
   if (!response?.ok()) {
     throw new Error(`${target.name}: HTTP ${response?.status() ?? "sem resposta"} em ${url}`);
   }
-  await page.locator('[data-testid="stAppViewContainer"]').waitFor({ timeout: 60_000 });
-  const heading = page.locator("h1").first();
+  const surface = await appSurface(page);
+  await surface.locator('[data-testid="stAppViewContainer"]').waitFor({ timeout: 60_000 });
+  const heading = surface.locator("h1").first();
   await heading.waitFor({ timeout: 60_000 });
   const headingText = (await heading.textContent())?.trim() ?? "";
   if (target.expectedPrefix && !headingText.startsWith(target.expectedPrefix)) {
@@ -50,7 +61,7 @@ async function capture(browser, target, viewport, suffix, embed = false) {
       `${target.name}: rota incorreta; esperado H1 iniciado por ${target.expectedPrefix}, recebido "${headingText}"`,
     );
   }
-  if ((await page.locator('[data-testid="stException"]').count()) > 0) {
+  if ((await surface.locator('[data-testid="stException"]').count()) > 0) {
     throw new Error(`${target.name}: exceção Streamlit renderizada em ${url}`);
   }
   await page.waitForTimeout(900);

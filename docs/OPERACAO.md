@@ -90,14 +90,30 @@ O arquivo de requirements fica ao lado do entrypoint. A configuração visual
 fica em `.streamlit/config.toml` na raiz, pois o serviço executa a aplicação a
 partir da raiz do repositório.
 
-Ao migrar do repositório antigo de demos, altere a origem no painel ou recrie o
-app preservando a URL quando possível. Não copie arquivos entre clones e não
-mantenha dois históricos ativos.
+O Community Cloud identifica cada app por repositório, branch e entrypoint e
+não permite editar essas coordenadas. A migração do repositório antigo exige um
+novo deploy.
+
+Runbook recomendado, sem indisponibilidade:
+
+1. criar uma nova app com as coordenadas canônicas acima e subdomínio
+   temporário;
+2. aguardar o build e executar `npm run qa:streamlit` contra a nova URL;
+3. atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` nos três ambientes da Vercel e
+   redeployar a landing;
+4. validar modal, embed e abertura em nova aba;
+5. somente depois remover a app legada.
+
+Se preservar exatamente o subdomínio atual for obrigatório, remova a app antiga
+e redeploye pedindo o mesmo custom subdomain. Esse caminho implica uma janela de
+indisponibilidade e depende de o nome voltar a ficar disponível. Não copie
+arquivos entre clones e não mantenha dois históricos de código ativos.
 
 Referências oficiais:
 
 - [File organization](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/file-organization)
 - [Deploy an app](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy)
+- [Rename or change GitHub coordinates](https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app/rename-your-app)
 - [`st.navigation`](https://docs.streamlit.io/develop/api-reference/navigation/st.navigation)
 
 ## QA local de produção
@@ -128,6 +144,25 @@ npm run qa:streamlit
 
 Os scripts substituem suas próprias capturas a cada rodada para impedir falso
 aceite com artefato antigo.
+
+## QA pós-deploy
+
+Os mesmos scripts aceitam URLs públicas por variável de ambiente:
+
+```powershell
+$env:QA_BASE_URL='https://portfolio-lucas-batista-murex.vercel.app'
+npm run qa:visual
+
+$env:LIGHTHOUSE_URL=$env:QA_BASE_URL
+$env:LIGHTHOUSE_SCOPE='production'
+npm run lighthouse:all
+
+$env:STREAMLIT_QA_BASE_URL='https://sua-app.streamlit.app'
+npm run qa:streamlit
+```
+
+O QA Streamlit suporta tanto execução direta local quanto o wrapper com iframe
+usado pelo Community Cloud.
 
 ## Checklist pós-deploy
 

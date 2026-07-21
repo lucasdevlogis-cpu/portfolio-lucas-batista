@@ -1,6 +1,6 @@
 # CANON — Executive Proof System
 
-Atualizado em 20/07/2026.
+Atualizado em 21/07/2026.
 
 ## Objetivo
 
@@ -77,14 +77,15 @@ Arquivos gerados não devem ser editados manualmente.
 - smoke Streamlit 13/13;
 - Playwright 17/17;
 - QA visual renovado em 375, 768 e 1440 px;
-- QA Streamlit em 12 rotas desktop e 7 embeds mobile;
-- Lighthouse desktop 100/100/100/100 e mobile 93/100/100/100;
+- QA Streamlit local em 12 rotas desktop e 7 embeds mobile;
+- Lighthouse de produção desktop 100/100/100/100 e mobile 99/100/100/100;
 - `npm audit` com 0 vulnerabilidades;
 - CV regenerado a partir do conteúdo atual.
 
 Resultados detalhados e próximos passos ficam em `QUALIDADE.md` e `ROADMAP.md`.
-Deploy e migração da origem no Streamlit Cloud permanecem pendentes porque
-alteram serviços externos.
+A PR arquitetural foi mesclada, a CI da `main` está verde e a landing está em
+produção na Vercel. A URL Streamlit ainda entrega o repositório legado; a troca
+para a origem canônica permanece como o único P0 externo aberto.
 
 ## URLs públicas
 
@@ -93,5 +94,7 @@ alteram serviços externos.
 - Repositório canônico:
   <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista>
 
-A URL pública das demos pode ser preservada; a origem do Streamlit Cloud deve
-ser migrada para este repositório e `apps/demos/app.py`.
+A origem do Streamlit Cloud deve ser migrada para este repositório e
+`apps/demos/app.py`. O Community Cloud trata repositório, branch e entrypoint
+como coordenadas imutáveis; a migração exige novo deploy, conforme o runbook de
+`OPERACAO.md`.
