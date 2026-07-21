@@ -1,11 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
 
-import { Analytics } from "@vercel/analytics/react";
-
 import { BackToTop } from "@/components/BackToTop";
-import { MotionProvider } from "@/components/providers/MotionProvider";
+import { Analytics } from "@/components/analytics/Analytics";
 import { CONTENT } from "@/data/content";
+import designTokens from "@/design/tokens.json";
 
 import "./globals.css";
 
@@ -24,8 +23,7 @@ const sourceSerif = Source_Serif_4({
 });
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  "https://portfolio-lucas-batista-murex.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://portfolio-lucas-batista-murex.vercel.app";
 
 const { title, description, keywords, jobTitle } = CONTENT.siteMetadata;
 
@@ -59,7 +57,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#07111f",
+  themeColor: designTokens.colors.surfaceDark,
   width: "device-width",
   initialScale: 1,
 };
@@ -106,10 +104,7 @@ export default function RootLayout({
   };
 
   return (
-    <html
-      lang="pt-BR"
-      className={`${inter.variable} ${sourceSerif.variable} h-full antialiased`}
-    >
+    <html lang="pt-BR" className={`${inter.variable} ${sourceSerif.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans">
         <script
           type="application/ld+json"
@@ -119,12 +114,10 @@ export default function RootLayout({
           href="#conteudo"
           className="sr-only rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50"
         >
-          Pular para o conteúdo
+          {CONTENT.a11y.skipToContent}
         </a>
-        <MotionProvider>
-          <main id="conteudo">{children}</main>
-        </MotionProvider>
-        <BackToTop />
+        {children}
+        <BackToTop label={CONTENT.footer.voltarTopo} />
         {process.env.VERCEL === "1" ? <Analytics /> : null}
       </body>
     </html>

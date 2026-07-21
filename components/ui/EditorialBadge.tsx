@@ -6,20 +6,14 @@ interface EditorialBadgeProps {
   className?: string;
 }
 
-export function EditorialBadge({
-  children,
-  tone = "light",
-  className,
-}: EditorialBadgeProps) {
+export function EditorialBadge({ children, tone = "light", className }: EditorialBadgeProps) {
   return (
     <span
       className={cn(
         "inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-extrabold uppercase leading-none tracking-[0.14em]",
         tone === "light" && "border-primary/12 bg-primary/[0.04] text-primary",
-        tone === "dark" &&
-          "border-white/12 bg-white/[0.06] text-on-dark-accent",
-        tone === "gold" &&
-          "border-warm-accent/30 bg-warm-accent/10 text-warm-accent-contrast",
+        tone === "dark" && "border-white/12 bg-white/[0.06] text-on-dark-accent",
+        tone === "gold" && "border-warm-accent/30 bg-warm-accent/10 text-warm-accent-contrast",
         className,
       )}
     >

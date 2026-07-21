@@ -1,22 +1,8 @@
-import {
-  ArrowUp,
-  ArrowUpRight,
-  Code2,
-  FileText,
-  Link,
-  Mail,
-  Star,
-} from "lucide-react";
+import { ArrowUp, ArrowUpRight, Code2, FileText, Link, Mail, Star } from "lucide-react";
 
 import { CONTENT, GITHUB_DEMOS_URL } from "@/data/content";
 
-function SocialLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
+function SocialLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a
       href={href}
@@ -25,7 +11,10 @@ function SocialLink({
       className="group relative inline-flex min-h-11 items-center gap-2 text-sm text-muted-foreground transition-colors duration-normal ease-editorial hover:text-ink sm:min-h-9"
     >
       {children}
-      <span className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-current transition-all duration-normal ease-editorial group-hover:w-full" aria-hidden />
+      <span
+        className="absolute -bottom-0.5 left-0 h-[1.5px] w-0 bg-current transition-all duration-normal ease-editorial group-hover:w-full"
+        aria-hidden
+      />
     </a>
   );
 }
@@ -38,9 +27,7 @@ export function Footer() {
       <div className="mx-auto max-w-[1440px] px-5 py-5 sm:px-8 lg:px-10 xl:px-12 2xl:px-16">
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:items-start">
           <div>
-            <p className="font-heading text-lg font-bold text-ink">
-              {pessoal.nome}
-            </p>
+            <p className="font-heading text-lg font-bold text-ink">{pessoal.nome}</p>
             <p className="mt-1 max-w-xs text-sm leading-relaxed text-muted-foreground">
               {pessoal.titulo}
             </p>
@@ -72,7 +59,10 @@ export function Footer() {
                 <p className="font-heading text-base font-bold text-ink">
                   {footer.linksRapidosTitulo}
                 </p>
-                <nav className="mt-2 flex flex-wrap gap-x-4 gap-y-1" aria-label="Links rápidos do rodapé">
+                <nav
+                  className="mt-2 flex flex-wrap gap-x-4 gap-y-1"
+                  aria-label={footer.linksRapidosTitulo}
+                >
                   {nav.map((link) => (
                     <a
                       key={link.href}
@@ -80,7 +70,10 @@ export function Footer() {
                       className="group inline-flex min-h-11 items-center gap-1 text-sm text-muted-foreground transition-colors duration-normal ease-editorial hover:text-ink sm:min-h-8"
                     >
                       {link.label}
-                      <ArrowUpRight className="size-4 opacity-0 transition-all duration-normal ease-editorial group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" aria-hidden />
+                      <ArrowUpRight
+                        className="size-4 opacity-0 transition-all duration-normal ease-editorial group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+                        aria-hidden
+                      />
                     </a>
                   ))}
                 </nav>
@@ -88,16 +81,9 @@ export function Footer() {
 
               <div>
                 <p className="font-heading text-base font-bold text-ink">{footerLabels.stack}</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {pessoal.stackTags.map((stack) => (
-                    <span
-                      key={stack}
-                      className="rounded-full border border-primary/15 bg-primary/[0.04] px-2.5 py-1 text-xs font-semibold text-ink"
-                    >
-                      {stack}
-                    </span>
-                  ))}
-                </div>
+                <p className="mt-2 text-sm font-semibold leading-relaxed text-muted-foreground">
+                  {pessoal.stackTags.join(" · ")}
+                </p>
               </div>
 
               <div>
@@ -110,7 +96,10 @@ export function Footer() {
                   >
                     <FileText className="size-4" aria-hidden />
                     {footerLabels.cvPdf}
-                    <ArrowUpRight className="size-4 opacity-0 transition-all group-hover:opacity-100" aria-hidden />
+                    <ArrowUpRight
+                      className="size-4 opacity-0 transition-all group-hover:opacity-100"
+                      aria-hidden
+                    />
                   </a>
                   <a
                     href={GITHUB_DEMOS_URL}
@@ -120,12 +109,14 @@ export function Footer() {
                   >
                     <Code2 className="size-4" aria-hidden />
                     {footerLabels.repositorioDemos}
-                    <ArrowUpRight className="size-4 opacity-0 transition-all group-hover:opacity-100" aria-hidden />
+                    <ArrowUpRight
+                      className="size-4 opacity-0 transition-all group-hover:opacity-100"
+                      aria-hidden
+                    />
                   </a>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -139,7 +130,10 @@ export function Footer() {
             className="group inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-bold text-muted-foreground transition-all duration-normal ease-editorial hover:bg-editorial hover:text-ink focus-ring sm:min-h-9"
             aria-label={footer.voltarTopo}
           >
-            <ArrowUp className="size-4 transition-transform group-hover:-translate-y-0.5" aria-hidden />
+            <ArrowUp
+              className="size-4 transition-transform group-hover:-translate-y-0.5"
+              aria-hidden
+            />
             {footer.voltarTopo}
           </a>
         </div>

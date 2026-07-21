@@ -1,11 +1,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
-import {
-  ANCHOR_DEMO_SLUGS,
-  DEMO_SNAPSHOTS,
-  type DemoSnapshot,
-} from "../lib/demo-contract";
+import { ANCHOR_DEMO_SLUGS, DEMO_SNAPSHOTS, type DemoSnapshot } from "../lib/demo-contract";
 
 const errors: string[] = [];
 const tones = new Set(["accent", "danger", "warning", "success"]);
@@ -78,7 +74,7 @@ for (const slug of ANCHOR_DEMO_SLUGS) {
   ) {
     errors.push(`${slug}: centro/zoom do mapa inválido`);
   }
-  const jsonPath = join(process.cwd(), "data", "demo-snapshots", `${slug}.json`);
+  const jsonPath = join(process.cwd(), "contracts", "demo-snapshots", `${slug}.json`);
   if (!existsSync(jsonPath)) {
     errors.push(`${slug}: arquivo JSON ausente (${jsonPath})`);
   }

@@ -18,12 +18,23 @@
   "files.exclude": {
     "**/node_modules": true,
     "**/.next": true,
+    "**/.artifacts": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true,
+    "**/.venv": true,
+    "**/__pycache__": true,
     "**/out": true,
-    "**/.vercel": true
+    "**/.vercel": true,
+    "**/playwright-report": true,
+    "**/test-results": true
   },
   "files.watcherExclude": {
     "**/node_modules/**": true,
-    "**/.next/**": true
+    "**/.next/**": true,
+    "**/.artifacts/**": true,
+    "**/.venv/**": true,
+    "**/__pycache__/**": true,
+    "**/apps/demos/data/generated/**": true
   },
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.suggest.autoImports": true,
@@ -38,6 +49,17 @@
     ["cx\\(([^)]*)\\)", "(\"|'|`)((?!(\"|'|`)).)*\"|'|`)"],
     ["cn\\(([^)]*)\\)", "(\"|'|`)((?!(\"|'|`)).)*\"|'|`)"]
   ],
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "python.analysis.extraPaths": ["${workspaceFolder}/apps/demos"],
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": ["apps/demos/tests"],
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
   "cursor.aiRules": true,
   "cursor.cmdk.workspaceOnly": false,
   "cursor.useCtrlKAsInlineAI": true,

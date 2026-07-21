@@ -1,7 +1,14 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependências e builds
+/node_modules/
+/.next/
+/out/
+/dist/
+/build/
 
-# dependencies
-/node_modules
+# Ambiente e deploy local
+.env*
+!.env.example
+/.vercel/
 /.pnp
 .pnp.*
 .yarn/*
@@ -10,64 +17,31 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-/test-results
-/playwright-report
+# Testes e auditoria gerada
+/.artifacts/
+/coverage/
+/test-results/
+/playwright-report/
+/.playwright-mcp/
 
-# next.js
-/.next/
-/out/
-/dist/
+# Python
+**/__pycache__/
+*.py[cod]
+**/.venv/
+.pytest_cache/
+.ruff_cache/
 
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-!.env.example
-
-# cursor mcp config (may contain tokens)
-.cursor/mcp.json
-
-# vercel
-.vercel
-
-# typescript
+# Ferramentas e logs
 *.tsbuildinfo
 next-env.d.ts
-
-# python (demos-logistica)
-__pycache__/
-*.py[cod]
-.venv/
-
-# audit artifacts
-lighthouse-*.json
-local-*.json
-cv-export.json
-.tmp-lh/
+*.log
 wb-*.json
-.tmp-streamlit-*.log
-next-start.*.log
-scripts/tmp-captures/
+.cursor/mcp.json
+.chrome-qa/
 qa-captures/
-docs/audit/tmp-captures/
+scripts/tmp-captures/
 
-# exceções ao gitignore global (*token* — secrets, não design docs)
-!app/design-tokens.css
-!design/tokens.json
-!design/tokens.md
-!design/archive/tokens-layout-comercial-2026-07.md
-!scripts/generate-design-tokens.mjs
-.playwright-mcp/
+# Sistema
+.DS_Store
+Thumbs.db
+*.pem

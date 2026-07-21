@@ -17,7 +17,9 @@ export function MethodDisclosure({ snapshot }: { snapshot: DemoSnapshot }) {
           <AlertTriangle className="size-4" aria-hidden />
           <p className="text-[11px] font-bold uppercase tracking-[0.14em]">Limite da prova</p>
         </div>
-        <p className="mt-4 text-base leading-relaxed text-muted-foreground">{snapshot.limitation}</p>
+        <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+          {snapshot.limitation}
+        </p>
       </article>
     </section>
   );

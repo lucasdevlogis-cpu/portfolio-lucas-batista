@@ -18,9 +18,8 @@ async function emit(path, content) {
 }
 
 const tokens = JSON.parse(await readFile("design/tokens.json", "utf8"));
-const cssName = (key) => key
-  .replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`)
-  .replace(/(\D)(\d)/g, "$1-$2");
+const cssName = (key) =>
+  key.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`).replace(/(\D)(\d)/g, "$1-$2");
 const cssLines = Object.entries(tokens.colors).map(
   ([key, value]) => `  --${cssName(key)}: ${value};`,
 );
@@ -53,11 +52,12 @@ ${[...cssLines, ...radiusLines].join("\n")}
 `;
 await emit("app/design-tokens.css", css);
 
-const pythonColor = (key) => key
-  .replace(/[A-Z]/g, (match) => `_${match.toLowerCase()}`)
-  .replace(/(\D)(\d)/g, "$1_$2")
-  .replace(/([A-Za-z])([0-9])/g, "$1_$2")
-  .toUpperCase();
+const pythonColor = (key) =>
+  key
+    .replace(/[A-Z]/g, (match) => `_${match.toLowerCase()}`)
+    .replace(/(\D)(\d)/g, "$1_$2")
+    .replace(/([A-Za-z])([0-9])/g, "$1_$2")
+    .toUpperCase();
 const pythonLines = Object.entries(tokens.colors).map(
   ([key, value]) => `${pythonColor(key)} = ${JSON.stringify(value)}`,
 );
@@ -105,11 +105,32 @@ SEVERITY_COLORS = {
 def maturidade(metodo: str = "heurístico", producao: str = "solver dedicado") -> str:
     return f"Amostra curada · método {metodo} · produção usaria {producao}"
 `;
-await emit("demos-logistica/lib/brand.py", py);
+await emit("apps/demos/presentation/tokens.py", py);
+
+const streamlitConfig = `[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"
+
+[theme]
+base = "light"
+primaryColor = ${JSON.stringify(tokens.colors.primary)}
+backgroundColor = ${JSON.stringify(tokens.colors.background)}
+secondaryBackgroundColor = ${JSON.stringify(tokens.colors.card)}
+textColor = ${JSON.stringify(tokens.colors.foreground)}
+font = "sans serif"
+`;
+await emit(".streamlit/config.toml", streamlitConfig);
 
 if (checkOnly && staleOutputs.length) {
   console.error(`Tokens fora de sincronia: ${staleOutputs.join(", ")}. Rode npm run tokens:sync.`);
   process.exit(1);
 }
 
-if (checkOnly) console.log("[tokens:check] OK - CSS e Python sincronizados.");
+if (checkOnly) {
+  console.log("[tokens:check] OK - CSS, Python e Streamlit sincronizados.");
+}

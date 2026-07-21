@@ -1,56 +1,81 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ExternalLink, Info, PlayCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import { CaseDemoLauncher } from "@/components/CaseDemoLauncher";
+import { CaseDemoLauncher } from "@/components/demos/CaseDemoLauncher";
 import { EditorialBadge } from "@/components/ui/EditorialBadge";
 import { buttonVariants } from "@/components/ui/button";
-import {
-  CASE_CATEGORIAS,
-  CASES_BIBLIOTECA,
-  CASES_DESTAQUE,
-  CASES_ROADMAP,
-  CONTENT,
-} from "@/data/content";
+import type { Case, DemoModalCopy } from "@/data/content";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
-type FiltroCategoria = (typeof CASE_CATEGORIAS)[number];
+interface CaseLibraryCopy {
+  title: string;
+  subtitle: string;
+  filterHint: string;
+  usageTitle: string;
+  usageDescription: string;
+  summaryLabels: {
+    featured: string;
+    library: string;
+    roadmap: string;
+  };
+  tableLabels: {
+    case: string;
+    problem: string;
+    metric: string;
+    actions: string;
+    empty: string;
+  };
+  demoLabel: string;
+  unavailableLabel: string;
+  codeLabel: string;
+}
 
-export function CaseLibrary() {
-  const [filtroAtivo, setFiltroAtivo] = useState<FiltroCategoria>("Todos");
-  const { secoes } = CONTENT;
+interface CaseLibraryProps {
+  cases: Case[];
+  categories: string[];
+  featuredCount: number;
+  roadmapCount: number;
+  copy: CaseLibraryCopy;
+  modalCopy: DemoModalCopy;
+}
+
+export function CaseLibrary({
+  cases,
+  categories,
+  featuredCount,
+  roadmapCount,
+  copy,
+  modalCopy,
+}: CaseLibraryProps) {
+  const allCategory = categories[0] ?? "";
+  const [filtroAtivo, setFiltroAtivo] = useState(allCategory);
 
   const contagemPorCategoria = useMemo(() => {
     const contagem: Record<string, number> = {
-      Todos: CASES_BIBLIOTECA.length,
+      [allCategory]: cases.length,
     };
-    for (const caseItem of CASES_BIBLIOTECA) {
+    for (const caseItem of cases) {
       contagem[caseItem.categoria] = (contagem[caseItem.categoria] ?? 0) + 1;
     }
     return contagem;
-  }, []);
+  }, [allCategory, cases]);
 
   const categoriasVisiveis = useMemo(() => {
-    return CASE_CATEGORIAS.filter((categoria) => {
-      if (categoria === "Todos") return true;
+    return categories.filter((categoria) => {
+      if (categoria === allCategory) return true;
       return (contagemPorCategoria[categoria] ?? 0) > 0;
     });
-  }, [contagemPorCategoria]);
+  }, [allCategory, categories, contagemPorCategoria]);
 
   const casesFiltrados = useMemo(() => {
-    if (filtroAtivo === "Todos") return CASES_BIBLIOTECA;
-    return CASES_BIBLIOTECA.filter(
-      (caseItem) => caseItem.categoria === filtroAtivo,
-    );
-  }, [filtroAtivo]);
+    if (filtroAtivo === allCategory) return cases;
+    return cases.filter((caseItem) => caseItem.categoria === filtroAtivo);
+  }, [allCategory, cases, filtroAtivo]);
 
-  const filtroHint = secoes.casesBibliotecaFiltroHint.replace(
-    "{count}",
-    String(CASES_BIBLIOTECA.length),
-  );
+  const filtroHint = copy.filterHint.replace("{count}", String(cases.length));
 
   return (
     <div
@@ -59,55 +84,44 @@ export function CaseLibrary() {
       aria-atomic="true"
     >
       <aside className="lg:sticky lg:top-24 lg:self-start">
-        <EditorialBadge>{secoes.casesBiblioteca.title}</EditorialBadge>
+        <EditorialBadge>{copy.title}</EditorialBadge>
         <p className="mt-3 hidden text-sm leading-snug text-muted-foreground lg:block">
-          {secoes.casesBiblioteca.subtitle}
+          {copy.subtitle}
         </p>
-        <p className="mt-2 text-xs leading-snug text-muted-foreground">
-          {filtroHint}
-        </p>
+        <p className="mt-2 text-xs leading-snug text-muted-foreground">{filtroHint}</p>
 
         <div className="mt-4 hidden border-l-2 border-accent/40 pl-3 lg:block">
           <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
             <Info className="size-3.5" aria-hidden />
-            Como usar
+            {copy.usageTitle}
           </p>
-          <p className="mt-2 text-xs leading-snug text-muted-foreground">
-            Filtre por domínio. Cada linha leva a uma demo interativa com
-            pergunta de negócio, métrica e limitação declarada.
-          </p>
+          <p className="mt-2 text-xs leading-snug text-muted-foreground">{copy.usageDescription}</p>
         </div>
 
         <div className="mt-4 hidden grid-cols-3 gap-2 lg:grid">
           <div className="border-t border-border bg-card/50 p-2.5 text-center">
-            <p className="font-heading text-xl font-bold text-ink">
-              {CASES_DESTAQUE.length}
-            </p>
+            <p className="font-heading text-xl font-bold text-ink">{featuredCount}</p>
             <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
-              âncora
+              {copy.summaryLabels.featured}
             </p>
           </div>
           <div className="border-t border-border bg-card/50 p-2.5 text-center">
-            <p className="font-heading text-xl font-bold text-ink">
-              {CASES_BIBLIOTECA.length}
-            </p>
+            <p className="font-heading text-xl font-bold text-ink">{cases.length}</p>
             <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
-              biblioteca
+              {copy.summaryLabels.library}
             </p>
           </div>
           <div className="border-t border-border bg-card/50 p-2.5 text-center">
-            <p className="font-heading text-xl font-bold text-ink">
-              {CASES_ROADMAP.length}
-            </p>
+            <p className="font-heading text-xl font-bold text-ink">{roadmapCount}</p>
             <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
-              roadmap
+              {copy.summaryLabels.roadmap}
             </p>
           </div>
         </div>
 
         <div
           role="group"
-          aria-label={secoes.casesBiblioteca.title}
+          aria-label={copy.title}
           className="mt-4 flex gap-2 overflow-x-auto pb-2 lg:grid lg:grid-cols-1 lg:overflow-visible lg:pb-0"
         >
           {categoriasVisiveis.map((categoria) => {
@@ -145,31 +159,22 @@ export function CaseLibrary() {
 
       <div className="overflow-hidden border-y border-border bg-editorial max-lg:border-0 max-lg:bg-transparent">
         <div className="hidden grid-cols-[minmax(0,0.9fr)_minmax(0,1.15fr)_minmax(0,0.8fr)_11.5rem] gap-4 border-b border-border bg-primary/[0.08] px-5 py-3 text-xs font-extrabold uppercase tracking-[0.12em] text-primary lg:grid">
-          <span className="min-w-0">Case</span>
-          <span className="min-w-0">Problema</span>
-          <span className="min-w-0">Métrica</span>
-          <span className="min-w-0 text-right">Ações</span>
+          <span className="min-w-0">{copy.tableLabels.case}</span>
+          <span className="min-w-0">{copy.tableLabels.problem}</span>
+          <span className="min-w-0">{copy.tableLabels.metric}</span>
+          <span className="min-w-0 text-right">{copy.tableLabels.actions}</span>
         </div>
 
         <div className="divide-y divide-border max-lg:flex max-lg:flex-col max-lg:gap-3 max-lg:divide-y-0">
           {casesFiltrados.length === 0 ? (
             <p className="px-5 py-8 text-center text-sm text-muted-foreground">
-              Nenhum case encontrado para este filtro.
+              {copy.tableLabels.empty}
             </p>
           ) : (
             casesFiltrados.map((caseItem, index) => (
-              <motion.article
+              <article
                 key={caseItem.id}
                 data-testid="case-library-item"
-                initial={{ opacity: 1, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.4,
-                  delay: index * 0.04,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                whileHover={{ backgroundColor: "var(--card)" }}
                 className={cn(
                   "group grid gap-3 px-5 py-4 transition-colors lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.15fr)_minmax(0,0.8fr)_11.5rem] lg:items-center lg:py-3.5",
                   "max-lg:rounded-xl max-lg:border max-lg:border-border max-lg:bg-card",
@@ -194,7 +199,10 @@ export function CaseLibrary() {
                 <div className="flex min-w-0 max-w-full flex-wrap items-center gap-2 max-lg:pt-1 lg:justify-end">
                   <CaseDemoLauncher
                     caseItem={caseItem}
-                    labelOverride={secoes.caseLibraryDemoLabel}
+                    modalCopy={modalCopy}
+                    defaultLabel={copy.demoLabel}
+                    unavailableLabel={copy.unavailableLabel}
+                    labelOverride={copy.demoLabel}
                     className="h-11 min-h-11 w-full min-w-0 max-w-full rounded-md px-3 text-center text-xs leading-tight whitespace-normal lg:h-10 lg:min-h-10 lg:w-auto lg:flex-1"
                     icon={<PlayCircle className="size-3.5" aria-hidden />}
                   />
@@ -203,7 +211,7 @@ export function CaseLibrary() {
                       href={caseItem.linkGitHub}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={`${CONTENT.secoes.caseCodeLabel}: ${caseItem.titulo}`}
+                      aria-label={`${copy.codeLabel}: ${caseItem.titulo}`}
                       className={cn(
                         buttonVariants({ variant: "outline", size: "icon" }),
                         "size-11 min-h-11 min-w-11 shrink-0 rounded-md border-primary/15 bg-transparent lg:size-10",
@@ -213,7 +221,7 @@ export function CaseLibrary() {
                     </a>
                   ) : null}
                 </div>
-              </motion.article>
+              </article>
             ))
           )}
         </div>

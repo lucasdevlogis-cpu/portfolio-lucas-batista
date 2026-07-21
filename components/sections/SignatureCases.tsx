@@ -1,17 +1,17 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ExternalLink, PlayCircle } from "lucide-react";
 
-import { CaseDemoLauncher } from "@/components/CaseDemoLauncher";
 import { CaseThumbnail } from "@/components/CaseThumbnail";
+import { CaseDemoLauncher } from "@/components/demos/CaseDemoLauncher";
 import { CaseLibrary } from "@/components/sections/CaseLibrary";
 import { EditorialBadge } from "@/components/ui/EditorialBadge";
 import { buttonVariants } from "@/components/ui/button";
 import {
   CASES_DESTAQUE,
+  CASES_BIBLIOTECA,
+  CASE_CATEGORIAS,
   CASES_ROADMAP,
   CONTENT,
+  DEMO_MODAL_COPY,
   caseNumberFromId,
   type Case,
 } from "@/data/content";
@@ -19,20 +19,11 @@ import { cn } from "@/lib/utils";
 
 function SignatureCase({ caseItem }: { caseItem: Case }) {
   const labels = CONTENT.secoes;
-  const prioridadeCor =
-    caseItem.prioridade === "P0" ? "border-accent" : "border-primary";
+  const prioridadeCor = caseItem.prioridade === "P0" ? "border-accent" : "border-primary";
   const caseNumber = caseNumberFromId(caseItem.id);
 
   return (
-    <motion.article
-      initial={{ opacity: 1, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-      whileHover={{ y: -3 }}
+    <article
       data-testid="case-card"
       className={cn(
         "group flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-editorial transition-all duration-normal ease-editorial hover:border-accent/40 hover:shadow-card",
@@ -46,9 +37,7 @@ function SignatureCase({ caseItem }: { caseItem: Case }) {
 
       <div className="relative z-10 flex flex-1 flex-col p-5 lg:p-6">
         <div className="flex items-start justify-between gap-4">
-          <EditorialBadge className="w-fit">
-            {caseItem.categoria}
-          </EditorialBadge>
+          <EditorialBadge className="w-fit">{caseItem.categoria}</EditorialBadge>
           <span className="shrink-0 font-heading text-sm font-bold uppercase tracking-[0.08em] text-primary/80">
             Case {caseNumber}
           </span>
@@ -60,17 +49,15 @@ function SignatureCase({ caseItem }: { caseItem: Case }) {
 
         <div className="mt-3">
           <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
-            Problema de negócio
+            {labels.caseProblemLabel}
           </p>
-          <p className="mt-1 text-sm leading-snug text-ink">
-            {caseItem.perguntaNegocio}
-          </p>
+          <p className="mt-1 text-sm leading-snug text-ink">{caseItem.perguntaNegocio}</p>
         </div>
 
         <div className="mt-4 flex items-end justify-between border-t border-border pt-4">
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-muted-foreground">
-              Métrica principal
+              {labels.caseMetricLabel}
             </p>
             <p className="mt-1 font-heading text-base font-bold text-accent-contrast lg:text-lg">
               {caseItem.metricaResumo}
@@ -81,6 +68,9 @@ function SignatureCase({ caseItem }: { caseItem: Case }) {
         <div className="mt-auto flex min-w-0 flex-col gap-2 pt-5 xl:flex-row">
           <CaseDemoLauncher
             caseItem={caseItem}
+            modalCopy={DEMO_MODAL_COPY}
+            defaultLabel={labels.caseDemoLabel}
+            unavailableLabel={labels.caseDemoUnavailableLabel}
             className="h-11 min-h-11 w-full min-w-0 max-w-full flex-1 rounded-md px-3 text-center leading-tight whitespace-normal"
             icon={<PlayCircle className="size-4" aria-hidden />}
           />
@@ -101,7 +91,7 @@ function SignatureCase({ caseItem }: { caseItem: Case }) {
           ) : null}
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }
 
@@ -115,26 +105,13 @@ export function SignatureCases() {
     >
       <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-12 2xl:px-16">
         <div className="mb-8 grid gap-4 lg:grid-cols-[1fr_1.1fr] lg:items-end">
-          <motion.div
-            initial={{ opacity: 1, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <div>
             <p className="eyebrow">{secoes.cases.eyebrow}</p>
-            <h2 className="section-title mt-3 text-balance">
-              {secoes.cases.title}
-            </h2>
-          </motion.div>
-          <motion.p
-            initial={{ opacity: 1, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-2xl text-base leading-relaxed text-muted-foreground"
-          >
+            <h2 className="section-title mt-3 text-balance">{secoes.cases.title}</h2>
+          </div>
+          <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
             {secoes.cases.subtitle}
-          </motion.p>
+          </p>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-3">
@@ -143,14 +120,28 @@ export function SignatureCases() {
           ))}
         </div>
 
-        <CaseLibrary />
+        <CaseLibrary
+          cases={CASES_BIBLIOTECA}
+          categories={[...CASE_CATEGORIAS]}
+          featuredCount={CASES_DESTAQUE.length}
+          roadmapCount={CASES_ROADMAP.length}
+          copy={{
+            title: secoes.casesBiblioteca.title,
+            subtitle: secoes.casesBiblioteca.subtitle,
+            filterHint: secoes.casesBibliotecaFiltroHint,
+            usageTitle: secoes.casesBibliotecaUsageTitle,
+            usageDescription: secoes.casesBibliotecaUsageDescription,
+            summaryLabels: secoes.casesBibliotecaSummaryLabels,
+            tableLabels: secoes.casesBibliotecaTableLabels,
+            demoLabel: secoes.caseLibraryDemoLabel,
+            unavailableLabel: secoes.caseDemoUnavailableLabel,
+            codeLabel: secoes.caseCodeLabel,
+          }}
+          modalCopy={DEMO_MODAL_COPY}
+        />
 
         {CASES_ROADMAP.length > 0 ? (
-          <motion.div
-            initial={{ opacity: 1, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          <div
             data-testid="case-roadmap"
             className="mt-8 rounded-xl border border-dashed border-warm-accent/30 bg-warm-accent/[0.04] p-5"
           >
@@ -162,8 +153,7 @@ export function SignatureCases() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {secoes.casesRoadmap.subtitle}
                 </p>
-                {secoes.casesRoadmap.sugestaoTitulo &&
-                secoes.casesRoadmap.sugestao ? (
+                {secoes.casesRoadmap.sugestaoTitulo && secoes.casesRoadmap.sugestao ? (
                   <div className="mt-5 rounded-xl border border-warm-accent/25 bg-warm-accent/10 p-4">
                     <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-warm-accent-contrast">
                       {secoes.casesRoadmap.sugestaoTitulo}
@@ -196,8 +186,7 @@ export function SignatureCases() {
                     </div>
                   ))}
                 </div>
-                {secoes.casesRoadmap.avaliacaoTitulo &&
-                secoes.casesRoadmap.avaliacaoItens ? (
+                {secoes.casesRoadmap.avaliacaoTitulo && secoes.casesRoadmap.avaliacaoItens ? (
                   <div className="rounded-xl border border-primary/10 bg-card p-5">
                     <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
                       {secoes.casesRoadmap.avaliacaoTitulo}
@@ -214,7 +203,7 @@ export function SignatureCases() {
                 ) : null}
               </div>
             </div>
-          </motion.div>
+          </div>
         ) : null}
       </div>
     </section>

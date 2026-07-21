@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://portfolio-lucas-batista-murex.vercel.app/sitemap.xml

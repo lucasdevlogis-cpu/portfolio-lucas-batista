@@ -42,9 +42,7 @@ export function SectionShell({
       >
         {title ? (
           <div className={cn("mb-5 max-w-4xl lg:mb-8", headerClassName)}>
-            {eyebrow ? (
-              <p className={dark ? "eyebrow-dark" : "eyebrow"}>{eyebrow}</p>
-            ) : null}
+            {eyebrow ? <p className={dark ? "eyebrow-dark" : "eyebrow"}>{eyebrow}</p> : null}
             <h2
               className={cn(
                 "mt-3 font-heading text-3xl font-bold leading-[1.05] tracking-tight md:text-4xl",

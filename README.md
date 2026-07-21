@@ -1,79 +1,90 @@
 # Portfólio Lucas Batista
 
-Dossiê profissional — operações, dados e inteligência logística. **Executive Proof System** para headhunters e lideranças que avaliam fit técnico.
+Casebook técnico para avaliação profissional de Lucas Batista em operações,
+analytics e inteligência logística. A landing prioriza leitura executiva; as
+provas mostram método, decisão apoiada, métrica e limitação.
 
-> **Comece aqui:** [`docs/CANON.md`](docs/CANON.md) · Arquitetura: [`docs/ARQUITETURA.md`](docs/ARQUITETURA.md) · Índice: [`docs/README.md`](docs/README.md)
+## Arquitetura
 
-## Posicionamento
+O projeto é um único repositório com dois runtimes e contratos compartilhados:
 
-- **Público:** headhunters, recrutadores e lideranças de operações/dados.
-- **Prova:** 10 demos (3 âncora React + 7 biblioteca Streamlit) + 1 roadmap; contexto, métrica e limitação declarada.
-- **Contato:** LinkedIn, email, GitHub e CV PDF — sem formulário.
+| Camada                    | Tecnologia                                    | Caminho                 |
+| ------------------------- | --------------------------------------------- | ----------------------- |
+| Landing e 3 provas âncora | Next.js 16, React 19, TypeScript              | `app/`, `components/`   |
+| 7 provas complementares   | Streamlit, Pandas, Plotly, Folium             | `apps/demos/`           |
+| Catálogo e snapshots      | JSON validado por TypeScript e Python         | `contracts/`            |
+| Tokens                    | JSON com geração para CSS, Python e Streamlit | `design/tokens.json`    |
+| Testes e QA               | Playwright, Lighthouse, pytest e Ruff         | `tests/`, `scripts/qa/` |
 
-## Stack
+Não existe mais sincronização manual entre duas cópias das demos. O entrypoint
+canônico do Streamlit é `apps/demos/app.py` neste repositório.
 
-- Next.js 16.2.10 (App Router) + React 19 + TypeScript · Node 24.x
-- Tailwind CSS v4 + shadcn/ui + Lucide React + ECharts + MapLibre GL JS nas provas âncora
-- Deploy: Vercel (nativo — **sem** static export) + Streamlit Cloud
+## Preparação local
 
-## Desenvolvimento
+Requisitos: Node.js 24.x e Python 3.12+.
 
-```bash
-npm install
-npm run dev
-npm run tokens:sync
-npm run demos:export
-npm run validate && npm run lint && npm run typecheck && npm run build
-npm run test:e2e          # 14 testes
-npm audit --audit-level=moderate
-npm run cv:generate   # após editar data/content.ts
+```powershell
+npm ci
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements-dev.txt
+Copy-Item .env.example .env.local
 ```
 
-Abre [http://localhost:3000](http://localhost:3000).
+```powershell
+npm run dev
+streamlit run apps/demos/app.py
+```
 
-Para Lighthouse, sirva o build com `npm run start` e, em outro terminal, rode `npm run lighthouse:all`.
-No mesmo servidor, `npm run qa:visual` revalida o modal e atualiza as capturas em 375, 768 e 1440 px.
+- Next.js: <http://localhost:3000>
+- Streamlit: <http://localhost:8501>
+
+## Comandos principais
+
+```powershell
+npm run demos:build      # recria datasets gerados com seed fixa
+npm run demos:export     # exporta os 3 snapshots âncora
+npm run verify           # contratos, lint, tipos, pytest e build
+npm run demos:smoke      # 13 checagens Streamlit
+npm run test:e2e         # Playwright em build de produção
+npm run qa:visual        # capturas em 375, 768 e 1440 px
+npm run lighthouse:all  # performance, a11y, boas práticas e SEO
+npm run cv:generate      # atualiza o CV a partir de data/content.ts
+```
+
+`npm audit --audit-level=moderate` deve terminar sem vulnerabilidades.
+
+## Fontes da verdade
+
+- narrativa, cases, CTAs e metadados: `data/content.ts`;
+- catálogo de publicação e slugs: `contracts/demo-catalog.json`;
+- cálculos exibidos pelas âncoras: `contracts/demo-snapshots/*.json`, exportados
+  pelo Python;
+- tokens visuais: `design/tokens.json`;
+- estado e próximos passos: `docs/ROADMAP.md`.
 
 ## Variáveis de ambiente
 
-Copie `.env.example` → `.env.local`:
-
-| Variável | Descrição |
-|----------|-----------|
-| `NEXT_PUBLIC_SITE_URL` | URL pública (Vercel) |
-| `NEXT_PUBLIC_DEMOS_BASE_URL` | URL base Streamlit (**obrigatória no build**) |
-
-## Demos Streamlit
-
-Pasta [`demos-logistica/`](demos-logistica/) · repo de deploy: [demos-logistica](https://github.com/lucasdevlogis-cpu/demos-logistica).
-
-```bash
-cd demos-logistica
-python scripts/build_datasets.py
-python scripts/smoke_test.py      # 13/13
-python scripts/validate_slugs.py  # 10/10
+```env
+NEXT_PUBLIC_SITE_URL=https://portfolio-lucas-batista-murex.vercel.app
+NEXT_PUBLIC_DEMOS_BASE_URL=https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
 ```
+
+As variáveis `NEXT_PUBLIC_*` são incorporadas no build e exigem novo deploy
+quando alteradas.
 
 ## Produção
 
-| Serviço | URL |
-|---------|-----|
-| Landing | <https://portfolio-lucas-batista-murex.vercel.app> |
-| Demos | <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app> |
+| Serviço | URL                                                            |
+| ------- | -------------------------------------------------------------- |
+| Landing | <https://portfolio-lucas-batista-murex.vercel.app>             |
+| Demos   | <https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app> |
+| Código  | <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista> |
 
-Guia: [`docs/DEPLOY.md`](docs/DEPLOY.md).
+Para a configuração de Vercel e Streamlit Cloud, consulte
+[`docs/OPERACAO.md`](docs/OPERACAO.md).
 
 ## Documentação
 
-| Doc | Papel |
-|-----|-------|
-| [`docs/CANON.md`](docs/CANON.md) | Entrada única |
-| [`docs/ARQUITETURA.md`](docs/ARQUITETURA.md) | Arquitetura |
-| [`docs/AVALIACAO.md`](docs/AVALIACAO.md) | Estado / saúde |
-| [`design/design.md`](design/design.md) | Spec visual |
-| [`data/content.ts`](data/content.ts) | Copy ativo |
-| [`AGENTS.md`](AGENTS.md) | Guia para agentes |
-
-## Licença
-
-Projeto pessoal — Lucas Batista © 2026
+Comece por [`docs/CANON.md`](docs/CANON.md). O índice completo está em
+[`docs/README.md`](docs/README.md).

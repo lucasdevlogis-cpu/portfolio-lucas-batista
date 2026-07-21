@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "caseId": "01-precificacao-frete",
+      "slug": "precificacao_frete",
+      "page": "pages/precificacao_frete.py",
+      "title": "Precificação de frete",
+      "tier": "anchor",
+      "published": true
+    },
+    {
+      "caseId": "02-torre-controle",
+      "slug": "mini_torre_controle",
+      "page": "pages/mini_torre_controle.py",
+      "title": "Torre de controle",
+      "tier": "anchor",
+      "published": true
+    },
+    {
+      "caseId": "03-promessa-cep",
+      "slug": "promessa_cep",
+      "page": "pages/promessa_cep.py",
+      "title": "Promessa por CEP",
+      "tier": "complementary",
+      "published": true
+    },
+    {
+      "caseId": "04-ship-from-store",
+      "slug": "ship_from_store",
+      "page": "pages/ship_from_store.py",
+      "title": "Ship from Store",
+      "tier": "complementary",
+      "published": true
+    },
+    {
+      "caseId": "05-auditoria-endereco",
+      "slug": "auditoria_endereco",
+      "page": "pages/auditoria_endereco.py",
+      "title": "Auditoria de endereço",
+      "tier": "complementary",
+      "published": true
+    },
+    {
+      "caseId": "06-kpis-cd",
+      "slug": null,
+      "page": null,
+      "title": "KPIs de armazenagem e expedição",
+      "tier": "roadmap",
+      "published": false
+    },
+    {
+      "caseId": "07-classificador-ocorrencias",
+      "slug": "classificador_ocorrencias",
+      "page": "pages/classificador_ocorrencias.py",
+      "title": "Classificador de ocorrências",
+      "tier": "complementary",
+      "published": true
+    },
+    {
+      "caseId": "08-cvrp-urbano",
+      "slug": "cvrp_urbano",
+      "page": "pages/cvrp_urbano.py",
+      "title": "Roteirização urbana (CVRP)",
+      "tier": "anchor",
+      "published": true
+    },
+    {
+      "caseId": "09-vrptw-ultima-milha",
+      "slug": "vrptw_ultima_milha",
+      "page": "pages/vrptw_ultima_milha.py",
+      "title": "Última milha com janelas",
+      "tier": "complementary",
+      "published": true
+    },
+    {
+      "caseId": "10-rede-interhubs",
+      "slug": "rede_interhubs",
+      "page": "pages/rede_interhubs.py",
+      "title": "Rede inter-hubs",
+      "tier": "complementary",
+      "published": true
+    },
+    {
+      "caseId": "11-tsp-baseline-sp",
+      "slug": "tsp_baseline_sp",
+      "page": "pages/tsp_baseline_sp.py",
+      "title": "Sequência de visitas (TSP)",
+      "tier": "complementary",
+      "published": true
+    }
+  ]
+}

@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 
 import type { Case } from "@/data/content";
@@ -11,20 +9,14 @@ interface CaseThumbnailProps {
 }
 
 export function CaseThumbnail({ caseItem, className }: CaseThumbnailProps) {
-  const alt =
-    caseItem.thumbnailAlt ?? `Pré-visualização do case ${caseItem.titulo}`;
+  const alt = caseItem.thumbnailAlt ?? `Pré-visualização do case ${caseItem.titulo}`;
 
   if (!caseItem.thumbnail) {
     return null;
   }
 
   return (
-    <div
-      className={cn(
-        "relative aspect-video overflow-hidden rounded-t-xl bg-card",
-        className,
-      )}
-    >
+    <div className={cn("relative aspect-video overflow-hidden rounded-t-xl bg-card", className)}>
       <Image
         src={caseItem.thumbnail}
         alt={alt}

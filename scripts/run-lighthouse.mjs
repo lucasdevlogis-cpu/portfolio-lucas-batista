@@ -9,7 +9,7 @@ if (!mode || !["desktop", "mobile"].includes(mode)) {
   process.exit(2);
 }
 
-const outputPath = `docs/audit/lighthouse/lighthouse-${mode}-local.json`;
+const outputPath = `.artifacts/lighthouse/lighthouse-${mode}-local.json`;
 mkdirSync(dirname(outputPath), { recursive: true });
 rmSync(outputPath, { force: true });
 
@@ -25,9 +25,14 @@ const args = [
 ];
 
 const result = await new Promise((resolve) => {
-  const child = spawn(command, [cliPath, ...args], { stdio: ["inherit", "inherit", "pipe"], shell: false });
+  const child = spawn(command, [cliPath, ...args], {
+    stdio: ["inherit", "inherit", "pipe"],
+    shell: false,
+  });
   let stderr = "";
-  child.stderr.on("data", (chunk) => { stderr += chunk.toString(); });
+  child.stderr.on("data", (chunk) => {
+    stderr += chunk.toString();
+  });
   child.on("error", (error) => resolve({ code: 1, error, stderr }));
   child.on("close", (code) => resolve({ code: code ?? 1, stderr }));
 });

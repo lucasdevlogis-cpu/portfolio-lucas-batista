@@ -1,4 +1,8 @@
-docs/audit/Redesign Premium Desktop.docx
-.chrome-qa/
-tmp-premium-*.png
-next-start.*.log
+.artifacts/
+docs/
+tests/
+apps/demos/tests/
+apps/demos/docs/
+**/__pycache__/
+**/.venv/
+*.log

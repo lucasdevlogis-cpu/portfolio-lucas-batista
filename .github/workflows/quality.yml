@@ -1,0 +1,74 @@
+name: Quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  CI: "true"
+  NEXT_PUBLIC_SITE_URL: https://portfolio-lucas-batista-murex.vercel.app
+  NEXT_PUBLIC_DEMOS_BASE_URL: https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            apps/demos/requirements*.txt
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install Python dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Rebuild generated contracts
+        run: |
+          npm run tokens:sync
+          npm run demos:build
+          npm run demos:export
+
+      - name: Check generated files are committed
+        run: >-
+          git diff --exit-code --
+          .streamlit/config.toml
+          app/design-tokens.css
+          apps/demos/data/generated
+          apps/demos/presentation/tokens.py
+          contracts/demo-snapshots
+
+      - name: Verify application
+        run: npm run verify
+
+      - name: Smoke test Streamlit
+        run: npm run demos:smoke
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=moderate
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npm run test:e2e

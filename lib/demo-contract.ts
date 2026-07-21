@@ -1,6 +1,9 @@
-import cvrpSnapshot from "@/data/demo-snapshots/cvrp_urbano.json";
-import towerSnapshot from "@/data/demo-snapshots/mini_torre_controle.json";
-import freightSnapshot from "@/data/demo-snapshots/precificacao_frete.json";
+import cvrpSnapshot from "@/contracts/demo-snapshots/cvrp_urbano.json";
+import towerSnapshot from "@/contracts/demo-snapshots/mini_torre_controle.json";
+import freightSnapshot from "@/contracts/demo-snapshots/precificacao_frete.json";
+import { ANCHOR_DEMO_SLUGS } from "@/lib/demo-catalog";
+
+export { ANCHOR_DEMO_SLUGS } from "@/lib/demo-catalog";
 
 export type DemoTone = "accent" | "danger" | "warning" | "success";
 
@@ -76,16 +79,10 @@ export const DEMO_SNAPSHOTS: Record<string, DemoSnapshot> = {
   cvrp_urbano: cvrpSnapshot as DemoSnapshot,
 };
 
-export const ANCHOR_DEMO_SLUGS = [
-  "precificacao_frete",
-  "mini_torre_controle",
-  "cvrp_urbano",
-] as const;
-
 export function getDemoSnapshot(slug: string): DemoSnapshot | null {
   return DEMO_SNAPSHOTS[slug] ?? null;
 }
 
 export function isAnchorDemoSlug(slug: string): boolean {
-  return ANCHOR_DEMO_SLUGS.includes(slug as (typeof ANCHOR_DEMO_SLUGS)[number]);
+  return ANCHOR_DEMO_SLUGS.includes(slug);
 }

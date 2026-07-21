@@ -12,18 +12,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CONTENT } from "@/data/content";
+import type { MobileNavCopy, NavLink } from "@/data/content";
 import { cn } from "@/lib/utils";
 
-export function MobileNav() {
+interface MobileNavProps {
+  navLinks: NavLink[];
+  navCta: string;
+  linkedin: string;
+  linkedinLabel: string;
+  copy: MobileNavCopy;
+}
+
+export function MobileNav({ navLinks, navCta, linkedin, linkedinLabel, copy }: MobileNavProps) {
   const [open, setOpen] = useState(false);
-  const navLinks = CONTENT.nav;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         className="inline-flex size-10 items-center justify-center rounded-lg border border-white/15 bg-white/[0.06] text-white shadow-sm transition-colors hover:bg-white/10 md:hidden"
-        aria-label={CONTENT.mobileNav.openLabel}
+        aria-label={copy.openLabel}
       >
         <Menu className="size-5" aria-hidden />
       </DialogTrigger>
@@ -32,22 +39,18 @@ export function MobileNav() {
         className="fixed inset-x-4 top-16 bottom-auto max-w-none translate-x-0 translate-y-0 rounded-xl border-border bg-card p-3 sm:inset-x-auto sm:right-4 sm:left-auto sm:w-72"
       >
         <div className="mb-2 flex items-center justify-between px-1">
-          <DialogTitle className="text-sm font-bold text-ink">
-            {CONTENT.mobileNav.menuTitle}
-          </DialogTitle>
+          <DialogTitle className="text-sm font-bold text-ink">{copy.menuTitle}</DialogTitle>
           <button
             type="button"
             onClick={() => setOpen(false)}
             className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-ink"
-            aria-label={CONTENT.mobileNav.closeLabel}
+            aria-label={copy.closeLabel}
           >
             <X className="size-5" aria-hidden />
           </button>
         </div>
-        <DialogDescription className="sr-only">
-          Navegação principal do portfólio
-        </DialogDescription>
-        <nav aria-label="Mobile">
+        <DialogDescription className="sr-only">{copy.description}</DialogDescription>
+        <nav aria-label={copy.navigationLabel}>
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -66,18 +69,18 @@ export function MobileNav() {
               "mt-2 h-11 w-full rounded-lg",
             )}
           >
-            {CONTENT.navCta}
+            {navCta}
           </a>
-          {!CONTENT.pessoal.linkedin.startsWith("[") ? (
+          {!linkedin.startsWith("[") ? (
             <a
-              href={CONTENT.pessoal.linkedin}
+              href={linkedin}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center gap-2 rounded-md px-3 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-ink"
             >
               <LinkIcon className="size-5" aria-hidden />
-              {CONTENT.contactLinks.linkedinLabel}
+              {linkedinLabel}
             </a>
           ) : null}
         </nav>

@@ -1,3 +1,7 @@
+import { CASE_DEMO_SLUGS, FEATURED_PROOF_CASE_IDS } from "@/lib/demo-catalog";
+
+export { CASE_DEMO_SLUGS } from "@/lib/demo-catalog";
+
 /**
  * Ícones Lucide usados no site — fonte única. Referenciados como string para
  * render dinâmico via `LucideIconByName`. Ao adicionar um ícone aqui, registre-o
@@ -52,6 +56,7 @@ export interface Pessoal {
   github: string;
   localizacao: string;
   tempoResposta: string;
+  empresasLabel: string;
   stackTags: string[];
   empresasResumo: { nome: string; abreviacao?: string }[];
 }
@@ -185,12 +190,17 @@ export interface ContactLinksConteudo {
   eyebrow: string;
   titulo: string;
   descricao: string;
-  primaryLabel: string;
   linkedinLabel: string;
+  linkedinValue: string;
   emailLabel: string;
+  emailValue: string;
   githubLabel: string;
+  githubValue: string;
   cvLabel: string;
+  cvValue: string;
   cvUrl: string;
+  manifestoTitle: string;
+  noteLabel: string;
   nota: string;
   manifesto: string[];
 }
@@ -199,10 +209,32 @@ export interface DialogCopy {
   closeLabel: string;
 }
 
+export interface DemoModalCopy {
+  closeLabel: string;
+  openExternalLabel: string;
+  fullscreenLabel: string;
+  loadInlineLabel: string;
+  mobileHint: string;
+  unavailableLabel: string;
+  initializingLabel: string;
+  errorLabel: string;
+  timeoutLabel: string;
+  context: SecoesCopy["demoContextLabels"];
+}
+
 export interface MobileNavCopy {
   menuTitle: string;
   openLabel: string;
   closeLabel: string;
+  description: string;
+  navigationLabel: string;
+}
+
+export interface A11yCopy {
+  skipToContent: string;
+  primaryNavigation: string;
+  linkedinProfile: string;
+  proofMetrics: string;
 }
 
 export interface SiteMetadata {
@@ -216,7 +248,23 @@ export interface SecoesCopy {
   cases: SecaoCopy;
   casesBiblioteca: SecaoCopy;
   casesBibliotecaFiltroHint: string;
+  casesBibliotecaUsageTitle: string;
+  casesBibliotecaUsageDescription: string;
+  casesBibliotecaSummaryLabels: {
+    featured: string;
+    library: string;
+    roadmap: string;
+  };
+  casesBibliotecaTableLabels: {
+    case: string;
+    problem: string;
+    metric: string;
+    actions: string;
+    empty: string;
+  };
   casesRoadmap: SecaoCopy;
+  caseProblemLabel: string;
+  caseMetricLabel: string;
   caseDemoLabel: string;
   caseLibraryDemoLabel: string;
   caseDemoUnavailableLabel: string;
@@ -258,36 +306,21 @@ export interface Content {
   siteMetadata: SiteMetadata;
   dialog: DialogCopy;
   mobileNav: MobileNavCopy;
+  a11y: A11yCopy;
 }
 
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  "https://portfolio-lucas-batista-murex.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://portfolio-lucas-batista-murex.vercel.app";
 
 export const GITHUB_PROFILE_URL = "https://github.com/lucasdevlogis-cpu";
-export const GITHUB_DEMOS_URL =
-  "https://github.com/lucasdevlogis-cpu/demos-logistica";
+export const GITHUB_DEMOS_URL = `${GITHUB_PROFILE_URL}/portfolio-lucas-batista/tree/main/apps/demos`;
 
-export const DEMOS_BASE_URL =
-  process.env.NEXT_PUBLIC_DEMOS_BASE_URL?.replace(/\/$/, "") ?? "";
+export const DEMOS_BASE_URL = process.env.NEXT_PUBLIC_DEMOS_BASE_URL?.replace(/\/$/, "") ?? "";
 
 export function demoUrl(pageSlug: string): string {
   if (!DEMOS_BASE_URL || !pageSlug) return "";
   return `${DEMOS_BASE_URL}/${pageSlug}`;
 }
-
-export const CASE_DEMO_SLUGS: Record<string, string> = {
-  "01-precificacao-frete": "precificacao_frete",
-  "02-torre-controle": "mini_torre_controle",
-  "03-promessa-cep": "promessa_cep",
-  "04-ship-from-store": "ship_from_store",
-  "05-auditoria-endereco": "auditoria_endereco",
-  "07-classificador-ocorrencias": "classificador_ocorrencias",
-  "08-cvrp-urbano": "cvrp_urbano",
-  "09-vrptw-ultima-milha": "vrptw_ultima_milha",
-  "10-rede-interhubs": "rede_interhubs",
-  "11-tsp-baseline-sp": "tsp_baseline_sp",
-};
 
 export const CASE_COUNT = Object.keys(CASE_DEMO_SLUGS).length;
 export const ANOS_EXPERIENCIA = 10;
@@ -298,8 +331,7 @@ export const CONTENT: Content = {
     nome: "Lucas Farias Batista",
     nomeCurto: "Lucas Batista",
     titulo: "Analista de Transportes Sênior | Operações, Dados e IA Aplicada",
-    headline:
-      "Operações logísticas com dados, produto interno, IA aplicada e impacto mensurável",
+    headline: "Operações logísticas com dados, produto interno, IA aplicada e impacto mensurável",
     subheadline:
       "Mais de 10 anos conectando execução diária a indicadores, automações e decisões. Foco em prototipagem rápida e comunicação com diretoria.",
     email: "lucas.farias.log@outlook.com",
@@ -307,6 +339,7 @@ export const CONTENT: Content = {
     github: GITHUB_PROFILE_URL,
     localizacao: "São Paulo/SP",
     tempoResposta: "resposta em até 24h (dias úteis)",
+    empresasLabel: "Passagem por",
     stackTags: ["Python", "SQL", "Power BI", "Streamlit", "IA aplicada"],
     empresasResumo: [
       { nome: "GRUPO SBF", abreviacao: "Centauro e Nike" },
@@ -388,11 +421,7 @@ export const CONTENT: Content = {
     ],
   },
 
-  featuredProofCases: [
-    "01-precificacao-frete",
-    "02-torre-controle",
-    "08-cvrp-urbano",
-  ],
+  featuredProofCases: FEATURED_PROOF_CASE_IDS,
 
   experienceSignals: {
     eyebrow: "Trajetória",
@@ -495,24 +524,24 @@ export const CONTENT: Content = {
       "Gestão de Custos, Lean",
     ],
     idiomasTitulo: "Idiomas",
-    idiomas: [
-      "Português: Nativo",
-      "Inglês: Intermediário",
-      "Espanhol: Intermediário",
-    ],
+    idiomas: ["Português: Nativo", "Inglês: Intermediário", "Espanhol: Intermediário"],
   },
 
   contactLinks: {
     eyebrow: "Contato",
     titulo: "Contato profissional",
-    descricao:
-      "LinkedIn ou email direto para oportunidades e triagem de perfil.",
-    primaryLabel: "Conversar no LinkedIn",
+    descricao: "LinkedIn ou email direto para oportunidades e triagem de perfil.",
     linkedinLabel: "LinkedIn",
+    linkedinValue: "Abrir perfil",
     emailLabel: "Email",
+    emailValue: "Enviar email",
     githubLabel: "GitHub",
+    githubValue: "Ver repositório",
     cvLabel: "CV em PDF",
+    cvValue: "Baixar PDF",
     cvUrl: "/lucas-batista-cv.pdf",
+    manifestoTitle: "Quando me chamar",
+    noteLabel: "Sobre este dossiê",
     nota: "Dados sintéticos, públicos ou anonimizados. Cases demonstram método e capacidade de prototipagem.",
     manifesto: [
       "Operação, dados e tecnologia falando a mesma língua.",
@@ -533,8 +562,22 @@ export const CONTENT: Content = {
       subtitle:
         "Mais demos por domínio logístico. A biblioteca amplia a leitura de stack, repertório e profundidade técnica.",
     },
-    casesBibliotecaFiltroHint:
-      "Filtros aplicados aos {count} cases da biblioteca complementar.",
+    casesBibliotecaFiltroHint: "Filtros aplicados aos {count} cases da biblioteca complementar.",
+    casesBibliotecaUsageTitle: "Como usar",
+    casesBibliotecaUsageDescription:
+      "Filtre por domínio. Cada linha abre uma demo com pergunta de negócio, métrica e limitação declarada.",
+    casesBibliotecaSummaryLabels: {
+      featured: "âncora",
+      library: "biblioteca",
+      roadmap: "roadmap",
+    },
+    casesBibliotecaTableLabels: {
+      case: "Case",
+      problem: "Problema",
+      metric: "Métrica",
+      actions: "Ações",
+      empty: "Nenhum case encontrado para este filtro.",
+    },
     casesRoadmap: {
       title: "Prova em preparação",
       subtitle:
@@ -549,6 +592,8 @@ export const CONTENT: Content = {
         "Se a limitação deixa claro quais integrações WMS/TMS seriam necessárias em produção.",
       ],
     },
+    caseProblemLabel: "Problema de negócio",
+    caseMetricLabel: "Métrica principal",
     caseDemoLabel: "Explorar demonstração",
     caseLibraryDemoLabel: "Explorar case",
     caseDemoUnavailableLabel: "Demo em preparação",
@@ -571,8 +616,7 @@ export const CONTENT: Content = {
     demoCarregando:
       "Carregando a demo… As demos hospedadas no plano gratuito podem levar até 30 segundos para acordar na primeira visita.",
     demoInicializando: "Inicializando demonstração…",
-    demoErro:
-      "Não foi possível carregar a demo aqui. Abra em uma nova aba pelo botão acima.",
+    demoErro: "Não foi possível carregar a demo aqui. Abra em uma nova aba pelo botão acima.",
     demoTimeoutHint:
       "A demo ainda está inicializando. Você pode continuar aguardando ou abrir em nova aba.",
   },
@@ -594,8 +638,7 @@ export const CONTENT: Content = {
       categoria: "Frete e Custo",
       icone: "DollarSign",
       tags: ["frete", "custo", "precificação", "componentes", "região"],
-      linkDemo:
-        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/precificacao_frete",
+      linkDemo: demoUrl(CASE_DEMO_SLUGS["01-precificacao-frete"]),
       linkGitHub: GITHUB_DEMOS_URL,
       thumbnail: "/cases/01-precificacao-frete.webp",
       thumbnailAlt:
@@ -605,8 +648,7 @@ export const CONTENT: Content = {
       perguntaNegocio: "Qual região concentra maior custo por entrega?",
       metricaPrincipal: "Custo por kg, custo por entrega, composição de frete",
       metricaResumo: "custo por kg e por entrega",
-      decisaoApoiada:
-        "Entender composição e pressão de custo para priorizar negociações",
+      decisaoApoiada: "Entender composição e pressão de custo para priorizar negociações",
       limitacao:
         "Dados sintéticos. Para uso real, precisa de base de frete do cliente e tabelas contratuais.",
     },
@@ -618,8 +660,7 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Radar",
       tags: ["SLA", "OTD", "atraso", "ocorrência", "torre de controle"],
-      linkDemo:
-        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/mini_torre_controle",
+      linkDemo: demoUrl(CASE_DEMO_SLUGS["02-torre-controle"]),
       linkGitHub: GITHUB_DEMOS_URL,
       thumbnail: "/cases/02-torre-controle.webp",
       thumbnailAlt:
@@ -627,12 +668,10 @@ export const CONTENT: Content = {
       ctaDemoLabel: "Explorar Torre",
       prioridade: "P0",
       perguntaNegocio: "Quais entregas exigem ação imediata?",
-      metricaPrincipal:
-        "SLA, OTD, tempo de resposta, ocorrências por transportadora",
+      metricaPrincipal: "SLA, OTD, tempo de resposta, ocorrências por transportadora",
       metricaResumo: "SLA, OTD e follow-up priorizado",
       decisaoApoiada: "Priorizar entregas críticas e follow-ups",
-      limitacao:
-        "Não substitui TMS completo. Dados de entrada dependem da integração disponível.",
+      limitacao: "Não substitui TMS completo. Dados de entrada dependem da integração disponível.",
     },
     {
       id: "03-promessa-cep",
@@ -642,15 +681,12 @@ export const CONTENT: Content = {
       categoria: "Last Mile e E-commerce",
       icone: "MapPin",
       tags: ["CEP", "last mile", "promessa", "prazo", "risco territorial"],
-      linkDemo:
-        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/promessa_cep",
+      linkDemo: demoUrl(CASE_DEMO_SLUGS["03-promessa-cep"]),
       linkGitHub: GITHUB_DEMOS_URL,
       ctaDemoLabel: "Explorar Promessa por CEP",
       prioridade: "P0",
-      perguntaNegocio:
-        "Qual CEP ou praça tem maior risco de atraso ou insucesso?",
-      metricaPrincipal:
-        "Taxa de insucesso, prazo médio por CEP, risco territorial",
+      perguntaNegocio: "Qual CEP ou praça tem maior risco de atraso ou insucesso?",
+      metricaPrincipal: "Taxa de insucesso, prazo médio por CEP, risco territorial",
       metricaResumo: "risco e prazo por CEP",
       decisaoApoiada: "Ajustar prazo, risco e modalidade por região",
       limitacao:
@@ -664,17 +700,14 @@ export const CONTENT: Content = {
       categoria: "Last Mile e E-commerce",
       icone: "Package",
       tags: ["ship from store", "omnichannel", "origem", "estoque", "prazo"],
-      linkDemo:
-        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/ship_from_store",
+      linkDemo: demoUrl(CASE_DEMO_SLUGS["04-ship-from-store"]),
       linkGitHub: GITHUB_DEMOS_URL,
       ctaDemoLabel: "Explorar Ship from Store",
       prioridade: "P1",
       perguntaNegocio: "Qual origem atende melhor: CD, loja, hub ou parceiro?",
-      metricaPrincipal:
-        "Custo por origem, prazo por origem, ocupação de estoque",
+      metricaPrincipal: "Custo por origem, prazo por origem, ocupação de estoque",
       metricaResumo: "custo e prazo por origem",
-      decisaoApoiada:
-        "Escolher origem considerando prazo, custo, estoque e capacidade",
+      decisaoApoiada: "Escolher origem considerando prazo, custo, estoque e capacidade",
       limitacao:
         "Modelo simplificado. Dados reais de estoque e capacidade são necessários para decisão real.",
     },
@@ -686,15 +719,12 @@ export const CONTENT: Content = {
       categoria: "Last Mile e E-commerce",
       icone: "ScanSearch",
       tags: ["endereço", "geocoding", "CEP", "qualidade", "risco"],
-      linkDemo:
-        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/auditoria_endereco",
+      linkDemo: demoUrl(CASE_DEMO_SLUGS["05-auditoria-endereco"]),
       linkGitHub: GITHUB_DEMOS_URL,
       ctaDemoLabel: "Explorar Auditoria de Endereço",
       prioridade: "P1",
-      perguntaNegocio:
-        "Quais endereços precisam de revisão antes da decisão logística?",
-      metricaPrincipal:
-        "Score de qualidade de endereço, taxa de geocoding bem-sucedido",
+      perguntaNegocio: "Quais endereços precisam de revisão antes da decisão logística?",
+      metricaPrincipal: "Score de qualidade de endereço, taxa de geocoding bem-sucedido",
       metricaResumo: "score de qualidade de endereço",
       decisaoApoiada: "Bloquear, revisar ou aceitar endereço para análise",
       limitacao:
@@ -711,15 +741,11 @@ export const CONTENT: Content = {
       linkDemo: "",
       linkGitHub: "",
       prioridade: "P2",
-      perguntaNegocio:
-        "O atraso de entrega começa no picking, na ocupação ou na expedição?",
-      metricaPrincipal:
-        "Ocupação, produtividade de picking, tempo de expedição, backlog",
+      perguntaNegocio: "O atraso de entrega começa no picking, na ocupação ou na expedição?",
+      metricaPrincipal: "Ocupação, produtividade de picking, tempo de expedição, backlog",
       metricaResumo: "ocupação, picking e expedição",
-      decisaoApoiada:
-        "Identificar endereços críticos, ocupação e risco de expedição",
-      limitacao:
-        "Dados sintéticos. Para uso real, precisa de integração com WMS/TMS.",
+      decisaoApoiada: "Identificar endereços críticos, ocupação e risco de expedição",
+      limitacao: "Dados sintéticos. Para uso real, precisa de integração com WMS/TMS.",
     },
     {
       id: "07-classificador-ocorrencias",
@@ -729,15 +755,13 @@ export const CONTENT: Content = {
       categoria: "Método e Governança",
       icone: "AlertTriangle",
       tags: ["IA", "NLP", "ocorrências", "classificação", "triagem"],
-      linkDemo:
-        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/classificador_ocorrencias",
+      linkDemo: demoUrl(CASE_DEMO_SLUGS["07-classificador-ocorrencias"]),
       linkGitHub: GITHUB_DEMOS_URL,
       ctaDemoLabel: "Explorar Classificador de Ocorrências",
       prioridade: "P2",
       perguntaNegocio:
         "Como transformar mensagens, chamados e justificativas em categorias acionáveis?",
-      metricaPrincipal:
-        "Precisão de classificação, tempo de triagem, categorias mais frequentes",
+      metricaPrincipal: "Precisão de classificação, tempo de triagem, categorias mais frequentes",
       metricaResumo: "triagem de ocorrências por NLP",
       decisaoApoiada:
         "Organizar textos soltos em categorias, prioridades e resumos com validação humana",
@@ -752,8 +776,7 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Route",
       tags: ["CVRP", "roteirização", "capacidade", "frota", "otimização"],
-      linkDemo:
-        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/cvrp_urbano",
+      linkDemo: demoUrl(CASE_DEMO_SLUGS["08-cvrp-urbano"]),
       linkGitHub: GITHUB_DEMOS_URL,
       thumbnail: "/cases/08-cvrp-urbano.webp",
       thumbnailAlt:
@@ -762,11 +785,9 @@ export const CONTENT: Content = {
       prioridade: "P0",
       perguntaNegocio:
         "Quantos veículos atendem as entregas e quanta distância dá para economizar?",
-      metricaPrincipal:
-        "Distância total, veículos usados, economia vs ordem de cadastro",
+      metricaPrincipal: "Distância total, veículos usados, economia vs ordem de cadastro",
       metricaResumo: "distância e frota otimizadas",
-      decisaoApoiada:
-        "Dimensionar frota e sequenciar entregas respeitando a capacidade",
+      decisaoApoiada: "Dimensionar frota e sequenciar entregas respeitando a capacidade",
       limitacao:
         "Heurística nearest-neighbor com distância em linha reta. Produção usaria PyVRP/OR-Tools sobre malha viária real.",
     },
@@ -778,18 +799,14 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Clock",
       tags: ["VRPTW", "janela de tempo", "SLA", "última milha", "sequência"],
-      linkDemo:
-        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/vrptw_ultima_milha",
+      linkDemo: demoUrl(CASE_DEMO_SLUGS["09-vrptw-ultima-milha"]),
       linkGitHub: GITHUB_DEMOS_URL,
       ctaDemoLabel: "Explorar Última Milha VRPTW",
       prioridade: "P1",
-      perguntaNegocio:
-        "A sequência de entregas respeita as janelas prometidas ao cliente?",
-      metricaPrincipal:
-        "Violações de SLA, tempo de espera, horário da última entrega",
+      perguntaNegocio: "A sequência de entregas respeita as janelas prometidas ao cliente?",
+      metricaPrincipal: "Violações de SLA, tempo de espera, horário da última entrega",
       metricaResumo: "violações de janela (SLA)",
-      decisaoApoiada:
-        "Ordenar entregas por prazo para reduzir violações de janela",
+      decisaoApoiada: "Ordenar entregas por prazo para reduzir violações de janela",
       limitacao:
         "Simulação com velocidade média constante. Produção usaria PyVRP com time windows e trânsito real.",
     },
@@ -800,25 +817,15 @@ export const CONTENT: Content = {
         "Análise de custo por tonelada por corredor, mapa da rede e ranking de lanes para priorizar consolidação e negociação entre hubs.",
       categoria: "Rede e Estratégia",
       icone: "Network",
-      tags: [
-        "rede",
-        "corredores",
-        "custo por tonelada",
-        "consolidação",
-        "hubs",
-      ],
-      linkDemo:
-        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/rede_interhubs",
+      tags: ["rede", "corredores", "custo por tonelada", "consolidação", "hubs"],
+      linkDemo: demoUrl(CASE_DEMO_SLUGS["10-rede-interhubs"]),
       linkGitHub: GITHUB_DEMOS_URL,
       ctaDemoLabel: "Explorar Rede Inter-hubs",
       prioridade: "P1",
-      perguntaNegocio:
-        "Qual corredor tem melhor custo por tonelada e onde priorizar consolidação?",
-      metricaPrincipal:
-        "Custo por tonelada por lane, volume por corredor, custo total",
+      perguntaNegocio: "Qual corredor tem melhor custo por tonelada e onde priorizar consolidação?",
+      metricaPrincipal: "Custo por tonelada por lane, volume por corredor, custo total",
       metricaResumo: "custo por tonelada por lane",
-      decisaoApoiada:
-        "Priorizar consolidação e negociação nas lanes de maior impacto",
+      decisaoApoiada: "Priorizar consolidação e negociação nas lanes de maior impacto",
       limitacao:
         "Custo paramétrico sobre amostra curada. Produção usaria malha real e pedágio vigente.",
     },
@@ -830,17 +837,14 @@ export const CONTENT: Content = {
       categoria: "Roteirização e SLA",
       icone: "Waypoints",
       tags: ["TSP", "sequência", "2-opt", "visitas", "otimização"],
-      linkDemo:
-        "https://demos-logistica-btzrqdx4gjru2c3ekzbtkq.streamlit.app/tsp_baseline_sp",
+      linkDemo: demoUrl(CASE_DEMO_SLUGS["11-tsp-baseline-sp"]),
       linkGitHub: GITHUB_DEMOS_URL,
       ctaDemoLabel: "Explorar Sequência de Visitas",
       prioridade: "P1",
-      perguntaNegocio:
-        "Qual a melhor sequência para visitar os pontos a partir do CD?",
+      perguntaNegocio: "Qual a melhor sequência para visitar os pontos a partir do CD?",
       metricaPrincipal: "Distância da rota, ganho do 2-opt, tempo estimado",
       metricaResumo: "distância e ganho do 2-opt",
-      decisaoApoiada:
-        "Definir a ordem de visitas que reduz distância e tempo total",
+      decisaoApoiada: "Definir a ordem de visitas que reduz distância e tempo total",
       limitacao:
         "Distância em linha reta e melhoria local. Produção usaria OR-Tools sobre rede viária real (OSMnx/OSRM).",
     },
@@ -889,6 +893,15 @@ export const CONTENT: Content = {
     menuTitle: "Menu",
     openLabel: "Abrir menu de navegação",
     closeLabel: "Fechar menu",
+    description: "Navegação principal do portfólio",
+    navigationLabel: "Navegação mobile",
+  },
+
+  a11y: {
+    skipToContent: "Pular para o conteúdo",
+    primaryNavigation: "Navegação principal",
+    linkedinProfile: "LinkedIn de Lucas Batista",
+    proofMetrics: "Métricas principais do portfólio",
   },
 };
 
@@ -900,6 +913,19 @@ export const CASES_BIBLIOTECA = CONTENT.cases.filter(
   (c) => c.linkDemo && !CONTENT.featuredProofCases.includes(c.id),
 );
 export const CASES_ROADMAP = CONTENT.cases.filter((c) => !c.linkDemo);
+
+export const DEMO_MODAL_COPY: DemoModalCopy = {
+  closeLabel: CONTENT.dialog.closeLabel,
+  openExternalLabel: CONTENT.secoes.demoOpenExternalLabel,
+  fullscreenLabel: CONTENT.secoes.demoFullscreenLabel,
+  loadInlineLabel: CONTENT.secoes.demoLoadInlineLabel,
+  mobileHint: CONTENT.secoes.demoMobileHint,
+  unavailableLabel: CONTENT.secoes.demoIndisponivel,
+  initializingLabel: CONTENT.secoes.demoInicializando,
+  errorLabel: CONTENT.secoes.demoErro,
+  timeoutLabel: CONTENT.secoes.demoTimeoutHint,
+  context: CONTENT.secoes.demoContextLabels,
+};
 
 /** Categorias com pelo menos 1 case na biblioteca complementar (exclui âncora e roadmap). */
 export const CASE_CATEGORIAS = [
