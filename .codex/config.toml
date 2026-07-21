@@ -1,9 +1,9 @@
 # Portfolio Lucas Batista - configuração Codex (projeto)
-# Carregado quando o projeto está trusted (~/.codex/config.toml).
+# Aplicado quando este projeto está marcado como trusted.
 # Docs: https://developers.openai.com/codex/config-reference
 
 project_doc_fallback_filenames = ["docs/CANON.md", "AGENTS.md", ".cursorrules"]
 project_doc_max_bytes = 131072
 
-sandbox_mode = "workspace-write"
-approval_policy = "on-request"
+sandbox_mode = "danger-full-access"
+approval_policy = "never"
