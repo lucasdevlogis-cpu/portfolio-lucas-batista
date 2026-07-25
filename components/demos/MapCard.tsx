@@ -48,9 +48,9 @@ function legendForMap(mapData: DemoMap): { label: string; tone: LegendTone }[] {
     return Array.from(new Set((mapData.points ?? []).map((point) => point.label))).map((label) => ({
       label,
       tone:
-        label === "No prazo"
+        label === "No prazo" || label === "OK"
           ? ("success" as const)
-          : label === "Em risco"
+          : label === "Em risco" || label === "Atenção"
             ? ("warning" as const)
             : ("danger" as const),
     }));
@@ -95,9 +95,9 @@ function featuresForMap(mapData: DemoMap): Feature[] {
         label: point.label,
         detail: point.detail ?? point.id,
         tone:
-          point.label === "No prazo"
+          point.label === "No prazo" || point.label === "OK"
             ? "success"
-            : point.label === "Em risco"
+            : point.label === "Em risco" || point.label === "Atenção"
               ? "warning"
               : "danger",
       },
