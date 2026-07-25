@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "overrides": {
-    "postcss": "8.5.15"
+    "postcss": "8.5.18",
+    "minimatch": "10.2.5",
+    "sharp": "0.35.0"
   },
   "engines": {
     "node": "24.x"
@@ -18,8 +20,8 @@
     "lint:python": "python -m ruff check apps/demos",
     "format": "npm run format:prettier && npm run format:python",
     "format:check": "npm run format:prettier:check && python -m ruff format --check apps/demos",
-    "format:prettier": "prettier --write README.md AGENTS.md \"*.{json,mjs,ts,md,code-workspace}\" \".codex/**/*.md\" \".cursor/**/*.{json,md}\" \".github/**/*.{yml,yaml}\" \"app/**/*.{ts,tsx,css}\" \"components/**/*.{ts,tsx}\" \"contracts/**/*.json\" \"data/**/*.ts\" \"design/**/*.{md,json}\" \"docs/**/*.md\" \"lib/**/*.{ts,tsx}\" \"scripts/**/*.{ts,mjs}\" \"tests/**/*.{ts,tsx}\" \"apps/demos/**/*.md\"",
-    "format:prettier:check": "prettier --check README.md AGENTS.md \"*.{json,mjs,ts,md,code-workspace}\" \".codex/**/*.md\" \".cursor/**/*.{json,md}\" \".github/**/*.{yml,yaml}\" \"app/**/*.{ts,tsx,css}\" \"components/**/*.{ts,tsx}\" \"contracts/**/*.json\" \"data/**/*.ts\" \"design/**/*.{md,json}\" \"docs/**/*.md\" \"lib/**/*.{ts,tsx}\" \"scripts/**/*.{ts,mjs}\" \"tests/**/*.{ts,tsx}\" \"apps/demos/**/*.md\"",
+    "format:prettier": "prettier --write README.md AGENTS.md \"*.{json,mjs,ts,md,code-workspace}\" \".codex/**/*.md\" \".cursor/**/*.{json,md}\" \".github/**/*.{yml,yaml}\" \".vscode/**/*.{json,md}\" \"app/**/*.{ts,tsx,css}\" \"components/**/*.{ts,tsx}\" \"contracts/**/*.json\" \"data/**/*.ts\" \"design/**/*.{md,json}\" \"docs/**/*.md\" \"lib/**/*.{ts,tsx}\" \"scripts/**/*.{ts,mjs}\" \"tests/**/*.{ts,tsx}\" \"apps/demos/**/*.md\"",
+    "format:prettier:check": "prettier --check README.md AGENTS.md \"*.{json,mjs,ts,md,code-workspace}\" \".codex/**/*.md\" \".cursor/**/*.{json,md}\" \".github/**/*.{yml,yaml}\" \".vscode/**/*.{json,md}\" \"app/**/*.{ts,tsx,css}\" \"components/**/*.{ts,tsx}\" \"contracts/**/*.json\" \"data/**/*.ts\" \"design/**/*.{md,json}\" \"docs/**/*.md\" \"lib/**/*.{ts,tsx}\" \"scripts/**/*.{ts,mjs}\" \"tests/**/*.{ts,tsx}\" \"apps/demos/**/*.md\"",
     "format:python": "python -m ruff format apps/demos",
     "typecheck": "tsc --noEmit",
     "tokens:sync": "node scripts/generate-design-tokens.mjs",
@@ -51,7 +53,7 @@
     "lucide-react": "^1.21.0",
     "maplibre-gl": "^5.24.0",
     "motion": "^12.42.2",
-    "next": "16.2.10",
+    "next": "16.2.12",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwind-merge": "^3.6.0",

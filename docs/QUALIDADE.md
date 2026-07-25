@@ -1,17 +1,16 @@
 # Qualidade
 
-## Corte visual em execução
+## Corte visual — Executivo Brutalista Refinado (P0 concluído)
 
-O redesign “Executivo Brutalista Refinado” está sendo desenvolvido na branch
-`agent/redesign-executivo-brutalista`. Os resultados públicos abaixo são o
-baseline técnico anterior e não aprovam automaticamente a nova interface. O
-novo corte já passou por comparação visual em 375, 768 e 1440 px, revisão das
-três âncoras e novo Lighthouse. O preview isolado foi publicado e aguarda a
-decisão visual antes do merge.
+O redesign “Executivo Brutalista Refinado” foi aceito em 25/07/2026 e está
+pronto para merge na `main`. O aceite cobriu comparação visual em 375, 768 e
+1440 px, revisão das três âncoras, Lighthouse do preview e gates locais. O
+preview isolado permanece publicado apenas como referência; nenhuma promoção
+para produção foi feita.
 
 ## Corte local — Executivo Brutalista Refinado
 
-Rodada final de 21/07/2026 na branch `agent/redesign-executivo-brutalista`:
+Rodada final de 25/07/2026 na branch `agent/redesign-executivo-brutalista`:
 
 | Evidência                                    | Resultado                              |
 | -------------------------------------------- | -------------------------------------- |
@@ -26,8 +25,8 @@ Rodada final de 21/07/2026 na branch `agent/redesign-executivo-brutalista`:
 
 O passe visual encontrou e corrigiu dois problemas antes do aceite: conteúdo
 de `Reveal` invisível com `prefers-reduced-motion` e compressão de CTAs das
-provas no breakpoint de 1024 px. O preview já foi publicado; o único gate
-restante do P0 é obter a decisão visual antes do merge.
+provas no breakpoint de 1024 px. Todos os gates do P0 foram validados e o
+merge foi autorizado.
 
 ## Preview Vercel — redesign
 
@@ -45,7 +44,7 @@ promover para produção:
 
 O SEO do preview protegido não participa do gate porque a Vercel aplica
 `noindex` deliberadamente. O gate de produção continua exigindo pelo menos 90
-nas quatro categorias. O único item restante do P0 é a decisão visual.
+nas quatro categorias. O preview foi aceito como referência visual do P0.
 
 ## Gate técnico
 
@@ -66,7 +65,8 @@ continuam separados para deixar a intenção explícita.
 
 ## Última execução local
 
-Rodada de 21/07/2026, após a consolidação arquitetural e os ajustes de CI:
+Rodada de 25/07/2026, após o aceite visual e antes da abertura do PR para
+`main`:
 
 | Evidência                          | Resultado                                     |
 | ---------------------------------- | --------------------------------------------- |
