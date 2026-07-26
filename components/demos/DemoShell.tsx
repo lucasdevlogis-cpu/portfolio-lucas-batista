@@ -42,7 +42,9 @@ export function DemoShell({
                 ? "Rotas por veículo"
                 : snapshot.map.kind === "network"
                   ? "Corredores e origens"
-                  : "Status por região"
+                  : snapshot.map.kind === "flows"
+                    ? "Alocação origem → destino"
+                    : "Status por região"
             }
           />
         ) : null}

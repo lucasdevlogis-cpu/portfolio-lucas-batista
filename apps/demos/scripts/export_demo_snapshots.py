@@ -16,7 +16,9 @@ APP_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(APP_DIR))
 
 from domain import freight as frete  # noqa: E402
+from domain import promessa_cep as cep  # noqa: E402
 from domain import routing as geo  # noqa: E402
+from domain import ship_from_store as sfs  # noqa: E402
 from settings import DEMO_SNAPSHOT_DIR, GENERATED_DATA_DIR  # noqa: E402
 
 UF_CENTROIDE = {
@@ -351,9 +353,188 @@ def cvrp_snapshot() -> dict:
     return result
 
 
+def promessa_cep_snapshot() -> dict:
+    df = pd.read_csv(GENERATED_DATA_DIR / "promessa_cep.csv", dtype={"cep5": str})
+    df = cep.adicionar_score_e_severidade(df)
+    pior_regiao, score_max = cep.pior_regiao(df)
+    insucesso_medio = df["taxa_insucesso_pct"].mean()
+    prazo_medio = df["prazo_medio_dias"].mean()
+
+    result = snapshot_base(
+        "promessa_cep",
+        "03-promessa-cep",
+        "Promessa de Entrega por CEP",
+        "Qual praça concentra risco de atraso e insucesso na promessa?",
+        "Ajustar prazo, risco e modalidade por região.",
+        "CEP e geocoding são apoio, não verdade absoluta. Precisa validar com dados reais do cliente.",
+        "Score heurístico combinando insucesso, prazo e custo; agregação territorial por CEP5.",
+        ["Análise territorial", "H3 (produção)"],
+    )
+    result["kpis"] = [
+        {
+            "label": "Região de maior risco",
+            "value": pior_regiao,
+            "tone": "danger" if score_max >= cep.SEVERITY_CRITICAL_THRESHOLD else "warning",
+        },
+        {
+            "label": "Insucesso médio",
+            "value": f"{decimal(insucesso_medio)}%",
+            "tone": "danger"
+            if insucesso_medio > 8
+            else "warning"
+            if insucesso_medio > 5
+            else "success",
+        },
+        {
+            "label": "Prazo médio",
+            "value": f"{decimal(prazo_medio)} dias",
+            "tone": "danger" if prazo_medio > 5 else "warning" if prazo_medio > 3 else "success",
+        },
+    ]
+
+    custo_por_regiao = (
+        df.groupby("regiao")["custo_medio_frete"].mean().sort_values(ascending=False).reset_index()
+    )
+    result["charts"] = [
+        {
+            "id": "custo-por-regiao",
+            "title": "Custo médio por região",
+            "kind": "bar",
+            "unit": "BRL",
+            "data": [
+                {"label": row.regiao, "value": number(row.custo_medio_frete, 2)}
+                for row in custo_por_regiao.itertuples(index=False)
+            ],
+        },
+        {
+            "id": "distribuicao-severidade",
+            "title": "Distribuição de severidade",
+            "kind": "donut",
+            "data": [
+                {"label": str(label), "value": int(value)}
+                for label, value in df["severidade"].value_counts().items()
+            ],
+        },
+    ]
+
+    # Amostra representativa para o mapa: mantém visibilidade sem sobrecarregar
+    # a renderização com todos os CEPs gerados.
+    amostra = df.nlargest(100, "score_risco")
+    result["map"] = {
+        "kind": "points",
+        "center": [-15.0, -50.0],
+        "zoom": 4,
+        "points": [
+            {
+                "id": row.cep5,
+                "lat": number(row.lat, 5),
+                "lon": number(row.lon, 5),
+                "label": row.severidade,
+                "detail": f"{row.regiao} · {row.modalidade}",
+            }
+            for row in amostra.itertuples(index=False)
+        ],
+    }
+    return result
+
+
+def ship_from_store_snapshot() -> dict:
+    origens = pd.read_csv(GENERATED_DATA_DIR / "sfs_origens.csv")
+    pedidos = pd.read_csv(GENERATED_DATA_DIR / "sfs_pedidos.csv")
+    res = sfs.resolver_alocacao(origens, pedidos)
+
+    economia_total = res["economia"].sum()
+    reducao_media = res["reducao_prazo"].mean()
+    pct_alternativa = (res["origem_tipo"].str.upper() != "CD").mean() * 100
+
+    result = snapshot_base(
+        "ship_from_store",
+        "04-ship-from-store",
+        "Ship from Store / Origem Ótima",
+        "Quando uma loja ou hub supera o CD como origem do pedido?",
+        "Alocar pedidos para a origem com melhor trade-off custo-prazo respeitando capacidade.",
+        "Sem estoque por SKU, rede viária ou regras fiscais; distância proxy.",
+        "Score de decisão custo + prazo × peso com baseline sempre-CD e capacidade diária.",
+        ["OMS / Fulfillment distribuído", "Fleetbase (LSOS)"],
+    )
+    result["kpis"] = [
+        {
+            "label": "Economia vs baseline",
+            "value": money(economia_total, 0),
+            "tone": "success" if economia_total > 0 else "warning",
+        },
+        {
+            "label": "Atendidos por loja/hub",
+            "value": f"{pct_alternativa:.0f}%",
+            "tone": "success" if pct_alternativa > 20 else "warning",
+        },
+        {
+            "label": "Redução média de prazo",
+            "value": f"{reducao_media:+.1f} dia".replace(".", ","),
+            "tone": "success" if reducao_media > 0 else "warning",
+        },
+    ]
+
+    porig = res.groupby(["origem_escolhida", "origem_tipo"]).size().reset_index(name="pedidos")
+    result["charts"] = [
+        {
+            "id": "pedidos-por-origem",
+            "title": "Pedidos por origem escolhida",
+            "kind": "bar",
+            "data": [
+                {"label": row.origem_escolhida, "value": int(row.pedidos)}
+                for row in porig.sort_values("pedidos", ascending=False).itertuples(index=False)
+            ],
+        },
+        {
+            "id": "economia-por-uf",
+            "title": "Economia por UF de destino",
+            "kind": "bar",
+            "unit": "BRL",
+            "data": [
+                {"label": row.uf_destino, "value": number(row.economia, 0)}
+                for row in res.groupby("uf_destino")["economia"]
+                .sum()
+                .sort_values(ascending=False)
+                .reset_index()
+                .itertuples(index=False)
+            ],
+        },
+    ]
+
+    tone_por_tipo = {"CD": "primary", "loja": "accent", "hub": "warm"}
+    amostra = res.sample(n=min(30, len(res)), random_state=42)
+    result["map"] = {
+        "kind": "flows",
+        "center": [-22.0, -46.0],
+        "zoom": 4,
+        "nodes": [
+            {"id": row.origem_id, "lat": number(row.lat, 5), "lon": number(row.lon, 5)}
+            for row in origens.itertuples(index=False)
+        ],
+        "edges": [
+            {
+                "from": [number(row.origem_lat, 5), number(row.origem_lon, 5)],
+                "to": [number(row.dest_lat, 5), number(row.dest_lon, 5)],
+                "label": f"{row.pedido_id} · {row.origem_escolhida}",
+                "value": number(row.economia, 0),
+                "tone": tone_por_tipo.get(str(row.origem_tipo).lower(), "primary"),
+            }
+            for row in amostra.itertuples(index=False)
+        ],
+    }
+    return result
+
+
 def main() -> None:
     DEMO_SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
-    snapshots = [freight_snapshot(), tower_snapshot(), cvrp_snapshot()]
+    snapshots = [
+        freight_snapshot(),
+        tower_snapshot(),
+        cvrp_snapshot(),
+        promessa_cep_snapshot(),
+        ship_from_store_snapshot(),
+    ]
     for snapshot in snapshots:
         path = DEMO_SNAPSHOT_DIR / f"{snapshot['slug']}.json"
         path.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

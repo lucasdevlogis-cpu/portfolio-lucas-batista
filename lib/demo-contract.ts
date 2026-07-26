@@ -1,9 +1,13 @@
 import cvrpSnapshot from "@/contracts/demo-snapshots/cvrp_urbano.json";
 import towerSnapshot from "@/contracts/demo-snapshots/mini_torre_controle.json";
+import promessaSnapshot from "@/contracts/demo-snapshots/promessa_cep.json";
 import freightSnapshot from "@/contracts/demo-snapshots/precificacao_frete.json";
+import shipSnapshot from "@/contracts/demo-snapshots/ship_from_store.json";
 import { ANCHOR_DEMO_SLUGS } from "@/lib/demo-catalog";
 
 export { ANCHOR_DEMO_SLUGS } from "@/lib/demo-catalog";
+
+export const REACT_DEMO_SLUGS = [...ANCHOR_DEMO_SLUGS, "promessa_cep", "ship_from_store"] as const;
 
 export type DemoTone = "accent" | "danger" | "warning" | "success";
 
@@ -44,7 +48,7 @@ export interface DemoRoute {
 }
 
 export interface DemoMap {
-  kind: "network" | "points" | "routes";
+  kind: "network" | "points" | "routes" | "flows";
   center: [number, number];
   zoom: number;
   nodes?: { id: string; lat: number; lon: number }[];
@@ -53,6 +57,7 @@ export interface DemoMap {
     to: [number, number];
     label: string;
     value: number;
+    tone?: DemoTone;
   }[];
   points?: DemoPoint[];
   depot?: { lat: number; lon: number; label: string };
@@ -77,6 +82,8 @@ export const DEMO_SNAPSHOTS: Record<string, DemoSnapshot> = {
   precificacao_frete: freightSnapshot as DemoSnapshot,
   mini_torre_controle: towerSnapshot as DemoSnapshot,
   cvrp_urbano: cvrpSnapshot as DemoSnapshot,
+  promessa_cep: promessaSnapshot as DemoSnapshot,
+  ship_from_store: shipSnapshot as DemoSnapshot,
 };
 
 export function getDemoSnapshot(slug: string): DemoSnapshot | null {

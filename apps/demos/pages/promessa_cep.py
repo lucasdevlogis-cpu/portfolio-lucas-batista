@@ -6,6 +6,7 @@ e risco por CEP, com score demonstrativo, heatmap e cluster no mapa.
 
 import plotly.express as px
 import streamlit as st
+from domain import promessa_cep as cep
 from presentation import charts as viz
 from presentation import formatters as fmt
 from presentation import maps as fmap
@@ -33,20 +34,7 @@ f = df[
     & (df["prazo_medio_dias"] <= prazo_max)
 ].copy()
 
-f["score_risco"] = (
-    f["taxa_insucesso_pct"] * 0.6 + f["prazo_medio_dias"] * 2 + f["custo_medio_frete"] / 10
-).round(1)
-
-
-def _severity(score: float) -> str:
-    if score >= 45:
-        return "Crítico"
-    if score >= 32:
-        return "Atenção"
-    return "OK"
-
-
-f["severidade"] = f["score_risco"].apply(_severity)
+f = cep.adicionar_score_e_severidade(f)
 f["status"] = f["severidade"].apply(tables.status_text)
 
 if f.empty:
@@ -56,8 +44,7 @@ if f.empty:
     prazo_medio = 0.0
     custo_medio = 0.0
 else:
-    pior_regiao = f.groupby("regiao")["score_risco"].mean().idxmax()
-    score_max = f.groupby("regiao")["score_risco"].mean().max()
+    pior_regiao, score_max = cep.pior_regiao(f)
     insucesso_medio = f["taxa_insucesso_pct"].mean()
     prazo_medio = f["prazo_medio_dias"].mean()
     custo_medio = f["custo_medio_frete"].mean()
@@ -87,13 +74,6 @@ if f.empty:
     )
     ui.footer()
     st.stop()
-
-pior_regiao = f.groupby("regiao")["score_risco"].mean().idxmax()
-score_max = f.groupby("regiao")["score_risco"].mean().max()
-
-insucesso_medio = f["taxa_insucesso_pct"].mean()
-prazo_medio = f["prazo_medio_dias"].mean()
-custo_medio = f["custo_medio_frete"].mean()
 
 ui.kpi_grid(
     [

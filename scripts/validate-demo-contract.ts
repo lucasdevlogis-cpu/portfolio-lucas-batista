@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
-import { ANCHOR_DEMO_SLUGS, DEMO_SNAPSHOTS, type DemoSnapshot } from "../lib/demo-contract";
+import { DEMO_SNAPSHOTS, REACT_DEMO_SLUGS, type DemoSnapshot } from "../lib/demo-contract";
 
 const errors: string[] = [];
 const tones = new Set(["accent", "danger", "warning", "success"]);
@@ -16,7 +16,7 @@ const requiredStrings: (keyof DemoSnapshot)[] = [
   "method",
 ];
 
-for (const slug of ANCHOR_DEMO_SLUGS) {
+for (const slug of REACT_DEMO_SLUGS) {
   const snapshot = DEMO_SNAPSHOTS[slug];
   if (!snapshot) {
     errors.push(`Snapshot ausente: ${slug}`);
@@ -86,4 +86,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`[validate-demo-contract] OK - ${ANCHOR_DEMO_SLUGS.length} snapshots âncora válidos.`);
+console.log(`[validate-demo-contract] OK - ${REACT_DEMO_SLUGS.length} snapshots React válidos.`);
