@@ -81,9 +81,10 @@ export function Footer() {
         </div>
 
         <div className="mt-10 grid gap-4 border-t border-border pt-6 lg:grid-cols-[1fr_auto] lg:items-end">
-          <p className="max-w-4xl text-xs leading-relaxed text-muted-foreground">
-            {footer.declaracaoLimitacao}
-          </p>
+          <div className="max-w-4xl space-y-2 text-xs leading-relaxed text-muted-foreground">
+            <p>{footer.declaracaoLimitacao}</p>
+            <p>{footer.declaracaoAnalitica}</p>
+          </div>
           <p className="font-mono text-[0.68rem] uppercase tracking-[0.08em] text-muted-foreground">
             {footer.copyright}
           </p>

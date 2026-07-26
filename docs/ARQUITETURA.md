@@ -67,6 +67,25 @@ flowchart LR
 - ECharts e MapLibre são importados dentro de `useEffect`, quando a prova abre.
 - O modal e as rotas públicas usam o mesmo shell React, sem iframe.
 
+### Instrumentação das provas
+
+`ProofAnalytics` mede a jornada pública depois que `DemoShell` monta. O contrato
+tem três eventos com vocabulário fechado:
+
+| Evento            | Propriedades exatas     | Valores controlados                                           |
+| ----------------- | ----------------------- | ------------------------------------------------------------- |
+| `proof_open`      | `proof_slug`, `surface` | `featured_modal`, `library_modal` ou `route`                  |
+| `proof_engaged`   | `proof_slug`, `surface` | mesmas superfícies; emitido após 30 s úteis em primeiro plano |
+| `proof_cta_click` | `proof_slug`, `action`  | `open_full_proof` ou `contact`                                |
+
+O tempo de engajamento acumula somente enquanto a aba está visível e a janela
+tem foco; pausa em `hidden`/`blur`, não emite duração e cancela no unmount. O
+aplicativo enfileira os eventos no envelope v2 mesmo antes do script carregar;
+a coleta de eventos customizados depende da capacidade habilitada no plano do
+provedor. O payload customizado da aplicação não adiciona texto livre, PII,
+URL, referrer, identificadores, timestamp, duração exata, cookies ou storage.
+Query e hash são removidos de pageviews pelo `beforeSend`.
+
 ## Streamlit
 
 `apps/demos/app.py` usa `st.navigation` e `st.Page`. As URLs são explícitas e

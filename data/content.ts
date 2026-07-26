@@ -84,6 +84,7 @@ export interface Case {
 export interface FooterConteudo {
   copyright: string;
   declaracaoLimitacao: string;
+  declaracaoAnalitica: string;
   voltarTopo: string;
   badgeCases: string;
   linksRapidosTitulo: string;
@@ -829,6 +830,8 @@ export const CONTENT: Content = {
     copyright: "© 2026 Lucas Batista. Todos os direitos reservados.",
     declaracaoLimitacao:
       "Portfólio profissional com dados sintéticos, públicos ou anonimizados. As demos demonstram raciocínio, método e capacidade de prototipagem; decisões reais exigem validação com dados, contexto e governança da operação.",
+    declaracaoAnalitica:
+      "Quando a medição está habilitada, pageviews são agregadas e sem cookies; eventos de prova usam vocabulário controlado, sem texto digitado ou identificação pessoal.",
     voltarTopo: "Voltar ao topo",
     badgeCases: `${CASE_COUNT} provas navegáveis`,
     linksRapidosTitulo: "Links rápidos",

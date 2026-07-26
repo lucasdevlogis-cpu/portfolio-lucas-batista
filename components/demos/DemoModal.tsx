@@ -14,15 +14,17 @@ import {
 import type { Case, DemoModalCopy } from "@/data/content";
 import { CASE_DEMO_SLUGS } from "@/lib/demo-catalog";
 import { getDemoSnapshot } from "@/lib/demo-contract";
+import { analytics, type ProofSurface } from "@/lib/analytics";
 
 export interface DemoModalProps {
   isOpen: boolean;
   onClose: (open: boolean) => void;
   caseItem: Case;
   copy: DemoModalCopy;
+  surface: Extract<ProofSurface, "featured_modal" | "library_modal">;
 }
 
-export function DemoModal({ isOpen, onClose, caseItem, copy }: DemoModalProps) {
+export function DemoModal({ isOpen, onClose, caseItem, copy, surface }: DemoModalProps) {
   const demoSlug = CASE_DEMO_SLUGS[caseItem.id];
   const snapshot = demoSlug ? getDemoSnapshot(demoSlug) : null;
   const openUrl = demoSlug ? `/provas/${demoSlug}` : caseItem.linkDemo;
@@ -50,6 +52,9 @@ export function DemoModal({ isOpen, onClose, caseItem, copy }: DemoModalProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={copy.openExternalLabel}
+                onClick={() => {
+                  if (snapshot) analytics.proofCtaClick(snapshot.slug, "open_full_proof");
+                }}
                 className="inline-flex size-10 items-center justify-center border border-border text-primary hover:bg-primary hover:text-primary-foreground sm:hidden"
               >
                 <ExternalLink className="size-4" aria-hidden />
@@ -58,6 +63,9 @@ export function DemoModal({ isOpen, onClose, caseItem, copy }: DemoModalProps) {
                 href={openUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  if (snapshot) analytics.proofCtaClick(snapshot.slug, "open_full_proof");
+                }}
                 className="hidden min-h-11 items-center gap-1 font-mono text-[0.68rem] font-bold uppercase tracking-[0.08em] text-primary hover:underline sm:inline-flex"
               >
                 <ExternalLink className="size-3.5" aria-hidden />
@@ -74,7 +82,7 @@ export function DemoModal({ isOpen, onClose, caseItem, copy }: DemoModalProps) {
           <div className="relative flex min-h-[300px] flex-col bg-card">
             {snapshot ? (
               <div className="min-h-[520px] overflow-y-auto bg-editorial">
-                <DemoShell snapshot={snapshot} compact />
+                <DemoShell snapshot={snapshot} compact surface={surface} />
               </div>
             ) : (
               <div className="flex min-h-[300px] items-center justify-center px-6 text-center text-muted-foreground">

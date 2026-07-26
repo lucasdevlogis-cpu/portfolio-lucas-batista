@@ -73,7 +73,7 @@ export function Header({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={linkedinAriaLabel}
-              onClick={() => analytics.linkedinClick("header")}
+              onClick={() => analytics.linkedinClick()}
               className="focus-ring hidden size-10 items-center justify-center border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary md:inline-flex"
             >
               <LinkIcon className="size-5" aria-hidden />
@@ -81,7 +81,7 @@ export function Header({
           ) : null}
           <a
             href="#contato"
-            onClick={() => analytics.ctaClick(navCta, "header")}
+            onClick={() => analytics.ctaClick()}
             className={cn(
               buttonVariants({ variant: "executive" }),
               "hidden h-10 px-5 md:inline-flex",

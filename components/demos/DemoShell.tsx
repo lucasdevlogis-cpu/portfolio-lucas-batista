@@ -7,16 +7,21 @@ import { DemoNavigation } from "@/components/demos/DemoNavigation";
 import { KpiRow } from "@/components/demos/KpiRow";
 import { MapCard } from "@/components/demos/MapCard";
 import { MethodDisclosure } from "@/components/demos/MethodDisclosure";
+import { ProofAnalytics } from "@/components/analytics/ProofAnalytics";
+import type { ProofSurface } from "@/lib/analytics";
 
 export function DemoShell({
   snapshot,
   compact = false,
+  surface,
 }: {
   snapshot: DemoSnapshot;
   compact?: boolean;
+  surface: ProofSurface;
 }) {
   return (
     <div className={compact ? "demo-shell demo-shell-compact" : "demo-shell"}>
+      <ProofAnalytics proofSlug={snapshot.slug} surface={surface} />
       {!compact ? <DemoHero snapshot={snapshot} /> : null}
       <div className="space-y-4 p-3 sm:p-5 lg:p-6">
         {compact ? (
@@ -54,7 +59,7 @@ export function DemoShell({
           />
         ) : null}
         <MethodDisclosure snapshot={snapshot} />
-        {!compact ? <DemoNavigation /> : null}
+        {!compact ? <DemoNavigation proofSlug={snapshot.slug} /> : null}
       </div>
     </div>
   );
