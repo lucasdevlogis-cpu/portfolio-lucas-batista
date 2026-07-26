@@ -32,7 +32,7 @@ export function DemoShell({
           </div>
         ) : null}
         <KpiRow kpis={snapshot.kpis} />
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className={`grid gap-4 ${snapshot.charts.length > 1 ? "lg:grid-cols-2" : ""}`}>
           {snapshot.charts.map((chart) => (
             <ChartCard key={chart.id} chart={chart} />
           ))}

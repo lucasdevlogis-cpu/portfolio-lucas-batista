@@ -53,7 +53,9 @@ def nearest_neighbor_order(dm: np.ndarray, start: int = 0) -> list[int]:
     order = [start]
     cur = start
     while unvisited:
-        nxt = min(unvisited, key=lambda j: dm[cur][j])
+        # O índice original é o desempate explícito. Assim, conjuntos são usados
+        # apenas para lookup e não tornam a sequência dependente da sua iteração.
+        nxt = min(unvisited, key=lambda j: (dm[cur][j], j))
         order.append(nxt)
         unvisited.remove(nxt)
         cur = nxt

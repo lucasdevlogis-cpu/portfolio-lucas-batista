@@ -21,6 +21,7 @@ from domain import promessa_cep as cep  # noqa: E402
 from domain import rede_interhubs as rede  # noqa: E402
 from domain import routing as geo  # noqa: E402
 from domain import ship_from_store as sfs  # noqa: E402
+from domain import tsp_baseline_sp as tsp  # noqa: E402
 from domain import vrptw_ultima_milha as vrptw  # noqa: E402
 from settings import DEMO_SNAPSHOT_DIR, GENERATED_DATA_DIR  # noqa: E402
 
@@ -820,6 +821,119 @@ def auditoria_endereco_snapshot() -> dict:
     return result
 
 
+def tsp_baseline_sp_snapshot() -> dict:
+    analysis = tsp.analyze_path(GENERATED_DATA_DIR / "tsp_visits.csv")
+    result = snapshot_base(
+        "tsp_baseline_sp",
+        "11-tsp-baseline-sp",
+        "Sequência de visitas (TSP)",
+        "Quanto a heurística reduz a rota frente à ordem de cadastro?",
+        "Usar a heurística como baseline operacional antes de validar a sequência na malha viária.",
+        (
+            "Distância Haversine e velocidade constante, sem tráfego, capacidade ou SLA; "
+            "nearest-neighbor + 2-opt não garante ótimo global."
+        ),
+        (
+            "Rota fechada: ordem de cadastro → nearest-neighbor com desempate estável → "
+            "melhoria local 2-opt."
+        ),
+        ["Pandas", "Haversine", "Nearest-neighbor + 2-opt"],
+    )
+    result["kpis"] = [
+        {
+            "label": "Rota heurística",
+            "value": f"{decimal(analysis.improved_km)} km",
+            "tone": "success",
+        },
+        {
+            "label": "Redução vs cadastro",
+            "value": f"{decimal(analysis.reduction_pct)}%",
+            "tone": "success",
+        },
+        {
+            "label": "Tempo economizado",
+            "value": f"{analysis.saved_minutes:.0f} min",
+            "tone": "success",
+        },
+    ]
+    result["charts"] = [
+        {
+            "id": "distancia-rota-fechada",
+            "title": "Distância da rota fechada",
+            "kind": "bar",
+            "orientation": "horizontal",
+            "unit": "KM",
+            "data": [
+                {
+                    "label": "Cadastro",
+                    "value": number(analysis.registration_km, 1),
+                    "tone": "neutral",
+                },
+                {
+                    "label": "NN",
+                    "value": number(analysis.nearest_neighbor_km, 1),
+                },
+                {
+                    "label": "NN+2-opt",
+                    "value": number(analysis.improved_km, 1),
+                    "tone": "success",
+                },
+            ],
+        }
+    ]
+
+    cycle = analysis.improved_cycle
+    visit_names = [stop.name for stop in cycle[1:-1]]
+    route_points = [
+        {
+            "lat": number(cycle[0].lat, 6),
+            "lon": number(cycle[0].lon, 6),
+            "label": "CD Barra Funda · saída",
+            "detail": f"{cycle[0].id} · origem da rota fechada",
+        },
+        *[
+            {
+                "lat": number(stop.lat, 6),
+                "lon": number(stop.lon, 6),
+                "sequence": index,
+                "label": f"{index:02d} · {stop.name}",
+                "detail": f"{stop.id} · serviço {stop.service_time_min:.0f} min",
+            }
+            for index, stop in enumerate(cycle[1:-1], start=1)
+        ],
+        {
+            "lat": number(cycle[-1].lat, 6),
+            "lon": number(cycle[-1].lon, 6),
+            "label": "CD Barra Funda · retorno",
+            "detail": f"{cycle[-1].id} · fechamento da rota",
+        },
+    ]
+    result["map"] = {
+        "kind": "routes",
+        "title": "Sequência heurística NN + 2-opt",
+        "note": (
+            "Segmentos Haversine em linha reta, não caminhos rodoviários. Sequência 1–7: "
+            + " → ".join(visit_names)
+            + "."
+        ),
+        "center": [number(cycle[0].lat, 6), number(cycle[0].lon, 6)],
+        "zoom": 12,
+        "depot": {
+            "lat": number(cycle[0].lat, 6),
+            "lon": number(cycle[0].lon, 6),
+            "label": "CD Barra Funda · origem e retorno",
+        },
+        "routes": [
+            {
+                "id": "route-nn-2opt",
+                "label": "NN + 2-opt · direção 1 → 7 → CD · 28,0 km",
+                "points": route_points,
+            }
+        ],
+    }
+    return result
+
+
 def main() -> None:
     DEMO_SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
     snapshots = [
@@ -831,6 +945,7 @@ def main() -> None:
         rede_interhubs_snapshot(),
         vrptw_ultima_milha_snapshot(),
         auditoria_endereco_snapshot(),
+        tsp_baseline_sp_snapshot(),
     ]
     for snapshot in snapshots:
         path = DEMO_SNAPSHOT_DIR / f"{snapshot['slug']}.json"

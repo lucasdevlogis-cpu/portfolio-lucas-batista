@@ -353,7 +353,17 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
                 primary,
               ],
             ],
-            "circle-radius": ["match", ["get", "kind"], "depot", 8, "node", 6, 4.5],
+            "circle-radius": [
+              "match",
+              ["get", "kind"],
+              "depot",
+              8,
+              "node",
+              6,
+              "route-point",
+              8,
+              4.5,
+            ],
             "circle-stroke-color": card,
             "circle-stroke-width": 2,
           },
@@ -365,7 +375,7 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
           filter: ["all", ["==", ["get", "kind"], "route-point"], ["has", "sequence"]],
           layout: {
             "text-field": ["to-string", ["get", "sequence"]],
-            "text-size": 10,
+            "text-size": 11,
             "text-allow-overlap": true,
           },
           paint: {
@@ -488,8 +498,7 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
       <p
         className={`${mapData.note ? "pb-3 pt-1" : "border-t border-border py-3"} px-5 font-mono text-[0.68rem] leading-relaxed text-muted-foreground sm:px-6`}
       >
-        Dados sintéticos e coordenadas aproximadas. O mapa apoia a leitura; não representa
-        rastreamento em tempo real.
+        Dados demonstrativos. O mapa apoia a leitura; não representa rastreamento em tempo real.
       </p>
     </article>
   );
