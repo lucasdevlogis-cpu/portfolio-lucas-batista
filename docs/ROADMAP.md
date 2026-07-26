@@ -1,6 +1,6 @@
 # Roadmap e fila ativa
 
-Atualizado em 21/07/2026. Esta é a única fila operacional do projeto.
+Atualizado em 25/07/2026. Esta é a única fila operacional do projeto.
 
 ## Norte atual
 
@@ -18,24 +18,25 @@ sem parecer aplicativos Streamlit genéricos.
 - [x] estabilizar build, CI, contratos, smoke e deploy;
 - [x] registrar a referência visual fornecida e auditar seus acertos e riscos.
 
-## P0 — refatoração visual em execução
+## Concluído — P0: redesign Executivo Brutalista Refinado
 
-- [x] definir o norte “Executivo Brutalista Refinado”;
-- [x] selecionar paleta, tipografia, geometria e regras de movimento;
-- [x] reconstruir shell, header, hero e evidências;
-- [x] redesenhar perfil, provas, biblioteca, trajetória e contato;
-- [x] atualizar as três provas React, ECharts e MapLibre;
-- [x] aplicar o mesmo sistema ao laboratório Streamlit;
-- [x] revisar desktop e mobile contra a referência fornecida;
-- [x] publicar preview isolado na Vercel;
-- [ ] colher decisão visual antes de merge.
+Mergeado em 25/07/2026. Linguagem visual aprovada; preview isolado publicado e
+aceito.
 
-## P1 — retirar Streamlit da apresentação pública
+## Concluído — P1 (parcial): retirar Streamlit da apresentação pública
+
+- [x] Promessa de entrega por CEP — mapa territorial e risco.
+- [x] Ship from Store — comparação multicritério de origem.
+
+Ambas migradas para rotas React consumindo snapshots Python; modal da homepage
+renderiza inline sem iframe.
+
+## P1 — retirar Streamlit da apresentação pública (continuação)
 
 Ordem de migração orientada a valor de recrutamento e variedade visual:
 
-1. Promessa de entrega por CEP — mapa territorial e risco.
-2. Ship from Store — comparação multicritério de origem.
+1. ~~Promessa de entrega por CEP — mapa territorial e risco.~~ ✅
+2. ~~Ship from Store — comparação multicritério de origem.~~ ✅
 3. Rede inter-hubs — mapa de rede e custo por corredor.
 4. VRPTW — sequência temporal e violações de janela.
 5. Auditoria de endereço — qualidade e exceções territoriais.
@@ -45,6 +46,10 @@ Ordem de migração orientada a valor de recrutamento e variedade visual:
 Cada migração exige snapshot Python, schema validado, rota React, modal inline,
 estado de loading/erro e retirada do iframe correspondente.
 
+> **Continuidade:** as próximas migrações (Rede inter-hubs, VRPTW, Auditoria,
+> TSP e Classificador) serão conduzidas em sessões filhas dedicadas. A sessão
+> gerente atual entrega a documentação e o merge dos itens concluídos.
+
 ## P2 — diferenciação
 
 - [ ] criar uma visão comparativa entre provas por decisão e método;
@@ -53,12 +58,13 @@ estado de loading/erro e retirada do iframe correspondente.
 - [x] atualizar OG image, ícone e CV para o mesmo sistema visual;
 - [ ] avaliar domínio próprio após aprovação do produto.
 
-## Próximos passos após esta entrega
+## Próximos passos imediatos
 
-1. Aprovar a linguagem visual no preview isolado.
-2. Migrar Promessa por CEP e Ship from Store para React.
-3. Instrumentar abertura das provas e CTAs sem coletar dados sensíveis.
-4. Desativar cada iframe somente depois de sua rota pública equivalente.
+1. Migrar Rede inter-hubs para React.
+2. Migrar VRPTW para React.
+3. Migrar Auditoria de endereço, TSP e Classificador de ocorrências.
+4. Instrumentar abertura das provas e CTAs sem coletar dados sensíveis.
+5. Desativar cada iframe somente depois de sua rota pública equivalente.
 
 ## Critério de pronto do P0
 
