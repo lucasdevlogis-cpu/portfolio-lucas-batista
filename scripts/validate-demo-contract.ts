@@ -2,6 +2,8 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 
 import { DEMO_SNAPSHOTS, REACT_DEMO_SLUGS, type DemoSnapshot } from "../lib/demo-contract";
+import { PUBLISHED_DEMOS } from "../lib/demo-catalog";
+import { CONTENT } from "../data/content";
 
 const errors: string[] = [];
 const tones = new Set(["accent", "danger", "warning", "success"]);
@@ -18,12 +20,34 @@ const requiredStrings: (keyof DemoSnapshot)[] = [
   "limitation",
   "method",
 ];
+const publishedBySlug = new Map(PUBLISHED_DEMOS.map((entry) => [entry.slug, entry]));
+const contentCaseIds = new Set(CONTENT.cases.map((caseItem) => caseItem.id));
+
+if (PUBLISHED_DEMOS.filter((entry) => entry.tier === "anchor").length !== 3) {
+  errors.push("Catálogo deve publicar exatamente 3 provas âncora");
+}
+if (PUBLISHED_DEMOS.filter((entry) => entry.tier === "complementary").length !== 7) {
+  errors.push("Catálogo deve publicar exatamente 7 provas complementares");
+}
+if (PUBLISHED_DEMOS.length !== REACT_DEMO_SLUGS.length) {
+  errors.push(
+    `Join catálogo/snapshots divergente: ${PUBLISHED_DEMOS.length} publicados e ${REACT_DEMO_SLUGS.length} snapshots React`,
+  );
+}
 
 for (const slug of REACT_DEMO_SLUGS) {
   const snapshot = DEMO_SNAPSHOTS[slug];
+  const catalogEntry = publishedBySlug.get(slug);
   if (!snapshot) {
     errors.push(`Snapshot ausente: ${slug}`);
     continue;
+  }
+  if (!catalogEntry) {
+    errors.push(`${slug}: snapshot sem entrada publicada no catálogo`);
+  } else if (snapshot.caseId !== catalogEntry.caseId) {
+    errors.push(
+      `${slug}: snapshot pertence a ${snapshot.caseId}, catálogo aponta ${catalogEntry.caseId}`,
+    );
   }
   for (const field of requiredStrings) {
     if (typeof snapshot[field] !== "string" || !snapshot[field].trim()) {
@@ -296,6 +320,15 @@ for (const slug of REACT_DEMO_SLUGS) {
   const jsonPath = join(process.cwd(), "contracts", "demo-snapshots", `${slug}.json`);
   if (!existsSync(jsonPath)) {
     errors.push(`${slug}: arquivo JSON ausente (${jsonPath})`);
+  }
+}
+
+for (const entry of PUBLISHED_DEMOS) {
+  if (!contentCaseIds.has(entry.caseId)) {
+    errors.push(`${entry.slug}: prova publicada sem conteúdo editorial para ${entry.caseId}`);
+  }
+  if (!DEMO_SNAPSHOTS[entry.slug]) {
+    errors.push(`${entry.slug}: prova publicada sem snapshot React`);
   }
 }
 

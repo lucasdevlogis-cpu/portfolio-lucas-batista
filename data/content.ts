@@ -241,27 +241,32 @@ export interface SiteMetadata {
 
 export interface SecoesCopy {
   cases: SecaoCopy;
-  casesBiblioteca: SecaoCopy;
-  casesBibliotecaFiltroHint: string;
-  casesBibliotecaUsageTitle: string;
-  casesBibliotecaUsageDescription: string;
-  casesBibliotecaSummaryLabels: {
-    featured: string;
-    library: string;
-    roadmap: string;
+  proofComparison: SecaoCopy;
+  proofComparisonFilterHint: string;
+  proofComparisonUsageTitle: string;
+  proofComparisonUsageDescription: string;
+  proofComparisonAllDomainsLabel: string;
+  proofComparisonTierLabels: {
+    anchor: string;
+    complementary: string;
   };
-  casesBibliotecaTableLabels: {
-    case: string;
-    problem: string;
-    metric: string;
-    actions: string;
+  proofComparisonSummaryLabels: {
+    published: string;
+    anchors: string;
+    complementary: string;
+  };
+  proofComparisonTableLabels: {
+    proof: string;
+    decision: string;
+    method: string;
+    open: string;
     empty: string;
   };
   casesRoadmap: SecaoCopy;
   caseProblemLabel: string;
   caseMetricLabel: string;
   caseDemoLabel: string;
-  caseLibraryDemoLabel: string;
+  caseComparisonDemoLabel: string;
   caseDemoUnavailableLabel: string;
   caseCodeLabel: string;
   demoOpenExternalLabel: string;
@@ -543,26 +548,31 @@ export const CONTENT: Content = {
       subtitle:
         "Frete, controle operacional e roteirização apresentados como sistemas de decisão — com cálculo, visual e limite explícito.",
     },
-    casesBiblioteca: {
-      title: "Índice técnico de evidências",
+    proofComparison: {
+      title: "Dez provas. Repertório comparável.",
       subtitle:
-        "Mais demos por domínio logístico. A biblioteca amplia a leitura de stack, repertório e profundidade técnica.",
+        "Compare decisão, método e domínio antes de abrir a prova mais próxima do seu desafio.",
     },
-    casesBibliotecaFiltroHint: "Filtros aplicados aos {count} cases da biblioteca complementar.",
-    casesBibliotecaUsageTitle: "Como usar",
-    casesBibliotecaUsageDescription:
-      "Filtre por domínio. Cada linha abre uma demo com pergunta de negócio, métrica e limitação declarada.",
-    casesBibliotecaSummaryLabels: {
-      featured: "âncora",
-      library: "biblioteca",
-      roadmap: "roadmap",
+    proofComparisonFilterHint: "{count} provas públicas neste recorte.",
+    proofComparisonUsageTitle: "Mapa de decisão",
+    proofComparisonUsageDescription:
+      "Filtre por domínio e abra qualquer prova para inspecionar indicadores, visual, método e limitação.",
+    proofComparisonAllDomainsLabel: "Todos",
+    proofComparisonTierLabels: {
+      anchor: "Prova âncora",
+      complementary: "Prova complementar",
     },
-    casesBibliotecaTableLabels: {
-      case: "Case",
-      problem: "Problema",
-      metric: "Métrica",
-      actions: "Ações",
-      empty: "Nenhum case encontrado para este filtro.",
+    proofComparisonSummaryLabels: {
+      published: "públicas",
+      anchors: "âncoras",
+      complementary: "complementares",
+    },
+    proofComparisonTableLabels: {
+      proof: "Prova",
+      decision: "Decisão apoiada",
+      method: "Método",
+      open: "Abrir",
+      empty: "Nenhuma prova encontrada para este filtro.",
     },
     casesRoadmap: {
       title: "Prova em preparação",
@@ -581,7 +591,7 @@ export const CONTENT: Content = {
     caseProblemLabel: "Problema de negócio",
     caseMetricLabel: "Métrica principal",
     caseDemoLabel: "Explorar demonstração",
-    caseLibraryDemoLabel: "Explorar case",
+    caseComparisonDemoLabel: "Abrir prova",
     caseDemoUnavailableLabel: "Demo em preparação",
     caseCodeLabel: "Ver repositório",
     demoOpenExternalLabel: "Abrir em nova aba",
@@ -887,9 +897,6 @@ export const CONTENT: Content = {
 export const CASES_DESTAQUE = CONTENT.featuredProofCases
   .map((id) => CONTENT.cases.find((c) => c.id === id))
   .filter((c): c is Case => Boolean(c));
-export const CASES_BIBLIOTECA = CONTENT.cases.filter(
-  (c) => c.linkDemo && !CONTENT.featuredProofCases.includes(c.id),
-);
 export const CASES_ROADMAP = CONTENT.cases.filter((c) => !c.linkDemo);
 
 export const DEMO_MODAL_COPY: DemoModalCopy = {
@@ -898,12 +905,6 @@ export const DEMO_MODAL_COPY: DemoModalCopy = {
   unavailableLabel: CONTENT.secoes.demoIndisponivel,
   context: CONTENT.secoes.demoContextLabels,
 };
-
-/** Categorias com pelo menos 1 case na biblioteca complementar (exclui âncora e roadmap). */
-export const CASE_CATEGORIAS = [
-  "Todos",
-  ...Array.from(new Set(CASES_BIBLIOTECA.map((c) => c.categoria))),
-] as const;
 
 export function caseNumberFromId(id: string): string {
   const match = /^(\d+)/.exec(id);

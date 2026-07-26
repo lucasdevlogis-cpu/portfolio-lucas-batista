@@ -24,7 +24,7 @@ Header
 → Hero executivo
 → Evidências rápidas
 → Perfil em 60 segundos
-→ 3 provas âncora + biblioteca de 7 provas
+→ 3 provas âncora + comparativo das 10 provas públicas
 → Trajetória
 → Contato
 → Footer
@@ -64,6 +64,7 @@ Arquivos gerados não devem ser editados manualmente.
 - Cada prova mostra decisão, até 3 KPIs, visual principal, método e limitação.
 - Visualizações usam paleta semântica curta; nada de arco-íris.
 - A landing é seletiva; profundidade fica nas provas.
+- O comparativo reúne as dez provas em ordem de tier e permite filtrar por domínio.
 - Dados são sintéticos, públicos ou anonimizados.
 - O modal renderiza o shell React diretamente nas dez provas, sem iframe.
 - React/Next é a experiência pública das dez provas.

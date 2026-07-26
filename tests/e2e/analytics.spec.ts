@@ -93,20 +93,37 @@ test.describe("Analytics das provas", () => {
     });
   });
 
-  test("distingue abertura na biblioteca complementar", async ({ page }) => {
+  test("distingue abertura no comparativo", async ({ page }) => {
     await resetAnalyticsQueue(page);
     await page.goto("/#cases", { waitUntil: "domcontentloaded" });
 
     const item = page
-      .getByTestId("case-library-item")
+      .getByTestId("proof-comparison-item")
       .filter({ hasText: "Promessa de Entrega por CEP" });
     await item.scrollIntoViewIfNeeded();
-    await item.getByRole("button", { name: /Explorar case: Promessa de Entrega por CEP/i }).click();
+    await item.getByRole("button", { name: /Abrir prova: Promessa de Entrega por CEP/i }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
 
     await expectProofEvent(page, {
       name: "proof_open",
       data: { proof_slug: "promessa_cep", surface: "library_modal" },
+    });
+  });
+
+  test("reabre âncora no comparativo com surface library_modal", async ({ page }) => {
+    await resetAnalyticsQueue(page);
+    await page.goto("/#cases", { waitUntil: "domcontentloaded" });
+
+    const item = page
+      .getByTestId("proof-comparison-item")
+      .filter({ hasText: "Simulador de Custo de Frete" });
+    await item.scrollIntoViewIfNeeded();
+    await item.getByRole("button", { name: "Abrir prova: Simulador de Custo de Frete" }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+
+    await expectProofEvent(page, {
+      name: "proof_open",
+      data: { proof_slug: "precificacao_frete", surface: "library_modal" },
     });
   });
 
