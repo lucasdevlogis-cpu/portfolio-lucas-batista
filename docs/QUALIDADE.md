@@ -152,12 +152,12 @@ Mergeado em 25/07/2026. Rota pública `/provas/promessa_cep` consome
 `contracts/demo-snapshots/promessa_cep.json`. Modal da homepage renderiza a
 prova inline sem iframe Streamlit.
 
-| Evidência                   | Resultado |
-| --------------------------- | --------- |
-| `npm run verify`            | aprovado  |
-| `npm run demos:validate`    | aprovado  |
-| `npm run demos:smoke`       | 13/13     |
-| `npm run test:e2e`          | 19/19     |
+| Evidência                          | Resultado          |
+| ---------------------------------- | ------------------ |
+| `npm run verify`                   | aprovado           |
+| `npm run demos:validate`           | aprovado           |
+| `npm run demos:smoke`              | 13/13              |
+| `npm run test:e2e`                 | 19/19              |
 | `npm audit --audit-level=moderate` | 0 vulnerabilidades |
 
 ### P1.2 — Ship from Store / Origem Ótima
@@ -166,14 +166,14 @@ Mergeado em 25/07/2026. Rota pública `/provas/ship_from_store` consome
 `contracts/demo-snapshots/ship_from_store.json`, com mapa de fluxos origem→destino.
 Modal da homepage renderiza a prova inline sem iframe Streamlit.
 
-| Evidência                   | Resultado |
-| --------------------------- | --------- |
-| `npm run verify`            | aprovado  |
-| `npm run demos:validate`    | 5 snapshots React válidos |
-| `npm run demos:smoke`       | 13/13     |
-| `npm run test:e2e`          | 21/21     |
-| `npm audit --audit-level=moderate` | 0 vulnerabilidades |
-| `npm run qa:streamlit`      | 12 desktop + 7 mobile-embed |
+| Evidência                          | Resultado                   |
+| ---------------------------------- | --------------------------- |
+| `npm run verify`                   | aprovado                    |
+| `npm run demos:validate`           | 5 snapshots React válidos   |
+| `npm run demos:smoke`              | 13/13                       |
+| `npm run test:e2e`                 | 21/21                       |
+| `npm audit --audit-level=moderate` | 0 vulnerabilidades          |
+| `npm run qa:streamlit`             | 12 desktop + 7 mobile-embed |
 
 O baseline público aceito desta refatoração é 100/100/100/100 em desktop e
 99/100/100/100 em mobile. Resultados locais continuam como evidência rápida de
