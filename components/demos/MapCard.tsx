@@ -53,15 +53,20 @@ function legendForMap(mapData: DemoMap): { label: string; tone: LegendTone }[] {
   }
 
   if (mapData.kind === "points") {
-    return Array.from(new Set((mapData.points ?? []).map((point) => point.label))).map((label) => ({
-      label,
-      tone:
-        label === "No prazo" || label === "OK"
-          ? ("success" as const)
-          : label === "Em risco" || label === "Atenção"
-            ? ("warning" as const)
-            : ("danger" as const),
-    }));
+    return Array.from(
+      new Map(
+        (mapData.points ?? []).map((point) => {
+          const tone =
+            point.tone ??
+            (point.label === "No prazo" || point.label === "OK"
+              ? "success"
+              : point.label === "Em risco" || point.label === "Atenção"
+                ? "warning"
+                : "danger");
+          return [`${point.label}-${tone}`, { label: point.label, tone }];
+        }),
+      ).values(),
+    );
   }
 
   if (mapData.kind === "flows") {
@@ -112,11 +117,12 @@ function featuresForMap(mapData: DemoMap): Feature[] {
         label: point.label,
         detail: point.detail ?? point.id,
         tone:
-          point.label === "No prazo" || point.label === "OK"
+          point.tone ??
+          (point.label === "No prazo" || point.label === "OK"
             ? "success"
             : point.label === "Em risco" || point.label === "Atenção"
               ? "warning"
-              : "danger",
+              : "danger"),
       },
     }));
   }
@@ -454,7 +460,7 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
           className="h-[340px] w-full bg-surface-dark sm:h-[430px]"
           role="region"
           aria-busy={status === "loading"}
-          aria-label={`${title}. Mapa interativo com dados demonstrativos.`}
+          aria-label={`${title}. ${mapData.note ?? "Mapa interativo com dados demonstrativos."}`}
         />
         {status === "loading" ? (
           <p
@@ -474,7 +480,14 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
           </p>
         ) : null}
       </div>
-      <p className="border-t border-border px-5 py-3 font-mono text-[0.68rem] leading-relaxed text-muted-foreground sm:px-6">
+      {mapData.note ? (
+        <p className="border-t border-border px-5 pt-3 font-mono text-[0.68rem] font-bold leading-relaxed text-foreground sm:px-6">
+          {mapData.note}
+        </p>
+      ) : null}
+      <p
+        className={`${mapData.note ? "pb-3 pt-1" : "border-t border-border py-3"} px-5 font-mono text-[0.68rem] leading-relaxed text-muted-foreground sm:px-6`}
+      >
         Dados sintéticos e coordenadas aproximadas. O mapa apoia a leitura; não representa
         rastreamento em tempo real.
       </p>

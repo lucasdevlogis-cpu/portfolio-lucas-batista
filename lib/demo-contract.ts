@@ -1,3 +1,4 @@
+import auditoriaSnapshot from "@/contracts/demo-snapshots/auditoria_endereco.json";
 import cvrpSnapshot from "@/contracts/demo-snapshots/cvrp_urbano.json";
 import towerSnapshot from "@/contracts/demo-snapshots/mini_torre_controle.json";
 import promessaSnapshot from "@/contracts/demo-snapshots/promessa_cep.json";
@@ -15,6 +16,7 @@ export const REACT_DEMO_SLUGS = [
   "ship_from_store",
   "rede_interhubs",
   "vrptw_ultima_milha",
+  "auditoria_endereco",
 ] as const;
 
 export type DemoTone = "accent" | "danger" | "warning" | "success";
@@ -38,7 +40,8 @@ export interface DemoChart {
   id: string;
   title: string;
   kind: "bar" | "grouped-bar" | "donut" | "time-window";
-  unit?: "BRL" | "KM" | "PERCENT" | "TON" | "MINUTE";
+  orientation?: "horizontal" | "vertical";
+  unit?: "BRL" | "KM" | "PERCENT" | "TON" | "MINUTE" | "COUNT";
   data: DemoChartDatum[];
   series?: string[];
   reference?: number;
@@ -50,6 +53,7 @@ export interface DemoPoint {
   lon: number;
   label: string;
   detail?: string;
+  tone?: DemoTone;
 }
 
 export interface DemoRoute {
@@ -68,6 +72,7 @@ export interface DemoRoute {
 export interface DemoMap {
   kind: "network" | "points" | "routes" | "flows";
   title?: string;
+  note?: string;
   center: [number, number];
   zoom: number;
   nodes?: { id: string; lat: number; lon: number }[];
@@ -105,6 +110,7 @@ export const DEMO_SNAPSHOTS: Record<string, DemoSnapshot> = {
   ship_from_store: shipSnapshot as DemoSnapshot,
   rede_interhubs: redeInterhubsSnapshot as DemoSnapshot,
   vrptw_ultima_milha: vrptwSnapshot as DemoSnapshot,
+  auditoria_endereco: auditoriaSnapshot as DemoSnapshot,
 };
 
 export function getDemoSnapshot(slug: string): DemoSnapshot | null {

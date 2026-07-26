@@ -15,6 +15,7 @@ import pandas as pd
 APP_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(APP_DIR))
 
+from domain import auditoria_endereco as auditoria  # noqa: E402
 from domain import freight as frete  # noqa: E402
 from domain import promessa_cep as cep  # noqa: E402
 from domain import rede_interhubs as rede  # noqa: E402
@@ -729,6 +730,96 @@ def vrptw_ultima_milha_snapshot() -> dict:
     return result
 
 
+def auditoria_endereco_snapshot() -> dict:
+    source = pd.read_csv(
+        GENERATED_DATA_DIR / "enderecos.csv",
+        dtype={"cep8": str, "numero": str, "logradouro": str, "complemento": str},
+        keep_default_na=False,
+    )
+    audited = auditoria.audit_dataframe(source)
+    decisions = auditoria.decision_counts(audited)
+    alerts = auditoria.alert_counts(audited)
+    valid_points = auditoria.valid_map_rows(audited)
+    outside_map = len(audited) - len(valid_points)
+
+    result = snapshot_base(
+        "auditoria_endereco",
+        "05-auditoria-endereco",
+        "Auditoria de endereço",
+        "Quais endereços estão prontos, precisam de revisão ou devem ser bloqueados antes da validação logística?",
+        "Separar a fila entre aceitar, revisar e bloquear antes de validar endereço e coordenada.",
+        "Triagem sintética: não consulta base postal nem API de geocoding e não corrige CEP ou endereço.",
+        "Score determinístico com penalidades de completude, CEP, coordenada e confiança da fonte.",
+        ["Pandas", "Qualidade cadastral", "Prontidão para geocoding"],
+    )
+    total = max(len(audited), 1)
+    result["kpis"] = [
+        {
+            "label": "Bloquear",
+            "value": f"{decisions['Bloquear']} · {decisions['Bloquear'] / total:.0%}",
+            "tone": "danger",
+        },
+        {
+            "label": "Revisar",
+            "value": f"{decisions['Revisar']} · {decisions['Revisar'] / total:.0%}",
+            "tone": "warning",
+        },
+        {
+            "label": "Aptos",
+            "value": f"{decisions['Aptos']} · {decisions['Aptos'] / total:.0%}",
+            "tone": "success",
+        },
+    ]
+    result["charts"] = [
+        {
+            "id": "fila-decisao",
+            "title": "Fila de decisão",
+            "kind": "bar",
+            "unit": "COUNT",
+            "data": [
+                {"label": "Bloquear", "value": decisions["Bloquear"], "tone": "danger"},
+                {"label": "Revisar", "value": decisions["Revisar"], "tone": "warning"},
+                {"label": "Aceitar", "value": decisions["Aptos"], "tone": "success"},
+            ],
+        },
+        {
+            "id": "regras-acionadas",
+            "title": "Regras acionadas (ocorrências)",
+            "kind": "bar",
+            "orientation": "horizontal",
+            "unit": "COUNT",
+            "data": [{"label": label, "value": value} for label, value in alerts.items()],
+        },
+    ]
+
+    action_label = {"Alta": "Aceitar", "Média": "Revisar", "Baixa": "Bloquear"}
+    result["map"] = {
+        "kind": "points",
+        "title": "Cobertura territorial validada",
+        "note": (
+            f"{len(valid_points)} exibidos; {outside_map} bloqueados fora do mapa por "
+            "coordenadas fora do Brasil."
+        ),
+        "center": [-22.8, -44.9],
+        "zoom": 5,
+        "points": [
+            {
+                "id": str(row["pedido_id"]),
+                "lat": number(row["lat_validada"], 5),
+                "lon": number(row["lon_validada"], 5),
+                "label": action_label[str(row["nivel_confianca"])],
+                "detail": (
+                    f"Pedido {row['pedido_id']} · {row['municipio']}/{row['uf']} · "
+                    f"score {row['score']} · {row['acao']} · alertas: {row['alertas']}"
+                ),
+                "tone": str(row["tone"]),
+            }
+            for row in valid_points.to_dict("records")
+        ],
+    }
+    return result
+
+
 def main() -> None:
     DEMO_SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
     snapshots = [
@@ -739,6 +830,7 @@ def main() -> None:
         ship_from_store_snapshot(),
         rede_interhubs_snapshot(),
         vrptw_ultima_milha_snapshot(),
+        auditoria_endereco_snapshot(),
     ]
     for snapshot in snapshots:
         path = DEMO_SNAPSHOT_DIR / f"{snapshot['slug']}.json"

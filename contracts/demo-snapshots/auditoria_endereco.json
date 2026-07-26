@@ -1,0 +1,457 @@
+{
+  "slug": "auditoria_endereco",
+  "caseId": "05-auditoria-endereco",
+  "title": "Auditoria de endereço",
+  "question": "Quais endereços estão prontos, precisam de revisão ou devem ser bloqueados antes da validação logística?",
+  "decision": "Separar a fila entre aceitar, revisar e bloquear antes de validar endereço e coordenada.",
+  "limitation": "Triagem sintética: não consulta base postal nem API de geocoding e não corrige CEP ou endereço.",
+  "method": "Score determinístico com penalidades de completude, CEP, coordenada e confiança da fonte.",
+  "frameworks": [
+    "Pandas",
+    "Qualidade cadastral",
+    "Prontidão para geocoding"
+  ],
+  "kpis": [
+    {
+      "label": "Bloquear",
+      "value": "15 · 25%",
+      "tone": "danger"
+    },
+    {
+      "label": "Revisar",
+      "value": "30 · 50%",
+      "tone": "warning"
+    },
+    {
+      "label": "Aptos",
+      "value": "15 · 25%",
+      "tone": "success"
+    }
+  ],
+  "charts": [
+    {
+      "id": "fila-decisao",
+      "title": "Fila de decisão",
+      "kind": "bar",
+      "unit": "COUNT",
+      "data": [
+        {
+          "label": "Bloquear",
+          "value": 15,
+          "tone": "danger"
+        },
+        {
+          "label": "Revisar",
+          "value": 30,
+          "tone": "warning"
+        },
+        {
+          "label": "Aceitar",
+          "value": 15,
+          "tone": "success"
+        }
+      ]
+    },
+    {
+      "id": "regras-acionadas",
+      "title": "Regras acionadas (ocorrências)",
+      "kind": "bar",
+      "orientation": "horizontal",
+      "unit": "COUNT",
+      "data": [
+        {
+          "label": "Número ausente",
+          "value": 30
+        },
+        {
+          "label": "CEP inválido",
+          "value": 15
+        },
+        {
+          "label": "Logradouro ausente",
+          "value": 15
+        },
+        {
+          "label": "Coordenada fora do Brasil",
+          "value": 15
+        },
+        {
+          "label": "Fonte baixa confiança",
+          "value": 15
+        }
+      ]
+    }
+  ],
+  "map": {
+    "kind": "points",
+    "title": "Cobertura territorial validada",
+    "note": "45 exibidos; 15 bloqueados fora do mapa por coordenadas fora do Brasil.",
+    "center": [
+      -22.8,
+      -44.9
+    ],
+    "zoom": 5,
+    "points": [
+      {
+        "id": "ped_ok_000",
+        "lat": -23.53274,
+        "lon": -46.64197,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_000 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_001",
+        "lat": -23.55038,
+        "lon": -46.6332,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_001 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_002",
+        "lat": -22.90783,
+        "lon": -43.17939,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_002 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_004",
+        "lat": -23.56538,
+        "lon": -46.63238,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_004 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_005",
+        "lat": -23.5582,
+        "lon": -46.63245,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_005 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_006",
+        "lat": -22.91479,
+        "lon": -43.1839,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_006 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_008",
+        "lat": -23.54818,
+        "lon": -46.6318,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_008 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_009",
+        "lat": -23.54473,
+        "lon": -46.61145,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_009 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_010",
+        "lat": -22.90408,
+        "lon": -43.16805,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_010 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_012",
+        "lat": -23.5613,
+        "lon": -46.64618,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_012 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_013",
+        "lat": -23.53469,
+        "lon": -46.64254,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_013 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_014",
+        "lat": -22.91729,
+        "lon": -43.17329,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_014 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_016",
+        "lat": -23.55142,
+        "lon": -46.64234,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_016 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_017",
+        "lat": -23.55357,
+        "lon": -46.62102,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_017 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_018",
+        "lat": -22.91491,
+        "lon": -43.18684,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_018 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_020",
+        "lat": -23.54109,
+        "lon": -46.62839,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_020 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_021",
+        "lat": -23.55673,
+        "lon": -46.64913,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_021 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_022",
+        "lat": -22.9143,
+        "lon": -43.17345,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_022 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_024",
+        "lat": -23.53886,
+        "lon": -46.64368,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_024 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_025",
+        "lat": -23.55137,
+        "lon": -46.62656,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_025 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_026",
+        "lat": -22.93066,
+        "lon": -43.16256,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_026 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_028",
+        "lat": -23.56234,
+        "lon": -46.62999,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_028 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_029",
+        "lat": -23.54805,
+        "lon": -46.62246,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_029 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_030",
+        "lat": -22.90134,
+        "lon": -43.19667,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_030 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_032",
+        "lat": -23.55837,
+        "lon": -46.63193,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_032 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_033",
+        "lat": -23.55247,
+        "lon": -46.62853,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_033 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_034",
+        "lat": -22.89896,
+        "lon": -43.16682,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_034 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_036",
+        "lat": -23.55266,
+        "lon": -46.65177,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_036 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_037",
+        "lat": -23.55507,
+        "lon": -46.62915,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_037 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_038",
+        "lat": -22.91775,
+        "lon": -43.16659,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_038 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_040",
+        "lat": -23.54144,
+        "lon": -46.63204,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_040 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_041",
+        "lat": -23.58116,
+        "lon": -46.64609,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_041 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_042",
+        "lat": -22.88799,
+        "lon": -43.17837,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_042 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_044",
+        "lat": -23.57036,
+        "lon": -46.62096,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_044 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_045",
+        "lat": -23.55039,
+        "lon": -46.62226,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_045 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_046",
+        "lat": -22.90408,
+        "lon": -43.16831,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_046 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_048",
+        "lat": -23.54689,
+        "lon": -46.62634,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_048 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_049",
+        "lat": -23.52775,
+        "lon": -46.6236,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_049 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_050",
+        "lat": -22.92265,
+        "lon": -43.16843,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_050 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_052",
+        "lat": -23.53911,
+        "lon": -46.62128,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_052 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_053",
+        "lat": -23.55479,
+        "lon": -46.62166,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_053 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_054",
+        "lat": -22.89757,
+        "lon": -43.14717,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_054 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_ok_056",
+        "lat": -23.55802,
+        "lon": -46.63838,
+        "label": "Aceitar",
+        "detail": "Pedido ped_ok_056 · Sao Paulo/SP · score 100 · Apto a validar e rotear · alertas: —",
+        "tone": "success"
+      },
+      {
+        "id": "ped_bad_cep_057",
+        "lat": -23.55358,
+        "lon": -46.63821,
+        "label": "Revisar",
+        "detail": "Pedido ped_bad_cep_057 · Sao Paulo/SP · score 65 · Revisar antes de validar · alertas: CEP inválido",
+        "tone": "warning"
+      },
+      {
+        "id": "ped_generic_058",
+        "lat": -22.91575,
+        "lon": -43.20053,
+        "label": "Revisar",
+        "detail": "Pedido ped_generic_058 · Rio de Janeiro/RJ · score 65 · Revisar antes de validar · alertas: Logradouro ausente; Número ausente",
+        "tone": "warning"
+      }
+    ]
+  }
+}

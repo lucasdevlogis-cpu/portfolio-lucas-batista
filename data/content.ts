@@ -716,7 +716,7 @@ export const CONTENT: Content = {
       id: "05-auditoria-endereco",
       titulo: "Auditoria de Endereço e Geocoding",
       descricao:
-        "Validação de qualidade de endereços para entrega: geocoding, correção de CEP, identificação de endereços de risco, sugestão de revisão.",
+        "Triagem de prontidão cadastral para validação postal e geocoding: identifica endereços aptos, casos para revisão e bloqueios antes da decisão logística.",
       categoria: "Last Mile e E-commerce",
       icone: "ScanSearch",
       tags: ["endereço", "geocoding", "CEP", "qualidade", "risco"],
@@ -725,11 +725,11 @@ export const CONTENT: Content = {
       ctaDemoLabel: "Explorar Auditoria de Endereço",
       prioridade: "P1",
       perguntaNegocio: "Quais endereços precisam de revisão antes da decisão logística?",
-      metricaPrincipal: "Score de qualidade de endereço, taxa de geocoding bem-sucedido",
-      metricaResumo: "score de qualidade de endereço",
-      decisaoApoiada: "Bloquear, revisar ou aceitar endereço para análise",
+      metricaPrincipal: "Score de prontidão, fila de revisão e bloqueios cadastrais",
+      metricaResumo: "prontidão para validar e geocodificar",
+      decisaoApoiada: "Bloquear, revisar ou aceitar endereço para validação",
       limitacao:
-        "Geocoding depende de APIs externas (OpenStreetMap, Google). Endereços brasileiros têm variação de qualidade.",
+        "A demo não consulta base postal nem API de geocoding e não corrige CEP; produção exige validação externa e revisão humana.",
     },
     {
       id: "06-kpis-cd",

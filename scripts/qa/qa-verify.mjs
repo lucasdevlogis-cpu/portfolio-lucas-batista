@@ -48,10 +48,10 @@ summary.filterCount = await page.getByRole("button", { name: /^Todos/ }).count()
 
 const complementaryItem = page
   .getByTestId("case-library-item")
-  .filter({ hasText: "Auditoria de Endereço e Geocoding" });
+  .filter({ hasText: "Sequência de Visitas (TSP)" });
 await complementaryItem.scrollIntoViewIfNeeded();
 await complementaryItem
-  .getByRole("button", { name: /Explorar case: Auditoria de Endereço/i })
+  .getByRole("button", { name: /Explorar case: Sequência de Visitas/i })
   .click();
 
 const complementaryDialog = page.getByRole("dialog");
@@ -90,12 +90,12 @@ Object.assign(summary, {
   complementaryOrigin:
     embeddedDemo.origin === expectedDemosOrigin && externalDemo.origin === expectedDemosOrigin,
   complementarySlug:
-    embeddedDemo.pathname.replace(/\/$/, "") === "/auditoria_endereco" &&
-    externalDemo.pathname.replace(/\/$/, "") === "/auditoria_endereco",
+    embeddedDemo.pathname.replace(/\/$/, "") === "/tsp_baseline_sp" &&
+    externalDemo.pathname.replace(/\/$/, "") === "/tsp_baseline_sp",
   embedMode:
     embeddedDemo.searchParams.get("embed") === "true" && !externalDemo.searchParams.has("embed"),
   complementaryRendered:
-    (await complementaryHeading.textContent())?.trim().startsWith("05.") === true &&
+    (await complementaryHeading.textContent())?.trim().startsWith("11.") === true &&
     (await streamlitSurface.locator('[data-testid="stException"]').count()) === 0,
 });
 await page.screenshot({ path: path.join(out, "verify-modal-streamlit.png"), fullPage: false });

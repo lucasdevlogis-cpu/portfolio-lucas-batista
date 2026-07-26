@@ -19,6 +19,7 @@ function valueLabel(value: number, unit?: DemoChart["unit"]) {
     const rounded = Math.round(value);
     return `${String(Math.floor(rounded / 60)).padStart(2, "0")}:${String(rounded % 60).padStart(2, "0")}`;
   }
+  if (unit === "COUNT") return `${value.toLocaleString("pt-BR")} qtd.`;
   return value.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
 }
 
@@ -73,7 +74,10 @@ export function ChartCard({ chart }: { chart: DemoChart }) {
       instance = echarts.init(element.current, "executive-brutalist", { renderer: "svg" });
       const labels = chart.data.map((item) => item.label);
       const values = chart.data.map((item) => item.value);
-      const horizontal = labels.length > 4 || labels.some((label) => label.length > 13);
+      const horizontal =
+        chart.orientation === "horizontal" ||
+        (chart.orientation !== "vertical" &&
+          (labels.length > 4 || labels.some((label) => label.length > 13)));
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const valueAxis = {
         type: "value" as const,
@@ -359,7 +363,9 @@ export function ChartCard({ chart }: { chart: DemoChart }) {
               ? "t"
               : chart.unit === "MINUTE"
                 ? "hora"
-                : "volume";
+                : chart.unit === "COUNT"
+                  ? "qtd."
+                  : "volume";
 
   return (
     <article className="demo-panel overflow-hidden p-0">
