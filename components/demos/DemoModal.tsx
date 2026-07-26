@@ -4,7 +4,6 @@ import { ExternalLink } from "lucide-react";
 
 import { CaseContext } from "@/components/demos/CaseContext";
 import { DemoShell } from "@/components/demos/DemoShell";
-import { StreamlitDemoFrame } from "@/components/demos/StreamlitDemoFrame";
 import {
   Dialog,
   DialogContent,
@@ -24,11 +23,9 @@ export interface DemoModalProps {
 }
 
 export function DemoModal({ isOpen, onClose, caseItem, copy }: DemoModalProps) {
-  const demoUrl = caseItem.linkDemo;
   const demoSlug = CASE_DEMO_SLUGS[caseItem.id];
   const snapshot = demoSlug ? getDemoSnapshot(demoSlug) : null;
-  const openUrl = snapshot && demoSlug ? `/provas/${demoSlug}` : demoUrl;
-  const thumbnailAlt = caseItem.thumbnailAlt ?? `Pré-visualização do case ${caseItem.titulo}`;
+  const openUrl = demoSlug ? `/provas/${demoSlug}` : caseItem.linkDemo;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -79,16 +76,6 @@ export function DemoModal({ isOpen, onClose, caseItem, copy }: DemoModalProps) {
               <div className="min-h-[520px] overflow-y-auto bg-editorial">
                 <DemoShell snapshot={snapshot} compact />
               </div>
-            ) : demoUrl ? (
-              <StreamlitDemoFrame
-                key={demoUrl}
-                demoUrl={demoUrl}
-                openUrl={openUrl}
-                title={caseItem.titulo}
-                thumbnail={caseItem.thumbnail}
-                thumbnailAlt={thumbnailAlt}
-                copy={copy}
-              />
             ) : (
               <div className="flex min-h-[300px] items-center justify-center px-6 text-center text-muted-foreground">
                 {copy.unavailableLabel}

@@ -1,6 +1,6 @@
 # Roadmap e fila ativa
 
-Atualizado em 25/07/2026. Esta é a única fila operacional do projeto.
+Atualizado em 26/07/2026. Esta é a única fila operacional do projeto.
 
 ## Norte atual
 
@@ -23,7 +23,7 @@ sem parecer aplicativos Streamlit genéricos.
 Mergeado em 25/07/2026. Linguagem visual aprovada; preview isolado publicado e
 aceito.
 
-## Concluído — P1 (parcial): retirar Streamlit da apresentação pública
+## Concluído — P1: retirar Streamlit da apresentação pública
 
 - [x] Promessa de entrega por CEP — mapa territorial e risco.
 - [x] Ship from Store — comparação multicritério de origem.
@@ -31,28 +31,13 @@ aceito.
 - [x] VRPTW — sequência temporal e violações de janela.
 - [x] Auditoria de endereço — qualidade e exceções territoriais.
 - [x] TSP — baseline didático de otimização.
+- [x] Classificador de ocorrências — regras explicáveis e governança humana.
 
-As seis foram migradas para rotas React consumindo snapshots Python; o modal
-da homepage renderiza inline sem iframe.
-
-## P1 — retirar Streamlit da apresentação pública (continuação)
-
-Ordem de migração orientada a valor de recrutamento e variedade visual:
-
-1. ~~Promessa de entrega por CEP — mapa territorial e risco.~~ ✅
-2. ~~Ship from Store — comparação multicritério de origem.~~ ✅
-3. ~~Rede inter-hubs — mapa de rede e custo por corredor.~~ ✅
-4. ~~VRPTW — sequência temporal e violações de janela.~~ ✅
-5. ~~Auditoria de endereço — qualidade e exceções territoriais.~~ ✅
-6. ~~TSP — baseline didático de otimização.~~ ✅
-7. Classificador de ocorrências — NLP com governança humana.
-
-Cada migração exige snapshot Python, schema validado, rota React, modal inline,
-estado de loading/erro e retirada do iframe correspondente.
-
-> **Continuidade:** a última migração pública, Classificador de ocorrências,
-> segue em branch dedicada para preservar contratos, exporter e qualidade
-> visual.
+As sete complementares foram migradas para rotas React consumindo snapshots
+Python. As dez provas públicas agora usam o mesmo shell no modal e nas rotas
+`/provas/{slug}`, sem iframe ou dependência de runtime do laboratório Streamlit.
+O Classificador publica regras determinísticas, amostra curada e revisão humana
+obrigatória sem alegar NLP, modelo treinado ou confiança calibrada.
 
 ## P2 — diferenciação
 
@@ -64,9 +49,9 @@ estado de loading/erro e retirada do iframe correspondente.
 
 ## Próximos passos imediatos
 
-1. Migrar Classificador de ocorrências com governança humana.
-2. Instrumentar abertura das provas e CTAs sem coletar dados sensíveis.
-3. Desativar o último iframe depois de sua rota pública equivalente.
+1. Instrumentar abertura das provas e CTAs sem coletar dados sensíveis.
+2. Criar a visão comparativa entre provas por decisão e método.
+3. Definir a narrativa causal e o contrato de dados do case de KPIs de CD.
 
 ## Critério de pronto do P0
 

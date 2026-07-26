@@ -1,0 +1,110 @@
+{
+  "slug": "classificador_ocorrencias",
+  "caseId": "07-classificador-ocorrencias",
+  "title": "Triagem de ocorrências operacionais",
+  "question": "Como regras explícitas podem apoiar a triagem sem automatizar decisões críticas?",
+  "decision": "Sugerir categoria, prioridade e fila; a decisão permanece com a revisão humana.",
+  "limitation": "Dez exemplos curados, sem conjunto de teste separado ou modelo treinado; a concordância interna mede ajuste às próprias regras, não generalização.",
+  "method": "Normalização NFKD e casefold, termos e frases com limites de palavra, contagem de correspondências e gatilhos explícitos de revisão.",
+  "frameworks": [
+    "Pandas",
+    "Regras determinísticas",
+    "Revisão humana"
+  ],
+  "kpis": [
+    {
+      "label": "Amostra útil",
+      "value": "10"
+    },
+    {
+      "label": "Concordância interna",
+      "value": "10/10",
+      "tone": "warning"
+    },
+    {
+      "label": "Decisões autônomas",
+      "value": "0",
+      "tone": "success"
+    }
+  ],
+  "charts": [
+    {
+      "id": "volume-categoria",
+      "title": "Volume por categoria sugerida",
+      "kind": "bar",
+      "orientation": "horizontal",
+      "unit": "COUNT",
+      "data": [
+        {
+          "label": "Atraso",
+          "value": 2
+        },
+        {
+          "label": "Avaria",
+          "value": 2
+        },
+        {
+          "label": "Cliente Ausente",
+          "value": 2
+        },
+        {
+          "label": "Endereco Incorreto",
+          "value": 2
+        },
+        {
+          "label": "Devolucao",
+          "value": 1
+        },
+        {
+          "label": "Recusa",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "prioridade-rotulada-sugerida",
+      "title": "Prioridade rotulada × sugerida",
+      "kind": "grouped-bar",
+      "orientation": "vertical",
+      "unit": "COUNT",
+      "series": [
+        "Rotulada",
+        "Sugerida"
+      ],
+      "data": [
+        {
+          "label": "Alta",
+          "value": 5,
+          "secondary": 6
+        },
+        {
+          "label": "Média",
+          "value": 4,
+          "secondary": 4
+        },
+        {
+          "label": "Baixa",
+          "value": 1,
+          "secondary": 0
+        }
+      ]
+    }
+  ],
+  "map": null,
+  "governance": {
+    "mode": "human-in-the-loop",
+    "automatedDecisionCount": 0,
+    "reviewPolicy": "Toda saída é uma sugestão de fila. Os gatilhos críticos tornam a revisão humana explícita antes de qualquer encaminhamento operacional.",
+    "reviewTriggers": [
+      "prioridade alta",
+      "empate",
+      "nenhum termo"
+    ],
+    "prohibitedActions": [
+      "aplicar penalidade",
+      "autorizar pagamento",
+      "bloquear entrega",
+      "encerrar ocorrência"
+    ]
+  }
+}

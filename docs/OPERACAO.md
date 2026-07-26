@@ -10,11 +10,10 @@ pip install -r requirements-dev.txt
 Copy-Item .env.example .env.local
 ```
 
-Variáveis obrigatórias na Vercel, em Production, Preview e Development:
+Variável obrigatória na Vercel, em Production, Preview e Development:
 
 ```env
 NEXT_PUBLIC_SITE_URL=https://portfolio-lucas-batista-murex.vercel.app
-NEXT_PUBLIC_DEMOS_BASE_URL=https://portfolio-lucas-batista-asbsqusjhhbyje6pktjpvw.streamlit.app
 ```
 
 ## Desenvolvimento
@@ -28,8 +27,6 @@ npm run dev
 ```powershell
 streamlit run apps/demos/app.py
 ```
-
-Para simular o embed, abra uma page Streamlit com `?embed=true`.
 
 ## Rotina de alteração
 
@@ -94,19 +91,9 @@ O Community Cloud identifica cada app por repositório, branch e entrypoint e
 não permite editar essas coordenadas. Por isso, a origem canônica foi publicada
 como uma nova aplicação.
 
-Estado do corte, sem indisponibilidade:
-
-1. [x] criar a nova app com as coordenadas canônicas;
-2. [x] executar `npm run qa:streamlit` na nova URL;
-3. [x] atualizar `NEXT_PUBLIC_DEMOS_BASE_URL` nos três ambientes da Vercel e
-       redeployar a landing;
-4. [x] validar modal, embed e abertura em nova aba;
-5. [ ] somente depois remover a app legada.
-
-Se preservar exatamente o subdomínio atual for obrigatório, remova a app antiga
-e redeploye pedindo o mesmo custom subdomain. Esse caminho implica uma janela de
-indisponibilidade e depende de o nome voltar a ficar disponível. Não copie
-arquivos entre clones e não mantenha dois históricos de código ativos.
+O laboratório é implantado de forma independente e não é origem de links,
+iframes ou dados em runtime da experiência pública. Não copie arquivos entre
+clones e não mantenha dois históricos de código ativos.
 
 Referências oficiais:
 
@@ -134,8 +121,8 @@ npm run lighthouse:all
 
 Saídas ficam em `.artifacts/`, inclusive relatório e traces do Playwright.
 
-Com o Streamlit ativo em `http://localhost:8501`, capture todas as pages em
-desktop e as 7 complementares em embed mobile:
+Com o Streamlit ativo em `http://localhost:8501`, capture todas as pages do
+laboratório em desktop:
 
 ```powershell
 npm run qa:streamlit
@@ -179,8 +166,8 @@ acesso ao preview e deve permanecer apenas no ambiente de execução. O flag
 `LIGHTHOUSE_ALLOW_NOINDEX` remove somente SEO do gate de previews protegidos,
 pois a Vercel aplica `noindex`; produção continua exigindo as quatro categorias.
 
-O QA Streamlit suporta tanto execução direta local quanto o wrapper com iframe
-usado pelo Community Cloud.
+O QA Streamlit suporta execução direta local e o wrapper interno usado pelo
+Community Cloud.
 
 Em URLs públicas, o Lighthouse executa três rodadas por modo e aplica o gate à
 mediana, preservando os JSON individuais em `.artifacts/lighthouse/runs/`. Em
@@ -191,9 +178,8 @@ quando precisar controlar explicitamente a amostragem.
 
 - homepage, `robots.txt`, `sitemap.xml`, OG image e CV respondem;
 - nav, foco, menu mobile, ESC e voltar ao topo funcionam;
-- 3 âncoras abrem no modal e diretamente em `/provas/{slug}`;
-- 7 complementares abrem no iframe e em nova aba;
-- `?embed=true` remove navegação Streamlit e mantém a prova utilizável;
+- as 10 provas abrem no modal e diretamente em `/provas/{slug}`;
+- nenhum modal público contém iframe ou depende do laboratório;
 - URLs de LinkedIn, email, GitHub e CV estão corretas;
 - Lighthouse mobile não fica abaixo de 90 em nenhuma categoria;
 - não há erro no console ou request 4xx/5xx próprio.
@@ -202,7 +188,6 @@ quando precisar controlar explicitamente a amostragem.
 
 | Sintoma                          | Verificação                                          |
 | -------------------------------- | ---------------------------------------------------- |
-| Demo sem URL                     | conferir `NEXT_PUBLIC_DEMOS_BASE_URL` no build       |
 | Slug quebrado                    | rodar `npm run validate` e revisar o catálogo        |
 | Token divergente                 | rodar `npm run tokens:sync`                          |
 | Snapshot divergente              | rodar `npm run demos:build` e `npm run demos:export` |

@@ -66,7 +66,7 @@ proveniencia = pd.DataFrame(
             "07 · Classificador de Ocorrências",
             "Textos de ocorrência rotulados",
             "Sintético",
-            "NLP supervisionado + revisão humana",
+            "Regras determinísticas + revisão humana",
         ],
         [
             "08 · Ship-from-Store",

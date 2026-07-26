@@ -16,6 +16,7 @@ APP_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(APP_DIR))
 
 from domain import auditoria_endereco as auditoria  # noqa: E402
+from domain import classificador_ocorrencias as classificador  # noqa: E402
 from domain import freight as frete  # noqa: E402
 from domain import promessa_cep as cep  # noqa: E402
 from domain import rede_interhubs as rede  # noqa: E402
@@ -934,6 +935,89 @@ def tsp_baseline_sp_snapshot() -> dict:
     return result
 
 
+def classificador_ocorrencias_snapshot() -> dict:
+    analysis = classificador.analyze_path(GENERATED_DATA_DIR / "ocorrencias.csv")
+    total = len(analysis.occurrences)
+    labeled_priority = analysis.labeled_priority_counts()
+    suggested_priority = analysis.suggested_priority_counts()
+    result = snapshot_base(
+        "classificador_ocorrencias",
+        "07-classificador-ocorrencias",
+        "Triagem de ocorrências operacionais",
+        "Como regras explícitas podem apoiar a triagem sem automatizar decisões críticas?",
+        "Sugerir categoria, prioridade e fila; a decisão permanece com a revisão humana.",
+        (
+            "Dez exemplos curados, sem conjunto de teste separado ou modelo treinado; "
+            "a concordância interna mede ajuste às próprias regras, não generalização."
+        ),
+        (
+            "Normalização NFKD e casefold, termos e frases com limites de palavra, "
+            "contagem de correspondências e gatilhos explícitos de revisão."
+        ),
+        ["Pandas", "Regras determinísticas", "Revisão humana"],
+    )
+    result["kpis"] = [
+        {"label": "Amostra útil", "value": str(analysis.unique_text_count)},
+        {
+            "label": "Concordância interna",
+            "value": f"{analysis.category_agreement_count}/{total}",
+            "tone": "warning",
+        },
+        {
+            "label": "Decisões autônomas",
+            "value": str(analysis.automated_decision_count),
+            "tone": "success",
+        },
+    ]
+    result["charts"] = [
+        {
+            "id": "volume-categoria",
+            "title": "Volume por categoria sugerida",
+            "kind": "bar",
+            "orientation": "horizontal",
+            "unit": "COUNT",
+            "data": [
+                {"label": label, "value": count}
+                for label, count in sorted(
+                    analysis.category_counts().items(), key=lambda item: (-item[1], item[0])
+                )
+            ],
+        },
+        {
+            "id": "prioridade-rotulada-sugerida",
+            "title": "Prioridade rotulada × sugerida",
+            "kind": "grouped-bar",
+            "orientation": "vertical",
+            "unit": "COUNT",
+            "series": ["Rotulada", "Sugerida"],
+            "data": [
+                {
+                    "label": priority,
+                    "value": labeled_priority[priority],
+                    "secondary": suggested_priority[priority],
+                }
+                for priority in classificador.PRIORITY_ORDER
+            ],
+        },
+    ]
+    result["governance"] = {
+        "mode": "human-in-the-loop",
+        "automatedDecisionCount": analysis.automated_decision_count,
+        "reviewPolicy": (
+            "Toda saída é uma sugestão de fila. Os gatilhos críticos tornam a revisão "
+            "humana explícita antes de qualquer encaminhamento operacional."
+        ),
+        "reviewTriggers": ["prioridade alta", "empate", "nenhum termo"],
+        "prohibitedActions": [
+            "aplicar penalidade",
+            "autorizar pagamento",
+            "bloquear entrega",
+            "encerrar ocorrência",
+        ],
+    }
+    return result
+
+
 def main() -> None:
     DEMO_SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
     snapshots = [
@@ -946,6 +1030,7 @@ def main() -> None:
         vrptw_ultima_milha_snapshot(),
         auditoria_endereco_snapshot(),
         tsp_baseline_sp_snapshot(),
+        classificador_ocorrencias_snapshot(),
     ]
     for snapshot in snapshots:
         path = DEMO_SNAPSHOT_DIR / f"{snapshot['slug']}.json"

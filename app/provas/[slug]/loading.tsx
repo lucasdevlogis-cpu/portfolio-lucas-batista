@@ -11,7 +11,7 @@ export default function DemoLoading() {
           aria-hidden
         />
         <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground" role="status">
-          Preparando os indicadores, gráficos e o contexto espacial.
+          Preparando os indicadores, visuais e evidências da análise.
         </p>
       </div>
     </main>

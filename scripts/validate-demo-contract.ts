@@ -99,27 +99,29 @@ for (const slug of REACT_DEMO_SLUGS) {
       errors.push(`${slug}: gráfico temporal deve declarar MINUTE e duas séries`);
     }
   });
-  if (!snapshot.map) {
+  if (!snapshot.map && slug !== "classificador_ocorrencias") {
     errors.push(`${slug}: mapa ausente`);
   } else if (
-    !mapKinds.has(snapshot.map.kind) ||
-    snapshot.map.center.length !== 2 ||
-    !snapshot.map.center.every(Number.isFinite) ||
-    !Number.isFinite(snapshot.map.zoom)
+    snapshot.map &&
+    (!mapKinds.has(snapshot.map.kind) ||
+      snapshot.map.center.length !== 2 ||
+      !snapshot.map.center.every(Number.isFinite) ||
+      !Number.isFinite(snapshot.map.zoom))
   ) {
     errors.push(`${slug}: centro/zoom do mapa inválido`);
   } else if (
+    snapshot.map &&
     snapshot.map.kind === "network" &&
     (!snapshot.map.nodes?.length || !snapshot.map.edges?.length)
   ) {
     errors.push(`${slug}: mapa de rede sem nós ou corredores`);
-  } else if (snapshot.map.kind === "routes" && !snapshot.map.routes?.length) {
+  } else if (snapshot.map?.kind === "routes" && !snapshot.map.routes?.length) {
     errors.push(`${slug}: mapa de rotas sem rota ou pontos`);
-  } else if (snapshot.map.kind === "points" && !snapshot.map.points?.length) {
+  } else if (snapshot.map?.kind === "points" && !snapshot.map.points?.length) {
     errors.push(`${slug}: mapa de pontos sem pontos`);
   } else if (
-    snapshot.map.kind === "points" &&
-    (snapshot.map.points ?? []).some(
+    snapshot.map?.kind === "points" &&
+    (snapshot.map?.points ?? []).some(
       (point) =>
         !point.id?.trim() ||
         !point.label?.trim() ||
@@ -131,8 +133,8 @@ for (const slug of REACT_DEMO_SLUGS) {
   ) {
     errors.push(`${slug}: ponto com geometria ou metadados inválidos`);
   } else if (
-    snapshot.map.kind === "routes" &&
-    (snapshot.map.routes ?? []).some(
+    snapshot.map?.kind === "routes" &&
+    (snapshot.map?.routes ?? []).some(
       (route) =>
         !route.id?.trim() ||
         !route.label?.trim() ||
@@ -235,6 +237,60 @@ for (const slug of REACT_DEMO_SLUGS) {
         route.points[0]?.lon !== route.points.at(-1)?.lon)
     ) {
       errors.push(`${slug}: rota não retorna ao depósito`);
+    }
+  }
+  if (slug === "classificador_ocorrencias") {
+    const categoryChart = snapshot.charts.find((chart) => chart.id === "volume-categoria");
+    const priorityChart = snapshot.charts.find(
+      (chart) => chart.id === "prioridade-rotulada-sugerida",
+    );
+    const governance = snapshot.governance;
+    if (
+      snapshot.kpis.length !== 3 ||
+      snapshot.kpis.map((kpi) => kpi.label).join(",") !==
+        "Amostra útil,Concordância interna,Decisões autônomas" ||
+      snapshot.kpis[0]?.value !== "10" ||
+      snapshot.kpis[1]?.value !== "10/10" ||
+      snapshot.kpis[1]?.tone !== "warning" ||
+      snapshot.kpis[2]?.value !== "0" ||
+      snapshot.kpis[2]?.tone !== "success"
+    ) {
+      errors.push(`${slug}: KPIs devem explicitar amostra, concordância interna e autonomia zero`);
+    }
+    if (
+      snapshot.charts.length !== 2 ||
+      !categoryChart ||
+      categoryChart.kind !== "bar" ||
+      categoryChart.orientation !== "horizontal" ||
+      categoryChart.unit !== "COUNT"
+    ) {
+      errors.push(`${slug}: volume por categoria deve ser uma barra horizontal COUNT`);
+    }
+    if (
+      !priorityChart ||
+      priorityChart.kind !== "grouped-bar" ||
+      priorityChart.unit !== "COUNT" ||
+      priorityChart.series?.join(",") !== "Rotulada,Sugerida" ||
+      priorityChart.data.map((datum) => datum.label).join(",") !== "Alta,Média,Baixa" ||
+      priorityChart.data.map((datum) => datum.value).join(",") !== "5,4,1" ||
+      priorityChart.data.map((datum) => datum.secondary).join(",") !== "6,4,0"
+    ) {
+      errors.push(`${slug}: prioridades devem comparar rótulos 5/4/1 e sugestões 6/4/0`);
+    }
+    if (snapshot.map !== null) {
+      errors.push(`${slug}: prova textual não deve publicar mapa`);
+    }
+    if (
+      governance?.mode !== "human-in-the-loop" ||
+      governance.automatedDecisionCount !== 0 ||
+      !governance.reviewPolicy?.trim() ||
+      !Array.isArray(governance.reviewTriggers) ||
+      governance.reviewTriggers.join(",") !== "prioridade alta,empate,nenhum termo" ||
+      !Array.isArray(governance.prohibitedActions) ||
+      governance.prohibitedActions.join(",") !==
+        "aplicar penalidade,autorizar pagamento,bloquear entrega,encerrar ocorrência"
+    ) {
+      errors.push(`${slug}: governança human-in-the-loop ausente ou incompleta`);
     }
   }
   const jsonPath = join(process.cwd(), "contracts", "demo-snapshots", `${slug}.json`);

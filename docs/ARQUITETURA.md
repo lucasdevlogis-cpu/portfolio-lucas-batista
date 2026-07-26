@@ -51,7 +51,7 @@ flowchart LR
   BUILD --> DATA[apps/demos/data/generated]
   DATA --> EXPORT[export_demo_snapshots.py]
   EXPORT --> SNAP[contracts/demo-snapshots]
-  SNAP --> PROOFS[3 provas React]
+  SNAP --> PROOFS[10 provas React]
   DATA --> STREAMLIT[Laboratório Streamlit]
   SNAP --> WEB[Experiência pública React]
 ```
@@ -59,13 +59,13 @@ flowchart LR
 ## Next.js
 
 - `app/page.tsx` possui o `<main id="conteudo">` da homepage.
-- `app/provas/[slug]/page.tsx` gera somente os 3 slugs âncora.
+- `app/provas/[slug]/page.tsx` gera os 10 slugs públicos.
 - `app/sitemap.ts` e `app/robots.ts` substituem arquivos estáticos gerados.
 - `data/content.ts` é importado por Server Components; Client Components recebem
   props mínimos.
 - `CaseDemoLauncher` carrega `DemoModal` apenas no primeiro clique.
 - ECharts e MapLibre são importados dentro de `useEffect`, quando a prova abre.
-- No mobile, iframe Streamlit só monta após ação explícita do usuário.
+- O modal e as rotas públicas usam o mesmo shell React, sem iframe.
 
 ## Streamlit
 
@@ -82,20 +82,18 @@ presentation → settings/tokens
 domain ↛ streamlit
 ```
 
-O Streamlit não define mais a qualidade visual pública do produto. Durante a
-migração, as sete provas complementares ainda podem abrir o laboratório em
-iframe ou nova aba. Cada migração concluída substitui essa moldura por uma rota
-React que consome snapshot Python validado. O laboratório permanece útil para
-exploração, depuração e comparação de cenários.
+O Streamlit não define a qualidade visual pública do produto e não é carregado
+pela landing. As dez provas React consomem snapshots Python validados. O
+laboratório permanece útil para exploração, depuração e comparação de cenários.
 
 ## Estratégia de visualização
 
-- ECharts: gráficos analíticos das rotas React, carregados sob demanda e com
+- ECharts: gráficos analíticos das provas React, carregados sob demanda e com
   tema único derivado dos tokens.
 - MapLibre GL JS: mapas e rotas React, com estilo-base escuro e overlays
   semânticos.
-- Plotly: gráficos do laboratório Python enquanto a prova ainda não migrou.
-- Folium/Leaflet: mapas do laboratório, tratados como solução transitória.
+- Plotly: gráficos do laboratório Python.
+- Folium/Leaflet: mapas do laboratório Python.
 
 Não será introduzido monorepo framework, CMS ou biblioteca de componentes
 adicional sem ganho operacional comprovado. O repositório único já oferece a
@@ -109,7 +107,7 @@ recalcula frete, SLA ou roteirização. Alterações de schema exigem:
 1. atualizar exporter e tipos;
 2. rodar `npm run demos:export`;
 3. rodar `npm run demos:validate`;
-4. revisar as 3 rotas públicas.
+4. revisar as 10 rotas públicas.
 
 ## Artefatos
 

@@ -161,7 +161,7 @@ test.describe("Modal de demo", () => {
     );
   });
 
-  test("mantém demos secundárias em iframe Streamlit", async ({ page }) => {
+  test("abre Classificador inline com governança humana", async ({ page }) => {
     await openCases(page);
     const item = page
       .getByTestId("case-library-item")
@@ -173,10 +173,20 @@ test.describe("Modal de demo", () => {
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
-    await expect(dialog.locator("iframe")).toHaveAttribute("src", /embed=true/);
+    await expect(dialog.locator("iframe")).toHaveCount(0);
+    await expect(dialog.getByText("Amostra útil")).toBeVisible();
+    await expect(
+      dialog
+        .getByRole("region", { name: "Indicadores principais" })
+        .locator("article")
+        .filter({ hasText: "Concordância interna" }),
+    ).toContainText("10/10");
+    await expect(dialog.getByText("Governança humana")).toBeVisible();
+    await expect(dialog.getByText("Ações vedadas")).toBeVisible();
+    await expect(dialog.getByText("aplicar penalidade")).toBeVisible();
     await expect(dialog.getByRole("link", { name: /Abrir em nova aba/i })).toHaveAttribute(
       "href",
-      /streamlit\.app/,
+      "/provas/classificador_ocorrencias",
     );
   });
 
@@ -203,7 +213,7 @@ test.describe("Modal de demo", () => {
     await expect(openButton).toBeFocused();
   });
 
-  test("só monta o iframe complementar após consentimento no mobile", async ({ page }) => {
+  test("renderiza Classificador inline no mobile sem consentimento", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await openCases(page);
 
@@ -218,9 +228,10 @@ test.describe("Modal de demo", () => {
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
     await expect(dialog.locator("iframe")).toHaveCount(0);
-
-    await dialog.getByRole("button", { name: "Carregar demo aqui" }).click();
-    await expect(dialog.locator("iframe")).toHaveAttribute("src", /embed=true/);
+    await expect(dialog.getByText("Amostra útil")).toBeVisible();
+    await expect(dialog.getByRole("button", { name: /Carregar demo/i })).toHaveCount(0);
+    await dialog.getByText("Governança humana").scrollIntoViewIfNeeded();
+    await expect(dialog.getByText("encerrar ocorrência")).toBeVisible();
   });
 
   test("roadmap não oferece botão de demo", async ({ page }) => {

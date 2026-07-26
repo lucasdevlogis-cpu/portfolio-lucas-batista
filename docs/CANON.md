@@ -37,7 +37,7 @@ A navegação pública usa `Perfil · Provas · Trajetória · Contato`.
 | Grupo          | Quantidade | Renderização                                     |
 | -------------- | ---------: | ------------------------------------------------ |
 | Âncoras        |          3 | React/Next em `/provas/{slug}` e dentro do modal |
-| Complementares |          7 | Streamlit como laboratório durante a migração    |
+| Complementares |          7 | React/Next em `/provas/{slug}` e dentro do modal |
 | Roadmap        |          1 | conteúdo editorial, sem link publicado           |
 
 Âncoras: precificação de frete, torre de controle e CVRP urbano.
@@ -52,7 +52,7 @@ consistentes.
 | ------------------------------------- | ----------------------------- | --------------------------------- |
 | Copy, carreira, cases, CTA e metadata | `data/content.ts`             | componentes, metadata e CV        |
 | Slug, page, tier e publicação         | `contracts/demo-catalog.json` | Next, validações e Streamlit      |
-| Cálculos das âncoras                  | Python em `apps/demos/`       | `contracts/demo-snapshots/*.json` |
+| Cálculos das provas                   | Python em `apps/demos/`       | `contracts/demo-snapshots/*.json` |
 | Tokens                                | `design/tokens.json`          | CSS, Python e config Streamlit    |
 | Fila                                  | `docs/ROADMAP.md`             | execução e handoff                |
 
@@ -65,10 +65,9 @@ Arquivos gerados não devem ser editados manualmente.
 - Visualizações usam paleta semântica curta; nada de arco-íris.
 - A landing é seletiva; profundidade fica nas provas.
 - Dados são sintéticos, públicos ou anonimizados.
-- O modal não replica um site nas âncoras: renderiza o shell React diretamente.
-- React/Next é a experiência pública desejada para as dez provas.
-- Streamlit é laboratório técnico e fallback transitório, não o framework
-  visual final do portfólio.
+- O modal renderiza o shell React diretamente nas dez provas, sem iframe.
+- React/Next é a experiência pública das dez provas.
+- Streamlit é laboratório técnico e não integra a navegação pública.
 - Python permanece como origem de cálculos e contratos; a interface React não
   duplica regra de negócio.
 
@@ -87,31 +86,28 @@ Arquivos gerados não devem ser editados manualmente.
 - topologia de repositório único validada;
 - clones locais antigos arquivados fora da árvore ativa, sem perda de histórico;
 - tokens sincronizados;
-- catálogo e 3 snapshots válidos;
+- catálogo e 10 snapshots válidos;
 - datasets reproduzíveis;
 - TypeScript, ESLint, Ruff, pytest e build aprovados;
 - smoke Streamlit 13/13;
 - Playwright 17/17;
 - QA visual renovado em 375, 768 e 1440 px;
-- QA Streamlit local em 12 rotas desktop e 7 embeds mobile;
-- QA Streamlit público na origem canônica em 12 rotas desktop e 7 embeds mobile;
+- QA Streamlit mantém a bateria desktop do laboratório;
 - Lighthouse de produção desktop 100/100/100/100 e mobile 96/100/100/100;
 - `npm audit` com 0 vulnerabilidades;
 - CV regenerado a partir do conteúdo atual.
 
 Resultados detalhados e próximos passos ficam em `QUALIDADE.md` e `ROADMAP.md`.
-A CI da `main` está verde, a landing foi recompilada com a origem Streamlit
-canônica e a integração pública foi validada. A aplicação legada permanece
-somente como rollback até sua retirada deliberada.
+A CI da `main` está verde e a integração pública usa exclusivamente as rotas
+React. O laboratório Streamlit permanece implantável de forma independente.
 
 ## URLs públicas
 
 - Landing: <https://portfolio-lucas-batista-murex.vercel.app>
-- Demos:
+- Laboratório Streamlit:
   <https://portfolio-lucas-batista-asbsqusjhhbyje6pktjpvw.streamlit.app>
 - Repositório canônico:
   <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista>
 
 A aplicação Streamlit usa este repositório, a branch `main` e o entrypoint
-`apps/demos/app.py`. A aplicação legada permanece apenas como rollback até o
-corte da landing ser confirmado, conforme `OPERACAO.md`.
+`apps/demos/app.py`; ela não é dependência da experiência pública React.

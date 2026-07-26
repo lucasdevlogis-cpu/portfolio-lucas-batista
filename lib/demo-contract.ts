@@ -1,4 +1,5 @@
 import auditoriaSnapshot from "@/contracts/demo-snapshots/auditoria_endereco.json";
+import classificadorSnapshot from "@/contracts/demo-snapshots/classificador_ocorrencias.json";
 import cvrpSnapshot from "@/contracts/demo-snapshots/cvrp_urbano.json";
 import towerSnapshot from "@/contracts/demo-snapshots/mini_torre_controle.json";
 import promessaSnapshot from "@/contracts/demo-snapshots/promessa_cep.json";
@@ -19,6 +20,7 @@ export const REACT_DEMO_SLUGS = [
   "vrptw_ultima_milha",
   "auditoria_endereco",
   "tsp_baseline_sp",
+  "classificador_ocorrencias",
 ] as const;
 
 export type DemoTone = "accent" | "danger" | "warning" | "success";
@@ -91,6 +93,14 @@ export interface DemoMap {
   routes?: DemoRoute[];
 }
 
+export interface DemoGovernance {
+  mode: "human-in-the-loop";
+  automatedDecisionCount: 0;
+  reviewPolicy: string;
+  reviewTriggers: string[];
+  prohibitedActions: string[];
+}
+
 export interface DemoSnapshot {
   slug: string;
   caseId: string;
@@ -103,6 +113,7 @@ export interface DemoSnapshot {
   kpis: DemoKpi[];
   charts: DemoChart[];
   map: DemoMap | null;
+  governance?: DemoGovernance;
 }
 
 export const DEMO_SNAPSHOTS: Record<string, DemoSnapshot> = {
@@ -115,6 +126,7 @@ export const DEMO_SNAPSHOTS: Record<string, DemoSnapshot> = {
   vrptw_ultima_milha: vrptwSnapshot as DemoSnapshot,
   auditoria_endereco: auditoriaSnapshot as DemoSnapshot,
   tsp_baseline_sp: tspSnapshot as DemoSnapshot,
+  classificador_ocorrencias: classificadorSnapshot as DemoSnapshot,
 };
 
 export function getDemoSnapshot(slug: string): DemoSnapshot | null {

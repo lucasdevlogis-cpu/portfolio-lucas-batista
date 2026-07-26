@@ -48,10 +48,10 @@ Toda prova pública começa pela decisão, não pela ferramenta:
 
 `pergunta → decisão → até 3 KPIs → visual principal → método → limite → CTA`
 
-As três âncoras usam React/Next, ECharts e MapLibre. As sete complementares
-continuam disponíveis no laboratório Streamlit durante a migração, mas o
-Streamlit deixa de ser a moldura pública desejada. Python continua sendo a
-origem dos cálculos e exporta snapshots tipados para a web.
+As dez provas públicas usam React/Next e ECharts; MapLibre aparece somente onde
+há evidência espacial. O Streamlit permanece como laboratório independente.
+Python continua sendo a origem dos cálculos e exporta snapshots tipados para a
+web.
 
 ## Gráficos
 

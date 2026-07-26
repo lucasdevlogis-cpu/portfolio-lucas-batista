@@ -34,10 +34,10 @@ repositório com main file `apps/demos/app.py`.
 
 ## Stack
 
-- Next.js 16.2.10, React 19.2.4 e TypeScript;
+- Next.js 16.2.12, React 19.2.4 e TypeScript;
 - Tailwind CSS v4 em `app/globals.css`, sem `tailwind.config.ts`;
 - Base UI para dialog, Lucide para ícones;
-- ECharts e MapLibre carregados sob demanda nas 3 âncoras;
+- ECharts e MapLibre carregados sob demanda nas provas que usam esses visuais;
 - Motion para revelações editoriais curtas e respeitando reduced motion;
 - Streamlit 1.58, Pandas, Plotly, Folium e NumPy no laboratório transitório;
 - Playwright, Lighthouse, ESLint, Ruff e pytest para qualidade.
@@ -149,8 +149,7 @@ Markdown ou Python.
   sem `output: "export"`.
 - Streamlit Cloud: repo `portfolio-lucas-batista`, branch `main`, main file
   `apps/demos/app.py`.
-- Variáveis obrigatórias nos três ambientes Vercel:
-  `NEXT_PUBLIC_SITE_URL` e `NEXT_PUBLIC_DEMOS_BASE_URL`.
+- Variável obrigatória nos três ambientes Vercel: `NEXT_PUBLIC_SITE_URL`.
 - Não publicar, alterar serviços externos ou fazer push sem autorização
   explícita.
 
