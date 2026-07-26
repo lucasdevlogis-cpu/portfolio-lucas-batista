@@ -213,6 +213,26 @@ parada.
 | QA visual Playwright               | rota desktop/mobile + modal aprovados  |
 | comparação operacional             | baseline 3 violações → EDF 0 violações |
 
+### P1.5 — Auditoria de Endereço
+
+Concluído em 25/07/2026 pela PR #16. A rota pública
+`/provas/auditoria_endereco` consome
+`contracts/demo-snapshots/auditoria_endereco.json`; o modal da homepage
+renderiza a prova inline sem iframe Streamlit. A prova explicita 15 bloqueios,
+30 revisões e 15 endereços aptos; o mapa mostra 45 coordenadas válidas e mantém
+visível a exclusão dos 15 bloqueados fora dos limites territoriais.
+
+| Evidência                          | Resultado                                |
+| ---------------------------------- | ---------------------------------------- |
+| `npm run verify:full`              | aprovado                                 |
+| `npm run demos:validate`           | 8 snapshots React válidos                |
+| `npm run demos:smoke`              | 13/13                                    |
+| `npm run test:e2e`                 | 27/27                                    |
+| pytest                             | 33/33                                    |
+| `npm audit --audit-level=moderate` | 0 vulnerabilidades                       |
+| QA visual Playwright               | rota desktop/mobile + modal aprovados    |
+| cobertura territorial              | 45 exibidos · 15 bloqueados fora do mapa |
+
 O baseline público aceito desta refatoração é 100/100/100/100 em desktop e
 96/100/100/100 em mobile, usando a mediana de três execuções. Resultados locais
 continuam como evidência rápida de regressão; a origem Streamlit canônica também
