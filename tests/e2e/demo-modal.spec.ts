@@ -78,6 +78,25 @@ test.describe("Modal de demo", () => {
     );
   });
 
+  test("abre prova migrada (Rede Inter-hubs) inline sem iframe", async ({ page }) => {
+    await openCases(page);
+    const item = page
+      .getByTestId("case-library-item")
+      .filter({ hasText: "Rede Inter-hubs / Corredores" });
+    await item.scrollIntoViewIfNeeded();
+    await item.getByRole("button", { name: /Explorar case: Rede Inter-hubs/i }).click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator("iframe")).toHaveCount(0);
+    await expect(dialog.getByText("Prova migrada · leitura rápida")).toBeVisible();
+    await expect(dialog.getByText("Melhor corredor")).toBeVisible();
+    await expect(dialog.getByRole("link", { name: /Abrir em nova aba/i })).toHaveAttribute(
+      "href",
+      "/provas/rede_interhubs",
+    );
+  });
+
   test("mantém demos secundárias em iframe Streamlit", async ({ page }) => {
     await openCases(page);
     const item = page

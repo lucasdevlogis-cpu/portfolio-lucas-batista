@@ -17,6 +17,7 @@ sys.path.insert(0, str(APP_DIR))
 
 from domain import freight as frete  # noqa: E402
 from domain import promessa_cep as cep  # noqa: E402
+from domain import rede_interhubs as rede  # noqa: E402
 from domain import routing as geo  # noqa: E402
 from domain import ship_from_store as sfs  # noqa: E402
 from settings import DEMO_SNAPSHOT_DIR, GENERATED_DATA_DIR  # noqa: E402
@@ -526,6 +527,92 @@ def ship_from_store_snapshot() -> dict:
     return result
 
 
+def rede_interhubs_snapshot() -> dict:
+    df = pd.read_csv(GENERATED_DATA_DIR / "corredores_geo.csv")
+    base = rede.calcular_corredores(df)
+
+    melhor = base.iloc[0]
+    media_ton = float(base["custo_por_ton"].mean())
+    volume_total = float(base["volume_ton"].sum())
+
+    nodes: dict[str, tuple[float, float]] = {}
+    for _, r in base.iterrows():
+        nodes[str(r["origem"])] = (float(r["origem_lat"]), float(r["origem_lon"]))
+        nodes[str(r["destino"])] = (float(r["destino_lat"]), float(r["destino_lon"]))
+
+    edges = []
+    for _, r in base.iterrows():
+        edges.append(
+            {
+                "from": [number(r["origem_lat"], 4), number(r["origem_lon"], 4)],
+                "to": [number(r["destino_lat"], 4), number(r["destino_lon"], 4)],
+                "label": (
+                    f"{r['lane']} | "
+                    f"Volume: {r['volume_ton']:.0f} t | "
+                    f"Distância: {r['distance_km']:.0f} km | "
+                    f"Custo/ton: R$ {r['custo_por_ton']:.2f}"
+                ),
+                "value": number(r["volume_ton"], 1),
+            }
+        )
+
+    result = snapshot_base(
+        "rede_interhubs",
+        "10-rede-interhubs",
+        "Rede inter-hubs / Corredores",
+        "Qual corredor tem melhor custo por tonelada e onde priorizar consolidação?",
+        "Priorizar consolidação e negociação nas lanes de maior custo por tonelada.",
+        "Custo paramétrico sobre amostra curada. Produção usaria malha real e pedágio vigente.",
+        "Custo do corredor = distância × custo_km + volume × distância × custo_ton_km; normaliza por tonelada para comparar lanes de volumes diferentes.",
+        ["Pandas", "Custo por tonelada", "Desenho de rede"],
+    )
+    result["kpis"] = [
+        {
+            "label": "Melhor corredor",
+            "value": f"{melhor['lane']} · R$ {melhor['custo_por_ton']:.0f}/t",
+            "tone": "success",
+        },
+        {"label": "Volume total", "value": f"{volume_total:.0f} t"},
+        {"label": "Custo médio / ton", "value": money(media_ton, 0)},
+    ]
+    result["charts"] = [
+        {
+            "id": "ranking-custo-ton",
+            "title": "Custo por tonelada por corredor",
+            "kind": "bar",
+            "unit": "BRL",
+            "data": [
+                {"label": str(row["lane"]), "value": number(row["custo_por_ton"], 2)}
+                for _, row in base.iterrows()
+            ],
+            "reference": number(media_ton, 2),
+        },
+        {
+            "id": "volume-por-corredor",
+            "title": "Volume por corredor",
+            "kind": "bar",
+            "unit": "TON",
+            "data": [
+                {"label": str(row["lane"]), "value": number(row["volume_ton"], 1)}
+                for _, row in base.iterrows()
+            ],
+        },
+    ]
+    center_lat = sum(coord[0] for coord in nodes.values()) / len(nodes)
+    center_lon = sum(coord[1] for coord in nodes.values()) / len(nodes)
+    result["map"] = {
+        "kind": "network",
+        "center": [number(center_lat, 4), number(center_lon, 4)],
+        "zoom": 4,
+        "nodes": [
+            {"id": city, "lat": number(coord[0], 4), "lon": number(coord[1], 4)}
+            for city, coord in nodes.items()
+        ],
+        "edges": edges,
+    }
+    return result
+
+
 def main() -> None:
     DEMO_SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
     snapshots = [
@@ -534,6 +621,7 @@ def main() -> None:
         cvrp_snapshot(),
         promessa_cep_snapshot(),
         ship_from_store_snapshot(),
+        rede_interhubs_snapshot(),
     ]
     for snapshot in snapshots:
         path = DEMO_SNAPSHOT_DIR / f"{snapshot['slug']}.json"

@@ -7,6 +7,7 @@ rede em Folium e ranking de lanes para priorização e negociação.
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from domain import rede_interhubs as rede
 from presentation import formatters as fmt
 from presentation import maps as fm
 from presentation import tables, ui
@@ -49,12 +50,7 @@ if base.empty:
     ui.footer()
     st.stop()
 
-base["custo_total"] = (
-    base["distance_km"] * rate_km + base["volume_ton"] * base["distance_km"] * ton_km
-).round(2)
-base["custo_por_ton"] = (base["custo_total"] / base["volume_ton"]).round(2)
-base["lane"] = base["origem"] + " → " + base["destino"]
-base = base.sort_values("custo_por_ton")
+base = rede.calcular_corredores(base, rate_km=rate_km, ton_km=ton_km)
 
 melhor = base.iloc[0]
 media_ton = base["custo_por_ton"].mean()

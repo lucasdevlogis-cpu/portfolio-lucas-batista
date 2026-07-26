@@ -2,12 +2,18 @@ import cvrpSnapshot from "@/contracts/demo-snapshots/cvrp_urbano.json";
 import towerSnapshot from "@/contracts/demo-snapshots/mini_torre_controle.json";
 import promessaSnapshot from "@/contracts/demo-snapshots/promessa_cep.json";
 import freightSnapshot from "@/contracts/demo-snapshots/precificacao_frete.json";
+import redeInterhubsSnapshot from "@/contracts/demo-snapshots/rede_interhubs.json";
 import shipSnapshot from "@/contracts/demo-snapshots/ship_from_store.json";
 import { ANCHOR_DEMO_SLUGS } from "@/lib/demo-catalog";
 
 export { ANCHOR_DEMO_SLUGS } from "@/lib/demo-catalog";
 
-export const REACT_DEMO_SLUGS = [...ANCHOR_DEMO_SLUGS, "promessa_cep", "ship_from_store"] as const;
+export const REACT_DEMO_SLUGS = [
+  ...ANCHOR_DEMO_SLUGS,
+  "promessa_cep",
+  "ship_from_store",
+  "rede_interhubs",
+] as const;
 
 export type DemoTone = "accent" | "danger" | "warning" | "success";
 
@@ -27,7 +33,7 @@ export interface DemoChart {
   id: string;
   title: string;
   kind: "bar" | "grouped-bar" | "donut";
-  unit?: "BRL" | "KM" | "PERCENT";
+  unit?: "BRL" | "KM" | "PERCENT" | "TON";
   data: DemoChartDatum[];
   series?: string[];
   reference?: number;
@@ -84,6 +90,7 @@ export const DEMO_SNAPSHOTS: Record<string, DemoSnapshot> = {
   cvrp_urbano: cvrpSnapshot as DemoSnapshot,
   promessa_cep: promessaSnapshot as DemoSnapshot,
   ship_from_store: shipSnapshot as DemoSnapshot,
+  rede_interhubs: redeInterhubsSnapshot as DemoSnapshot,
 };
 
 export function getDemoSnapshot(slug: string): DemoSnapshot | null {
