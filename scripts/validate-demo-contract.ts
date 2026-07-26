@@ -5,8 +5,8 @@ import { DEMO_SNAPSHOTS, REACT_DEMO_SLUGS, type DemoSnapshot } from "../lib/demo
 
 const errors: string[] = [];
 const tones = new Set(["accent", "danger", "warning", "success"]);
-const chartKinds = new Set(["bar", "grouped-bar", "donut"]);
-const chartUnits = new Set(["BRL", "KM", "PERCENT", "TON"]);
+const chartKinds = new Set(["bar", "grouped-bar", "donut", "time-window"]);
+const chartUnits = new Set(["BRL", "KM", "PERCENT", "TON", "MINUTE"]);
 const mapKinds = new Set(["network", "points", "routes", "flows"]);
 const requiredStrings: (keyof DemoSnapshot)[] = [
   "slug",
@@ -64,11 +64,36 @@ for (const slug of REACT_DEMO_SLUGS) {
     if (!Array.isArray(chart.data) || chart.data.length < 1) {
       errors.push(`${slug}: gráfico ${chart.id || index + 1} sem dados`);
     }
+    const datumLabels = new Set<string>();
     chart.data.forEach((datum) => {
       if (!datum.label?.trim() || !Number.isFinite(datum.value)) {
         errors.push(`${slug}: dado inválido no gráfico ${chart.id || index + 1}`);
       }
+      if (datumLabels.has(datum.label)) {
+        errors.push(
+          `${slug}: label duplicado no gráfico ${chart.id || index + 1} (${datum.label})`,
+        );
+      }
+      datumLabels.add(datum.label);
+      if (datum.tone && !tones.has(datum.tone)) {
+        errors.push(`${slug}: dado com tone inválido no gráfico ${chart.id || index + 1}`);
+      }
+      if (
+        chart.kind === "time-window" &&
+        (!Number.isFinite(datum.secondary) ||
+          !Number.isFinite(datum.arrival) ||
+          (datum.secondary ?? 0) <= datum.value ||
+          !datum.detail?.trim())
+      ) {
+        errors.push(`${slug}: janela temporal inválida no gráfico ${chart.id || index + 1}`);
+      }
     });
+    if (
+      chart.kind === "time-window" &&
+      (chart.unit !== "MINUTE" || !chart.series || chart.series.length !== 2)
+    ) {
+      errors.push(`${slug}: gráfico temporal deve declarar MINUTE e duas séries`);
+    }
   });
   if (!snapshot.map) {
     errors.push(`${slug}: mapa ausente`);
@@ -84,6 +109,38 @@ for (const slug of REACT_DEMO_SLUGS) {
     (!snapshot.map.nodes?.length || !snapshot.map.edges?.length)
   ) {
     errors.push(`${slug}: mapa de rede sem nós ou corredores`);
+  } else if (snapshot.map.kind === "routes" && !snapshot.map.routes?.length) {
+    errors.push(`${slug}: mapa de rotas sem rota ou pontos`);
+  } else if (
+    snapshot.map.kind === "routes" &&
+    (snapshot.map.routes ?? []).some(
+      (route) =>
+        !route.id?.trim() ||
+        !route.label?.trim() ||
+        route.points.length < 2 ||
+        route.points.some((point) => !Number.isFinite(point.lat) || !Number.isFinite(point.lon)),
+    )
+  ) {
+    errors.push(`${slug}: rota com geometria ou metadados inválidos`);
+  }
+  if (slug === "vrptw_ultima_milha" && snapshot.map?.kind === "routes") {
+    const stops = (snapshot.map.routes ?? []).flatMap((route) =>
+      route.points.filter((point) => point.sequence !== undefined),
+    );
+    if (!snapshot.map.title?.trim() || stops.length < 1) {
+      errors.push(`${slug}: mapa deve declarar título e paradas sequenciadas`);
+    }
+    stops.forEach((point, index) => {
+      if (
+        point.sequence !== index + 1 ||
+        !point.label?.trim() ||
+        !point.detail?.trim() ||
+        !point.tone ||
+        !tones.has(point.tone)
+      ) {
+        errors.push(`${slug}: parada ${index + 1} sem sequência/SLA verificável`);
+      }
+    });
   }
   const jsonPath = join(process.cwd(), "contracts", "demo-snapshots", `${slug}.json`);
   if (!existsSync(jsonPath)) {

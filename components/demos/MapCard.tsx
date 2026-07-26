@@ -36,12 +36,19 @@ const legendToneClass: Record<LegendTone, string> = {
 
 function legendForMap(mapData: DemoMap): { label: string; tone: LegendTone }[] {
   if (mapData.kind === "routes") {
+    const routePoints = (mapData.routes ?? []).flatMap((route) => route.points);
     return [
       ...(mapData.depot ? [{ label: mapData.depot.label, tone: "warm" as const }] : []),
       ...(mapData.routes ?? []).map((route, index) => ({
         label: route.label,
         tone: index % 2 ? ("accent" as const) : ("primary" as const),
       })),
+      ...(routePoints.some((point) => point.tone === "success")
+        ? [{ label: "Parada no prazo", tone: "success" as const }]
+        : []),
+      ...(routePoints.some((point) => point.tone === "danger")
+        ? [{ label: "Violação de SLA", tone: "danger" as const }]
+        : []),
     ];
   }
 
@@ -174,8 +181,10 @@ function featuresForMap(mapData: DemoMap): Feature[] {
         geometry: { type: "Point" as const, coordinates: [point.lon, point.lat] },
         properties: {
           kind: "route-point",
-          label: route.label,
-          tone: routeIndex % 2 ? "accent" : "primary",
+          label: point.label ?? route.label,
+          ...(point.detail ? { detail: point.detail } : {}),
+          ...(point.sequence !== undefined ? { sequence: point.sequence } : {}),
+          tone: point.tone ?? (routeIndex % 2 ? "accent" : "primary"),
         },
       })),
     ]),
@@ -341,6 +350,22 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
             "circle-radius": ["match", ["get", "kind"], "depot", 8, "node", 6, 4.5],
             "circle-stroke-color": card,
             "circle-stroke-width": 2,
+          },
+        });
+        map.addLayer({
+          id: "route-sequence",
+          type: "symbol",
+          source: "demo-data",
+          filter: ["all", ["==", ["get", "kind"], "route-point"], ["has", "sequence"]],
+          layout: {
+            "text-field": ["to-string", ["get", "sequence"]],
+            "text-size": 10,
+            "text-allow-overlap": true,
+          },
+          paint: {
+            "text-color": card,
+            "text-halo-color": card,
+            "text-halo-width": 0.5,
           },
         });
         map.addControl(new maplibre.NavigationControl({ showCompass: false }), "top-right");

@@ -1,0 +1,221 @@
+{
+  "slug": "vrptw_ultima_milha",
+  "caseId": "09-vrptw-ultima-milha",
+  "title": "Última milha com janelas",
+  "question": "A sequência de entregas respeita as janelas prometidas ao cliente?",
+  "decision": "Ordenar entregas por prazo para reduzir violações de janela.",
+  "limitation": "Simulação com velocidade média constante. Produção usaria PyVRP com time windows e trânsito real.",
+  "method": "EDF (earliest-deadline-first) sobre distância Haversine; comparação com ordem de cadastro.",
+  "frameworks": [
+    "VRPTW",
+    "PyVRP",
+    "Janela de tempo"
+  ],
+  "kpis": [
+    {
+      "label": "Violações SLA",
+      "value": "0",
+      "tone": "success"
+    },
+    {
+      "label": "Espera total",
+      "value": "86 min",
+      "tone": "warning"
+    },
+    {
+      "label": "Última entrega",
+      "value": "13:15"
+    }
+  ],
+  "charts": [
+    {
+      "id": "janela-vs-chegada",
+      "title": "Janela prometida × chegada planejada",
+      "kind": "time-window",
+      "unit": "MINUTE",
+      "data": [
+        {
+          "label": "01 · Farmacia Centro · TW-001",
+          "value": 540,
+          "secondary": 720,
+          "arrival": 502.8,
+          "tone": "success",
+          "detail": "Janela 09:00–12:00 · chegada 08:23 · espera 37 min · No prazo"
+        },
+        {
+          "label": "02 · Farmacia Centro · TW-005",
+          "value": 540,
+          "secondary": 720,
+          "arrival": 561.1,
+          "tone": "success",
+          "detail": "Janela 09:00–12:00 · chegada 09:21 · espera 0 min · No prazo"
+        },
+        {
+          "label": "03 · Cliente B2C Moema · TW-002",
+          "value": 600,
+          "secondary": 780,
+          "arrival": 589.3,
+          "tone": "success",
+          "detail": "Janela 10:00–13:00 · chegada 09:49 · espera 11 min · No prazo"
+        },
+        {
+          "label": "04 · Cliente B2C Moema · TW-006",
+          "value": 600,
+          "secondary": 780,
+          "arrival": 614.5,
+          "tone": "success",
+          "detail": "Janela 10:00–13:00 · chegada 10:14 · espera 0 min · No prazo"
+        },
+        {
+          "label": "05 · Loja Tatuape · TW-003",
+          "value": 660,
+          "secondary": 840,
+          "arrival": 661.3,
+          "tone": "success",
+          "detail": "Janela 11:00–14:00 · chegada 11:01 · espera 0 min · No prazo"
+        },
+        {
+          "label": "06 · Loja Tatuape · TW-007",
+          "value": 660,
+          "secondary": 840,
+          "arrival": 681.3,
+          "tone": "success",
+          "detail": "Janela 11:00–14:00 · chegada 11:21 · espera 0 min · No prazo"
+        },
+        {
+          "label": "07 · Cliente Lapa · TW-004",
+          "value": 780,
+          "secondary": 960,
+          "arrival": 742.2,
+          "tone": "success",
+          "detail": "Janela 13:00–16:00 · chegada 12:22 · espera 38 min · No prazo"
+        },
+        {
+          "label": "08 · Cliente Lapa · TW-008",
+          "value": 780,
+          "secondary": 960,
+          "arrival": 794.9,
+          "tone": "success",
+          "detail": "Janela 13:00–16:00 · chegada 13:15 · espera 0 min · No prazo"
+        }
+      ],
+      "series": [
+        "Janela prometida",
+        "Chegada planejada"
+      ]
+    },
+    {
+      "id": "sla-comparison",
+      "title": "Violações de SLA: baseline → EDF",
+      "kind": "bar",
+      "data": [
+        {
+          "label": "Ordem de cadastro",
+          "value": 3,
+          "tone": "danger"
+        },
+        {
+          "label": "EDF (heurístico)",
+          "value": 0,
+          "tone": "success"
+        }
+      ]
+    }
+  ],
+  "map": {
+    "kind": "routes",
+    "title": "Sequência EDF e cumprimento das janelas",
+    "center": [
+      -23.51,
+      -46.72
+    ],
+    "zoom": 11,
+    "depot": {
+      "lat": -23.51,
+      "lon": -46.72,
+      "label": "CD / origem"
+    },
+    "routes": [
+      {
+        "id": "route-edf",
+        "label": "Direção EDF 1 → 8 → CD · 66,6 km",
+        "points": [
+          {
+            "lat": -23.51,
+            "lon": -46.72,
+            "label": "CD · saída"
+          },
+          {
+            "lat": -23.540192,
+            "lon": -46.644851,
+            "sequence": 1,
+            "label": "01 · Farmacia Centro",
+            "detail": "TW-001 · janela 09:00–12:00 · chegada 08:23 · No prazo",
+            "tone": "success"
+          },
+          {
+            "lat": -23.578975,
+            "lon": -46.624374,
+            "sequence": 2,
+            "label": "02 · Farmacia Centro",
+            "detail": "TW-005 · janela 09:00–12:00 · chegada 09:21 · No prazo",
+            "tone": "success"
+          },
+          {
+            "lat": -23.621652,
+            "lon": -46.680432,
+            "sequence": 3,
+            "label": "03 · Cliente B2C Moema",
+            "detail": "TW-002 · janela 10:00–13:00 · chegada 09:49 · No prazo",
+            "tone": "success"
+          },
+          {
+            "lat": -23.634753,
+            "lon": -46.653424,
+            "sequence": 4,
+            "label": "04 · Cliente B2C Moema",
+            "detail": "TW-006 · janela 10:00–13:00 · chegada 10:14 · No prazo",
+            "tone": "success"
+          },
+          {
+            "lat": -23.525541,
+            "lon": -46.567638,
+            "sequence": 5,
+            "label": "05 · Loja Tatuape",
+            "detail": "TW-003 · janela 11:00–14:00 · chegada 11:01 · No prazo",
+            "tone": "success"
+          },
+          {
+            "lat": -23.55308,
+            "lon": -46.547576,
+            "sequence": 6,
+            "label": "06 · Loja Tatuape",
+            "detail": "TW-007 · janela 11:00–14:00 · chegada 11:21 · No prazo",
+            "tone": "success"
+          },
+          {
+            "lat": -23.516739,
+            "lon": -46.726286,
+            "sequence": 7,
+            "label": "07 · Cliente Lapa",
+            "detail": "TW-004 · janela 13:00–16:00 · chegada 12:22 · No prazo",
+            "tone": "success"
+          },
+          {
+            "lat": -23.526858,
+            "lon": -46.700222,
+            "sequence": 8,
+            "label": "08 · Cliente Lapa",
+            "detail": "TW-008 · janela 13:00–16:00 · chegada 13:15 · No prazo",
+            "tone": "success"
+          },
+          {
+            "lat": -23.51,
+            "lon": -46.72,
+            "label": "CD · retorno"
+          }
+        ]
+      }
+    ]
+  }
+}
