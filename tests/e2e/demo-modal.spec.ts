@@ -42,13 +42,31 @@ test.describe("Modal de demo", () => {
     await expect(dialog).not.toBeVisible();
   });
 
-  test("mantém demos secundárias em iframe Streamlit", async ({ page }) => {
+  test("abre prova migrada (Promessa de CEP) inline sem iframe", async ({ page }) => {
     await openCases(page);
     const item = page
       .getByTestId("case-library-item")
       .filter({ hasText: "Promessa de Entrega por CEP" });
     await item.scrollIntoViewIfNeeded();
     await item.getByRole("button", { name: /Explorar case: Promessa de Entrega por CEP/i }).click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator("iframe")).toHaveCount(0);
+    await expect(dialog.getByText("Região de maior risco")).toBeVisible();
+    await expect(dialog.getByRole("link", { name: /Abrir em nova aba/i })).toHaveAttribute(
+      "href",
+      "/provas/promessa_cep",
+    );
+  });
+
+  test("mantém demos secundárias em iframe Streamlit", async ({ page }) => {
+    await openCases(page);
+    const item = page
+      .getByTestId("case-library-item")
+      .filter({ hasText: "Ship from Store / Origem Ótima" });
+    await item.scrollIntoViewIfNeeded();
+    await item.getByRole("button", { name: /Explorar case: Ship from Store/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
@@ -88,9 +106,9 @@ test.describe("Modal de demo", () => {
 
     const item = page
       .getByTestId("case-library-item")
-      .filter({ hasText: "Promessa de Entrega por CEP" });
+      .filter({ hasText: "Ship from Store / Origem Ótima" });
     await item.scrollIntoViewIfNeeded();
-    await item.getByRole("button", { name: /Explorar case: Promessa de Entrega por CEP/i }).click();
+    await item.getByRole("button", { name: /Explorar case: Ship from Store/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();

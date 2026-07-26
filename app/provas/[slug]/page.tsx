@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { DemoShell } from "@/components/demos/DemoShell";
-import { ANCHOR_DEMO_SLUGS, getDemoSnapshot } from "@/lib/demo-contract";
+import { REACT_DEMO_SLUGS, getDemoSnapshot } from "@/lib/demo-contract";
 
 interface DemoPageProps {
   params: Promise<{ slug: string }>;
 }
 
 export function generateStaticParams() {
-  return ANCHOR_DEMO_SLUGS.map((slug) => ({ slug }));
+  return REACT_DEMO_SLUGS.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: DemoPageProps): Promise<Metadata> {

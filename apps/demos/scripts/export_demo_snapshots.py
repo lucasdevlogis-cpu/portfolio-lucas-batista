@@ -16,6 +16,7 @@ APP_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(APP_DIR))
 
 from domain import freight as frete  # noqa: E402
+from domain import promessa_cep as cep  # noqa: E402
 from domain import routing as geo  # noqa: E402
 from settings import DEMO_SNAPSHOT_DIR, GENERATED_DATA_DIR  # noqa: E402
 
@@ -351,9 +352,94 @@ def cvrp_snapshot() -> dict:
     return result
 
 
+def promessa_cep_snapshot() -> dict:
+    df = pd.read_csv(GENERATED_DATA_DIR / "promessa_cep.csv", dtype={"cep5": str})
+    df = cep.adicionar_score_e_severidade(df)
+    pior_regiao, score_max = cep.pior_regiao(df)
+    insucesso_medio = df["taxa_insucesso_pct"].mean()
+    prazo_medio = df["prazo_medio_dias"].mean()
+
+    result = snapshot_base(
+        "promessa_cep",
+        "03-promessa-cep",
+        "Promessa de Entrega por CEP",
+        "Qual praça concentra risco de atraso e insucesso na promessa?",
+        "Ajustar prazo, risco e modalidade por região.",
+        "CEP e geocoding são apoio, não verdade absoluta. Precisa validar com dados reais do cliente.",
+        "Score heurístico combinando insucesso, prazo e custo; agregação territorial por CEP5.",
+        ["Análise territorial", "H3 (produção)"],
+    )
+    result["kpis"] = [
+        {
+            "label": "Região de maior risco",
+            "value": pior_regiao,
+            "tone": "danger" if score_max >= cep.SEVERITY_CRITICAL_THRESHOLD else "warning",
+        },
+        {
+            "label": "Insucesso médio",
+            "value": f"{decimal(insucesso_medio)}%",
+            "tone": "danger"
+            if insucesso_medio > 8
+            else "warning"
+            if insucesso_medio > 5
+            else "success",
+        },
+        {
+            "label": "Prazo médio",
+            "value": f"{decimal(prazo_medio)} dias",
+            "tone": "danger" if prazo_medio > 5 else "warning" if prazo_medio > 3 else "success",
+        },
+    ]
+
+    custo_por_regiao = (
+        df.groupby("regiao")["custo_medio_frete"].mean().sort_values(ascending=False).reset_index()
+    )
+    result["charts"] = [
+        {
+            "id": "custo-por-regiao",
+            "title": "Custo médio por região",
+            "kind": "bar",
+            "unit": "BRL",
+            "data": [
+                {"label": row.regiao, "value": number(row.custo_medio_frete, 2)}
+                for row in custo_por_regiao.itertuples(index=False)
+            ],
+        },
+        {
+            "id": "distribuicao-severidade",
+            "title": "Distribuição de severidade",
+            "kind": "donut",
+            "data": [
+                {"label": str(label), "value": int(value)}
+                for label, value in df["severidade"].value_counts().items()
+            ],
+        },
+    ]
+
+    # Amostra representativa para o mapa: mantém visibilidade sem sobrecarregar
+    # a renderização com todos os CEPs gerados.
+    amostra = df.nlargest(100, "score_risco")
+    result["map"] = {
+        "kind": "points",
+        "center": [-15.0, -50.0],
+        "zoom": 4,
+        "points": [
+            {
+                "id": row.cep5,
+                "lat": number(row.lat, 5),
+                "lon": number(row.lon, 5),
+                "label": row.severidade,
+                "detail": f"{row.regiao} · {row.modalidade}",
+            }
+            for row in amostra.itertuples(index=False)
+        ],
+    }
+    return result
+
+
 def main() -> None:
     DEMO_SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
-    snapshots = [freight_snapshot(), tower_snapshot(), cvrp_snapshot()]
+    snapshots = [freight_snapshot(), tower_snapshot(), cvrp_snapshot(), promessa_cep_snapshot()]
     for snapshot in snapshots:
         path = DEMO_SNAPSHOT_DIR / f"{snapshot['slug']}.json"
         path.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

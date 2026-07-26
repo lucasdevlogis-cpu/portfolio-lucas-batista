@@ -1,0 +1,785 @@
+{
+  "slug": "promessa_cep",
+  "caseId": "03-promessa-cep",
+  "title": "Promessa de Entrega por CEP",
+  "question": "Qual praça concentra risco de atraso e insucesso na promessa?",
+  "decision": "Ajustar prazo, risco e modalidade por região.",
+  "limitation": "CEP e geocoding são apoio, não verdade absoluta. Precisa validar com dados reais do cliente.",
+  "method": "Score heurístico combinando insucesso, prazo e custo; agregação territorial por CEP5.",
+  "frameworks": [
+    "Análise territorial",
+    "H3 (produção)"
+  ],
+  "kpis": [
+    {
+      "label": "Região de maior risco",
+      "value": "Norte",
+      "tone": "warning"
+    },
+    {
+      "label": "Insucesso médio",
+      "value": "7,4%",
+      "tone": "warning"
+    },
+    {
+      "label": "Prazo médio",
+      "value": "2,9 dias",
+      "tone": "success"
+    }
+  ],
+  "charts": [
+    {
+      "id": "custo-por-regiao",
+      "title": "Custo médio por região",
+      "kind": "bar",
+      "unit": "BRL",
+      "data": [
+        {
+          "label": "Norte",
+          "value": 46.88
+        },
+        {
+          "label": "Nordeste",
+          "value": 46.72
+        },
+        {
+          "label": "Centro-Oeste",
+          "value": 41.76
+        },
+        {
+          "label": "Sul",
+          "value": 36.59
+        },
+        {
+          "label": "Sudeste",
+          "value": 31.75
+        }
+      ]
+    },
+    {
+      "id": "distribuicao-severidade",
+      "title": "Distribuição de severidade",
+      "kind": "donut",
+      "data": [
+        {
+          "label": "OK",
+          "value": 179
+        },
+        {
+          "label": "Atenção",
+          "value": 1
+        }
+      ]
+    }
+  ],
+  "map": {
+    "kind": "points",
+    "center": [
+      -15.0,
+      -50.0
+    ],
+    "zoom": 4,
+    "points": [
+      {
+        "id": "69465",
+        "lat": -6.41172,
+        "lon": -61.77328,
+        "label": "Atenção",
+        "detail": "Norte · expresso"
+      },
+      {
+        "id": "61510",
+        "lat": -5.74863,
+        "lon": -62.60461,
+        "label": "OK",
+        "detail": "Norte · next_day"
+      },
+      {
+        "id": "66458",
+        "lat": -4.92319,
+        "lon": -59.43513,
+        "label": "OK",
+        "detail": "Norte · normal"
+      },
+      {
+        "id": "64739",
+        "lat": -2.09378,
+        "lon": -61.25318,
+        "label": "OK",
+        "detail": "Norte · next_day"
+      },
+      {
+        "id": "64410",
+        "lat": -4.30141,
+        "lon": -60.76403,
+        "label": "OK",
+        "detail": "Norte · next_day"
+      },
+      {
+        "id": "62695",
+        "lat": -0.45736,
+        "lon": -60.81351,
+        "label": "OK",
+        "detail": "Norte · next_day"
+      },
+      {
+        "id": "63080",
+        "lat": -3.85223,
+        "lon": -63.45765,
+        "label": "OK",
+        "detail": "Norte · normal"
+      },
+      {
+        "id": "60998",
+        "lat": -6.20481,
+        "lon": -63.25911,
+        "label": "OK",
+        "detail": "Norte · next_day"
+      },
+      {
+        "id": "40884",
+        "lat": -10.20346,
+        "lon": -39.63639,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "64093",
+        "lat": -4.04933,
+        "lon": -60.38588,
+        "label": "OK",
+        "detail": "Norte · expresso"
+      },
+      {
+        "id": "66948",
+        "lat": -4.42626,
+        "lon": -61.04687,
+        "label": "OK",
+        "detail": "Norte · next_day"
+      },
+      {
+        "id": "60696",
+        "lat": -4.242,
+        "lon": -59.22133,
+        "label": "OK",
+        "detail": "Norte · normal"
+      },
+      {
+        "id": "59029",
+        "lat": -9.40461,
+        "lon": -36.98791,
+        "label": "OK",
+        "detail": "Nordeste · expresso"
+      },
+      {
+        "id": "51229",
+        "lat": -8.29975,
+        "lon": -36.90048,
+        "label": "OK",
+        "detail": "Nordeste · expresso"
+      },
+      {
+        "id": "42431",
+        "lat": -6.47557,
+        "lon": -39.92167,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "69474",
+        "lat": -4.98588,
+        "lon": -61.53148,
+        "label": "OK",
+        "detail": "Norte · next_day"
+      },
+      {
+        "id": "76800",
+        "lat": -14.00551,
+        "lon": -51.78866,
+        "label": "OK",
+        "detail": "Centro-Oeste · normal"
+      },
+      {
+        "id": "54779",
+        "lat": -10.0634,
+        "lon": -37.35093,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "53836",
+        "lat": -8.51685,
+        "lon": -39.3057,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "59333",
+        "lat": -8.25149,
+        "lon": -37.64881,
+        "label": "OK",
+        "detail": "Nordeste · expresso"
+      },
+      {
+        "id": "51577",
+        "lat": -8.41406,
+        "lon": -37.24855,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "56440",
+        "lat": -10.7017,
+        "lon": -37.64066,
+        "label": "OK",
+        "detail": "Nordeste · expresso"
+      },
+      {
+        "id": "40186",
+        "lat": -8.74512,
+        "lon": -38.05055,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "74968",
+        "lat": -16.87809,
+        "lon": -50.63274,
+        "label": "OK",
+        "detail": "Centro-Oeste · expresso"
+      },
+      {
+        "id": "61334",
+        "lat": -4.44748,
+        "lon": -60.92171,
+        "label": "OK",
+        "detail": "Norte · expresso"
+      },
+      {
+        "id": "72018",
+        "lat": -16.27016,
+        "lon": -45.98648,
+        "label": "OK",
+        "detail": "Centro-Oeste · expresso"
+      },
+      {
+        "id": "54946",
+        "lat": -7.14568,
+        "lon": -32.85661,
+        "label": "OK",
+        "detail": "Nordeste · expresso"
+      },
+      {
+        "id": "52822",
+        "lat": -9.27155,
+        "lon": -37.25517,
+        "label": "OK",
+        "detail": "Nordeste · expresso"
+      },
+      {
+        "id": "54547",
+        "lat": -6.78927,
+        "lon": -38.29689,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "50692",
+        "lat": -9.65654,
+        "lon": -38.45713,
+        "label": "OK",
+        "detail": "Nordeste · expresso"
+      },
+      {
+        "id": "51768",
+        "lat": -7.94179,
+        "lon": -39.15478,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "43644",
+        "lat": -9.84274,
+        "lon": -39.85831,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "94281",
+        "lat": -27.68274,
+        "lon": -46.86074,
+        "label": "OK",
+        "detail": "Sul · next_day"
+      },
+      {
+        "id": "86177",
+        "lat": -26.86475,
+        "lon": -49.99995,
+        "label": "OK",
+        "detail": "Sul · normal"
+      },
+      {
+        "id": "45405",
+        "lat": -7.2088,
+        "lon": -37.46555,
+        "label": "OK",
+        "detail": "Nordeste · expresso"
+      },
+      {
+        "id": "70686",
+        "lat": -17.08842,
+        "lon": -47.27054,
+        "label": "OK",
+        "detail": "Centro-Oeste · normal"
+      },
+      {
+        "id": "97639",
+        "lat": -25.41815,
+        "lon": -49.85984,
+        "label": "OK",
+        "detail": "Sul · expresso"
+      },
+      {
+        "id": "71893",
+        "lat": -14.99688,
+        "lon": -52.02858,
+        "label": "OK",
+        "detail": "Centro-Oeste · normal"
+      },
+      {
+        "id": "57251",
+        "lat": -7.68199,
+        "lon": -38.10671,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "54100",
+        "lat": -11.21831,
+        "lon": -40.53795,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "79498",
+        "lat": -18.3848,
+        "lon": -49.9688,
+        "label": "OK",
+        "detail": "Centro-Oeste · normal"
+      },
+      {
+        "id": "44427",
+        "lat": -10.21972,
+        "lon": -39.54657,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "57502",
+        "lat": -6.24993,
+        "lon": -42.1753,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "46530",
+        "lat": -10.59094,
+        "lon": -36.8112,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "44943",
+        "lat": -8.11142,
+        "lon": -37.4431,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "12950",
+        "lat": -21.90502,
+        "lon": -42.52146,
+        "label": "OK",
+        "detail": "Sudeste · next_day"
+      },
+      {
+        "id": "59256",
+        "lat": -7.28591,
+        "lon": -36.91471,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "59314",
+        "lat": -9.19809,
+        "lon": -36.66435,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "78063",
+        "lat": -14.20668,
+        "lon": -51.44815,
+        "label": "OK",
+        "detail": "Centro-Oeste · normal"
+      },
+      {
+        "id": "54379",
+        "lat": -9.17556,
+        "lon": -38.0641,
+        "label": "OK",
+        "detail": "Nordeste · expresso"
+      },
+      {
+        "id": "45889",
+        "lat": -7.37518,
+        "lon": -40.985,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "34506",
+        "lat": -22.4606,
+        "lon": -44.09179,
+        "label": "OK",
+        "detail": "Sudeste · normal"
+      },
+      {
+        "id": "46901",
+        "lat": -10.21681,
+        "lon": -39.00936,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "09994",
+        "lat": -21.10733,
+        "lon": -41.65747,
+        "label": "OK",
+        "detail": "Sudeste · expresso"
+      },
+      {
+        "id": "91093",
+        "lat": -27.91733,
+        "lon": -54.79384,
+        "label": "OK",
+        "detail": "Sul · next_day"
+      },
+      {
+        "id": "78751",
+        "lat": -14.02218,
+        "lon": -51.00399,
+        "label": "OK",
+        "detail": "Centro-Oeste · expresso"
+      },
+      {
+        "id": "47716",
+        "lat": -11.60174,
+        "lon": -36.69526,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "44315",
+        "lat": -8.89122,
+        "lon": -38.74187,
+        "label": "OK",
+        "detail": "Nordeste · expresso"
+      },
+      {
+        "id": "42099",
+        "lat": -8.16854,
+        "lon": -39.97521,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "48404",
+        "lat": -7.79981,
+        "lon": -34.51917,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "28089",
+        "lat": -18.02481,
+        "lon": -43.6566,
+        "label": "OK",
+        "detail": "Sudeste · next_day"
+      },
+      {
+        "id": "55308",
+        "lat": -6.81851,
+        "lon": -41.38544,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "89706",
+        "lat": -26.4596,
+        "lon": -49.9316,
+        "label": "OK",
+        "detail": "Sul · expresso"
+      },
+      {
+        "id": "01518",
+        "lat": -17.46956,
+        "lon": -45.44279,
+        "label": "OK",
+        "detail": "Sudeste · next_day"
+      },
+      {
+        "id": "70321",
+        "lat": -16.12369,
+        "lon": -50.26653,
+        "label": "OK",
+        "detail": "Centro-Oeste · expresso"
+      },
+      {
+        "id": "79397",
+        "lat": -17.27207,
+        "lon": -51.83788,
+        "label": "OK",
+        "detail": "Centro-Oeste · normal"
+      },
+      {
+        "id": "81612",
+        "lat": -28.23738,
+        "lon": -49.83289,
+        "label": "OK",
+        "detail": "Sul · expresso"
+      },
+      {
+        "id": "95789",
+        "lat": -27.46263,
+        "lon": -52.07955,
+        "label": "OK",
+        "detail": "Sul · expresso"
+      },
+      {
+        "id": "57288",
+        "lat": -10.12491,
+        "lon": -38.21486,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "96191",
+        "lat": -30.06843,
+        "lon": -51.04374,
+        "label": "OK",
+        "detail": "Sul · expresso"
+      },
+      {
+        "id": "20351",
+        "lat": -20.07616,
+        "lon": -44.4162,
+        "label": "OK",
+        "detail": "Sudeste · expresso"
+      },
+      {
+        "id": "10718",
+        "lat": -20.8473,
+        "lon": -48.88548,
+        "label": "OK",
+        "detail": "Sudeste · expresso"
+      },
+      {
+        "id": "30897",
+        "lat": -20.38071,
+        "lon": -46.57661,
+        "label": "OK",
+        "detail": "Sudeste · expresso"
+      },
+      {
+        "id": "50494",
+        "lat": -10.83873,
+        "lon": -41.43463,
+        "label": "OK",
+        "detail": "Nordeste · normal"
+      },
+      {
+        "id": "72212",
+        "lat": -14.95367,
+        "lon": -48.98217,
+        "label": "OK",
+        "detail": "Centro-Oeste · expresso"
+      },
+      {
+        "id": "09318",
+        "lat": -21.77445,
+        "lon": -40.46274,
+        "label": "OK",
+        "detail": "Sudeste · normal"
+      },
+      {
+        "id": "21185",
+        "lat": -20.87424,
+        "lon": -45.72053,
+        "label": "OK",
+        "detail": "Sudeste · next_day"
+      },
+      {
+        "id": "03403",
+        "lat": -21.78944,
+        "lon": -44.24544,
+        "label": "OK",
+        "detail": "Sudeste · next_day"
+      },
+      {
+        "id": "98061",
+        "lat": -28.37928,
+        "lon": -53.02098,
+        "label": "OK",
+        "detail": "Sul · next_day"
+      },
+      {
+        "id": "89886",
+        "lat": -26.88738,
+        "lon": -57.56714,
+        "label": "OK",
+        "detail": "Sul · next_day"
+      },
+      {
+        "id": "77152",
+        "lat": -14.90327,
+        "lon": -51.40478,
+        "label": "OK",
+        "detail": "Centro-Oeste · normal"
+      },
+      {
+        "id": "85756",
+        "lat": -27.94272,
+        "lon": -52.07296,
+        "label": "OK",
+        "detail": "Sul · normal"
+      },
+      {
+        "id": "98295",
+        "lat": -27.94896,
+        "lon": -53.7012,
+        "label": "OK",
+        "detail": "Sul · expresso"
+      },
+      {
+        "id": "94141",
+        "lat": -26.70585,
+        "lon": -49.35977,
+        "label": "OK",
+        "detail": "Sul · normal"
+      },
+      {
+        "id": "24776",
+        "lat": -20.18763,
+        "lon": -43.41459,
+        "label": "OK",
+        "detail": "Sudeste · normal"
+      },
+      {
+        "id": "86919",
+        "lat": -26.24791,
+        "lon": -52.62161,
+        "label": "OK",
+        "detail": "Sul · normal"
+      },
+      {
+        "id": "57452",
+        "lat": -8.82482,
+        "lon": -35.97492,
+        "label": "OK",
+        "detail": "Nordeste · next_day"
+      },
+      {
+        "id": "90173",
+        "lat": -27.9905,
+        "lon": -52.0678,
+        "label": "OK",
+        "detail": "Sul · expresso"
+      },
+      {
+        "id": "80917",
+        "lat": -26.42787,
+        "lon": -51.67471,
+        "label": "OK",
+        "detail": "Sul · next_day"
+      },
+      {
+        "id": "86062",
+        "lat": -27.87865,
+        "lon": -54.20533,
+        "label": "OK",
+        "detail": "Sul · next_day"
+      },
+      {
+        "id": "33881",
+        "lat": -22.30142,
+        "lon": -45.47116,
+        "label": "OK",
+        "detail": "Sudeste · expresso"
+      },
+      {
+        "id": "85836",
+        "lat": -29.74683,
+        "lon": -50.40413,
+        "label": "OK",
+        "detail": "Sul · expresso"
+      },
+      {
+        "id": "83951",
+        "lat": -28.61062,
+        "lon": -51.91188,
+        "label": "OK",
+        "detail": "Sul · normal"
+      },
+      {
+        "id": "71779",
+        "lat": -14.05672,
+        "lon": -50.05821,
+        "label": "OK",
+        "detail": "Centro-Oeste · expresso"
+      },
+      {
+        "id": "03372",
+        "lat": -19.36953,
+        "lon": -42.64565,
+        "label": "OK",
+        "detail": "Sudeste · normal"
+      },
+      {
+        "id": "13369",
+        "lat": -23.81571,
+        "lon": -43.14677,
+        "label": "OK",
+        "detail": "Sudeste · expresso"
+      },
+      {
+        "id": "78351",
+        "lat": -17.61982,
+        "lon": -49.94704,
+        "label": "OK",
+        "detail": "Centro-Oeste · next_day"
+      },
+      {
+        "id": "82058",
+        "lat": -24.52029,
+        "lon": -49.91523,
+        "label": "OK",
+        "detail": "Sul · next_day"
+      },
+      {
+        "id": "12099",
+        "lat": -19.72553,
+        "lon": -44.9245,
+        "label": "OK",
+        "detail": "Sudeste · normal"
+      },
+      {
+        "id": "95616",
+        "lat": -26.33245,
+        "lon": -53.85678,
+        "label": "OK",
+        "detail": "Sul · expresso"
+      }
+    ]
+  }
+}
