@@ -834,7 +834,7 @@ export const CONTENT: Content = {
       id: "11-tsp-baseline-sp",
       titulo: "Sequência de Visitas (TSP)",
       descricao:
-        "Melhor sequência para visitar pontos a partir de um CD com nearest-neighbor e melhoria local 2-opt, comparando o ganho frente à ordem de cadastro.",
+        "Sequência heurística de visitas a partir de um CD com nearest-neighbor e melhoria local 2-opt, comparada à ordem de cadastro como baseline operacional.",
       categoria: "Roteirização e SLA",
       icone: "Waypoints",
       tags: ["TSP", "sequência", "2-opt", "visitas", "otimização"],
@@ -842,12 +842,13 @@ export const CONTENT: Content = {
       linkGitHub: GITHUB_DEMOS_URL,
       ctaDemoLabel: "Explorar Sequência de Visitas",
       prioridade: "P1",
-      perguntaNegocio: "Qual a melhor sequência para visitar os pontos a partir do CD?",
-      metricaPrincipal: "Distância da rota, ganho do 2-opt, tempo estimado",
-      metricaResumo: "distância e ganho do 2-opt",
-      decisaoApoiada: "Definir a ordem de visitas que reduz distância e tempo total",
+      perguntaNegocio: "Quanto a heurística reduz a rota frente à ordem de cadastro?",
+      metricaPrincipal: "Distância da rota fechada, redução percentual e tempo economizado",
+      metricaResumo: "distância e redução vs cadastro",
+      decisaoApoiada:
+        "Adotar uma sequência operacional de referência antes da validação na malha viária",
       limitacao:
-        "Distância em linha reta e melhoria local. Produção usaria OR-Tools sobre rede viária real (OSMnx/OSRM).",
+        "Distância Haversine e velocidade constante, sem tráfego, capacidade ou SLA. Nearest-neighbor + 2-opt não garante ótimo global.",
     },
   ],
 

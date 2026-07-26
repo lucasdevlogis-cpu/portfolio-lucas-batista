@@ -5,6 +5,7 @@ import promessaSnapshot from "@/contracts/demo-snapshots/promessa_cep.json";
 import freightSnapshot from "@/contracts/demo-snapshots/precificacao_frete.json";
 import redeInterhubsSnapshot from "@/contracts/demo-snapshots/rede_interhubs.json";
 import shipSnapshot from "@/contracts/demo-snapshots/ship_from_store.json";
+import tspSnapshot from "@/contracts/demo-snapshots/tsp_baseline_sp.json";
 import vrptwSnapshot from "@/contracts/demo-snapshots/vrptw_ultima_milha.json";
 import { ANCHOR_DEMO_SLUGS } from "@/lib/demo-catalog";
 
@@ -17,9 +18,11 @@ export const REACT_DEMO_SLUGS = [
   "rede_interhubs",
   "vrptw_ultima_milha",
   "auditoria_endereco",
+  "tsp_baseline_sp",
 ] as const;
 
 export type DemoTone = "accent" | "danger" | "warning" | "success";
+export type DemoChartTone = DemoTone | "neutral";
 
 export interface DemoKpi {
   label: string;
@@ -33,7 +36,7 @@ export interface DemoChartDatum {
   secondary?: number;
   arrival?: number;
   detail?: string;
-  tone?: DemoTone;
+  tone?: DemoChartTone;
 }
 
 export interface DemoChart {
@@ -111,6 +114,7 @@ export const DEMO_SNAPSHOTS: Record<string, DemoSnapshot> = {
   rede_interhubs: redeInterhubsSnapshot as DemoSnapshot,
   vrptw_ultima_milha: vrptwSnapshot as DemoSnapshot,
   auditoria_endereco: auditoriaSnapshot as DemoSnapshot,
+  tsp_baseline_sp: tspSnapshot as DemoSnapshot,
 };
 
 export function getDemoSnapshot(slug: string): DemoSnapshot | null {

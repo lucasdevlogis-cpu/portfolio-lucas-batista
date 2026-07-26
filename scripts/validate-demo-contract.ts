@@ -5,6 +5,7 @@ import { DEMO_SNAPSHOTS, REACT_DEMO_SLUGS, type DemoSnapshot } from "../lib/demo
 
 const errors: string[] = [];
 const tones = new Set(["accent", "danger", "warning", "success"]);
+const chartTones = new Set([...tones, "neutral"]);
 const chartKinds = new Set(["bar", "grouped-bar", "donut", "time-window"]);
 const chartUnits = new Set(["BRL", "KM", "PERCENT", "TON", "MINUTE", "COUNT"]);
 const mapKinds = new Set(["network", "points", "routes", "flows"]);
@@ -78,7 +79,7 @@ for (const slug of REACT_DEMO_SLUGS) {
         );
       }
       datumLabels.add(datum.label);
-      if (datum.tone && !tones.has(datum.tone)) {
+      if (datum.tone && !chartTones.has(datum.tone)) {
         errors.push(`${slug}: dado com tone inválido no gráfico ${chart.id || index + 1}`);
       }
       if (
@@ -188,6 +189,52 @@ for (const slug of REACT_DEMO_SLUGS) {
       rulesChart.data.some((datum) => datum.tone !== undefined)
     ) {
       errors.push(`${slug}: regras acionadas devem usar barras horizontais COUNT em laranja`);
+    }
+  }
+  if (slug === "tsp_baseline_sp") {
+    const distanceChart = snapshot.charts.find((chart) => chart.id === "distancia-rota-fechada");
+    const route = snapshot.map?.kind === "routes" ? snapshot.map.routes?.[0] : undefined;
+    const sequenced = route?.points.filter((point) => point.sequence !== undefined) ?? [];
+    if (
+      snapshot.charts.length !== 1 ||
+      !distanceChart ||
+      distanceChart.kind !== "bar" ||
+      distanceChart.orientation !== "horizontal" ||
+      distanceChart.unit !== "KM" ||
+      distanceChart.data.length !== 3 ||
+      distanceChart.data.map((datum) => datum.label).join(",") !== "Cadastro,NN,NN+2-opt" ||
+      distanceChart.data[0]?.tone !== "neutral" ||
+      distanceChart.data[1]?.tone !== undefined ||
+      distanceChart.data[2]?.tone !== "success"
+    ) {
+      errors.push(`${slug}: comparação deve ter uma barra horizontal KM com tons semânticos`);
+    }
+    if (
+      snapshot.map?.kind !== "routes" ||
+      snapshot.map.title !== "Sequência heurística NN + 2-opt" ||
+      !snapshot.map.note?.includes("Segmentos Haversine") ||
+      !snapshot.map.note.includes("Sequência 1–7") ||
+      !route ||
+      route.points.length !== 9 ||
+      sequenced.length !== 7
+    ) {
+      errors.push(`${slug}: mapa deve declarar rota fechada, nota geodésica e 7 visitas`);
+    }
+    sequenced.forEach((point, index) => {
+      if (
+        point.sequence !== index + 1 ||
+        !point.label?.startsWith(`${String(index + 1).padStart(2, "0")} ·`) ||
+        !point.detail?.includes("serviço")
+      ) {
+        errors.push(`${slug}: visita ${index + 1} sem ordem, ID, nome ou serviço verificável`);
+      }
+    });
+    if (
+      route &&
+      (route.points[0]?.lat !== route.points.at(-1)?.lat ||
+        route.points[0]?.lon !== route.points.at(-1)?.lon)
+    ) {
+      errors.push(`${slug}: rota não retorna ao depósito`);
     }
   }
   const jsonPath = join(process.cwd(), "contracts", "demo-snapshots", `${slug}.json`);

@@ -29,7 +29,7 @@ test.describe("Modal de demo", () => {
 
     await expect(dialog.locator("iframe")).toHaveCount(0);
     await expect(dialog.getByText("Frete estimado")).toBeVisible();
-    await expect(dialog.getByText(/Dados sintéticos e coordenadas aproximadas/i)).toBeVisible();
+    await expect(dialog.getByText(/Dados demonstrativos\. O mapa apoia a leitura/i)).toBeVisible();
 
     const externalLink = dialog.getByRole("link", {
       name: /Abrir em nova aba/i,
@@ -141,13 +141,35 @@ test.describe("Modal de demo", () => {
     );
   });
 
-  test("mantém demos secundárias em iframe Streamlit", async ({ page }) => {
+  test("abre prova migrada (TSP) inline com sequência heurística", async ({ page }) => {
     await openCases(page);
     const item = page
       .getByTestId("case-library-item")
       .filter({ hasText: "Sequência de Visitas (TSP)" });
     await item.scrollIntoViewIfNeeded();
     await item.getByRole("button", { name: /Explorar case: Sequência de Visitas/i }).click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator("iframe")).toHaveCount(0);
+    await expect(dialog.getByText("Rota heurística")).toBeVisible();
+    await expect(dialog.getByRole("heading", { name: "Distância da rota fechada" })).toBeVisible();
+    await expect(dialog.getByText(/Sequência 1–7:/i)).toBeVisible();
+    await expect(dialog.getByRole("link", { name: /Abrir em nova aba/i })).toHaveAttribute(
+      "href",
+      "/provas/tsp_baseline_sp",
+    );
+  });
+
+  test("mantém demos secundárias em iframe Streamlit", async ({ page }) => {
+    await openCases(page);
+    const item = page
+      .getByTestId("case-library-item")
+      .filter({ hasText: "Classificador de Ocorrências Operacionais" });
+    await item.scrollIntoViewIfNeeded();
+    await item
+      .getByRole("button", { name: /Explorar case: Classificador de Ocorrências/i })
+      .click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();

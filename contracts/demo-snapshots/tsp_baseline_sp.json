@@ -1,0 +1,140 @@
+{
+  "slug": "tsp_baseline_sp",
+  "caseId": "11-tsp-baseline-sp",
+  "title": "Sequência de visitas (TSP)",
+  "question": "Quanto a heurística reduz a rota frente à ordem de cadastro?",
+  "decision": "Usar a heurística como baseline operacional antes de validar a sequência na malha viária.",
+  "limitation": "Distância Haversine e velocidade constante, sem tráfego, capacidade ou SLA; nearest-neighbor + 2-opt não garante ótimo global.",
+  "method": "Rota fechada: ordem de cadastro → nearest-neighbor com desempate estável → melhoria local 2-opt.",
+  "frameworks": [
+    "Pandas",
+    "Haversine",
+    "Nearest-neighbor + 2-opt"
+  ],
+  "kpis": [
+    {
+      "label": "Rota heurística",
+      "value": "28,0 km",
+      "tone": "success"
+    },
+    {
+      "label": "Redução vs cadastro",
+      "value": "19,0%",
+      "tone": "success"
+    },
+    {
+      "label": "Tempo economizado",
+      "value": "16 min",
+      "tone": "success"
+    }
+  ],
+  "charts": [
+    {
+      "id": "distancia-rota-fechada",
+      "title": "Distância da rota fechada",
+      "kind": "bar",
+      "orientation": "horizontal",
+      "unit": "KM",
+      "data": [
+        {
+          "label": "Cadastro",
+          "value": 34.5,
+          "tone": "neutral"
+        },
+        {
+          "label": "NN",
+          "value": 31.5
+        },
+        {
+          "label": "NN+2-opt",
+          "value": 28.0,
+          "tone": "success"
+        }
+      ]
+    }
+  ],
+  "map": {
+    "kind": "routes",
+    "title": "Sequência heurística NN + 2-opt",
+    "note": "Segmentos Haversine em linha reta, não caminhos rodoviários. Sequência 1–7: Allianz Parque → Parque Villa-Lobos → Parque do Povo → Parque Ibirapuera → MASP Avenida Paulista → Estadio do Pacaembu → Mercado Municipal.",
+    "center": [
+      -23.5251,
+      -46.6676
+    ],
+    "zoom": 12,
+    "depot": {
+      "lat": -23.5251,
+      "lon": -46.6676,
+      "label": "CD Barra Funda · origem e retorno"
+    },
+    "routes": [
+      {
+        "id": "route-nn-2opt",
+        "label": "NN + 2-opt · direção 1 → 7 → CD · 28,0 km",
+        "points": [
+          {
+            "lat": -23.5251,
+            "lon": -46.6676,
+            "label": "CD Barra Funda · saída",
+            "detail": "sp_start_001 · origem da rota fechada"
+          },
+          {
+            "lat": -23.5275,
+            "lon": -46.6786,
+            "sequence": 1,
+            "label": "01 · Allianz Parque",
+            "detail": "sp_visit_005 · serviço 18 min"
+          },
+          {
+            "lat": -23.5463,
+            "lon": -46.7251,
+            "sequence": 2,
+            "label": "02 · Parque Villa-Lobos",
+            "detail": "sp_visit_001 · serviço 25 min"
+          },
+          {
+            "lat": -23.5874,
+            "lon": -46.6865,
+            "sequence": 3,
+            "label": "03 · Parque do Povo",
+            "detail": "sp_visit_002 · serviço 20 min"
+          },
+          {
+            "lat": -23.5874,
+            "lon": -46.6576,
+            "sequence": 4,
+            "label": "04 · Parque Ibirapuera",
+            "detail": "sp_visit_003 · serviço 30 min"
+          },
+          {
+            "lat": -23.5614,
+            "lon": -46.6559,
+            "sequence": 5,
+            "label": "05 · MASP Avenida Paulista",
+            "detail": "sp_visit_006 · serviço 20 min"
+          },
+          {
+            "lat": -23.5489,
+            "lon": -46.6658,
+            "sequence": 6,
+            "label": "06 · Estadio do Pacaembu",
+            "detail": "sp_visit_004 · serviço 18 min"
+          },
+          {
+            "lat": -23.5417,
+            "lon": -46.6296,
+            "sequence": 7,
+            "label": "07 · Mercado Municipal",
+            "detail": "sp_visit_007 · serviço 22 min"
+          },
+          {
+            "lat": -23.5251,
+            "lon": -46.6676,
+            "label": "CD Barra Funda · retorno",
+            "detail": "sp_start_001 · fechamento da rota"
+          }
+        ]
+      }
+    ]
+  }
+}

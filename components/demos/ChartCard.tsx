@@ -115,6 +115,7 @@ export function ChartCard({ chart }: { chart: DemoChart }) {
         if (tone === "warning") return colors.warning;
         if (tone === "danger") return colors.danger;
         if (tone === "accent") return colors.accent;
+        if (tone === "neutral") return colors.neutral;
         return colors.primary;
       }
 
