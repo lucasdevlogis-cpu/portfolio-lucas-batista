@@ -3,18 +3,21 @@ import { ArrowUpRight, ExternalLink, PlayCircle } from "lucide-react";
 import { CaseThumbnail } from "@/components/CaseThumbnail";
 import { CaseDemoLauncher } from "@/components/demos/CaseDemoLauncher";
 import { Reveal } from "@/components/motion/Reveal";
-import { CaseLibrary } from "@/components/sections/CaseLibrary";
+import { ProofComparison } from "@/components/sections/ProofComparison";
 import { buttonVariants } from "@/components/ui/button";
 import {
   CASES_DESTAQUE,
-  CASES_BIBLIOTECA,
-  CASE_CATEGORIAS,
   CASES_ROADMAP,
   CONTENT,
   DEMO_MODAL_COPY,
   caseNumberFromId,
   type Case,
 } from "@/data/content";
+import {
+  PROOF_COMPARISON_DOMAINS,
+  PROOF_COMPARISON_ITEMS,
+  PROOF_COMPARISON_SUMMARY,
+} from "@/lib/proof-comparison";
 import { cn } from "@/lib/utils";
 
 function SignatureCase({ caseItem, index }: { caseItem: Case; index: number }) {
@@ -132,22 +135,22 @@ export function SignatureCases() {
           ))}
         </div>
 
-        <CaseLibrary
-          cases={CASES_BIBLIOTECA}
-          categories={[...CASE_CATEGORIAS]}
-          featuredCount={CASES_DESTAQUE.length}
-          roadmapCount={CASES_ROADMAP.length}
+        <ProofComparison
+          items={PROOF_COMPARISON_ITEMS}
+          domains={PROOF_COMPARISON_DOMAINS}
+          summary={PROOF_COMPARISON_SUMMARY}
           copy={{
-            title: secoes.casesBiblioteca.title,
-            subtitle: secoes.casesBiblioteca.subtitle,
-            filterHint: secoes.casesBibliotecaFiltroHint,
-            usageTitle: secoes.casesBibliotecaUsageTitle,
-            usageDescription: secoes.casesBibliotecaUsageDescription,
-            summaryLabels: secoes.casesBibliotecaSummaryLabels,
-            tableLabels: secoes.casesBibliotecaTableLabels,
-            demoLabel: secoes.caseLibraryDemoLabel,
+            title: secoes.proofComparison.title,
+            subtitle: secoes.proofComparison.subtitle,
+            filterHint: secoes.proofComparisonFilterHint,
+            usageTitle: secoes.proofComparisonUsageTitle,
+            usageDescription: secoes.proofComparisonUsageDescription,
+            allDomainsLabel: secoes.proofComparisonAllDomainsLabel,
+            tierLabels: secoes.proofComparisonTierLabels,
+            summaryLabels: secoes.proofComparisonSummaryLabels,
+            tableLabels: secoes.proofComparisonTableLabels,
+            demoLabel: secoes.caseComparisonDemoLabel,
             unavailableLabel: secoes.caseDemoUnavailableLabel,
-            codeLabel: secoes.caseCodeLabel,
           }}
           modalCopy={DEMO_MODAL_COPY}
         />

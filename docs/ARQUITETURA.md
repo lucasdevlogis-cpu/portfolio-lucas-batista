@@ -12,7 +12,7 @@ portfolio-lucas-batista/
 ├── app/                         rotas Next.js, sitemap e robots
 ├── components/
 │   ├── demos/                   modal e provas React
-│   ├── sections/                seções da homepage
+│   ├── sections/                seções da homepage e comparativo de provas
 │   ├── layout/                  estrutura compartilhada
 │   └── ui/                      primitives mínimos
 ├── data/content.ts              conteúdo editorial
@@ -63,6 +63,12 @@ flowchart LR
 - `app/sitemap.ts` e `app/robots.ts` substituem arquivos estáticos gerados.
 - `data/content.ts` é importado por Server Components; Client Components recebem
   props mínimos.
+- `lib/proof-comparison.ts` faz no servidor o join catálogo → conteúdo →
+  snapshot; o componente cliente recebe somente a projeção comparativa, sem
+  mapas ou contratos completos.
+- `ProofComparison` mantém a ordem de tier do catálogo, deriva domínios e
+  contagens dos dez publicados e reabre qualquer prova com a superfície
+  analítica `library_modal`.
 - `CaseDemoLauncher` carrega `DemoModal` apenas no primeiro clique.
 - ECharts e MapLibre são importados dentro de `useEffect`, quando a prova abre.
 - O modal e as rotas públicas usam o mesmo shell React, sem iframe.

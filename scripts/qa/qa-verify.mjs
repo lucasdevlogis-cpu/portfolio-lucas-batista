@@ -38,11 +38,11 @@ await page
 summary.filterCount = await page.getByRole("button", { name: /^Todos/ }).count();
 
 const classifierItem = page
-  .getByTestId("case-library-item")
+  .getByTestId("proof-comparison-item")
   .filter({ hasText: "Classificador de Ocorrências Operacionais" });
 await classifierItem.scrollIntoViewIfNeeded();
 await classifierItem
-  .getByRole("button", { name: /Explorar case: Classificador de Ocorrências/i })
+  .getByRole("button", { name: /Abrir prova: Classificador de Ocorrências/i })
   .click();
 await dialog.waitFor();
 await dialog.getByText("Governança humana").waitFor();
@@ -63,11 +63,11 @@ await page.getByTestId("case-card").first().waitFor();
 await page.waitForTimeout(500);
 await page.screenshot({ path: path.join(out, "verify-cases-mobile.png"), fullPage: false });
 const mobileClassifier = page
-  .getByTestId("case-library-item")
+  .getByTestId("proof-comparison-item")
   .filter({ hasText: "Classificador de Ocorrências Operacionais" });
 await mobileClassifier.scrollIntoViewIfNeeded();
 await mobileClassifier
-  .getByRole("button", { name: /Explorar case: Classificador de Ocorrências/i })
+  .getByRole("button", { name: /Abrir prova: Classificador de Ocorrências/i })
   .click();
 await dialog.waitFor();
 Object.assign(summary, {

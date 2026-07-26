@@ -11,7 +11,7 @@ Em menos de 60 segundos, um recrutador deve identificar:
 1. posição e escopo profissional de Lucas;
 2. três evidências quantitativas verificáveis;
 3. como Lucas raciocina por meio das três provas âncora;
-4. profundidade adicional na biblioteca de provas;
+4. comparação das dez provas por decisão e método;
 5. o caminho direto para contato.
 
 ## Personalidade
@@ -38,7 +38,8 @@ não layout final. O desktop é uma composição editorial própria em até 1280
 3. `EvidenceStrip`: três números, sem ícones decorativos.
 4. `ProfileBrief`: tese profissional, fit e modo de atuação.
 5. `SignatureCases`: três provas âncora com evidência visual real.
-6. `CaseLibrary`: índice filtrável em forma de relatório, não galeria de cards.
+6. `ProofComparison`: relatório comparativo filtrável, com as dez provas e sem
+   galeria de cards.
 7. `TrajectoryBoard`: cronologia comprimida e escaneável.
 8. `ContactPanel`: bloco claro de conversão, sem formulário falso.
 

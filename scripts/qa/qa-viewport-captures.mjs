@@ -61,10 +61,10 @@ for (const viewport of viewports) {
   await page.keyboard.press("Escape");
 
   const classifierItem = page
-    .getByTestId("case-library-item")
+    .getByTestId("proof-comparison-item")
     .filter({ hasText: "Classificador de Ocorrências Operacionais" });
   await classifierItem.scrollIntoViewIfNeeded();
-  await classifierItem.getByRole("button", { name: /Explorar case: Classificador/i }).click();
+  await classifierItem.getByRole("button", { name: /Abrir prova: Classificador/i }).click();
   await page.getByRole("dialog").waitFor();
   await page.getByText("Governança humana").waitFor();
   await screenshot(page, `modal-classifier-${viewport.name}`);

@@ -304,6 +304,32 @@ habilitada. A coleta dos três custom events depende da capacidade do plano do
 provedor; o código e os testes não exigem contratação, e o dashboard não será
 declarado operacional sem evidência remota.
 
+### P2.2 — Comparativo por decisão e método
+
+Concluído em 26/07/2026. O antigo índice das sete provas complementares foi
+substituído por um mapa de decisão com as dez provas públicas. A projeção é
+montada no servidor pelo join catálogo → conteúdo → snapshot, mantém três
+âncoras antes das sete complementares e envia ao componente cliente apenas os
+campos necessários à comparação e à abertura do modal.
+
+| Evidência                          | Resultado                              |
+| ---------------------------------- | -------------------------------------- |
+| `npm run verify:full`              | aprovado                               |
+| `npm run demos:validate`           | 10 snapshots e join editorial válidos  |
+| `npm run demos:smoke`              | 13/13                                  |
+| `npm run test:e2e`                 | 40/40; comparação e analytics cobertos |
+| pytest                             | 58/58                                  |
+| `npm audit --audit-level=moderate` | 0 vulnerabilidades                     |
+| `npm run qa:visual`                | landing e modais em 375, 768 e 1440 px |
+| `npm run qa:streamlit`             | 12 superfícies desktop do laboratório  |
+| Lighthouse desktop                 | 100/96/100/100                         |
+| Lighthouse mobile                  | 92/96/100/100                          |
+
+A inspeção visual confirmou leitura editorial no mobile, alvos de toque de no
+mínimo 44 px, ausência de overflow e uso de divisores em vez de uma galeria de
+cards. Os filtros e suas contagens são derivados dos domínios publicados; não
+foi criada uma segunda taxonomia.
+
 O baseline público aceito desta refatoração é 100/100/100/100 em desktop e
 96/100/100/100 em mobile, usando a mediana de três execuções. Resultados locais
 continuam como evidência rápida de regressão; a origem Streamlit canônica também

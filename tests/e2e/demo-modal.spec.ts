@@ -45,10 +45,10 @@ test.describe("Modal de demo", () => {
   test("abre prova migrada (Promessa de CEP) inline sem iframe", async ({ page }) => {
     await openCases(page);
     const item = page
-      .getByTestId("case-library-item")
+      .getByTestId("proof-comparison-item")
       .filter({ hasText: "Promessa de Entrega por CEP" });
     await item.scrollIntoViewIfNeeded();
-    await item.getByRole("button", { name: /Explorar case: Promessa de Entrega por CEP/i }).click();
+    await item.getByRole("button", { name: /Abrir prova: Promessa de Entrega por CEP/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
@@ -63,10 +63,10 @@ test.describe("Modal de demo", () => {
   test("abre prova migrada (Ship from Store) inline sem iframe", async ({ page }) => {
     await openCases(page);
     const item = page
-      .getByTestId("case-library-item")
+      .getByTestId("proof-comparison-item")
       .filter({ hasText: "Ship from Store / Origem Ótima" });
     await item.scrollIntoViewIfNeeded();
-    await item.getByRole("button", { name: /Explorar case: Ship from Store/i }).click();
+    await item.getByRole("button", { name: /Abrir prova: Ship from Store/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
@@ -81,10 +81,10 @@ test.describe("Modal de demo", () => {
   test("abre prova migrada (Rede Inter-hubs) inline sem iframe", async ({ page }) => {
     await openCases(page);
     const item = page
-      .getByTestId("case-library-item")
+      .getByTestId("proof-comparison-item")
       .filter({ hasText: "Rede Inter-hubs / Corredores" });
     await item.scrollIntoViewIfNeeded();
-    await item.getByRole("button", { name: /Explorar case: Rede Inter-hubs/i }).click();
+    await item.getByRole("button", { name: /Abrir prova: Rede Inter-hubs/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
@@ -100,11 +100,11 @@ test.describe("Modal de demo", () => {
   test("abre prova migrada (VRPTW) inline com evidências temporais", async ({ page }) => {
     await openCases(page);
     const item = page
-      .getByTestId("case-library-item")
+      .getByTestId("proof-comparison-item")
       .filter({ hasText: "Última Milha com Janelas (VRPTW)" });
     await item.scrollIntoViewIfNeeded();
     await item
-      .getByRole("button", { name: /Explorar case: Última Milha com Janelas \(VRPTW\)/i })
+      .getByRole("button", { name: /Abrir prova: Última Milha com Janelas \(VRPTW\)/i })
       .click();
 
     const dialog = page.getByRole("dialog");
@@ -124,10 +124,10 @@ test.describe("Modal de demo", () => {
   }) => {
     await openCases(page);
     const item = page
-      .getByTestId("case-library-item")
+      .getByTestId("proof-comparison-item")
       .filter({ hasText: "Auditoria de Endereço e Geocoding" });
     await item.scrollIntoViewIfNeeded();
-    await item.getByRole("button", { name: /Explorar case: Auditoria de Endereço/i }).click();
+    await item.getByRole("button", { name: /Abrir prova: Auditoria de Endereço/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
@@ -144,10 +144,10 @@ test.describe("Modal de demo", () => {
   test("abre prova migrada (TSP) inline com sequência heurística", async ({ page }) => {
     await openCases(page);
     const item = page
-      .getByTestId("case-library-item")
+      .getByTestId("proof-comparison-item")
       .filter({ hasText: "Sequência de Visitas (TSP)" });
     await item.scrollIntoViewIfNeeded();
-    await item.getByRole("button", { name: /Explorar case: Sequência de Visitas/i }).click();
+    await item.getByRole("button", { name: /Abrir prova: Sequência de Visitas/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
@@ -164,12 +164,10 @@ test.describe("Modal de demo", () => {
   test("abre Classificador inline com governança humana", async ({ page }) => {
     await openCases(page);
     const item = page
-      .getByTestId("case-library-item")
+      .getByTestId("proof-comparison-item")
       .filter({ hasText: "Classificador de Ocorrências Operacionais" });
     await item.scrollIntoViewIfNeeded();
-    await item
-      .getByRole("button", { name: /Explorar case: Classificador de Ocorrências/i })
-      .click();
+    await item.getByRole("button", { name: /Abrir prova: Classificador de Ocorrências/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
@@ -218,12 +216,10 @@ test.describe("Modal de demo", () => {
     await openCases(page);
 
     const item = page
-      .getByTestId("case-library-item")
+      .getByTestId("proof-comparison-item")
       .filter({ hasText: "Classificador de Ocorrências Operacionais" });
     await item.scrollIntoViewIfNeeded();
-    await item
-      .getByRole("button", { name: /Explorar case: Classificador de Ocorrências/i })
-      .click();
+    await item.getByRole("button", { name: /Abrir prova: Classificador de Ocorrências/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
