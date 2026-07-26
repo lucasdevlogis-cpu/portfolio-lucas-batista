@@ -39,7 +39,7 @@ function LoadingPreview({
         : copy.initializingLabel;
 
   return (
-    <div className="absolute inset-0 z-10 flex flex-col bg-editorial" aria-live="polite">
+    <div className="absolute inset-0 z-10 flex flex-col bg-background" aria-live="polite">
       <div className="relative flex-1 overflow-hidden">
         {thumbnail ? (
           <Image
@@ -55,7 +55,7 @@ function LoadingPreview({
           <p className="max-w-md text-sm font-semibold text-white">{message}</p>
           {status === "loading" || status === "timeout" ? (
             <div
-              className="size-8 rounded-full border-2 border-white/30 border-t-accent motion-safe:animate-spin motion-reduce:animate-none"
+              className="size-8 rounded-full border-2 border-white/20 border-t-primary motion-safe:animate-spin motion-reduce:animate-none"
               aria-hidden
             />
           ) : null}
@@ -66,7 +66,7 @@ function LoadingPreview({
               rel="noopener noreferrer"
               className={cn(
                 buttonVariants({ variant: "outline" }),
-                "min-h-11 border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white",
+                "min-h-11 border-white/20 bg-transparent text-white hover:border-primary hover:bg-primary hover:text-primary-foreground",
               )}
             >
               <ExternalLink className="size-4" aria-hidden />
@@ -112,7 +112,7 @@ export function StreamlitDemoFrame({
     return (
       <div className="flex flex-col items-center gap-4 px-5 py-6 text-center">
         {thumbnail ? (
-          <div className="relative aspect-video w-full max-w-lg overflow-hidden rounded-xl border border-border">
+          <div className="relative aspect-video w-full max-w-lg overflow-hidden border border-border">
             <Image
               src={thumbnail}
               alt={thumbnailAlt}

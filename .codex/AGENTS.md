@@ -16,8 +16,9 @@ versão dessas regras aqui.
 - Estado e fila: `docs/ROADMAP.md`.
 - Operação: `docs/OPERACAO.md`.
 
-Não recrie `demos-logistica/`, arquivos `archive/`, Framer Motion ou listas
-paralelas de slugs. Não publique nem faça push sem autorização explícita.
+Não recrie `demos-logistica/`, arquivos `archive/`, o pacote `framer-motion` ou
+listas paralelas de slugs. `motion` é a dependência aprovada para transições
+editoriais. Não publique nem faça push sem autorização explícita.
 
 ## Gate local
 

@@ -160,6 +160,25 @@ $env:STREAMLIT_QA_BASE_URL='https://portfolio-lucas-batista-asbsqusjhhbyje6pktjp
 npm run qa:streamlit
 ```
 
+Em previews protegidos, `QA_BASE_URL` também aceita o Shareable Link completo,
+incluindo o parâmetro `_vercel_share`. Os scripts usam essa primeira navegação
+para obter o cookie de acesso e removem o parâmetro das rotas seguintes:
+
+```powershell
+$env:QA_BASE_URL='https://preview.vercel.app?_vercel_share=valor-temporario'
+npm run qa:visual
+
+$env:LIGHTHOUSE_URL=$env:QA_BASE_URL
+$env:LIGHTHOUSE_SCOPE='preview'
+$env:LIGHTHOUSE_ALLOW_NOINDEX='1'
+npm run lighthouse:all
+```
+
+Não grave o Shareable Link no repositório. Ele é uma credencial temporária de
+acesso ao preview e deve permanecer apenas no ambiente de execução. O flag
+`LIGHTHOUSE_ALLOW_NOINDEX` remove somente SEO do gate de previews protegidos,
+pois a Vercel aplica `noindex`; produção continua exigindo as quatro categorias.
+
 O QA Streamlit suporta tanto execução direta local quanto o wrapper com iframe
 usado pelo Community Cloud.
 
@@ -176,12 +195,14 @@ usado pelo Community Cloud.
 
 ## Troubleshooting
 
-| Sintoma                        | Verificação                                          |
-| ------------------------------ | ---------------------------------------------------- |
-| Demo sem URL                   | conferir `NEXT_PUBLIC_DEMOS_BASE_URL` no build       |
-| Slug quebrado                  | rodar `npm run validate` e revisar o catálogo        |
-| Token divergente               | rodar `npm run tokens:sync`                          |
-| Snapshot divergente            | rodar `npm run demos:build` e `npm run demos:export` |
-| Streamlit não encontra arquivo | confirmar main file `apps/demos/app.py` e branch     |
-| Vercel procura `dist`          | limpar Output Directory e remover overrides          |
-| CV desatualizado               | rodar `npm run cv:generate`                          |
+| Sintoma                          | Verificação                                          |
+| -------------------------------- | ---------------------------------------------------- |
+| Demo sem URL                     | conferir `NEXT_PUBLIC_DEMOS_BASE_URL` no build       |
+| Slug quebrado                    | rodar `npm run validate` e revisar o catálogo        |
+| Token divergente                 | rodar `npm run tokens:sync`                          |
+| Snapshot divergente              | rodar `npm run demos:build` e `npm run demos:export` |
+| Streamlit não encontra arquivo   | confirmar main file `apps/demos/app.py` e branch     |
+| Vercel procura `dist`            | limpar Output Directory e remover overrides          |
+| `EPERM` em cache local no deploy | empacotar arquivos versionados em staging externo    |
+| Preview redireciona para login   | usar Shareable Link em `QA_BASE_URL`                 |
+| CV desatualizado                 | rodar `npm run cv:generate`                          |

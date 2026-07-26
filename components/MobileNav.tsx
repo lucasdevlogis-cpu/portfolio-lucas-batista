@@ -29,21 +29,23 @@ export function MobileNav({ navLinks, navCta, linkedin, linkedinLabel, copy }: M
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        className="inline-flex size-10 items-center justify-center rounded-lg border border-white/15 bg-white/[0.06] text-white shadow-sm transition-colors hover:bg-white/10 md:hidden"
+        className="inline-flex size-11 items-center justify-center border border-border bg-card text-foreground transition-colors hover:border-primary hover:text-primary md:hidden"
         aria-label={copy.openLabel}
       >
         <Menu className="size-5" aria-hidden />
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}
-        className="fixed inset-x-4 top-16 bottom-auto max-w-none translate-x-0 translate-y-0 rounded-xl border-border bg-card p-3 sm:inset-x-auto sm:right-4 sm:left-auto sm:w-72"
+        className="fixed inset-x-3 top-[4.75rem] bottom-auto max-w-none translate-x-0 translate-y-0 rounded-sm border-border bg-popover p-3 shadow-premium sm:inset-x-auto sm:right-4 sm:left-auto sm:w-80"
       >
         <div className="mb-2 flex items-center justify-between px-1">
-          <DialogTitle className="text-sm font-bold text-ink">{copy.menuTitle}</DialogTitle>
+          <DialogTitle className="font-mono text-xs font-bold uppercase tracking-[0.12em] text-primary">
+            {copy.menuTitle}
+          </DialogTitle>
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-ink"
+            className="inline-flex size-10 items-center justify-center border border-border text-muted-foreground hover:border-primary hover:text-primary"
             aria-label={copy.closeLabel}
           >
             <X className="size-5" aria-hidden />
@@ -56,7 +58,7 @@ export function MobileNav({ navLinks, navCta, linkedin, linkedinLabel, copy }: M
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="block rounded-md px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-muted"
+              className="block border-t border-border px-2 py-3.5 font-heading text-xl font-extrabold uppercase text-foreground transition-colors hover:text-primary"
             >
               {link.label}
             </a>
@@ -64,10 +66,7 @@ export function MobileNav({ navLinks, navCta, linkedin, linkedinLabel, copy }: M
           <a
             href="#contato"
             onClick={() => setOpen(false)}
-            className={cn(
-              buttonVariants({ variant: "executive", size: "lg" }),
-              "mt-2 h-11 w-full rounded-lg",
-            )}
+            className={cn(buttonVariants({ variant: "executive", size: "lg" }), "mt-3 h-12 w-full")}
           >
             {navCta}
           </a>
@@ -77,7 +76,7 @@ export function MobileNav({ navLinks, navCta, linkedin, linkedinLabel, copy }: M
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center gap-2 rounded-md px-3 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-ink"
+              className="mt-2 inline-flex min-h-11 items-center gap-2 px-2 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground transition-colors hover:text-primary"
             >
               <LinkIcon className="size-5" aria-hidden />
               {linkedinLabel}

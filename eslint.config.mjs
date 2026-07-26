@@ -14,8 +14,9 @@ const eslintConfig = defineConfig([
     ".vercel/**",
     "build/**",
     "next-env.d.ts",
-    // Aplicação Python e artefatos locais não pertencem ao grafo JavaScript.
+    // Aplicação Python, ambientes virtuais e artefatos locais não pertencem ao grafo JavaScript.
     "apps/demos/**",
+    ".venv/**",
     ".artifacts/**",
     ".pytest_cache/**",
     ".ruff_cache/**",

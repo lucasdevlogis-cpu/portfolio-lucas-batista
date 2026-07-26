@@ -28,8 +28,11 @@ export default async function DemoPage({ params }: DemoPageProps) {
   if (!snapshot) notFound();
 
   return (
-    <main id="conteudo" className="min-h-screen bg-editorial px-0 py-0 sm:px-5 sm:py-5 lg:px-8">
-      <div className="mx-auto max-w-[1180px] overflow-hidden rounded-none border-border bg-card shadow-premium sm:rounded-2xl sm:border">
+    <main
+      id="conteudo"
+      className="min-h-screen bg-background px-0 py-0 sm:px-5 sm:py-5 lg:px-8 lg:py-8"
+    >
+      <div className="mx-auto max-w-[1280px] overflow-hidden border-border bg-card sm:border">
         <DemoShell snapshot={snapshot} />
       </div>
     </main>

@@ -15,18 +15,18 @@ _THEME_NAME = "demos"
 
 
 def apply_theme() -> None:
-    """Registra e ativa o tema visual das demos (cores da marca + Inter)."""
+    """Registra e ativa o tema visual das demos com a paleta executiva."""
     tmpl = go.layout.Template()
     tmpl.layout.font = dict(family=brand.FONT_FAMILY, color=brand.FOREGROUND)
     tmpl.layout.colorway = brand.SEQ
     tmpl.layout.paper_bgcolor = "rgba(0,0,0,0)"
-    tmpl.layout.plot_bgcolor = "#ffffff"
+    tmpl.layout.plot_bgcolor = brand.CARD
     tmpl.layout.margin = dict(t=34, b=36, l=18, r=18)
     tmpl.layout.title = dict(font=dict(color=brand.INK, size=17, family=brand.HEADING_FONT_FAMILY))
     tmpl.layout.bargap = 0.18
     tmpl.layout.bargroupgap = 0.08
     tmpl.layout.legend = dict(
-        bgcolor="rgba(255,255,255,0.82)",
+        bgcolor="rgba(11,11,12,0.88)",
         bordercolor=brand.BORDER,
         borderwidth=1,
         font=dict(color=brand.MUTED, size=12),
@@ -56,7 +56,7 @@ def apply_theme() -> None:
     )
     tmpl.layout.coloraxis = dict(
         colorbar=dict(
-            bgcolor="rgba(255,253,248,0.82)",
+            bgcolor="rgba(11,11,12,0.88)",
             bordercolor=brand.BORDER,
             borderwidth=1,
             tickfont=dict(color=brand.MUTED),
@@ -64,7 +64,7 @@ def apply_theme() -> None:
         )
     )
     pio.templates[_THEME_NAME] = tmpl
-    pio.templates.default = f"plotly_white+{_THEME_NAME}"
+    pio.templates.default = _THEME_NAME
 
 
 def add_reference_line(
@@ -85,7 +85,7 @@ def add_reference_line(
             annotation_text=label,
             annotation_position="top right",
             annotation_font=dict(color=color, size=11),
-            annotation_bgcolor="rgba(255,255,255,0.82)",
+            annotation_bgcolor=brand.SURFACE_DARK,
             annotation_bordercolor=brand.BORDER,
             annotation_borderwidth=1,
         )
@@ -98,7 +98,7 @@ def add_reference_line(
             annotation_text=label,
             annotation_position="top right",
             annotation_font=dict(color=color, size=11),
-            annotation_bgcolor="rgba(255,255,255,0.82)",
+            annotation_bgcolor=brand.SURFACE_DARK,
             annotation_bordercolor=brand.BORDER,
             annotation_borderwidth=1,
         )
@@ -110,7 +110,7 @@ def polish(fig: go.Figure) -> go.Figure:
     fig.update_layout(
         font=dict(family=brand.FONT_FAMILY, color=brand.FOREGROUND),
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="#ffffff",
+        plot_bgcolor=brand.CARD,
         hoverlabel=dict(
             bgcolor=brand.SURFACE_DARK,
             bordercolor=brand.SURFACE_DARK,

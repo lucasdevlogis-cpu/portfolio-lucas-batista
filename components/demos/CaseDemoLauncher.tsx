@@ -61,7 +61,7 @@ export function CaseDemoLauncher({
       <Button
         variant={hasDemo ? "executive" : "outline"}
         className={cn(
-          "h-10 min-h-10 min-w-0 max-w-full shrink flex-1 rounded-lg",
+          "h-10 min-h-10 min-w-0 max-w-full shrink flex-1",
           !hasDemo && "cursor-not-allowed opacity-60",
           className,
         )}

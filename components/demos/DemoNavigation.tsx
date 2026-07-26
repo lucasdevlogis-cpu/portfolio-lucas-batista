@@ -12,15 +12,15 @@ export function DemoNavigation({ compact = false }: { compact?: boolean }) {
     >
       <Link
         href="/#cases"
-        className={cn(buttonVariants({ variant: "outline" }), "min-h-10 rounded-lg")}
+        className={cn(
+          buttonVariants({ variant: "outline" }),
+          "min-h-11 border-border bg-transparent",
+        )}
       >
         <ArrowLeft className="size-4" aria-hidden />
         Voltar às provas
       </Link>
-      <Link
-        href="/#contato"
-        className={cn(buttonVariants({ variant: "executive" }), "min-h-10 rounded-lg")}
-      >
+      <Link href="/#contato" className={cn(buttonVariants({ variant: "executive" }), "min-h-11")}>
         Conversar sobre o perfil
         <ArrowUpRight className="size-4" aria-hidden />
       </Link>

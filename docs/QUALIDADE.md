@@ -1,5 +1,51 @@
 # Qualidade
 
+## Corte visual — Executivo Brutalista Refinado (P0 concluído)
+
+O redesign “Executivo Brutalista Refinado” foi aceito em 25/07/2026 e está
+pronto para merge na `main`. O aceite cobriu comparação visual em 375, 768 e
+1440 px, revisão das três âncoras, Lighthouse do preview e gates locais. O
+preview isolado permanece publicado apenas como referência; nenhuma promoção
+para produção foi feita.
+
+## Corte local — Executivo Brutalista Refinado
+
+Rodada final de 25/07/2026 na branch `agent/redesign-executivo-brutalista`:
+
+| Evidência                                    | Resultado                              |
+| -------------------------------------------- | -------------------------------------- |
+| `npm run build`                              | aprovado; 10 rotas estáticas           |
+| `npm run test:e2e`                           | 17/17                                  |
+| `npm run demos:smoke`                        | 13/13                                  |
+| `npm audit --audit-level=moderate`           | 0 vulnerabilidades                     |
+| capturas Playwright em 375, 768 e 1440 px    | landing, modal e 3 âncoras aprovados   |
+| comparação referência × implementação 335 px | revisada no mesmo artefato lado a lado |
+| Lighthouse desktop                           | 100/100/100/100                        |
+| Lighthouse mobile                            | 92/100/100/100                         |
+
+O passe visual encontrou e corrigiu dois problemas antes do aceite: conteúdo
+de `Reveal` invisível com `prefers-reduced-motion` e compressão de CTAs das
+provas no breakpoint de 1024 px. Todos os gates do P0 foram validados e o
+merge foi autorizado.
+
+## Preview Vercel — redesign
+
+Deployment `dpl_71b9Zcfu9amkjomZYHPwk5kmw8Ly`, publicado em 21/07/2026 sem
+promover para produção:
+
+| Evidência                     | Resultado                                 |
+| ----------------------------- | ----------------------------------------- |
+| Vercel                        | target `preview`, estado `Ready`          |
+| homepage, prova e OG          | HTTP 200                                  |
+| `npm run qa:visual`           | fluxo completo e 3 viewports aprovados    |
+| Lighthouse desktop do preview | 100/100/100; SEO 69 informativo           |
+| Lighthouse mobile do preview  | 92/100/100; SEO 69 informativo            |
+| proteção                      | Shareable Link temporário, não versionado |
+
+O SEO do preview protegido não participa do gate porque a Vercel aplica
+`noindex` deliberadamente. O gate de produção continua exigindo pelo menos 90
+nas quatro categorias. O preview foi aceito como referência visual do P0.
+
 ## Gate técnico
 
 | Área                    | Comando                            | Critério               |
@@ -19,7 +65,8 @@ continuam separados para deixar a intenção explícita.
 
 ## Última execução local
 
-Rodada de 21/07/2026, após a consolidação arquitetural e os ajustes de CI:
+Rodada de 25/07/2026, após o aceite visual e antes da abertura do PR para
+`main`:
 
 | Evidência                          | Resultado                                     |
 | ---------------------------------- | --------------------------------------------- |
@@ -73,6 +120,10 @@ Critérios:
 - linhas de referência não achatam a série;
 - mapa tem atribuição, foco útil e limitação declarada;
 - movimento respeita `prefers-reduced-motion`.
+- referência e implementação são comparadas lado a lado no mesmo viewport;
+- Hanken Grotesk, Inter e JetBrains Mono carregam sem salto visual indevido;
+- laranja indica ação e verde não é usado como decoração;
+- Streamlit e rotas React compartilham tokens, apesar de terem runtimes distintos.
 
 ## Acessibilidade
 

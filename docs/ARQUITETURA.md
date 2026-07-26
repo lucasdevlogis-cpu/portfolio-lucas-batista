@@ -3,8 +3,9 @@
 ## Decisão central
 
 Landing, demos, contratos, datasets e documentação vivem em um único
-repositório. O Next.js permanece na raiz para não introduzir configuração
-especial na Vercel; o aplicativo Python vive em `apps/demos/`.
+repositório. O Next.js permanece na raiz e passa a ser a camada pública de
+apresentação. O aplicativo Python em `apps/demos/` é o laboratório analítico e
+a origem dos cálculos exportados.
 
 ```text
 portfolio-lucas-batista/
@@ -51,7 +52,8 @@ flowchart LR
   DATA --> EXPORT[export_demo_snapshots.py]
   EXPORT --> SNAP[contracts/demo-snapshots]
   SNAP --> PROOFS[3 provas React]
-  DATA --> STREAMLIT[7 provas Streamlit]
+  DATA --> STREAMLIT[Laboratório Streamlit]
+  SNAP --> WEB[Experiência pública React]
 ```
 
 ## Next.js
@@ -79,6 +81,25 @@ pages → presentation
 presentation → settings/tokens
 domain ↛ streamlit
 ```
+
+O Streamlit não define mais a qualidade visual pública do produto. Durante a
+migração, as sete provas complementares ainda podem abrir o laboratório em
+iframe ou nova aba. Cada migração concluída substitui essa moldura por uma rota
+React que consome snapshot Python validado. O laboratório permanece útil para
+exploração, depuração e comparação de cenários.
+
+## Estratégia de visualização
+
+- ECharts: gráficos analíticos das rotas React, carregados sob demanda e com
+  tema único derivado dos tokens.
+- MapLibre GL JS: mapas e rotas React, com estilo-base escuro e overlays
+  semânticos.
+- Plotly: gráficos do laboratório Python enquanto a prova ainda não migrou.
+- Folium/Leaflet: mapas do laboratório, tratados como solução transitória.
+
+Não será introduzido monorepo framework, CMS ou biblioteca de componentes
+adicional sem ganho operacional comprovado. O repositório único já oferece a
+fronteira necessária entre apresentação, contrato e domínio.
 
 ## Contratos
 

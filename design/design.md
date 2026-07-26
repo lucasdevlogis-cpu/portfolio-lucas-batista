@@ -1,99 +1,102 @@
-# Design — Executive Proof System
+# Design — Executivo Brutalista Refinado
 
-## Norte
+## Norte do produto
 
-O visual deve comunicar repertório executivo e capacidade técnica sem parecer
-template SaaS. A referência é um casebook editorial: tipografia forte, densidade
-controlada, superfícies claras e contraste alto.
+O portfólio é um **Executive Proof System**: um dossiê operacional que deixa
+visíveis capacidade de decisão, repertório técnico e impacto. Não é currículo
+decorado, landing SaaS nem galeria de dashboards.
 
-## Hierarquia
+Em menos de 60 segundos, um recrutador deve identificar:
 
-1. Nome e posicionamento.
-2. Evidências quantitativas.
-3. Fit profissional.
-4. Três provas âncora.
-5. Biblioteca complementar.
-6. Trajetória e contato.
+1. posição e escopo profissional de Lucas;
+2. três evidências quantitativas verificáveis;
+3. como Lucas raciocina por meio das três provas âncora;
+4. profundidade adicional na biblioteca de provas;
+5. o caminho direto para contato.
 
-Cada seção precisa justificar sua presença. Informação repetida é removida, não
-reembalada em outro card.
+## Personalidade
 
-## Linguagem visual
+**Executivo brutalista refinado**: autoridade sem formalismo vazio, densidade
+sem ruído e tecnologia sem estética genérica de produto B2B.
 
-- base editorial quente e superfícies brancas;
-- azul escuro para autoridade e estrutura;
-- teal para ação, seleção e dados primários;
-- dourado somente para ênfase editorial;
-- verde, âmbar e vermelho apenas para estado semântico;
-- Source Serif 4 para títulos e Inter para interface/corpo;
-- raio moderado, borda discreta e sombra curta.
+- campo quase preto e superfícies grafite;
+- laranja como ação, índice e sinal técnico;
+- verde exclusivamente para ganho, resultado e estado positivo;
+- branco quente para texto principal e blocos de contraste;
+- regras finas, cantos de 2–8 px e sombras raras;
+- Hanken Grotesk para impacto, Inter para leitura e JetBrains Mono para dados;
+- números grandes, títulos curtos e labels monoespaçados.
 
-Evitar:
+A referência visual está em
+`design/references/stitch-executivo-brutalista-mobile.png`. Ela define direção,
+não layout final. O desktop é uma composição editorial própria em até 1280 px.
 
-- gradientes em todos os blocos;
-- glassmorphism e blur decorativo;
-- pilhas de badges para texto que cabe em uma linha;
-- cards dentro de cards;
-- animação de entrada que atrasa leitura;
-- dashboards com muitas cores ou métricas sem ação.
+## Composição canônica
 
-## Componentes
+1. `Header`: índice fixo, discreto e funcional.
+2. `ExecutiveHero`: nome em escala monumental, posicionamento e ação.
+3. `EvidenceStrip`: três números, sem ícones decorativos.
+4. `ProfileBrief`: tese profissional, fit e modo de atuação.
+5. `SignatureCases`: três provas âncora com evidência visual real.
+6. `CaseLibrary`: índice filtrável em forma de relatório, não galeria de cards.
+7. `TrajectoryBoard`: cronologia comprimida e escaneável.
+8. `ContactPanel`: bloco claro de conversão, sem formulário falso.
 
-### Landing
+## Provas e demos
 
-- `SectionShell`: largura, ritmo e cabeçalho de seção;
-- `EditorialBadge`: eyebrow pontual, não categoria repetida em massa;
-- `PremiumCard`: agrupamento editorial simples;
-- `CaseThumbnail`: evidência visual somente nas âncoras;
-- `CaseLibrary`: lista filtrável, tabela no desktop e cards compactos no mobile;
-- `ContactPanel`: caminhos diretos sem formulário decorativo.
+Toda prova pública começa pela decisão, não pela ferramenta:
 
-### Provas
+`pergunta → decisão → até 3 KPIs → visual principal → método → limite → CTA`
 
-- `DemoShell`: estrutura comum;
-- `DemoHero`: pergunta e decisão;
-- `KpiRow`: no máximo 3 indicadores;
-- `ChartCard`: ECharts analítico;
-- `MapCard`: MapLibre com atribuição e limitação;
-- `MethodDisclosure`: método e limite;
-- `DemoNavigation`: retorno ao casebook.
-
-As âncoras usam esses componentes no modal e na rota pública. Complementares
-usam o sistema de apresentação em `apps/demos/presentation/`.
+As três âncoras usam React/Next, ECharts e MapLibre. As sete complementares
+continuam disponíveis no laboratório Streamlit durante a migração, mas o
+Streamlit deixa de ser a moldura pública desejada. Python continua sendo a
+origem dos cálculos e exporta snapshots tipados para a web.
 
 ## Gráficos
 
-- Começar pela comparação que sustenta a decisão.
-- Preferir barras, linha temporal e mapa quando forem a forma mais direta.
-- Até duas séries principais; estado semântico pode usar três cores.
-- Tooltips em português e unidade em eixo/legenda.
-- Referência em traço discreto e domínio calculado para não achatar os dados.
-- Tabela é fallback de detalhe, não visual principal.
+- Uma pergunta por gráfico.
+- Barras horizontais para rótulos longos; linha somente para evolução temporal.
+- Laranja para cenário/ação; verde para ganho; cinza para baseline.
+- Escala honesta, unidade explícita e grid mínimo.
+- Tooltip escuro, rótulos curtos e no máximo duas séries principais.
+- Donut apenas para composição com poucas categorias; nunca arco-íris.
 
 ## Mapas
 
-- Usar mapa apenas quando distância, cobertura, corredor ou região importam.
-- Teal e azul para rede/rota; cores semânticas para status.
-- Informar que coordenadas são aproximadas quando aplicável.
-- Preservar atribuição do OpenStreetMap.
-
-## Responsividade
-
-- 375 px: uma coluna, CTA 44 px+, contexto recolhível e iframe sob demanda;
-- 768 px: transição sem saltos de hierarquia;
-- 1440 px: largura editorial, sem esticar texto ou gráfico indefinidamente.
+- MapLibre nas provas React, com mapa-base escuro e dados em laranja/verde.
+- Linha de rota com casing, direção e contraste suficiente.
+- Folium/Leaflet no laboratório recebe o mesmo tratamento visual enquanto existir.
+- Atribuição sempre visível e limitação geográfica declarada.
 
 ## Movimento
 
-Somente feedback curto de hover, foco, dialog e carregamento. Todo movimento
-deve respeitar `prefers-reduced-motion`. Não usar biblioteca de animação para
-efeitos que CSS resolve.
+Movimento sustenta narrativa e feedback:
 
-## Critério de aceite
+- entrada curta do hero e das provas quando chegam ao viewport;
+- sublinhado/índice ativo na navegação;
+- elevação máxima de 2 px em CTA e mídia;
+- transição de filtros e modal entre 160–320 ms;
+- nenhum autoplay, parallax ou atraso artificial de leitura;
+- `prefers-reduced-motion` elimina movimento não essencial.
 
-- leitura principal compreensível sem interação;
-- cada prova explicita pergunta, decisão, métrica, método e limite;
-- nenhuma seção usa decoração para compensar conteúdo fraco;
-- contraste, foco e touch targets aprovados;
-- capturas em 375, 768 e 1440 px revisadas em navegador real;
-- Lighthouse ≥ 90 nas quatro categorias.
+## Responsividade
+
+- 375 px: hierarquia vertical, nomes sem corte, ações com 44 px e índice rolável;
+- 768 px: composição em duas colunas somente quando melhora leitura;
+- 1440 px: conteúdo limitado a 1280 px e uso consciente de espaço negativo.
+
+## Guardrails
+
+Evitar cards dentro de cards, glassmorphism, gradientes decorativos, badges para
+texto comum, ícones em círculos, cantos excessivamente arredondados, fontes
+menores que 14 px e dashboards com muitas cores.
+
+## Aceite visual
+
+- a primeira dobra comunica posição, senioridade e ação sem depender de scroll;
+- as três provas âncora são o centro visual da página;
+- cada seção tem uma geometria própria e não parece variação do mesmo card;
+- landing, rotas React e Streamlit compartilham tokens e comportamento;
+- 375, 768 e 1440 px são comparados à referência no mesmo passe de QA;
+- contraste, foco, teclado e reduced motion permanecem íntegros.
