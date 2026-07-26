@@ -22,7 +22,7 @@ function token(name: string, fallback: string) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 }
 
-type LegendTone = "primary" | "accent" | "warm" | "success" | "warning" | "danger";
+type LegendTone = "primary" | "accent" | "warm" | "success" | "warning" | "danger" | "neutral";
 
 const legendToneClass: Record<LegendTone, string> = {
   primary: "bg-primary",
@@ -31,6 +31,7 @@ const legendToneClass: Record<LegendTone, string> = {
   success: "bg-success",
   warning: "bg-warning",
   danger: "bg-danger",
+  neutral: "bg-muted-foreground",
 };
 
 function legendForMap(mapData: DemoMap): { label: string; tone: LegendTone }[] {
@@ -54,6 +55,15 @@ function legendForMap(mapData: DemoMap): { label: string; tone: LegendTone }[] {
             ? ("warning" as const)
             : ("danger" as const),
     }));
+  }
+
+  if (mapData.kind === "flows") {
+    return [
+      { label: "CD", tone: "primary" },
+      { label: "Loja", tone: "accent" },
+      { label: "Hub", tone: "warm" },
+      { label: "Destino", tone: "neutral" },
+    ];
   }
 
   return [
@@ -103,6 +113,48 @@ function featuresForMap(mapData: DemoMap): Feature[] {
       },
     }));
   }
+  if (mapData.kind === "flows") {
+    const nodes = (mapData.nodes ?? []).map((node) => ({
+      type: "Feature" as const,
+      geometry: { type: "Point" as const, coordinates: [node.lon, node.lat] },
+      properties: {
+        kind: "flow-origin",
+        label: node.id,
+        tone: node.id.toUpperCase().includes("HUB")
+          ? "warm"
+          : node.id.toUpperCase().includes("LOJA")
+            ? "accent"
+            : "primary",
+      },
+    }));
+    const edges = (mapData.edges ?? []).map((edge) => ({
+      type: "Feature" as const,
+      geometry: {
+        type: "LineString" as const,
+        coordinates: [edge.from.slice().reverse(), edge.to.slice().reverse()],
+      },
+      properties: {
+        kind: "flow-edge",
+        label: edge.label,
+        value: edge.value,
+        tone: edge.tone ?? "primary",
+      },
+    }));
+    const destinations = Array.from(
+      new Map(
+        (mapData.edges ?? []).map((edge) => [
+          `${edge.to[0]},${edge.to[1]}`,
+          { lat: edge.to[0], lon: edge.to[1] },
+        ]),
+      ).values(),
+    ).map((point) => ({
+      type: "Feature" as const,
+      geometry: { type: "Point" as const, coordinates: [point.lon, point.lat] },
+      properties: { kind: "flow-destination", label: "Destino" },
+    }));
+    return [...edges, ...nodes, ...destinations];
+  }
+
   return [
     ...(mapData.routes ?? []).flatMap((route, routeIndex) => [
       {
@@ -220,6 +272,41 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
           },
         });
         map.addLayer({
+          id: "flow-edges",
+          type: "line",
+          source: "demo-data",
+          filter: ["==", ["get", "kind"], "flow-edge"],
+          paint: {
+            "line-color": ["match", ["get", "tone"], "accent", accent, "warm", warm, primary],
+            "line-width": 1.5,
+            "line-opacity": 0.75,
+          },
+        });
+        map.addLayer({
+          id: "flow-origins",
+          type: "circle",
+          source: "demo-data",
+          filter: ["==", ["get", "kind"], "flow-origin"],
+          paint: {
+            "circle-color": ["match", ["get", "tone"], "accent", accent, "warm", warm, primary],
+            "circle-radius": 7,
+            "circle-stroke-color": card,
+            "circle-stroke-width": 2,
+          },
+        });
+        map.addLayer({
+          id: "flow-destinations",
+          type: "circle",
+          source: "demo-data",
+          filter: ["==", ["get", "kind"], "flow-destination"],
+          paint: {
+            "circle-color": token("--muted-foreground", designTokens.colors.mutedForeground),
+            "circle-radius": 3.5,
+            "circle-stroke-color": card,
+            "circle-stroke-width": 1.5,
+          },
+        });
+        map.addLayer({
           id: "nodes",
           type: "circle",
           source: "demo-data",
@@ -267,22 +354,25 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
             duration: reducedMotion ? 0 : 700,
           });
         }
-        map.on("click", "nodes", (event) => {
-          const feature = event.features?.[0];
-          if (!feature || feature.geometry.type !== "Point") return;
-          const properties = feature.properties ?? {};
-          const detail = properties.detail ? ` — ${properties.detail}` : "";
-          new maplibre.Popup({ closeButton: false, offset: 8 })
-            .setLngLat(feature.geometry.coordinates as [number, number])
-            .setText(`${properties.label ?? "Ponto"}${detail}`)
-            .addTo(map as import("maplibre-gl").Map);
-        });
-        map.on("mouseenter", "nodes", () => {
-          if (map) map.getCanvas().style.cursor = "pointer";
-        });
-        map.on("mouseleave", "nodes", () => {
-          if (map) map.getCanvas().style.cursor = "";
-        });
+        const popupLayers = ["nodes", "flow-origins", "flow-destinations"];
+        for (const layer of popupLayers) {
+          map.on("click", layer, (event) => {
+            const feature = event.features?.[0];
+            if (!feature || feature.geometry.type !== "Point") return;
+            const properties = feature.properties ?? {};
+            const detail = properties.detail ? ` — ${properties.detail}` : "";
+            new maplibre.Popup({ closeButton: false, offset: 8 })
+              .setLngLat(feature.geometry.coordinates as [number, number])
+              .setText(`${properties.label ?? "Ponto"}${detail}`)
+              .addTo(map as import("maplibre-gl").Map);
+          });
+          map.on("mouseenter", layer, () => {
+            if (map) map.getCanvas().style.cursor = "pointer";
+          });
+          map.on("mouseleave", layer, () => {
+            if (map) map.getCanvas().style.cursor = "";
+          });
+        }
       });
     }
 

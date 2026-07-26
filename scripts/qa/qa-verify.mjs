@@ -48,10 +48,10 @@ summary.filterCount = await page.getByRole("button", { name: /^Todos/ }).count()
 
 const complementaryItem = page
   .getByTestId("case-library-item")
-  .filter({ hasText: "Promessa de Entrega por CEP" });
+  .filter({ hasText: "Auditoria de Endereço e Geocoding" });
 await complementaryItem.scrollIntoViewIfNeeded();
 await complementaryItem
-  .getByRole("button", { name: /Explorar case: Promessa de Entrega por CEP/i })
+  .getByRole("button", { name: /Explorar case: Auditoria de Endereço/i })
   .click();
 
 const complementaryDialog = page.getByRole("dialog");
@@ -90,12 +90,12 @@ Object.assign(summary, {
   complementaryOrigin:
     embeddedDemo.origin === expectedDemosOrigin && externalDemo.origin === expectedDemosOrigin,
   complementarySlug:
-    embeddedDemo.pathname.replace(/\/$/, "") === "/promessa_cep" &&
-    externalDemo.pathname.replace(/\/$/, "") === "/promessa_cep",
+    embeddedDemo.pathname.replace(/\/$/, "") === "/auditoria_endereco" &&
+    externalDemo.pathname.replace(/\/$/, "") === "/auditoria_endereco",
   embedMode:
     embeddedDemo.searchParams.get("embed") === "true" && !externalDemo.searchParams.has("embed"),
   complementaryRendered:
-    (await complementaryHeading.textContent())?.trim().startsWith("03.") === true &&
+    (await complementaryHeading.textContent())?.trim().startsWith("05.") === true &&
     (await streamlitSurface.locator('[data-testid="stException"]').count()) === 0,
 });
 await page.screenshot({ path: path.join(out, "verify-modal-streamlit.png"), fullPage: false });
