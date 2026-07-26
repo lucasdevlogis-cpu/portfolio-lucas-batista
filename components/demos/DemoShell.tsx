@@ -42,13 +42,14 @@ export function DemoShell({
             key={snapshot.slug}
             mapData={snapshot.map}
             title={
-              snapshot.map.kind === "routes"
+              snapshot.map.title ??
+              (snapshot.map.kind === "routes"
                 ? "Rotas por veículo"
                 : snapshot.map.kind === "network"
                   ? "Corredores e origens"
                   : snapshot.map.kind === "flows"
                     ? "Alocação origem → destino"
-                    : "Status por região"
+                    : "Status por região")
             }
           />
         ) : null}

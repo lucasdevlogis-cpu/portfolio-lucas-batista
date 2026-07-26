@@ -20,6 +20,7 @@ from domain import promessa_cep as cep  # noqa: E402
 from domain import rede_interhubs as rede  # noqa: E402
 from domain import routing as geo  # noqa: E402
 from domain import ship_from_store as sfs  # noqa: E402
+from domain import vrptw_ultima_milha as vrptw  # noqa: E402
 from settings import DEMO_SNAPSHOT_DIR, GENERATED_DATA_DIR  # noqa: E402
 
 UF_CENTROIDE = {
@@ -613,6 +614,121 @@ def rede_interhubs_snapshot() -> dict:
     return result
 
 
+def vrptw_ultima_milha_snapshot() -> dict:
+    path = GENERATED_DATA_DIR / "vrptw_paradas.csv"
+    edf_df, base_df = vrptw.edf_schedule(path)
+    viol_edf = int((edf_df["status"] == "Violou SLA").sum())
+    viol_base = int((base_df["status"] == "Violou SLA").sum())
+    espera_total = float(edf_df["wait_min"].sum())
+    ultima_entrega = edf_df["arrival_min"].iloc[-1] if len(edf_df) else 0
+
+    result = snapshot_base(
+        "vrptw_ultima_milha",
+        "09-vrptw-ultima-milha",
+        "Última milha com janelas",
+        "A sequência de entregas respeita as janelas prometidas ao cliente?",
+        "Ordenar entregas por prazo para reduzir violações de janela.",
+        "Simulação com velocidade média constante. Produção usaria PyVRP com time windows e trânsito real.",
+        "EDF (earliest-deadline-first) sobre distância Haversine; comparação com ordem de cadastro.",
+        ["VRPTW", "PyVRP", "Janela de tempo"],
+    )
+    result["kpis"] = [
+        {
+            "label": "Violações SLA",
+            "value": str(viol_edf),
+            "tone": "success" if viol_edf == 0 else "warning" if viol_edf == 1 else "danger",
+        },
+        {
+            "label": "Espera total",
+            "value": f"{espera_total:.0f} min",
+            "tone": "warning" if espera_total > 60 else "accent",
+        },
+        {
+            "label": "Última entrega",
+            "value": vrptw.format_time(ultima_entrega),
+        },
+    ]
+    result["charts"] = [
+        {
+            "id": "janela-vs-chegada",
+            "title": "Janela prometida × chegada planejada",
+            "kind": "time-window",
+            "unit": "MINUTE",
+            "data": [
+                {
+                    "label": f"{index:02d} · {row['customer']} · {row['stop_id']}",
+                    "value": int(row["window_start_min"]),
+                    "secondary": int(row["window_end_min"]),
+                    "arrival": round(row["arrival_min"], 1),
+                    "tone": "danger" if row["status"] == "Violou SLA" else "success",
+                    "detail": (
+                        f"Janela {row['window']} · chegada {row['arrival']} · "
+                        f"espera {row['wait_min']:.0f} min · {row['status']}"
+                    ),
+                }
+                for index, row in enumerate(edf_df.to_dict("records"), start=1)
+            ],
+            "series": ["Janela prometida", "Chegada planejada"],
+        },
+        {
+            "id": "sla-comparison",
+            "title": "Violações de SLA: baseline → EDF",
+            "kind": "bar",
+            "data": [
+                {
+                    "label": "Ordem de cadastro",
+                    "value": viol_base,
+                    "tone": "danger",
+                },
+                {
+                    "label": "EDF (heurístico)",
+                    "value": viol_edf,
+                    "tone": "success",
+                },
+            ],
+        },
+    ]
+    scheduled = edf_df.to_dict("records")
+    customer_points = [
+        {
+            "lat": number(row["lat"], 6),
+            "lon": number(row["lon"], 6),
+            "sequence": index,
+            "label": f"{index:02d} · {row['customer']}",
+            "detail": (
+                f"{row['stop_id']} · janela {row['window']} · chegada {row['arrival']} · "
+                f"{row['status']}"
+            ),
+            "tone": "danger" if row["status"] == "Violou SLA" else "success",
+        }
+        for index, row in enumerate(scheduled, start=1)
+    ]
+    route_points = [
+        {"lat": vrptw.DEPOT[0], "lon": vrptw.DEPOT[1], "label": "CD · saída"},
+        *customer_points,
+        {"lat": vrptw.DEPOT[0], "lon": vrptw.DEPOT[1], "label": "CD · retorno"},
+    ]
+    coords = [(point["lat"], point["lon"]) for point in route_points]
+    result["map"] = {
+        "kind": "routes",
+        "title": "Sequência EDF e cumprimento das janelas",
+        "center": [vrptw.DEPOT[0], vrptw.DEPOT[1]],
+        "zoom": 11,
+        "depot": {"lat": vrptw.DEPOT[0], "lon": vrptw.DEPOT[1], "label": "CD / origem"},
+        "routes": [
+            {
+                "id": "route-edf",
+                "label": (
+                    "Direção EDF 1 → 8 → CD · "
+                    f"{decimal(sum(geo.haversine(coords[i][0], coords[i][1], coords[i + 1][0], coords[i + 1][1]) for i in range(len(coords) - 1)))} km"
+                ),
+                "points": route_points,
+            }
+        ],
+    }
+    return result
+
+
 def main() -> None:
     DEMO_SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
     snapshots = [
@@ -622,6 +738,7 @@ def main() -> None:
         promessa_cep_snapshot(),
         ship_from_store_snapshot(),
         rede_interhubs_snapshot(),
+        vrptw_ultima_milha_snapshot(),
     ]
     for snapshot in snapshots:
         path = DEMO_SNAPSHOT_DIR / f"{snapshot['slug']}.json"

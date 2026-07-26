@@ -97,6 +97,28 @@ test.describe("Modal de demo", () => {
     );
   });
 
+  test("abre prova migrada (VRPTW) inline com evidências temporais", async ({ page }) => {
+    await openCases(page);
+    const item = page
+      .getByTestId("case-library-item")
+      .filter({ hasText: "Última Milha com Janelas (VRPTW)" });
+    await item.scrollIntoViewIfNeeded();
+    await item
+      .getByRole("button", { name: /Explorar case: Última Milha com Janelas \(VRPTW\)/i })
+      .click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator("iframe")).toHaveCount(0);
+    await expect(dialog.getByText("Violações SLA")).toBeVisible();
+    await expect(dialog.getByText("Espera total")).toBeVisible();
+    await expect(dialog.getByText("Janela prometida × chegada planejada")).toBeVisible();
+    await expect(dialog.getByRole("link", { name: /Abrir em nova aba/i })).toHaveAttribute(
+      "href",
+      "/provas/vrptw_ultima_milha",
+    );
+  });
+
   test("mantém demos secundárias em iframe Streamlit", async ({ page }) => {
     await openCases(page);
     const item = page

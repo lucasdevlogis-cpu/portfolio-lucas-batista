@@ -193,6 +193,26 @@ e usa largura proporcional ao volume.
 | QA visual Playwright               | rota desktop/mobile + modal aprovados    |
 | Browser integrado                  | indisponível por `missing sandboxPolicy` |
 
+### P1.4 — VRPTW / Última milha com janelas
+
+Concluído em 25/07/2026 pela PR #15. A rota pública
+`/provas/vrptw_ultima_milha` consome
+`contracts/demo-snapshots/vrptw_ultima_milha.json`; o modal da homepage
+renderiza a prova inline sem iframe Streamlit. O visual temporal separa janela
+prometida e chegada, enquanto o mapa registra a sequência e o SLA de cada
+parada.
+
+| Evidência                          | Resultado                              |
+| ---------------------------------- | -------------------------------------- |
+| `npm run verify`                   | aprovado                               |
+| `npm run demos:validate`           | 7 snapshots React válidos              |
+| `npm run demos:smoke`              | 13/13                                  |
+| `npm run test:e2e`                 | 25/25                                  |
+| pytest                             | 17/17                                  |
+| `npm audit --audit-level=moderate` | 0 vulnerabilidades                     |
+| QA visual Playwright               | rota desktop/mobile + modal aprovados  |
+| comparação operacional             | baseline 3 violações → EDF 0 violações |
+
 O baseline público aceito desta refatoração é 100/100/100/100 em desktop e
 96/100/100/100 em mobile, usando a mediana de três execuções. Resultados locais
 continuam como evidência rápida de regressão; a origem Streamlit canônica também

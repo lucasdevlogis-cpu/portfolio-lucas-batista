@@ -4,6 +4,7 @@ import promessaSnapshot from "@/contracts/demo-snapshots/promessa_cep.json";
 import freightSnapshot from "@/contracts/demo-snapshots/precificacao_frete.json";
 import redeInterhubsSnapshot from "@/contracts/demo-snapshots/rede_interhubs.json";
 import shipSnapshot from "@/contracts/demo-snapshots/ship_from_store.json";
+import vrptwSnapshot from "@/contracts/demo-snapshots/vrptw_ultima_milha.json";
 import { ANCHOR_DEMO_SLUGS } from "@/lib/demo-catalog";
 
 export { ANCHOR_DEMO_SLUGS } from "@/lib/demo-catalog";
@@ -13,6 +14,7 @@ export const REACT_DEMO_SLUGS = [
   "promessa_cep",
   "ship_from_store",
   "rede_interhubs",
+  "vrptw_ultima_milha",
 ] as const;
 
 export type DemoTone = "accent" | "danger" | "warning" | "success";
@@ -27,13 +29,16 @@ export interface DemoChartDatum {
   label: string;
   value: number;
   secondary?: number;
+  arrival?: number;
+  detail?: string;
+  tone?: DemoTone;
 }
 
 export interface DemoChart {
   id: string;
   title: string;
-  kind: "bar" | "grouped-bar" | "donut";
-  unit?: "BRL" | "KM" | "PERCENT" | "TON";
+  kind: "bar" | "grouped-bar" | "donut" | "time-window";
+  unit?: "BRL" | "KM" | "PERCENT" | "TON" | "MINUTE";
   data: DemoChartDatum[];
   series?: string[];
   reference?: number;
@@ -50,11 +55,19 @@ export interface DemoPoint {
 export interface DemoRoute {
   id: string;
   label: string;
-  points: { lat: number; lon: number }[];
+  points: {
+    lat: number;
+    lon: number;
+    sequence?: number;
+    label?: string;
+    detail?: string;
+    tone?: DemoTone;
+  }[];
 }
 
 export interface DemoMap {
   kind: "network" | "points" | "routes" | "flows";
+  title?: string;
   center: [number, number];
   zoom: number;
   nodes?: { id: string; lat: number; lon: number }[];
@@ -91,6 +104,7 @@ export const DEMO_SNAPSHOTS: Record<string, DemoSnapshot> = {
   promessa_cep: promessaSnapshot as DemoSnapshot,
   ship_from_store: shipSnapshot as DemoSnapshot,
   rede_interhubs: redeInterhubsSnapshot as DemoSnapshot,
+  vrptw_ultima_milha: vrptwSnapshot as DemoSnapshot,
 };
 
 export function getDemoSnapshot(slug: string): DemoSnapshot | null {

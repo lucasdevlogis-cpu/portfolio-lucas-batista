@@ -9,7 +9,7 @@ Produção usaria PyVRP (time windows).
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from domain import routing as geo
+from domain import vrptw_ultima_milha as vrptw
 from presentation import charts as viz
 from presentation import formatters as fmt
 from presentation import maps as fmap
@@ -18,14 +18,6 @@ from presentation import tokens as brand
 
 ui.page_setup("09. VRPTW — Última Milha", icon="⏱️")
 
-DEPOT = (-23.51, -46.72)
-
-
-def hhmm(minutos: float) -> str:
-    minutos = int(round(minutos))
-    return f"{minutos // 60:02d}:{minutos % 60:02d}"
-
-
 df = ui.load_csv("vrptw_paradas.csv")
 
 with ui.filter_container("Parâmetros"):
@@ -33,46 +25,22 @@ with ui.filter_container("Parâmetros"):
     inicio = st.slider("Início da jornada (h)", 6, 12, 8)
     velocidade = st.slider("Velocidade média (km/h)", 12, 40, 22)
 
-base = df.head(n).to_dict("records")
-
-
-def simular(order: list[dict]) -> pd.DataFrame:
-    t = inicio * 60
-    pos = DEPOT
-    linhas = []
-    for p in order:
-        travel = geo.haversine(pos[0], pos[1], p["lat"], p["lon"]) / velocidade * 60
-        t += travel
-        chegada = t
-        espera = max(0, p["window_start_min"] - chegada)
-        t = max(chegada, p["window_start_min"])
-        violou = chegada > p["window_end_min"]
-        t += p["service_time_min"]
-        linhas.append(
-            {
-                "stop_id": p["stop_id"],
-                "cliente": p["customer"],
-                "lat": p["lat"],
-                "lon": p["lon"],
-                "janela": f"{hhmm(p['window_start_min'])}–{hhmm(p['window_end_min'])}",
-                "window_start_min": p["window_start_min"],
-                "window_end_min": p["window_end_min"],
-                "chegada_min": round(chegada, 1),
-                "chegada": hhmm(chegada),
-                "espera_min": round(espera, 1),
-                "status": "Violou SLA" if violou else "No prazo",
-            }
-        )
-        pos = (p["lat"], p["lon"])
-    return pd.DataFrame(linhas)
-
-
 with st.spinner("Simulando rotas e janelas..."):
-    ordem_cadastro = list(base)
-    ordem_edf = sorted(base, key=lambda p: p["window_end_min"])
-
-    sched_base = simular(ordem_cadastro)
-    sched_edf = simular(ordem_edf)
+    stops = vrptw.stops_from_dataframe(df, limit=n)
+    sched_edf, sched_base = vrptw.schedule_scenarios(
+        stops,
+        start_min=inicio * 60,
+        speed_kmh=velocidade,
+    )
+    sched_edf = sched_edf.rename(
+        columns={
+            "customer": "cliente",
+            "window": "janela",
+            "arrival_min": "chegada_min",
+            "arrival": "chegada",
+            "wait_min": "espera_min",
+        }
+    )
 
     viol_base = int((sched_base["status"] == "Violou SLA").sum())
     viol_edf = int((sched_edf["status"] == "Violou SLA").sum())
@@ -110,7 +78,7 @@ ui.kpi_grid(
             "value": f"{espera_total:.0f} min",
             "severity": "warning" if espera_total > 60 else None,
         },
-        {"label": "Última entrega", "value": hhmm(ultima_entrega)},
+        {"label": "Última entrega", "value": vrptw.format_time(ultima_entrega)},
     ]
 )
 
@@ -124,12 +92,12 @@ with tab_visao:
         if map_detail
         else "Rota EDF compacta para leitura no modal da landing",
     )
-    coords = [DEPOT] + [(r["lat"], r["lon"]) for _, r in sched_edf.iterrows()] + [DEPOT]
-    m = fmap.base_map(center=DEPOT, zoom=11, height=ui.map_height(brand.MAP_FULL_HEIGHT))
+    coords = [vrptw.DEPOT] + [(r["lat"], r["lon"]) for _, r in sched_edf.iterrows()] + [vrptw.DEPOT]
+    m = fmap.base_map(center=vrptw.DEPOT, zoom=11, height=ui.map_height(brand.MAP_FULL_HEIGHT))
     m = fmap.add_routes(
         m,
         routes=[{"coords": coords, "label": "Rota EDF", "color": brand.PRIMARY}],
-        depot=DEPOT,
+        depot=vrptw.DEPOT,
         show_numbers=map_detail,
         show_arrows=map_detail,
     )
@@ -186,7 +154,11 @@ with tab_analise:
     fig = viz.add_reference_line(fig, x=deadline_medio, label="Deadline médio", color=brand.WARNING)
     fig.update_layout(
         height=ui.chart_height(max(brand.CHART_HALF_HEIGHT, 40 * len(sched_edf))),
-        xaxis=dict(title="Horário", tickvals=tickvals, ticktext=[hhmm(t) for t in tickvals]),
+        xaxis=dict(
+            title="Horário",
+            tickvals=tickvals,
+            ticktext=[vrptw.format_time(t) for t in tickvals],
+        ),
         yaxis=dict(title=""),
         margin=dict(t=10, b=10, l=10, r=10),
     )
