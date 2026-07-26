@@ -9,6 +9,7 @@ test.describe("Rotas públicas das provas React", () => {
     "ship_from_store",
     "rede_interhubs",
     "vrptw_ultima_milha",
+    "auditoria_endereco",
   ]) {
     test(`renderiza ${slug} sem depender do Streamlit`, async ({ page }) => {
       await page.goto(`/provas/${slug}`);

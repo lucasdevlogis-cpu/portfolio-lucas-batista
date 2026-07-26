@@ -119,13 +119,35 @@ test.describe("Modal de demo", () => {
     );
   });
 
-  test("mantém demos secundárias em iframe Streamlit", async ({ page }) => {
+  test("abre prova migrada (Auditoria de Endereço) inline com triagem territorial", async ({
+    page,
+  }) => {
     await openCases(page);
     const item = page
       .getByTestId("case-library-item")
       .filter({ hasText: "Auditoria de Endereço e Geocoding" });
     await item.scrollIntoViewIfNeeded();
     await item.getByRole("button", { name: /Explorar case: Auditoria de Endereço/i }).click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator("iframe")).toHaveCount(0);
+    await expect(dialog.getByText("Bloquear").first()).toBeVisible();
+    await expect(dialog.getByText("Regras acionadas \(ocorrências\)")).toBeVisible();
+    await expect(dialog.getByText(/45 exibidos; 15 bloqueados fora do mapa/i)).toBeVisible();
+    await expect(dialog.getByRole("link", { name: /Abrir em nova aba/i })).toHaveAttribute(
+      "href",
+      "/provas/auditoria_endereco",
+    );
+  });
+
+  test("mantém demos secundárias em iframe Streamlit", async ({ page }) => {
+    await openCases(page);
+    const item = page
+      .getByTestId("case-library-item")
+      .filter({ hasText: "Sequência de Visitas (TSP)" });
+    await item.scrollIntoViewIfNeeded();
+    await item.getByRole("button", { name: /Explorar case: Sequência de Visitas/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
@@ -165,9 +187,11 @@ test.describe("Modal de demo", () => {
 
     const item = page
       .getByTestId("case-library-item")
-      .filter({ hasText: "Auditoria de Endereço e Geocoding" });
+      .filter({ hasText: "Classificador de Ocorrências Operacionais" });
     await item.scrollIntoViewIfNeeded();
-    await item.getByRole("button", { name: /Explorar case: Auditoria de Endereço/i }).click();
+    await item
+      .getByRole("button", { name: /Explorar case: Classificador de Ocorrências/i })
+      .click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();

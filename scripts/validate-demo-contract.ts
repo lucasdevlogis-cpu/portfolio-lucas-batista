@@ -6,7 +6,7 @@ import { DEMO_SNAPSHOTS, REACT_DEMO_SLUGS, type DemoSnapshot } from "../lib/demo
 const errors: string[] = [];
 const tones = new Set(["accent", "danger", "warning", "success"]);
 const chartKinds = new Set(["bar", "grouped-bar", "donut", "time-window"]);
-const chartUnits = new Set(["BRL", "KM", "PERCENT", "TON", "MINUTE"]);
+const chartUnits = new Set(["BRL", "KM", "PERCENT", "TON", "MINUTE", "COUNT"]);
 const mapKinds = new Set(["network", "points", "routes", "flows"]);
 const requiredStrings: (keyof DemoSnapshot)[] = [
   "slug",
@@ -61,6 +61,9 @@ for (const slug of REACT_DEMO_SLUGS) {
     if (chart.unit && !chartUnits.has(chart.unit)) {
       errors.push(`${slug}: gráfico ${chart.id || index + 1} com unidade inválida (${chart.unit})`);
     }
+    if (chart.orientation && !["horizontal", "vertical"].includes(chart.orientation)) {
+      errors.push(`${slug}: gráfico ${chart.id || index + 1} com orientação inválida`);
+    }
     if (!Array.isArray(chart.data) || chart.data.length < 1) {
       errors.push(`${slug}: gráfico ${chart.id || index + 1} sem dados`);
     }
@@ -111,6 +114,21 @@ for (const slug of REACT_DEMO_SLUGS) {
     errors.push(`${slug}: mapa de rede sem nós ou corredores`);
   } else if (snapshot.map.kind === "routes" && !snapshot.map.routes?.length) {
     errors.push(`${slug}: mapa de rotas sem rota ou pontos`);
+  } else if (snapshot.map.kind === "points" && !snapshot.map.points?.length) {
+    errors.push(`${slug}: mapa de pontos sem pontos`);
+  } else if (
+    snapshot.map.kind === "points" &&
+    (snapshot.map.points ?? []).some(
+      (point) =>
+        !point.id?.trim() ||
+        !point.label?.trim() ||
+        !point.detail?.trim() ||
+        !Number.isFinite(point.lat) ||
+        !Number.isFinite(point.lon) ||
+        (point.tone !== undefined && !tones.has(point.tone)),
+    )
+  ) {
+    errors.push(`${slug}: ponto com geometria ou metadados inválidos`);
   } else if (
     snapshot.map.kind === "routes" &&
     (snapshot.map.routes ?? []).some(
@@ -141,6 +159,36 @@ for (const slug of REACT_DEMO_SLUGS) {
         errors.push(`${slug}: parada ${index + 1} sem sequência/SLA verificável`);
       }
     });
+  }
+  if (slug === "auditoria_endereco") {
+    const rulesChart = snapshot.charts.find((chart) => chart.id === "regras-acionadas");
+    if (
+      snapshot.map?.kind !== "points" ||
+      !snapshot.map.title?.trim() ||
+      !snapshot.map.note?.trim() ||
+      snapshot.map.points?.length !== 45
+    ) {
+      errors.push(`${slug}: mapa deve declarar título, nota territorial e 45 pontos válidos`);
+    }
+    if ((snapshot.map?.points ?? []).some((point) => !point.tone || !tones.has(point.tone))) {
+      errors.push(`${slug}: todos os pontos devem declarar decisão semântica`);
+    }
+    if (
+      (snapshot.map?.points ?? []).some(
+        (point) => point.lat < -34 || point.lat > 5.5 || point.lon < -74 || point.lon > -34,
+      )
+    ) {
+      errors.push(`${slug}: mapa contém coordenada fora dos limites do Brasil`);
+    }
+    if (
+      !rulesChart ||
+      rulesChart.orientation !== "horizontal" ||
+      rulesChart.unit !== "COUNT" ||
+      rulesChart.data.length !== 5 ||
+      rulesChart.data.some((datum) => datum.tone !== undefined)
+    ) {
+      errors.push(`${slug}: regras acionadas devem usar barras horizontais COUNT em laranja`);
+    }
   }
   const jsonPath = join(process.cwd(), "contracts", "demo-snapshots", `${slug}.json`);
   if (!existsSync(jsonPath)) {
