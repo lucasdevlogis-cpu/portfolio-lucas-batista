@@ -6,27 +6,15 @@ arquitetura: Fleetbase (LSOS) / OMS de fulfillment distribuído.
 """
 
 import folium
-import pandas as pd
 import plotly.express as px
 import streamlit as st
-from domain import routing as geo
+from domain import ship_from_store as sfs
 from presentation import formatters as fmt
 from presentation import maps as fmap
 from presentation import tables, ui
 from presentation import tokens as brand
 
 ui.page_setup("04. Ship-from-Store BR", icon="🏬")
-
-
-def prazo_por_distancia(km: float) -> int:
-    if km <= 50:
-        return 1
-    if km <= 300:
-        return 2
-    if km <= 800:
-        return 3
-    return 4
-
 
 origens = ui.load_csv("sfs_origens.csv")
 pedidos = ui.load_csv("sfs_pedidos.csv")
@@ -37,58 +25,14 @@ with ui.filter_container("Política de alocação"):
     handling = st.slider("Custo de manuseio por unidade (R$)", 0.0, 5.0, 1.5, 0.5)
     usar_capacidade = st.checkbox("Respeitar capacidade diária das origens", value=True)
 
-CD = origens[origens["origem_tipo"] == "CD"].iloc[0]
-
-
-def custo_origem(
-    o: pd.Series, dest_lat: float, dest_lon: float, demanda: int
-) -> tuple[float, int, float]:
-    dist = geo.haversine(o["lat"], o["lon"], dest_lat, dest_lon)
-    prazo = prazo_por_distancia(dist)
-    custo = o["custo_fixo"] + dist * rate_km + demanda * handling
-    return round(custo, 2), prazo, round(dist, 2)
-
-
-restante = {o["origem_id"]: int(o["capacidade_dia"]) for _, o in origens.iterrows()}
-linhas = []
-for _, p in pedidos.iterrows():
-    # Baseline: sempre o CD.
-    b_custo, b_prazo, _ = custo_origem(CD, p["dest_lat"], p["dest_lon"], p["demanda_un"])
-    # Avalia todas as origens com capacidade.
-    candidatos = []
-    for _, o in origens.iterrows():
-        if usar_capacidade and restante[o["origem_id"]] < p["demanda_un"]:
-            continue
-        custo, prazo, dist = custo_origem(o, p["dest_lat"], p["dest_lon"], p["demanda_un"])
-        score = custo + prazo * peso_prazo
-        candidatos.append((score, custo, prazo, dist, o))
-    if not candidatos:  # fallback: CD sempre disponível
-        custo, prazo, dist = custo_origem(CD, p["dest_lat"], p["dest_lon"], p["demanda_un"])
-        escolha = (custo + prazo * peso_prazo, custo, prazo, dist, CD)
-    else:
-        escolha = min(candidatos, key=lambda x: x[0])
-    _, custo, prazo, dist, o = escolha
-    if usar_capacidade:
-        restante[o["origem_id"]] -= int(p["demanda_un"])
-    linhas.append(
-        {
-            "pedido_id": p["pedido_id"],
-            "uf_destino": p["uf_destino"],
-            "dest_lat": p["dest_lat"],
-            "dest_lon": p["dest_lon"],
-            "origem_escolhida": o["origem_id"],
-            "origem_tipo": o["origem_tipo"],
-            "origem_lat": o["lat"],
-            "origem_lon": o["lon"],
-            "distancia_km": dist,
-            "prazo_dias": prazo,
-            "custo": custo,
-            "economia": round(b_custo - custo, 2),
-            "reducao_prazo": b_prazo - prazo,
-        }
-    )
-
-res = pd.DataFrame(linhas)
+res = sfs.resolver_alocacao(
+    origens=origens,
+    pedidos=pedidos,
+    peso_prazo=peso_prazo,
+    rate_km=rate_km,
+    handling=handling,
+    usar_capacidade=usar_capacidade,
+)
 economia_total = res["economia"].sum()
 economia_media = res["economia"].mean()
 reducao_media = res["reducao_prazo"].mean()

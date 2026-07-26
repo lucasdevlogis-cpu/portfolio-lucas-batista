@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { SITE_URL } from "@/data/content";
-import { ANCHOR_DEMO_SLUGS } from "@/lib/demo-contract";
+import { REACT_DEMO_SLUGS } from "@/lib/demo-contract";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = SITE_URL.replace(/\/$/, "");
@@ -11,7 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
-    ...ANCHOR_DEMO_SLUGS.map((slug) => ({
+    ...REACT_DEMO_SLUGS.map((slug) => ({
       url: `${baseUrl}/provas/${slug}`,
       changeFrequency: "monthly" as const,
       priority: 0.8,
