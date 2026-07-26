@@ -6,6 +6,8 @@ import { DEMO_SNAPSHOTS, REACT_DEMO_SLUGS, type DemoSnapshot } from "../lib/demo
 const errors: string[] = [];
 const tones = new Set(["accent", "danger", "warning", "success"]);
 const chartKinds = new Set(["bar", "grouped-bar", "donut"]);
+const chartUnits = new Set(["BRL", "KM", "PERCENT", "TON"]);
+const mapKinds = new Set(["network", "points", "routes", "flows"]);
 const requiredStrings: (keyof DemoSnapshot)[] = [
   "slug",
   "caseId",
@@ -56,6 +58,9 @@ for (const slug of REACT_DEMO_SLUGS) {
     if (!chartKinds.has(chart.kind) || !chart.title?.trim()) {
       errors.push(`${slug}: gráfico ${chart.id || index + 1} inválido`);
     }
+    if (chart.unit && !chartUnits.has(chart.unit)) {
+      errors.push(`${slug}: gráfico ${chart.id || index + 1} com unidade inválida (${chart.unit})`);
+    }
     if (!Array.isArray(chart.data) || chart.data.length < 1) {
       errors.push(`${slug}: gráfico ${chart.id || index + 1} sem dados`);
     }
@@ -68,11 +73,17 @@ for (const slug of REACT_DEMO_SLUGS) {
   if (!snapshot.map) {
     errors.push(`${slug}: mapa ausente`);
   } else if (
+    !mapKinds.has(snapshot.map.kind) ||
     snapshot.map.center.length !== 2 ||
     !snapshot.map.center.every(Number.isFinite) ||
     !Number.isFinite(snapshot.map.zoom)
   ) {
     errors.push(`${slug}: centro/zoom do mapa inválido`);
+  } else if (
+    snapshot.map.kind === "network" &&
+    (!snapshot.map.nodes?.length || !snapshot.map.edges?.length)
+  ) {
+    errors.push(`${slug}: mapa de rede sem nós ou corredores`);
   }
   const jsonPath = join(process.cwd(), "contracts", "demo-snapshots", `${slug}.json`);
   if (!existsSync(jsonPath)) {

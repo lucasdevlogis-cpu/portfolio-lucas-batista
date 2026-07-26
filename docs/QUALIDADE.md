@@ -175,6 +175,24 @@ Modal da homepage renderiza a prova inline sem iframe Streamlit.
 | `npm audit --audit-level=moderate` | 0 vulnerabilidades          |
 | `npm run qa:streamlit`             | 12 desktop + 7 mobile-embed |
 
+### P1.3 — Rede inter-hubs / Corredores
+
+Concluído em 25/07/2026 pela PR #14. A rota pública
+`/provas/rede_interhubs` consome
+`contracts/demo-snapshots/rede_interhubs.json`; o modal da homepage renderiza
+a prova inline sem iframe Streamlit. O mapa de rede torna corredores clicáveis
+e usa largura proporcional ao volume.
+
+| Evidência                          | Resultado                                |
+| ---------------------------------- | ---------------------------------------- |
+| `npm run verify`                   | aprovado                                 |
+| `npm run demos:validate`           | 6 snapshots React válidos                |
+| `npm run demos:smoke`              | 13/13                                    |
+| `npm run test:e2e`                 | 23/23                                    |
+| `npm audit --audit-level=moderate` | 0 vulnerabilidades                       |
+| QA visual Playwright               | rota desktop/mobile + modal aprovados    |
+| Browser integrado                  | indisponível por `missing sandboxPolicy` |
+
 O baseline público aceito desta refatoração é 100/100/100/100 em desktop e
 99/100/100/100 em mobile. Resultados locais continuam como evidência rápida de
 regressão; a origem Streamlit canônica também passou no gate visual público.

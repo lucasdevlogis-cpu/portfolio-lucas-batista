@@ -1,3 +1,4 @@
+import { ANCHOR_DEMO_SLUGS } from "@/lib/demo-catalog";
 import type { DemoSnapshot } from "@/lib/demo-contract";
 
 import { ChartCard } from "@/components/demos/ChartCard";
@@ -21,7 +22,9 @@ export function DemoShell({
         {compact ? (
           <div className="border-l-4 border-primary bg-surface-dark px-4 py-5 text-white sm:px-6">
             <p className="font-mono text-[0.65rem] font-bold uppercase tracking-[0.14em] text-primary">
-              Demo âncora · leitura rápida
+              {ANCHOR_DEMO_SLUGS.includes(snapshot.slug)
+                ? "Demo âncora · leitura rápida"
+                : "Prova migrada · leitura rápida"}
             </p>
             <p className="mt-3 font-heading text-3xl font-black uppercase leading-none tracking-[-0.035em]">
               {snapshot.title}
@@ -36,6 +39,7 @@ export function DemoShell({
         </div>
         {snapshot.map ? (
           <MapCard
+            key={snapshot.slug}
             mapData={snapshot.map}
             title={
               snapshot.map.kind === "routes"
