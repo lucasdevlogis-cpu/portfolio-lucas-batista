@@ -233,6 +233,25 @@ visível a exclusão dos 15 bloqueados fora dos limites territoriais.
 | QA visual Playwright               | rota desktop/mobile + modal aprovados    |
 | cobertura territorial              | 45 exibidos · 15 bloqueados fora do mapa |
 
+### P1.6 — TSP / Sequência de Visitas
+
+Concluído em 25/07/2026 pela PR #17. A rota pública
+`/provas/tsp_baseline_sp` consome
+`contracts/demo-snapshots/tsp_baseline_sp.json`; o modal da homepage renderiza
+a prova inline sem iframe Streamlit. O gráfico compara cadastro, NN e NN+2-opt;
+o mapa mantém somente a sequência final numerada, com retorno ao CD.
+
+| Evidência                          | Resultado                                 |
+| ---------------------------------- | ----------------------------------------- |
+| `npm run verify`                   | aprovado                                  |
+| `npm run demos:validate`           | 9 snapshots React válidos                 |
+| `npm run demos:smoke`              | 13/13                                     |
+| `npm run test:e2e`                 | 29/29                                     |
+| pytest                             | 47/47                                     |
+| `npm audit --audit-level=moderate` | 0 vulnerabilidades                        |
+| QA visual Playwright               | rota desktop/mobile + modal aprovados     |
+| comparação operacional             | 34,5 km → 31,5 km → 28,0 km · redução 19% |
+
 O baseline público aceito desta refatoração é 100/100/100/100 em desktop e
 96/100/100/100 em mobile, usando a mediana de três execuções. Resultados locais
 continuam como evidência rápida de regressão; a origem Streamlit canônica também

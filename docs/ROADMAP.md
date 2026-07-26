@@ -30,8 +30,9 @@ aceito.
 - [x] Rede inter-hubs — mapa de rede e custo por corredor.
 - [x] VRPTW — sequência temporal e violações de janela.
 - [x] Auditoria de endereço — qualidade e exceções territoriais.
+- [x] TSP — baseline didático de otimização.
 
-As cinco foram migradas para rotas React consumindo snapshots Python; o modal
+As seis foram migradas para rotas React consumindo snapshots Python; o modal
 da homepage renderiza inline sem iframe.
 
 ## P1 — retirar Streamlit da apresentação pública (continuação)
@@ -43,15 +44,15 @@ Ordem de migração orientada a valor de recrutamento e variedade visual:
 3. ~~Rede inter-hubs — mapa de rede e custo por corredor.~~ ✅
 4. ~~VRPTW — sequência temporal e violações de janela.~~ ✅
 5. ~~Auditoria de endereço — qualidade e exceções territoriais.~~ ✅
-6. TSP — baseline didático de otimização.
+6. ~~TSP — baseline didático de otimização.~~ ✅
 7. Classificador de ocorrências — NLP com governança humana.
 
 Cada migração exige snapshot Python, schema validado, rota React, modal inline,
 estado de loading/erro e retirada do iframe correspondente.
 
-> **Continuidade:** as próximas migrações (TSP e Classificador) seguem em
-> branches dedicadas, integradas sequencialmente para preservar contratos,
-> exporter e qualidade visual.
+> **Continuidade:** a última migração pública, Classificador de ocorrências,
+> segue em branch dedicada para preservar contratos, exporter e qualidade
+> visual.
 
 ## P2 — diferenciação
 
@@ -63,10 +64,9 @@ estado de loading/erro e retirada do iframe correspondente.
 
 ## Próximos passos imediatos
 
-1. Migrar TSP com baseline didático de otimização.
-2. Migrar Classificador de ocorrências com governança humana.
-3. Instrumentar abertura das provas e CTAs sem coletar dados sensíveis.
-4. Desativar cada iframe somente depois de sua rota pública equivalente.
+1. Migrar Classificador de ocorrências com governança humana.
+2. Instrumentar abertura das provas e CTAs sem coletar dados sensíveis.
+3. Desativar o último iframe depois de sua rota pública equivalente.
 
 ## Critério de pronto do P0
 
