@@ -27,8 +27,9 @@ aceito.
 
 - [x] Promessa de entrega por CEP — mapa territorial e risco.
 - [x] Ship from Store — comparação multicritério de origem.
+- [x] Rede inter-hubs — mapa de rede e custo por corredor.
 
-Ambas migradas para rotas React consumindo snapshots Python; modal da homepage
+As três foram migradas para rotas React consumindo snapshots Python; o modal da homepage
 renderiza inline sem iframe.
 
 ## P1 — retirar Streamlit da apresentação pública (continuação)
@@ -37,7 +38,7 @@ Ordem de migração orientada a valor de recrutamento e variedade visual:
 
 1. ~~Promessa de entrega por CEP — mapa territorial e risco.~~ ✅
 2. ~~Ship from Store — comparação multicritério de origem.~~ ✅
-3. Rede inter-hubs — mapa de rede e custo por corredor.
+3. ~~Rede inter-hubs — mapa de rede e custo por corredor.~~ ✅
 4. VRPTW — sequência temporal e violações de janela.
 5. Auditoria de endereço — qualidade e exceções territoriais.
 6. TSP — baseline didático de otimização.
@@ -46,9 +47,9 @@ Ordem de migração orientada a valor de recrutamento e variedade visual:
 Cada migração exige snapshot Python, schema validado, rota React, modal inline,
 estado de loading/erro e retirada do iframe correspondente.
 
-> **Continuidade:** as próximas migrações (Rede inter-hubs, VRPTW, Auditoria,
-> TSP e Classificador) serão conduzidas em sessões filhas dedicadas. A sessão
-> gerente atual entrega a documentação e o merge dos itens concluídos.
+> **Continuidade:** as próximas migrações (VRPTW, Auditoria, TSP e
+> Classificador) seguem em branches dedicadas, integradas sequencialmente para
+> preservar contratos, exporter e qualidade visual.
 
 ## P2 — diferenciação
 
@@ -60,11 +61,10 @@ estado de loading/erro e retirada do iframe correspondente.
 
 ## Próximos passos imediatos
 
-1. Migrar Rede inter-hubs para React.
-2. Migrar VRPTW para React.
-3. Migrar Auditoria de endereço, TSP e Classificador de ocorrências.
-4. Instrumentar abertura das provas e CTAs sem coletar dados sensíveis.
-5. Desativar cada iframe somente depois de sua rota pública equivalente.
+1. Migrar VRPTW para React com visual temporal e sequência de SLA.
+2. Migrar Auditoria de endereço, TSP e Classificador de ocorrências.
+3. Instrumentar abertura das provas e CTAs sem coletar dados sensíveis.
+4. Desativar cada iframe somente depois de sua rota pública equivalente.
 
 ## Critério de pronto do P0
 
