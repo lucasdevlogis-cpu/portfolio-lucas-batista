@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import designTokens from "@/design/tokens.json";
 import type { DemoChart } from "@/lib/demo-contract";
@@ -14,11 +14,13 @@ function valueLabel(value: number, unit?: DemoChart["unit"]) {
   if (unit === "BRL") return `R$ ${value.toLocaleString("pt-BR")}`;
   if (unit === "PERCENT") return `${value.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`;
   if (unit === "KM") return `${value.toLocaleString("pt-BR", { maximumFractionDigits: 1 })} km`;
+  if (unit === "TON") return `${value.toLocaleString("pt-BR", { maximumFractionDigits: 1 })} t`;
   return value.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
 }
 
 export function ChartCard({ chart }: { chart: DemoChart }) {
   const element = useRef<HTMLDivElement>(null);
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
 
   useEffect(() => {
     let disposed = false;
@@ -76,7 +78,11 @@ export function ChartCard({ chart }: { chart: DemoChart }) {
             ? undefined
             : (value: { max: number }) =>
                 Math.ceil(Math.max(value.max, chart.reference ?? 0) * 1.12),
-        axisLabel: { formatter: (value: number) => valueLabel(value, chart.unit), fontSize: 10 },
+        axisLabel: {
+          formatter: (value: number) => valueLabel(value, chart.unit),
+          fontSize: 10,
+          hideOverlap: true,
+        },
       };
       const categoryAxis = {
         type: "category" as const,
@@ -91,10 +97,7 @@ export function ChartCard({ chart }: { chart: DemoChart }) {
               symbol: "none",
               lineStyle: { color: colors.warm, type: "dashed", width: 1.5 },
               label: {
-                color: colors.warm,
-                fontFamily: colors.mono,
-                fontSize: 10,
-                formatter: `referência ${valueLabel(chart.reference, chart.unit)}`,
+                show: false,
               },
               data: [horizontal ? { xAxis: chart.reference } : { yAxis: chart.reference }],
             };
@@ -217,7 +220,13 @@ export function ChartCard({ chart }: { chart: DemoChart }) {
       observer.observe(element.current);
     }
 
-    void renderChart();
+    void renderChart()
+      .then(() => {
+        if (!disposed) setStatus("ready");
+      })
+      .catch(() => {
+        if (!disposed) setStatus("error");
+      });
     return () => {
       disposed = true;
       observer?.disconnect();
@@ -226,13 +235,17 @@ export function ChartCard({ chart }: { chart: DemoChart }) {
   }, [chart]);
 
   const unit =
-    chart.unit === "BRL"
-      ? "R$"
-      : chart.unit === "PERCENT"
-        ? "%"
-        : chart.unit === "KM"
-          ? "km"
-          : "volume";
+    chart.reference !== undefined
+      ? `ref. ${valueLabel(chart.reference, chart.unit)}`
+      : chart.unit === "BRL"
+        ? "R$"
+        : chart.unit === "PERCENT"
+          ? "%"
+          : chart.unit === "KM"
+            ? "km"
+            : chart.unit === "TON"
+              ? "t"
+              : "volume";
 
   return (
     <article className="demo-panel overflow-hidden p-0">
@@ -247,12 +260,31 @@ export function ChartCard({ chart }: { chart: DemoChart }) {
           {unit}
         </span>
       </header>
-      <div
-        ref={element}
-        className="h-[300px] w-full px-2 py-3 sm:h-[340px]"
-        role="img"
-        aria-label={`${chart.title}: ${chart.data.map((item) => `${item.label} ${valueLabel(item.value, chart.unit)}`).join(", ")}`}
-      />
+      <div className="relative">
+        <div
+          ref={element}
+          className="h-[300px] w-full px-2 py-3 sm:h-[340px]"
+          role="img"
+          aria-busy={status === "loading"}
+          aria-label={`${chart.title}: ${chart.data.map((item) => `${item.label} ${valueLabel(item.value, chart.unit)}`).join(", ")}`}
+        />
+        {status === "loading" ? (
+          <p
+            className="absolute inset-0 grid place-items-center bg-card/90 px-5 text-center font-mono text-xs uppercase tracking-[0.08em] text-muted-foreground"
+            role="status"
+          >
+            Preparando visualização
+          </p>
+        ) : null}
+        {status === "error" ? (
+          <p
+            className="absolute inset-0 grid place-items-center bg-card px-5 text-center text-sm leading-relaxed text-danger"
+            role="alert"
+          >
+            O gráfico não pôde ser carregado. Os indicadores acima permanecem disponíveis.
+          </p>
+        ) : null}
+      </div>
     </article>
   );
 }

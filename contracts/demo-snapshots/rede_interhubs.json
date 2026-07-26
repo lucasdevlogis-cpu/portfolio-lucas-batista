@@ -1,0 +1,290 @@
+{
+  "slug": "rede_interhubs",
+  "caseId": "10-rede-interhubs",
+  "title": "Rede inter-hubs / Corredores",
+  "question": "Qual corredor tem melhor custo por tonelada e onde priorizar consolidação?",
+  "decision": "Priorizar consolidação e negociação nas lanes de maior custo por tonelada.",
+  "limitation": "Custo paramétrico sobre amostra curada. Produção usaria malha real e pedágio vigente.",
+  "method": "Custo do corredor = distância × custo_km + volume × distância × custo_ton_km; normaliza por tonelada para comparar lanes de volumes diferentes.",
+  "frameworks": [
+    "Pandas",
+    "Custo por tonelada",
+    "Desenho de rede"
+  ],
+  "kpis": [
+    {
+      "label": "Melhor corredor",
+      "value": "Campinas → Santos · R$ 130/t",
+      "tone": "success"
+    },
+    {
+      "label": "Volume total",
+      "value": "121 t"
+    },
+    {
+      "label": "Custo médio / ton",
+      "value": "R$ 672"
+    }
+  ],
+  "charts": [
+    {
+      "id": "ranking-custo-ton",
+      "title": "Custo por tonelada por corredor",
+      "kind": "bar",
+      "unit": "BRL",
+      "data": [
+        {
+          "label": "Campinas → Santos",
+          "value": 130.5
+        },
+        {
+          "label": "Barueri → Rio de Janeiro",
+          "value": 258.0
+        },
+        {
+          "label": "Barueri → Betim",
+          "value": 327.18
+        },
+        {
+          "label": "Guarulhos → Belo Horizonte",
+          "value": 336.95
+        },
+        {
+          "label": "Ribeirao Preto → Goiania",
+          "value": 433.5
+        },
+        {
+          "label": "Curitiba → Canoas",
+          "value": 448.19
+        },
+        {
+          "label": "Sao Paulo → Salvador",
+          "value": 1316.0
+        },
+        {
+          "label": "Sao Paulo → Recife",
+          "value": 2128.0
+        }
+      ],
+      "reference": 672.29
+    },
+    {
+      "id": "volume-por-corredor",
+      "title": "Volume por corredor",
+      "kind": "bar",
+      "unit": "TON",
+      "data": [
+        {
+          "label": "Campinas → Santos",
+          "value": 12.0
+        },
+        {
+          "label": "Barueri → Rio de Janeiro",
+          "value": 18.0
+        },
+        {
+          "label": "Barueri → Betim",
+          "value": 22.0
+        },
+        {
+          "label": "Guarulhos → Belo Horizonte",
+          "value": 20.0
+        },
+        {
+          "label": "Ribeirao Preto → Goiania",
+          "value": 9.0
+        },
+        {
+          "label": "Curitiba → Canoas",
+          "value": 16.0
+        },
+        {
+          "label": "Sao Paulo → Salvador",
+          "value": 14.0
+        },
+        {
+          "label": "Sao Paulo → Recife",
+          "value": 10.0
+        }
+      ]
+    }
+  ],
+  "map": {
+    "kind": "network",
+    "center": [
+      -21.0295,
+      -45.4039
+    ],
+    "zoom": 4,
+    "nodes": [
+      {
+        "id": "Campinas",
+        "lat": -22.9099,
+        "lon": -47.0626
+      },
+      {
+        "id": "Santos",
+        "lat": -23.9608,
+        "lon": -46.3336
+      },
+      {
+        "id": "Barueri",
+        "lat": -23.5106,
+        "lon": -46.8761
+      },
+      {
+        "id": "Rio de Janeiro",
+        "lat": -22.9068,
+        "lon": -43.1729
+      },
+      {
+        "id": "Betim",
+        "lat": -19.9678,
+        "lon": -44.1983
+      },
+      {
+        "id": "Guarulhos",
+        "lat": -23.4538,
+        "lon": -46.5333
+      },
+      {
+        "id": "Belo Horizonte",
+        "lat": -19.9167,
+        "lon": -43.9345
+      },
+      {
+        "id": "Ribeirao Preto",
+        "lat": -21.1775,
+        "lon": -47.8103
+      },
+      {
+        "id": "Goiania",
+        "lat": -16.6869,
+        "lon": -49.2648
+      },
+      {
+        "id": "Curitiba",
+        "lat": -25.4284,
+        "lon": -49.2733
+      },
+      {
+        "id": "Canoas",
+        "lat": -29.9177,
+        "lon": -51.1836
+      },
+      {
+        "id": "Sao Paulo",
+        "lat": -23.5505,
+        "lon": -46.6333
+      },
+      {
+        "id": "Salvador",
+        "lat": -12.9777,
+        "lon": -38.5016
+      },
+      {
+        "id": "Recife",
+        "lat": -8.0476,
+        "lon": -34.877
+      }
+    ],
+    "edges": [
+      {
+        "from": [
+          -22.9099,
+          -47.0626
+        ],
+        "to": [
+          -23.9608,
+          -46.3336
+        ],
+        "label": "Campinas → Santos | Volume: 12 t | Distância: 180 km | Custo/ton: R$ 130.50",
+        "value": 12.0
+      },
+      {
+        "from": [
+          -23.5106,
+          -46.8761
+        ],
+        "to": [
+          -22.9068,
+          -43.1729
+        ],
+        "label": "Barueri → Rio de Janeiro | Volume: 18 t | Distância: 430 km | Custo/ton: R$ 258.00",
+        "value": 18.0
+      },
+      {
+        "from": [
+          -23.5106,
+          -46.8761
+        ],
+        "to": [
+          -19.9678,
+          -44.1983
+        ],
+        "label": "Barueri → Betim | Volume: 22 t | Distância: 590 km | Custo/ton: R$ 327.18",
+        "value": 22.0
+      },
+      {
+        "from": [
+          -23.4538,
+          -46.5333
+        ],
+        "to": [
+          -19.9167,
+          -43.9345
+        ],
+        "label": "Guarulhos → Belo Horizonte | Volume: 20 t | Distância: 586 km | Custo/ton: R$ 336.95",
+        "value": 20.0
+      },
+      {
+        "from": [
+          -21.1775,
+          -47.8103
+        ],
+        "to": [
+          -16.6869,
+          -49.2648
+        ],
+        "label": "Ribeirao Preto → Goiania | Volume: 9 t | Distância: 510 km | Custo/ton: R$ 433.50",
+        "value": 9.0
+      },
+      {
+        "from": [
+          -25.4284,
+          -49.2733
+        ],
+        "to": [
+          -29.9177,
+          -51.1836
+        ],
+        "label": "Curitiba → Canoas | Volume: 16 t | Distância: 710 km | Custo/ton: R$ 448.19",
+        "value": 16.0
+      },
+      {
+        "from": [
+          -23.5505,
+          -46.6333
+        ],
+        "to": [
+          -12.9777,
+          -38.5016
+        ],
+        "label": "Sao Paulo → Salvador | Volume: 14 t | Distância: 1960 km | Custo/ton: R$ 1316.00",
+        "value": 14.0
+      },
+      {
+        "from": [
+          -23.5505,
+          -46.6333
+        ],
+        "to": [
+          -8.0476,
+          -34.877
+        ],
+        "label": "Sao Paulo → Recife | Volume: 10 t | Distância: 2660 km | Custo/ton: R$ 2128.00",
+        "value": 10.0
+      }
+    ]
+  }
+}

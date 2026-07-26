@@ -2,7 +2,7 @@
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import designTokens from "@/design/tokens.json";
 import type { DemoMap } from "@/lib/demo-contract";
@@ -67,8 +67,8 @@ function legendForMap(mapData: DemoMap): { label: string; tone: LegendTone }[] {
   }
 
   return [
-    { label: "Corredores", tone: "accent" },
-    { label: "Origens", tone: "primary" },
+    { label: "Corredores (volume)", tone: "primary" },
+    { label: "Hubs / cidades", tone: "warm" },
   ];
 }
 
@@ -196,6 +196,7 @@ function featuresForMap(mapData: DemoMap): Feature[] {
 
 export function MapCard({ mapData, title }: { mapData: DemoMap; title: string }) {
   const mapElement = useRef<HTMLDivElement>(null);
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const legend = legendForMap(mapData);
 
   useEffect(() => {
@@ -247,7 +248,11 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
           type: "line",
           source: "demo-data",
           filter: ["==", ["get", "kind"], "edge"],
-          paint: { "line-color": accent, "line-width": ["get", "width"], "line-opacity": 0.84 },
+          paint: {
+            "line-color": primary,
+            "line-width": ["get", "width"],
+            "line-opacity": 0.9,
+          },
         });
         map.addLayer({
           id: "routes-casing",
@@ -317,6 +322,8 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
               ["get", "kind"],
               "depot",
               warm,
+              "node",
+              warm,
               [
                 "match",
                 ["get", "tone"],
@@ -354,15 +361,26 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
             duration: reducedMotion ? 0 : 700,
           });
         }
-        const popupLayers = ["nodes", "flow-origins", "flow-destinations"];
+        const popupLayers = [
+          "nodes",
+          "edges",
+          "routes",
+          "flow-edges",
+          "flow-origins",
+          "flow-destinations",
+        ];
         for (const layer of popupLayers) {
           map.on("click", layer, (event) => {
             const feature = event.features?.[0];
-            if (!feature || feature.geometry.type !== "Point") return;
+            if (!feature) return;
             const properties = feature.properties ?? {};
             const detail = properties.detail ? ` — ${properties.detail}` : "";
+            const coordinates =
+              feature.geometry.type === "Point"
+                ? (feature.geometry.coordinates as [number, number])
+                : [event.lngLat.lng, event.lngLat.lat];
             new maplibre.Popup({ closeButton: false, offset: 8 })
-              .setLngLat(feature.geometry.coordinates as [number, number])
+              .setLngLat(coordinates as [number, number])
               .setText(`${properties.label ?? "Ponto"}${detail}`)
               .addTo(map as import("maplibre-gl").Map);
           });
@@ -373,10 +391,13 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
             if (map) map.getCanvas().style.cursor = "";
           });
         }
+        if (!disposed) setStatus("ready");
       });
     }
 
-    void renderMap();
+    void renderMap().catch(() => {
+      if (!disposed) setStatus("error");
+    });
     return () => {
       disposed = true;
       map?.remove();
@@ -402,12 +423,32 @@ export function MapCard({ mapData, title }: { mapData: DemoMap; title: string })
           ))}
         </ul>
       </div>
-      <div
-        ref={mapElement}
-        className="h-[340px] w-full bg-surface-dark sm:h-[430px]"
-        role="region"
-        aria-label={`${title}. Mapa interativo com dados demonstrativos.`}
-      />
+      <div className="relative">
+        <div
+          ref={mapElement}
+          className="h-[340px] w-full bg-surface-dark sm:h-[430px]"
+          role="region"
+          aria-busy={status === "loading"}
+          aria-label={`${title}. Mapa interativo com dados demonstrativos.`}
+        />
+        {status === "loading" ? (
+          <p
+            className="absolute inset-0 grid place-items-center bg-surface-dark/95 px-5 text-center font-mono text-xs uppercase tracking-[0.08em] text-muted-foreground"
+            role="status"
+          >
+            Preparando contexto espacial
+          </p>
+        ) : null}
+        {status === "error" ? (
+          <p
+            className="absolute inset-0 grid place-items-center bg-surface-dark px-5 text-center text-sm leading-relaxed text-danger"
+            role="alert"
+          >
+            O mapa não pôde ser carregado. Os gráficos e a leitura metodológica permanecem
+            disponíveis.
+          </p>
+        ) : null}
+      </div>
       <p className="border-t border-border px-5 py-3 font-mono text-[0.68rem] leading-relaxed text-muted-foreground sm:px-6">
         Dados sintéticos e coordenadas aproximadas. O mapa apoia a leitura; não representa
         rastreamento em tempo real.
