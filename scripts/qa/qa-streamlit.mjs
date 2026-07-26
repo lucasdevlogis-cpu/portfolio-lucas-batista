@@ -20,14 +20,6 @@ const normalTargets = [
   })),
   { slug: "metodos", name: "metodos" },
 ];
-const embedTargets = published
-  .filter((entry) => entry.tier === "complementary")
-  .map((entry) => ({
-    slug: entry.slug,
-    name: entry.slug,
-    expectedPrefix: `${entry.caseId.slice(0, 2)}.`,
-  }));
-
 async function appSurface(page) {
   const directContainer = page.locator('[data-testid="stAppViewContainer"]');
   const cloudWrapper = page.locator('iframe[title="streamlitApp"]');
@@ -41,12 +33,11 @@ async function appSurface(page) {
 fs.rmSync(outDir, { recursive: true, force: true });
 fs.mkdirSync(outDir, { recursive: true });
 
-async function capture(browser, target, viewport, suffix, embed = false) {
+async function capture(browser, target, viewport, suffix) {
   const context = await browser.newContext({ viewport });
   const page = await context.newPage();
   await page.emulateMedia({ reducedMotion: "reduce" });
-  const query = embed ? "?embed=true" : "";
-  const url = `${baseUrl}/${target.slug}${query}`;
+  const url = `${baseUrl}/${target.slug}`;
   const response = await page.goto(url, {
     waitUntil: "domcontentloaded",
     timeout: 120_000,
@@ -96,10 +87,6 @@ const browser = await chromium.launch({ headless: true });
 
 for (const target of normalTargets) {
   await capture(browser, target, { width: 1440, height: 900 }, "desktop");
-}
-
-for (const target of embedTargets) {
-  await capture(browser, target, { width: 375, height: 812 }, "mobile-embed", true);
 }
 
 await browser.close();

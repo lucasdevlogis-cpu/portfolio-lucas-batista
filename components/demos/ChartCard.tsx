@@ -280,7 +280,7 @@ export function ChartCard({ chart }: { chart: DemoChart }) {
                   top: chart.kind === "grouped-bar" ? 36 : 16,
                   right: horizontal ? 42 : 18,
                   bottom: 34,
-                  left: horizontal ? 8 : 46,
+                  left: horizontal ? 24 : 46,
                   containLabel: true,
                 },
                 xAxis: horizontal ? valueAxis : categoryAxis,

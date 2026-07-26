@@ -12,6 +12,7 @@ const viewports = [
   { name: "375x812", width: 375, height: 812 },
 ];
 const anchorSlugs = ["precificacao_frete", "mini_torre_controle", "cvrp_urbano"];
+const classifierSlug = "classificador_ocorrencias";
 
 fs.rmSync(outDir, { recursive: true, force: true });
 fs.mkdirSync(outDir, { recursive: true });
@@ -59,8 +60,35 @@ for (const viewport of viewports) {
   await screenshot(page, `modal-anchor-${viewport.name}`);
   await page.keyboard.press("Escape");
 
+  const classifierItem = page
+    .getByTestId("case-library-item")
+    .filter({ hasText: "Classificador de Ocorrências Operacionais" });
+  await classifierItem.scrollIntoViewIfNeeded();
+  await classifierItem.getByRole("button", { name: /Explorar case: Classificador/i }).click();
+  await page.getByRole("dialog").waitFor();
+  await page.getByText("Governança humana").waitFor();
+  await screenshot(page, `modal-classifier-${viewport.name}`);
+  await page.keyboard.press("Escape");
+
   await context.close();
   console.log(`landing/modal ${viewport.name} ok`);
+}
+
+for (const viewport of viewports) {
+  const context = await browser.newContext({
+    viewport: { width: viewport.width, height: viewport.height },
+  });
+  const page = await context.newPage();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto(`${baseUrl}/provas/${classifierSlug}`, {
+    waitUntil: "networkidle",
+    timeout: 120_000,
+  });
+  await page.locator(".demo-shell").waitFor();
+  await page.getByText("Governança humana").scrollIntoViewIfNeeded();
+  await screenshot(page, `proof-${classifierSlug}-${viewport.name}`);
+  await context.close();
+  console.log(`proof ${classifierSlug} ${viewport.name} ok`);
 }
 
 for (const slug of anchorSlugs) {

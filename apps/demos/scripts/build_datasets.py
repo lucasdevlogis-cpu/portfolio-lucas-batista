@@ -275,12 +275,9 @@ def torre_entregas(n: int = 140) -> None:
     pd.DataFrame(rows).to_csv(GENERATED / "torre_entregas.csv", index=False, encoding="utf-8")
 
 
-def ocorrencias(n: int = 60) -> None:
+def ocorrencias() -> None:
     base = pd.read_csv(RAW / "ocorrencias_exemplos.csv", encoding="utf-8")
-    idx = rng.integers(0, len(base), n)
-    base.iloc[idx].reset_index(drop=True).to_csv(
-        GENERATED / "ocorrencias.csv", index=False, encoding="utf-8"
-    )
+    base.to_csv(GENERATED / "ocorrencias.csv", index=False, encoding="utf-8")
 
 
 def main() -> None:

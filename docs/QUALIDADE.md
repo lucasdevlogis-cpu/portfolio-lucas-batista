@@ -65,23 +65,29 @@ continuam separados para deixar a intenção explícita.
 
 ## Última execução local
 
-Rodada de 25/07/2026, após o aceite visual e antes da abertura do PR para
-`main`:
+Rodada de 26/07/2026 no fechamento da P1.7 e retirada do último iframe público:
 
-| Evidência                          | Resultado                                     |
-| ---------------------------------- | --------------------------------------------- |
-| `npm run verify`                   | aprovado; pytest 6/6 e build com 10 rotas     |
-| `npm run demos:smoke`              | 13/13                                         |
-| `npm run test:e2e`                 | 17/17 no Chromium                             |
-| `npm run qa:visual`                | landing, modal e 3 âncoras em 3 viewports     |
-| `npm run qa:streamlit`             | 12 rotas desktop e 7 complementares em mobile |
-| `npm run lighthouse:all`           | baseline local desktop 100/100/100/100        |
-| Lighthouse mobile                  | baseline local 93/100/100/100                 |
-| `npm audit --audit-level=moderate` | 0 vulnerabilidades                            |
+| Evidência                          | Resultado                                      |
+| ---------------------------------- | ---------------------------------------------- |
+| `npm run verify`                   | aprovado; pytest 58/58 e build com 17 páginas  |
+| `npm run demos:validate`           | 10 snapshots React válidos                     |
+| `npm run demos:smoke`              | 13/13                                          |
+| `npm run test:e2e`                 | 30/30 no Chromium                              |
+| `npm run qa:visual`                | landing, modais e provas em 375, 768 e 1440 px |
+| `npm run qa:streamlit`             | 12 superfícies desktop do laboratório          |
+| Lighthouse desktop                 | 100/100/100/100                                |
+| Lighthouse mobile local            | mediana 88/100/100/100; `main` local obteve 86 |
+| `npm audit --audit-level=moderate` | 0 vulnerabilidades                             |
 
-## Última execução pública
+O Lighthouse mobile local não atingiu o gate de 90 nesta máquina. A comparação
+controlada, no mesmo ambiente e em três execuções, ficou acima da `main`
+inalterada (88 contra 86), portanto não caracteriza regressão da P1.7. O aceite
+público continua condicionado ao baseline de produção e aos checks da PR.
 
-Rodada de 21/07/2026 após o merge e o deploy Vercel:
+## Registro histórico público — antes do fechamento da P1
+
+Rodada de 21/07/2026 após o merge e o deploy Vercel. Este bloco preserva a
+evidência do estágio híbrido anterior; não descreve a arquitetura pública atual:
 
 | Evidência              | Resultado                                                        |
 | ---------------------- | ---------------------------------------------------------------- |
@@ -108,14 +114,14 @@ Validar no mínimo:
 | 768 × 1024 | tablet e transição de grid          |
 | 1440 × 900 | desktop executivo                   |
 
-Telas obrigatórias: hero, perfil, provas, modal âncora, modal Streamlit, rota de
-cada âncora, trajetória e contato.
+Telas obrigatórias: hero, perfil, provas, modal de prova, rotas públicas,
+trajetória e contato.
 
 Critérios:
 
 - sem overflow horizontal, texto truncado indevido ou CTA inacessível;
 - hierarquia clara sem excesso de cards, badges, sombras ou gradientes;
-- estados loading, timeout, erro e mobile gate do iframe legíveis;
+- estados de loading e erro legíveis;
 - gráficos com tooltip e legenda, sem paleta arco-íris;
 - linhas de referência não achatam a série;
 - mapa tem atribuição, foco útil e limitação declarada;
@@ -251,6 +257,30 @@ o mapa mantém somente a sequência final numerada, com retorno ao CD.
 | `npm audit --audit-level=moderate` | 0 vulnerabilidades                        |
 | QA visual Playwright               | rota desktop/mobile + modal aprovados     |
 | comparação operacional             | 34,5 km → 31,5 km → 28,0 km · redução 19% |
+
+### P1.7 — Classificador de Ocorrências / Governança Humana
+
+Concluído em 26/07/2026. A rota pública
+`/provas/classificador_ocorrencias` consome
+`contracts/demo-snapshots/classificador_ocorrencias.json`; o modal da homepage
+renderiza a prova inline e encerra o fallback público por iframe. O domínio usa
+regras determinísticas com limites de palavra, sinaliza empate e ausência de
+termo e mantém zero decisões autônomas.
+
+| Evidência                          | Resultado                                       |
+| ---------------------------------- | ----------------------------------------------- |
+| `npm run verify`                   | aprovado                                        |
+| `npm run demos:validate`           | 10 snapshots React válidos                      |
+| `npm run demos:smoke`              | 13/13                                           |
+| `npm run test:e2e`                 | 30/30                                           |
+| pytest                             | 58/58; 11/11 específicos da P1.7                |
+| `npm audit --audit-level=moderate` | 0 vulnerabilidades                              |
+| QA visual Playwright               | modal e rota em 375, 768 e 1440 px aprovados    |
+| QA Streamlit                       | 12 superfícies desktop do laboratório aprovadas |
+| governança                         | 10 textos · 10/10 categorias · 0 decisões       |
+
+A inspeção visual encontrou e corrigiu o corte do rótulo “Endereço Incorreto”
+no gráfico horizontal antes do aceite.
 
 O baseline público aceito desta refatoração é 100/100/100/100 em desktop e
 96/100/100/100 em mobile, usando a mediana de três execuções. Resultados locais

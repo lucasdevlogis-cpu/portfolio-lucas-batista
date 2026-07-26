@@ -212,13 +212,7 @@ export interface DialogCopy {
 export interface DemoModalCopy {
   closeLabel: string;
   openExternalLabel: string;
-  fullscreenLabel: string;
-  loadInlineLabel: string;
-  mobileHint: string;
   unavailableLabel: string;
-  initializingLabel: string;
-  errorLabel: string;
-  timeoutLabel: string;
   context: SecoesCopy["demoContextLabels"];
 }
 
@@ -270,9 +264,6 @@ export interface SecoesCopy {
   caseDemoUnavailableLabel: string;
   caseCodeLabel: string;
   demoOpenExternalLabel: string;
-  demoFullscreenLabel: string;
-  demoLoadInlineLabel: string;
-  demoMobileHint: string;
   demoContextLabels: {
     pergunta: string;
     decisao: string;
@@ -282,10 +273,6 @@ export interface SecoesCopy {
     contextoMobile: string;
   };
   demoIndisponivel: string;
-  demoCarregando: string;
-  demoInicializando: string;
-  demoErro: string;
-  demoTimeoutHint: string;
 }
 
 export interface Content {
@@ -315,11 +302,8 @@ export const SITE_URL =
 export const GITHUB_PROFILE_URL = "https://github.com/lucasdevlogis-cpu";
 export const GITHUB_DEMOS_URL = `${GITHUB_PROFILE_URL}/portfolio-lucas-batista/tree/main/apps/demos`;
 
-export const DEMOS_BASE_URL = process.env.NEXT_PUBLIC_DEMOS_BASE_URL?.replace(/\/$/, "") ?? "";
-
 export function demoUrl(pageSlug: string): string {
-  if (!DEMOS_BASE_URL || !pageSlug) return "";
-  return `${DEMOS_BASE_URL}/${pageSlug}`;
+  return pageSlug ? `/provas/${pageSlug}` : "";
 }
 
 export const CASE_COUNT = Object.keys(CASE_DEMO_SLUGS).length;
@@ -600,10 +584,6 @@ export const CONTENT: Content = {
     caseDemoUnavailableLabel: "Demo em preparação",
     caseCodeLabel: "Ver repositório",
     demoOpenExternalLabel: "Abrir em nova aba",
-    demoFullscreenLabel: "Abrir demo em tela cheia",
-    demoLoadInlineLabel: "Carregar demo aqui",
-    demoMobileHint:
-      "A demo interativa pode ficar apertada no celular. Abra em tela cheia ou carregue dentro do modal.",
     demoContextLabels: {
       pergunta: "Pergunta de negócio",
       decisao: "Decisão apoiada",
@@ -614,12 +594,6 @@ export const CONTENT: Content = {
     },
     demoIndisponivel:
       "Demo interativa em breve. Enquanto isso, use LinkedIn ou email na seção Contato.",
-    demoCarregando:
-      "Carregando a demo… As demos hospedadas no plano gratuito podem levar até 30 segundos para acordar na primeira visita.",
-    demoInicializando: "Inicializando demonstração…",
-    demoErro: "Não foi possível carregar a demo aqui. Abra em uma nova aba pelo botão acima.",
-    demoTimeoutHint:
-      "A demo ainda está inicializando. Você pode continuar aguardando ou abrir em nova aba.",
   },
 
   nav: [
@@ -752,22 +726,21 @@ export const CONTENT: Content = {
       id: "07-classificador-ocorrencias",
       titulo: "Classificador de Ocorrências Operacionais",
       descricao:
-        "Classificação automática de textos de ocorrências logísticas (atraso, avaria, endereço incorreto, recusa) usando NLP. Transforma mensagens soltas em categorias acionáveis.",
+        "Triagem por regras explícitas de textos de ocorrências logísticas. Sugere categoria, prioridade e fila, preservando revisão humana antes de qualquer decisão crítica.",
       categoria: "Método e Governança",
       icone: "AlertTriangle",
-      tags: ["IA", "NLP", "ocorrências", "classificação", "triagem"],
+      tags: ["ocorrências", "regras explicáveis", "triagem", "governança", "revisão humana"],
       linkDemo: demoUrl(CASE_DEMO_SLUGS["07-classificador-ocorrencias"]),
       linkGitHub: GITHUB_DEMOS_URL,
       ctaDemoLabel: "Explorar Classificador de Ocorrências",
       prioridade: "P2",
       perguntaNegocio:
-        "Como transformar mensagens, chamados e justificativas em categorias acionáveis?",
-      metricaPrincipal: "Precisão de classificação, tempo de triagem, categorias mais frequentes",
-      metricaResumo: "triagem de ocorrências por NLP",
-      decisaoApoiada:
-        "Organizar textos soltos em categorias, prioridades e resumos com validação humana",
+        "Como regras explícitas podem apoiar a triagem sem automatizar decisões críticas?",
+      metricaPrincipal: "Concordância interna, divergência de prioridade e decisões autônomas",
+      metricaResumo: "10 textos únicos e zero decisões autônomas",
+      decisaoApoiada: "Sugerir categoria, prioridade e fila para revisão humana",
       limitacao:
-        "IA não decide sozinha exceções críticas. Validação humana obrigatória. Modelo treinado com dados sintéticos.",
+        "Dez exemplos curados, sem validação externa; a concordância interna não mede generalização.",
     },
     {
       id: "08-cvrp-urbano",
@@ -919,13 +892,7 @@ export const CASES_ROADMAP = CONTENT.cases.filter((c) => !c.linkDemo);
 export const DEMO_MODAL_COPY: DemoModalCopy = {
   closeLabel: CONTENT.dialog.closeLabel,
   openExternalLabel: CONTENT.secoes.demoOpenExternalLabel,
-  fullscreenLabel: CONTENT.secoes.demoFullscreenLabel,
-  loadInlineLabel: CONTENT.secoes.demoLoadInlineLabel,
-  mobileHint: CONTENT.secoes.demoMobileHint,
   unavailableLabel: CONTENT.secoes.demoIndisponivel,
-  initializingLabel: CONTENT.secoes.demoInicializando,
-  errorLabel: CONTENT.secoes.demoErro,
-  timeoutLabel: CONTENT.secoes.demoTimeoutHint,
   context: CONTENT.secoes.demoContextLabels,
 };
 

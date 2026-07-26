@@ -20,8 +20,8 @@ O projeto é um único repositório com dois runtimes e contratos compartilhados
 Não existe mais sincronização manual entre duas cópias das demos. O entrypoint
 canônico do Streamlit é `apps/demos/app.py` neste repositório.
 
-As três âncoras já são React. As sete complementares serão migradas para rotas
-React; Streamlit permanece como laboratório e fallback até cada substituição.
+As dez provas públicas usam rotas React. O Streamlit permanece como laboratório
+analítico para exploração, depuração e comparação de cenários.
 
 ## Preparação local
 
@@ -47,7 +47,7 @@ streamlit run apps/demos/app.py
 
 ```powershell
 npm run demos:build      # recria datasets gerados com seed fixa
-npm run demos:export     # exporta os 3 snapshots âncora
+npm run demos:export     # exporta os 10 snapshots públicos
 npm run verify           # contratos, lint, tipos, pytest e build
 npm run demos:smoke      # 13 checagens Streamlit
 npm run test:e2e         # Playwright em build de produção
@@ -62,7 +62,7 @@ npm run cv:generate      # atualiza o CV a partir de data/content.ts
 
 - narrativa, cases, CTAs e metadados: `data/content.ts`;
 - catálogo de publicação e slugs: `contracts/demo-catalog.json`;
-- cálculos exibidos pelas âncoras: `contracts/demo-snapshots/*.json`, exportados
+- cálculos exibidos pelas provas: `contracts/demo-snapshots/*.json`, exportados
   pelo Python;
 - tokens visuais: `design/tokens.json`;
 - estado e próximos passos: `docs/ROADMAP.md`.
@@ -71,19 +71,18 @@ npm run cv:generate      # atualiza o CV a partir de data/content.ts
 
 ```env
 NEXT_PUBLIC_SITE_URL=https://portfolio-lucas-batista-murex.vercel.app
-NEXT_PUBLIC_DEMOS_BASE_URL=https://portfolio-lucas-batista-asbsqusjhhbyje6pktjpvw.streamlit.app
 ```
 
-As variáveis `NEXT_PUBLIC_*` são incorporadas no build e exigem novo deploy
-quando alteradas.
+A variável `NEXT_PUBLIC_SITE_URL` é incorporada no build e exige novo deploy
+quando alterada.
 
 ## Produção
 
-| Serviço | URL                                                                    |
-| ------- | ---------------------------------------------------------------------- |
-| Landing | <https://portfolio-lucas-batista-murex.vercel.app>                     |
-| Demos   | <https://portfolio-lucas-batista-asbsqusjhhbyje6pktjpvw.streamlit.app> |
-| Código  | <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista>         |
+| Serviço     | URL                                                                    |
+| ----------- | ---------------------------------------------------------------------- |
+| Landing     | <https://portfolio-lucas-batista-murex.vercel.app>                     |
+| Laboratório | <https://portfolio-lucas-batista-asbsqusjhhbyje6pktjpvw.streamlit.app> |
+| Código      | <https://github.com/lucasdevlogis-cpu/portfolio-lucas-batista>         |
 
 Para a configuração de Vercel e Streamlit Cloud, consulte
 [`docs/OPERACAO.md`](docs/OPERACAO.md).

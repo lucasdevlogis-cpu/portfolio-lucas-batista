@@ -11,6 +11,7 @@ test.describe("Rotas públicas das provas React", () => {
     "vrptw_ultima_milha",
     "auditoria_endereco",
     "tsp_baseline_sp",
+    "classificador_ocorrencias",
   ]) {
     test(`renderiza ${slug} sem depender do Streamlit`, async ({ page }) => {
       await page.goto(`/provas/${slug}`);

@@ -37,7 +37,7 @@ npm run demos:export
 npm run demos:validate
 ```
 
-O smoke deve terminar em 13/13. O exporter grava os 3 snapshots âncora em
+O smoke deve terminar em 13/13. O exporter grava os 10 snapshots públicos em
 `contracts/demo-snapshots/`.
 
 ## Publicação

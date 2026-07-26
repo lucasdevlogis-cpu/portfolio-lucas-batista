@@ -1,261 +1,169 @@
-"""07. Classificador de Ocorrências Operacionais — demo pontual (NLP por regras)."""
+"""07. Triagem explicável de ocorrências com revisão humana."""
+
+from pathlib import Path
 
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from presentation import formatters as fmt
+from domain import classificador_ocorrencias as domain
 from presentation import tables, ui
 from presentation import tokens as brand
 
-ui.page_setup("07. Classificador de Ocorrências", icon="🏷️")
+ui.page_setup("07. Triagem de Ocorrências", icon="🏷️")
 
-REGRAS = [
-    {
-        "categoria": "Atraso",
-        "prioridade": "Alta",
-        "keywords": [
-            "atraso",
-            "transito",
-            "trânsito",
-            "demora",
-            "marginal",
-            "congestion",
-            "liberacao",
-            "liberação",
-        ],
-        "causa": "Restrição de tempo ou rota",
-        "acao": "Acionar transportadora e revisar janela",
-    },
-    {
-        "categoria": "Endereco Incorreto",
-        "prioridade": "Alta",
-        "keywords": [
-            "endereco",
-            "endereço",
-            "numero",
-            "número",
-            "cep",
-            "incompleto",
-            "divergente",
-        ],
-        "causa": "Qualidade do cadastro",
-        "acao": "Validar endereço antes da nova tentativa",
-    },
-    {
-        "categoria": "Cliente Ausente",
-        "prioridade": "Média",
-        "keywords": [
-            "ausente",
-            "nao atende",
-            "não atende",
-            "fechado",
-            "tentativa",
-            "interfone",
-        ],
-        "causa": "Indisponibilidade do destinatário",
-        "acao": "Reagendar e confirmar contato",
-    },
-    {
-        "categoria": "Avaria",
-        "prioridade": "Alta",
-        "keywords": ["avaria", "danificado", "embalagem", "quebrado", "molhado"],
-        "causa": "Handling ou embalagem",
-        "acao": "Registrar foto e acionar seguro/devolução",
-    },
-    {
-        "categoria": "Devolucao",
-        "prioridade": "Média",
-        "keywords": ["devolucao", "devolução", "retorno", "devolver"],
-        "causa": "Solicitação comercial ou operacional",
-        "acao": "Iniciar fluxo de reversa",
-    },
-    {
-        "categoria": "Recusa",
-        "prioridade": "Média",
-        "keywords": ["recusa", "recusou", "nao aceitou", "não aceitou"],
-        "causa": "Recusa no ato da entrega",
-        "acao": "Confirmar motivo e instrução do embarcador",
-    },
-]
-PADRAO = {
-    "categoria": "Outros",
-    "prioridade": "Baixa",
-    "causa": "Texto não mapeado",
-    "acao": "Triagem manual",
-}
+DATASET = Path(__file__).parents[1] / "data" / "generated" / "ocorrencias.csv"
+analysis = domain.analyze_path(DATASET)
 
-
-def classificar(texto: str) -> dict:
-    t = texto.lower()
-    melhor, score = None, 0
-    for regra in REGRAS:
-        hits = sum(1 for kw in regra["keywords"] if kw in t)
-        if hits > score:
-            score, melhor = hits, regra
-    confianca = min(0.95, 0.35 + score * 0.2) if melhor else 0.25
-    resultado = melhor or PADRAO
-    return {**resultado, "confianca": confianca, "matches": score}
-
-
-amostra = ui.load_csv("ocorrencias.csv")
-_previsto = amostra["texto"].apply(classificar).apply(pd.Series)
-classificado = amostra.assign(
-    categoria_prevista=_previsto["categoria"],
-    prioridade_prevista=_previsto["prioridade"],
-    confianca=_previsto["confianca"].round(2),
-)
-acuracia = (classificado["categoria_prevista"] == classificado["categoria"]).mean() * 100
-alta = int((classificado["prioridade_prevista"] == "Alta").sum())
-media = int((classificado["prioridade_prevista"] == "Média").sum())
-baixa = int((classificado["prioridade_prevista"] == "Baixa").sum())
-
-ui.breadcrumb("Case: Classificador de Ocorrências · <b>Demo interativa</b>")
-
+ui.breadcrumb("Case: Triagem de Ocorrências · <b>Regras explicáveis</b>")
 ui.hero(
-    "07. Classificador de Ocorrências Operacionais",
-    "Como triar automaticamente os textos de ocorrência da operação?",
-    frameworks=["Regras / keywords", "NLP supervisionado (produção)"],
-    selo=brand.maturidade(
-        metodo="regras/keywords", producao="modelo supervisionado + revisão humana"
-    ),
+    "07. Triagem de Ocorrências Operacionais",
+    "Como regras explícitas podem apoiar a triagem sem automatizar decisões críticas?",
+    frameworks=["Pandas", "Regras determinísticas", "Revisão humana"],
+    selo=brand.maturidade(metodo="regras explicáveis", producao="revisão humana e monitoramento"),
     metric={
-        "label": "Concordância na amostra de desenvolvimento",
-        "value": fmt.fmt_percent(acuracia, decimals=0),
-        "delta": f"{alta} de {len(classificado)} classificadas como prioridade Alta",
-        "help": "Métrica no mesmo conjunto usado para ajustar as regras; pode superestimar a performance real. Produção exige validação em dados futuros.",
+        "label": "Concordância interna da categoria",
+        "value": f"{analysis.category_agreement_count}/{len(analysis.occurrences)}",
+        "delta": "Conjunto de desenvolvimento curado; não mede generalização",
+        "help": (
+            "As mesmas dez ocorrências orientaram e validam as regras. O resultado serve "
+            "para verificar coerência, não para estimar desempenho futuro."
+        ),
     },
 )
 
-# KPIs com severidade ---------------------------------------------------------
 ui.kpi_grid(
     [
-        {"label": "Amostra", "value": fmt.fmt_number(len(classificado))},
+        {"label": "Textos únicos", "value": str(analysis.unique_text_count)},
         {
-            "label": "Alta",
-            "value": fmt.fmt_number(alta),
-            "severity": "danger" if alta > 0 else "success",
+            "label": "Prioridade coerente",
+            "value": f"{analysis.priority_agreement_count}/{len(analysis.occurrences)}",
+            "severity": "warning",
         },
         {
-            "label": "Média",
-            "value": fmt.fmt_number(media),
-            "severity": "warning" if media > 0 else None,
-        },
-        {
-            "label": "Baixa",
-            "value": fmt.fmt_number(baixa),
-            "severity": "success" if baixa > 0 else None,
+            "label": "Decisões autônomas",
+            "value": str(analysis.automated_decision_count),
+            "severity": "success",
         },
     ]
 )
 
-ui.section("Classificar uma ocorrência")
-exemplo = (
-    "Cliente ausente no endereço na segunda tentativa — portaria fechada, necessário reagendar."
-)
-texto = st.text_area("Cole o texto da ocorrência", value=exemplo, height=110)
-if st.button("Classificar", type="primary"):
-    st.session_state["ultimo"] = classificar(texto)
+ui.section("Testar uma sugestão de triagem")
+example = "Cliente ausente no endereço; portaria fechada e necessário reagendar."
+text = st.text_area("Texto da ocorrência", value=example, height=110)
+if st.button("Sugerir fila", type="primary"):
+    try:
+        st.session_state["triagem_ocorrencia"] = domain.classify_text(text)
+    except ValueError as exc:
+        st.error(str(exc))
 
-if "ultimo" in st.session_state:
-    r = st.session_state["ultimo"]
-    severity = {"Alta": "danger", "Média": "warning", "Baixa": "success"}.get(r["prioridade"])
+if "triagem_ocorrencia" in st.session_state:
+    result = st.session_state["triagem_ocorrencia"]
+    reason = ", ".join(result.review_reasons) if result.review_reasons else "regra padrão"
     ui.kpi_grid(
         [
-            {"label": "Categoria", "value": r["categoria"]},
-            {"label": "Prioridade", "value": r["prioridade"], "severity": severity},
-            {"label": "Causa provável", "value": r["causa"]},
-            {"label": "Ação sugerida", "value": r["acao"]},
+            {"label": "Categoria sugerida", "value": result.suggested_category},
+            {
+                "label": "Prioridade sugerida",
+                "value": result.suggested_priority,
+                "severity": "danger" if result.suggested_priority == "Alta" else "warning",
+            },
+            {
+                "label": "Revisão",
+                "value": "Obrigatória" if result.review_required else "Política padrão",
+                "severity": "warning",
+            },
         ]
     )
-    ui.progress_bar(
-        label="Confiança da classificação",
-        valor=r["confianca"] * 100,
-        maximo=100.0,
-        cor=brand.SEVERITY_COLORS.get(r["prioridade"], brand.ACCENT),
+    st.caption(
+        f"Termos correspondentes: {', '.join(result.matched_keywords) or 'nenhum'} · "
+        f"gatilho: {reason}. Sugestão: {result.suggested_queue}. Nenhuma ação foi executada."
     )
 
 st.divider()
 
-# Gráficos --------------------------------------------------------------------
+category = pd.DataFrame(
+    [{"categoria": label, "qtd": count} for label, count in analysis.category_counts().items()]
+).sort_values(["qtd", "categoria"], ascending=[True, True])
+labeled = analysis.labeled_priority_counts()
+suggested = analysis.suggested_priority_counts()
+priority = pd.DataFrame(
+    [
+        {"prioridade": label, "Rotulada": labeled[label], "Sugerida": suggested[label]}
+        for label in domain.PRIORITY_ORDER
+    ]
+)
+
 col1, col2 = st.columns([1, 1])
 with col1:
-    ui.section("Volume por categoria")
-    cat = classificado["categoria_prevista"].value_counts().reset_index()
-    cat.columns = ["categoria", "qtd"]
-    cat = cat.sort_values("qtd", ascending=True)
+    ui.section("Volume por categoria sugerida")
     fig = px.bar(
-        cat,
+        category,
         x="qtd",
         y="categoria",
         orientation="h",
         color_discrete_sequence=[brand.PRIMARY],
     )
-    fig.update_layout(
-        height=ui.chart_height(brand.CHART_HALF_HEIGHT),
-        showlegend=False,
-        xaxis_title="",
-        yaxis_title="",
-    )
-    fig.update_traces(hovertemplate=fmt.fmt_hover([("Categoria", "%{y}"), ("Ocorrências", "%{x}")]))
+    fig.update_layout(showlegend=False, xaxis_title="Ocorrências", yaxis_title="")
     ui.plot(fig, width="stretch")
 with col2:
-    ui.section("Distribuição por prioridade")
-    pri = classificado["prioridade_prevista"].value_counts().reset_index()
-    pri.columns = ["prioridade", "qtd"]
-    ordem_prioridade = {"Alta": 0, "Média": 1, "Baixa": 2}
-    pri["ordem"] = pri["prioridade"].map(ordem_prioridade)
-    pri = pri.sort_values("ordem", ascending=False)
+    ui.section("Prioridade rotulada × sugerida")
+    long_priority = priority.melt(id_vars="prioridade", var_name="Série", value_name="Ocorrências")
     fig2 = px.bar(
-        pri,
-        x="qtd",
-        y="prioridade",
-        orientation="h",
-        color="prioridade",
-        color_discrete_map=brand.SEVERITY_COLORS,
+        long_priority,
+        x="prioridade",
+        y="Ocorrências",
+        color="Série",
+        barmode="group",
+        color_discrete_map={"Rotulada": brand.CHART_3, "Sugerida": brand.PRIMARY},
     )
-    fig2.update_traces(
-        hovertemplate=fmt.fmt_hover([("Prioridade", "%{y}"), ("Ocorrências", "%{x}")])
-    )
-    fig2.update_layout(
-        height=ui.chart_height(brand.CHART_HALF_HEIGHT),
-        showlegend=False,
-        xaxis_title="",
-        yaxis_title="",
-    )
+    fig2.update_layout(xaxis_title="", yaxis_title="Ocorrências")
     ui.plot(fig2, width="stretch")
 
 st.divider()
-
-# Tabela ----------------------------------------------------------------------
-ui.section("Amostra classificada")
-tabela = classificado[["texto", "categoria_prevista", "prioridade_prevista", "confianca"]].copy()
-tabela["prioridade_prevista"] = tabela["prioridade_prevista"].apply(tables.status_text)
+ui.section("Amostra e justificativas")
+table = pd.DataFrame(
+    [
+        {
+            "texto": item.text,
+            "categoria_sugerida": item.classification.suggested_category,
+            "prioridade_sugerida": item.classification.suggested_priority,
+            "termos": ", ".join(item.classification.matched_keywords),
+            "revisao": "Obrigatória" if item.classification.review_required else "Política padrão",
+        }
+        for item in analysis.occurrences
+    ]
+)
 tables.format_dataframe(
-    tabela,
+    table,
     config={
         "texto": tables.text_column("Texto"),
-        "categoria_prevista": tables.text_column("Categoria"),
-        "prioridade_prevista": tables.status_column("Prioridade"),
-        "confianca": tables.percent_column("Confiança", decimals=0),
+        "categoria_sugerida": tables.text_column("Categoria sugerida"),
+        "prioridade_sugerida": tables.status_column("Prioridade sugerida"),
+        "termos": tables.text_column("Termos correspondentes"),
+        "revisao": tables.status_column("Revisão"),
     },
     hide_index=True,
 )
-ui.download_csv_button(tabela, "ocorrencias_classificadas.csv")
+ui.download_csv_button(table, "triagem_ocorrencias.csv")
 
 ui.method_expander(
     """
-- **Classificador por keywords:** a categoria com mais termos correspondentes vence;
-  a confiança cresce com o nº de matches.
-- **Produção:** modelo supervisionado (ex.: embeddings + classificador) treinado em
-  histórico rotulado, sempre com **revisão humana** para exceções críticas.
-- **IA não decide sozinha** penalidades, pagamentos ou exceções críticas.
+- O texto passa por normalização NFKD, remoção de acentos e comparação de termos
+  e frases com limites de palavra.
+- A regra com mais correspondências sugere categoria e fila; empate, nenhum termo
+  e prioridade alta exigem revisão humana explícita.
+- A saída é somente uma sugestão. Não aplica penalidade, autoriza pagamento,
+  bloqueia entrega nem encerra ocorrência.
 """
 )
 ui.provenance_expander(
-    fonte="Exemplos curados de ocorrências (case 07), expandidos.",
-    tipo="Sintético; textos e rótulos curados.",
-    producao="Modelo NLP supervisionado + validação humana.",
-    limitacoes="Sem ML treinado; regras não cobrem variações de linguagem.",
+    fonte="Dez exemplos curados de ocorrências do case 07, sem reamostragem.",
+    tipo="Amostra sintética e rotulada para desenvolvimento.",
+    producao="Regras versionadas, revisão humana, trilha de decisão e monitoramento.",
+    limitacoes=(
+        "Sem conjunto de teste separado; concordância interna pode refletir ajuste às mesmas "
+        "dez frases e não demonstra generalização."
+    ),
 )
 ui.demo_cta(next_demo_path="pages/ship_from_store.py")
 ui.footer()

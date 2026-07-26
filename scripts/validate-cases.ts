@@ -43,7 +43,7 @@ loadLocalEnv(".env.local");
 loadLocalEnv(".env");
 
 const require = createRequire(import.meta.url);
-const { CASE_DEMO_SLUGS, CONTENT, DEMOS_BASE_URL, demoUrl, LUCIDE_ICON_NAMES } =
+const { CASE_DEMO_SLUGS, CONTENT, demoUrl, LUCIDE_ICON_NAMES } =
   require("../data/content") as typeof import("../data/content");
 
 const EXPECTED_DEMO_COUNT = 10;
@@ -170,24 +170,12 @@ for (const c of CASES_DEMONSTRAVEIS) {
   }
 }
 
-// 6. Consistência linkDemo ↔ CASE_DEMO_SLUGS (só quando base URL está definida).
-const isCiOrProduction = process.env.CI === "true" || process.env.NODE_ENV === "production";
-
-if (DEMOS_BASE_URL) {
-  for (const c of CASES_DEMONSTRAVEIS) {
-    const expected = demoUrl(CASE_DEMO_SLUGS[c.id] ?? "");
-    if (c.linkDemo !== expected) {
-      fail(`Case "${c.id}" linkDemo="${c.linkDemo}" difere do esperado "${expected}".`);
-    }
+// 6. Toda prova pública aponta para sua rota React interna.
+for (const c of CASES_DEMONSTRAVEIS) {
+  const expected = demoUrl(CASE_DEMO_SLUGS[c.id] ?? "");
+  if (c.linkDemo !== expected || !c.linkDemo.startsWith("/provas/")) {
+    fail(`Case "${c.id}" linkDemo="${c.linkDemo}" difere da rota React "${expected}".`);
   }
-} else if (isCiOrProduction) {
-  fail(
-    "NEXT_PUBLIC_DEMOS_BASE_URL não definida. Env obrigatória em CI/produção para links de demo funcionarem.",
-  );
-} else {
-  warn(
-    "NEXT_PUBLIC_DEMOS_BASE_URL não definida: pulando checagem de linkDemo. Defina no build para links de demo funcionarem.",
-  );
 }
 
 // 7. Catálogo é único e cada rota publicada aponta para uma page existente.
