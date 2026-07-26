@@ -33,7 +33,7 @@ export default async function DemoPage({ params }: DemoPageProps) {
       className="min-h-screen bg-background px-0 py-0 sm:px-5 sm:py-5 lg:px-8 lg:py-8"
     >
       <div className="mx-auto max-w-[1280px] overflow-hidden border-border bg-card sm:border">
-        <DemoShell snapshot={snapshot} />
+        <DemoShell snapshot={snapshot} surface="route" />
       </div>
     </main>
   );

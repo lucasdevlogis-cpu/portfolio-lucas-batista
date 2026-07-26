@@ -81,6 +81,7 @@ function SignatureCase({ caseItem, index }: { caseItem: Case; index: number }) {
               modalCopy={DEMO_MODAL_COPY}
               defaultLabel={labels.caseDemoLabel}
               unavailableLabel={labels.caseDemoUnavailableLabel}
+              surface="featured_modal"
               className="h-12 min-h-12 flex-1 justify-between px-4"
               icon={<PlayCircle className="size-4" aria-hidden />}
             />

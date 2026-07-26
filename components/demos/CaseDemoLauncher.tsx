@@ -4,7 +4,7 @@ import { useState, useSyncExternalStore, type ComponentType, type ReactNode } fr
 
 import { Button } from "@/components/ui/button";
 import type { Case, DemoModalCopy } from "@/data/content";
-import { analytics } from "@/lib/analytics";
+import type { ProofSurface } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 import type { DemoModalProps } from "./DemoModal";
@@ -27,6 +27,7 @@ interface CaseDemoLauncherProps {
   labelOverride?: string;
   defaultLabel: string;
   unavailableLabel: string;
+  surface: Extract<ProofSurface, "featured_modal" | "library_modal">;
 }
 
 export function CaseDemoLauncher({
@@ -37,6 +38,7 @@ export function CaseDemoLauncher({
   labelOverride,
   defaultLabel,
   unavailableLabel,
+  surface,
 }: CaseDemoLauncherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [Modal, setModal] = useState<ComponentType<DemoModalProps> | null>(null);
@@ -48,7 +50,6 @@ export function CaseDemoLauncher({
 
   const handleOpen = async () => {
     if (!hasDemo || !isHydrated) return;
-    analytics.demoOpen(caseItem.titulo);
     if (!Modal) {
       const demoModule = await import("@/components/demos/DemoModal");
       setModal(() => demoModule.DemoModal);
@@ -74,7 +75,13 @@ export function CaseDemoLauncher({
         {visibleLabel}
       </Button>
       {Modal ? (
-        <Modal isOpen={isOpen} onClose={setIsOpen} caseItem={caseItem} copy={modalCopy} />
+        <Modal
+          isOpen={isOpen}
+          onClose={setIsOpen}
+          caseItem={caseItem}
+          copy={modalCopy}
+          surface={surface}
+        />
       ) : null}
     </>
   );

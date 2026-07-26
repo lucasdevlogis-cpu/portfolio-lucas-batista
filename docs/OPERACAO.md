@@ -59,6 +59,20 @@ npm run verify:full
 `verify:full` cobre código, contratos, build, smoke, E2E e auditoria npm. Para
 uma mudança visual, execute também os dois QAs de navegador e o Lighthouse.
 
+## Analytics e privacidade
+
+Quando a Vercel Analytics está habilitada, pageviews são agregadas e sem
+cookies. O aplicativo também está preparado para emitir abertura, engajamento
+e CTA das provas; a coleta desses eventos customizados depende da capacidade
+do plano. Cada evento leva exatamente duas propriedades controladas: slug +
+superfície ou slug + ação. Engajamento significa 30 segundos acumulados com aba
+visível e janela em foco; a duração não é enviada.
+
+O `beforeSend` remove query string e hash das pageviews. Não adicionar texto
+livre, email, URL/referrer, IDs, timestamps, duração exata, cookies,
+`localStorage` ou `sessionStorage` aos eventos. O rodapé mantém este disclosure
+visível ao visitante.
+
 ## Vercel
 
 Configuração esperada:

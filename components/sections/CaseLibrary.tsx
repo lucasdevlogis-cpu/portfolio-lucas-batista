@@ -173,6 +173,7 @@ export function CaseLibrary({
                     modalCopy={modalCopy}
                     defaultLabel={copy.demoLabel}
                     unavailableLabel={copy.unavailableLabel}
+                    surface="library_modal"
                     labelOverride={copy.demoLabel}
                     className="h-11 min-h-11 flex-1 px-3 lg:h-10 lg:min-h-10"
                     icon={<PlayCircle className="size-3.5" aria-hidden />}

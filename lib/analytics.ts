@@ -1,38 +1,84 @@
+import type { ReactDemoSlug } from "@/lib/demo-contract";
+
+export const PROOF_SURFACES = ["featured_modal", "library_modal", "route"] as const;
+export const PROOF_ACTIONS = ["open_full_proof", "contact"] as const;
+
+export type ProofSurface = (typeof PROOF_SURFACES)[number];
+export type ProofAction = (typeof PROOF_ACTIONS)[number];
+
 type AnalyticsEvent =
   | "cta_click"
-  | "demo_open"
   | "case_filter"
-  | "contact_click"
-  | "cv_download"
-  | "github_click"
-  | "linkedin_click";
+  | "linkedin_click"
+  | "proof_open"
+  | "proof_engaged"
+  | "proof_cta_click";
 
-interface EventProperties {
-  [key: string]: string | number | boolean;
+type EventProperties = Record<string, string | number | boolean | null>;
+
+interface VercelEventPayload {
+  name: AnalyticsEvent;
+  data: EventProperties;
+}
+
+export interface AnalyticsBeforeSendEvent {
+  type: "pageview" | "event";
+  url: string;
 }
 
 declare global {
   interface Window {
-    va?: (command: "event", name: string, properties?: EventProperties) => void;
+    va?: (event: "beforeSend" | "event" | "pageview", properties?: unknown) => void;
+    vaq?: [string, unknown?][];
   }
 }
 
-export function trackEvent(event: AnalyticsEvent, properties: EventProperties = {}) {
+function dispatchEvent(name: AnalyticsEvent, data: EventProperties) {
   if (typeof window === "undefined") return;
 
+  const payload: VercelEventPayload = { name, data };
+
   try {
-    window.va?.("event", event, properties);
+    if (window.va) {
+      window.va("event", payload);
+      return;
+    }
+
+    window.vaq ??= [];
+    window.vaq.push(["event", payload]);
   } catch {
-    // Silencioso em caso de bloqueador ou indisponibilidade
+    // Bloqueadores ou indisponibilidade não podem interromper a experiência.
+  }
+}
+
+export function sanitizeAnalyticsUrl<T extends AnalyticsBeforeSendEvent>(event: T): T {
+  try {
+    const fallbackOrigin =
+      typeof window === "undefined" ? "https://portfolio.invalid" : window.location.origin;
+    const sanitized = new URL(event.url, fallbackOrigin);
+    sanitized.search = "";
+    sanitized.hash = "";
+
+    const url =
+      event.url.startsWith("http://") || event.url.startsWith("https://")
+        ? sanitized.toString()
+        : sanitized.pathname;
+
+    return { ...event, url };
+  } catch {
+    return { ...event, url: event.url.split(/[?#]/, 1)[0] ?? "/" };
   }
 }
 
 export const analytics = {
-  ctaClick: (label: string, location: string) => trackEvent("cta_click", { label, location }),
-  demoOpen: (caseTitle: string) => trackEvent("demo_open", { case: caseTitle }),
-  caseFilter: (category: string) => trackEvent("case_filter", { category }),
-  contactClick: (channel: string) => trackEvent("contact_click", { channel }),
-  cvDownload: () => trackEvent("cv_download"),
-  githubClick: (location: string) => trackEvent("github_click", { location }),
-  linkedinClick: (location: string) => trackEvent("linkedin_click", { location }),
+  ctaClick: () => dispatchEvent("cta_click", { action: "contact", surface: "header" }),
+  caseFilter: (category: string) => dispatchEvent("case_filter", { category, surface: "library" }),
+  linkedinClick: () =>
+    dispatchEvent("linkedin_click", { action: "open_profile", surface: "header" }),
+  proofOpen: (proofSlug: ReactDemoSlug, surface: ProofSurface) =>
+    dispatchEvent("proof_open", { proof_slug: proofSlug, surface }),
+  proofEngaged: (proofSlug: ReactDemoSlug, surface: ProofSurface) =>
+    dispatchEvent("proof_engaged", { proof_slug: proofSlug, surface }),
+  proofCtaClick: (proofSlug: ReactDemoSlug, action: ProofAction) =>
+    dispatchEvent("proof_cta_click", { proof_slug: proofSlug, action }),
 };

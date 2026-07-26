@@ -23,6 +23,8 @@ export const REACT_DEMO_SLUGS = [
   "classificador_ocorrencias",
 ] as const;
 
+export type ReactDemoSlug = (typeof REACT_DEMO_SLUGS)[number];
+
 export type DemoTone = "accent" | "danger" | "warning" | "success";
 export type DemoChartTone = DemoTone | "neutral";
 
@@ -102,7 +104,7 @@ export interface DemoGovernance {
 }
 
 export interface DemoSnapshot {
-  slug: string;
+  slug: ReactDemoSlug;
   caseId: string;
   title: string;
   question: string;
@@ -116,7 +118,7 @@ export interface DemoSnapshot {
   governance?: DemoGovernance;
 }
 
-export const DEMO_SNAPSHOTS: Record<string, DemoSnapshot> = {
+export const DEMO_SNAPSHOTS: Record<ReactDemoSlug, DemoSnapshot> = {
   precificacao_frete: freightSnapshot as DemoSnapshot,
   mini_torre_controle: towerSnapshot as DemoSnapshot,
   cvrp_urbano: cvrpSnapshot as DemoSnapshot,
@@ -129,8 +131,12 @@ export const DEMO_SNAPSHOTS: Record<string, DemoSnapshot> = {
   classificador_ocorrencias: classificadorSnapshot as DemoSnapshot,
 };
 
+export function isReactDemoSlug(slug: string): slug is ReactDemoSlug {
+  return REACT_DEMO_SLUGS.includes(slug as ReactDemoSlug);
+}
+
 export function getDemoSnapshot(slug: string): DemoSnapshot | null {
-  return DEMO_SNAPSHOTS[slug] ?? null;
+  return isReactDemoSlug(slug) ? DEMO_SNAPSHOTS[slug] : null;
 }
 
 export function isAnchorDemoSlug(slug: string): boolean {

@@ -65,24 +65,22 @@ continuam separados para deixar a intenção explícita.
 
 ## Última execução local
 
-Rodada de 26/07/2026 no fechamento da P1.7 e retirada do último iframe público:
+Rodada de 26/07/2026 após a instrumentação privacy-first das provas:
 
 | Evidência                          | Resultado                                      |
 | ---------------------------------- | ---------------------------------------------- |
 | `npm run verify`                   | aprovado; pytest 58/58 e build com 17 páginas  |
 | `npm run demos:validate`           | 10 snapshots React válidos                     |
 | `npm run demos:smoke`              | 13/13                                          |
-| `npm run test:e2e`                 | 30/30 no Chromium                              |
+| `npm run test:e2e`                 | 36/36; 6/6 específicos de analytics            |
 | `npm run qa:visual`                | landing, modais e provas em 375, 768 e 1440 px |
 | `npm run qa:streamlit`             | 12 superfícies desktop do laboratório          |
 | Lighthouse desktop                 | 100/100/100/100                                |
-| Lighthouse mobile local            | mediana 88/100/100/100; `main` local obteve 86 |
+| Lighthouse mobile local            | 92/100/100/100                                 |
 | `npm audit --audit-level=moderate` | 0 vulnerabilidades                             |
 
-O Lighthouse mobile local não atingiu o gate de 90 nesta máquina. A comparação
-controlada, no mesmo ambiente e em três execuções, ficou acima da `main`
-inalterada (88 contra 86), portanto não caracteriza regressão da P1.7. O aceite
-público continua condicionado ao baseline de produção e aos checks da PR.
+O passe local anterior da P1.7 oscilou abaixo do gate, mas a rodada final desta
+entrega atingiu 92 em performance mobile sem mudança de limiar ou exceção.
 
 ## Registro histórico público — antes do fechamento da P1
 
@@ -281,6 +279,30 @@ termo e mantém zero decisões autônomas.
 
 A inspeção visual encontrou e corrigiu o corte do rótulo “Endereço Incorreto”
 no gráfico horizontal antes do aceite.
+
+### P2.1 — Instrumentação privacy-first das provas
+
+Concluída em 26/07/2026 no código. O contrato usa três eventos — abertura,
+engajamento e CTA — com exatamente duas propriedades controladas. Engajamento
+exige 30 segundos acumulados com aba visível e janela em foco; a aplicação não
+envia duração, texto livre, contato, URL, query, identificador ou dados das
+provas.
+
+| Evidência                          | Resultado                                   |
+| ---------------------------------- | ------------------------------------------- |
+| `npm run verify:full`              | aprovado                                    |
+| `npm run test:e2e`                 | 36/36; analytics 6/6                        |
+| `npm run demos:smoke`              | 13/13                                       |
+| `npm audit --audit-level=moderate` | 0 vulnerabilidades                          |
+| `npm run qa:visual`                | 375, 768 e 1440 px aprovados                |
+| Lighthouse desktop                 | 100/100/100/100                             |
+| Lighthouse mobile                  | 92/100/100/100                              |
+| privacidade                        | slug + superfície/ação; query e hash limpos |
+
+Pageviews agregadas permanecem disponíveis quando Vercel Analytics está
+habilitada. A coleta dos três custom events depende da capacidade do plano do
+provedor; o código e os testes não exigem contratação, e o dashboard não será
+declarado operacional sem evidência remota.
 
 O baseline público aceito desta refatoração é 100/100/100/100 em desktop e
 96/100/100/100 em mobile, usando a mediana de três execuções. Resultados locais

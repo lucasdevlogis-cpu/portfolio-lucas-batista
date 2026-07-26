@@ -42,15 +42,19 @@ obrigatória sem alegar NLP, modelo treinado ou confiança calibrada.
 ## P2 — diferenciação
 
 - [ ] criar uma visão comparativa entre provas por decisão e método;
-- [ ] instrumentar abertura, permanência e CTA das provas;
+- [x] instrumentar abertura, permanência e CTA das provas com payload fechado e
+      testes de privacidade;
+- [ ] confirmar custom events no dashboard quando o plano do provedor oferecer
+      essa capacidade; pageviews seguem disponíveis sem dependência paga;
 - [ ] publicar o case de KPIs de CD apenas com narrativa causal completa;
 - [x] atualizar OG image, ícone e CV para o mesmo sistema visual;
 - [ ] avaliar domínio próprio após aprovação do produto.
 
 ## Próximos passos imediatos
 
-1. Instrumentar abertura das provas e CTAs sem coletar dados sensíveis.
-2. Criar a visão comparativa entre provas por decisão e método.
+1. Criar a visão comparativa entre provas por decisão e método.
+2. Confirmar a capacidade de custom events do ambiente Vercel sem contratar ou
+   acoplar uma dependência paga obrigatória.
 3. Definir a narrativa causal e o contrato de dados do case de KPIs de CD.
 
 ## Critério de pronto do P0
