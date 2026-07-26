@@ -42,13 +42,68 @@ test.describe("Modal de demo", () => {
     await expect(dialog).not.toBeVisible();
   });
 
-  test("mantém demos secundárias em iframe Streamlit", async ({ page }) => {
+  test("abre prova migrada (Promessa de CEP) inline sem iframe", async ({ page }) => {
     await openCases(page);
     const item = page
       .getByTestId("case-library-item")
       .filter({ hasText: "Promessa de Entrega por CEP" });
     await item.scrollIntoViewIfNeeded();
     await item.getByRole("button", { name: /Explorar case: Promessa de Entrega por CEP/i }).click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator("iframe")).toHaveCount(0);
+    await expect(dialog.getByText("Região de maior risco")).toBeVisible();
+    await expect(dialog.getByRole("link", { name: /Abrir em nova aba/i })).toHaveAttribute(
+      "href",
+      "/provas/promessa_cep",
+    );
+  });
+
+  test("abre prova migrada (Ship from Store) inline sem iframe", async ({ page }) => {
+    await openCases(page);
+    const item = page
+      .getByTestId("case-library-item")
+      .filter({ hasText: "Ship from Store / Origem Ótima" });
+    await item.scrollIntoViewIfNeeded();
+    await item.getByRole("button", { name: /Explorar case: Ship from Store/i }).click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator("iframe")).toHaveCount(0);
+    await expect(dialog.getByText("Economia vs baseline")).toBeVisible();
+    await expect(dialog.getByRole("link", { name: /Abrir em nova aba/i })).toHaveAttribute(
+      "href",
+      "/provas/ship_from_store",
+    );
+  });
+
+  test("abre prova migrada (Rede Inter-hubs) inline sem iframe", async ({ page }) => {
+    await openCases(page);
+    const item = page
+      .getByTestId("case-library-item")
+      .filter({ hasText: "Rede Inter-hubs / Corredores" });
+    await item.scrollIntoViewIfNeeded();
+    await item.getByRole("button", { name: /Explorar case: Rede Inter-hubs/i }).click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator("iframe")).toHaveCount(0);
+    await expect(dialog.getByText("Prova migrada · leitura rápida")).toBeVisible();
+    await expect(dialog.getByText("Melhor corredor")).toBeVisible();
+    await expect(dialog.getByRole("link", { name: /Abrir em nova aba/i })).toHaveAttribute(
+      "href",
+      "/provas/rede_interhubs",
+    );
+  });
+
+  test("mantém demos secundárias em iframe Streamlit", async ({ page }) => {
+    await openCases(page);
+    const item = page
+      .getByTestId("case-library-item")
+      .filter({ hasText: "Auditoria de Endereço e Geocoding" });
+    await item.scrollIntoViewIfNeeded();
+    await item.getByRole("button", { name: /Explorar case: Auditoria de Endereço/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
@@ -88,9 +143,9 @@ test.describe("Modal de demo", () => {
 
     const item = page
       .getByTestId("case-library-item")
-      .filter({ hasText: "Promessa de Entrega por CEP" });
+      .filter({ hasText: "Auditoria de Endereço e Geocoding" });
     await item.scrollIntoViewIfNeeded();
-    await item.getByRole("button", { name: /Explorar case: Promessa de Entrega por CEP/i }).click();
+    await item.getByRole("button", { name: /Explorar case: Auditoria de Endereço/i }).click();
 
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();

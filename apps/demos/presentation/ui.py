@@ -47,7 +47,6 @@ def configure_app() -> None:
     """Configura o entrypoint uma única vez antes de criar a navegação."""
     st.set_page_config(
         page_title="Demos de logística | Lucas Batista",
-        page_icon="🚚",
         layout="wide",
         initial_sidebar_state="collapsed" if is_embed() else "expanded",
     )
@@ -109,6 +108,7 @@ def _inject_css(embed: bool) -> None:
       --demo-dark-accent: {tokens.TEXT_ON_DARK_ACCENT};
       --demo-body: {tokens.FONT_FAMILY};
       --demo-heading: {tokens.HEADING_FONT_FAMILY};
+      --demo-mono: {tokens.MONO_FONT_FAMILY};
     }}
     """
     embed_rules = (
@@ -126,7 +126,7 @@ def _inject_css(embed: bool) -> None:
         else ""
     )
     st.markdown(
-        f"<style>{variables}\n{stylesheet}\n{embed_rules}</style>",
+        f"<style>{stylesheet}\n{variables}\n{embed_rules}</style>",
         unsafe_allow_html=True,
     )
 

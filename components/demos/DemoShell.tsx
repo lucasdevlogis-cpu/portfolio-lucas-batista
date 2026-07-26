@@ -1,3 +1,4 @@
+import { ANCHOR_DEMO_SLUGS } from "@/lib/demo-catalog";
 import type { DemoSnapshot } from "@/lib/demo-contract";
 
 import { ChartCard } from "@/components/demos/ChartCard";
@@ -17,30 +18,37 @@ export function DemoShell({
   return (
     <div className={compact ? "demo-shell demo-shell-compact" : "demo-shell"}>
       {!compact ? <DemoHero snapshot={snapshot} /> : null}
-      <div className="space-y-5 p-4 sm:p-6">
+      <div className="space-y-4 p-3 sm:p-5 lg:p-6">
         {compact ? (
-          <div className="rounded-xl bg-surface-dark px-4 py-4 text-white sm:px-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-on-dark-accent">
-              Demo âncora · leitura rápida
+          <div className="border-l-4 border-primary bg-surface-dark px-4 py-5 text-white sm:px-6">
+            <p className="font-mono text-[0.65rem] font-bold uppercase tracking-[0.14em] text-primary">
+              {ANCHOR_DEMO_SLUGS.includes(snapshot.slug)
+                ? "Demo âncora · leitura rápida"
+                : "Prova migrada · leitura rápida"}
             </p>
-            <p className="mt-2 font-heading text-2xl font-bold">{snapshot.title}</p>
+            <p className="mt-3 font-heading text-3xl font-black uppercase leading-none tracking-[-0.035em]">
+              {snapshot.title}
+            </p>
           </div>
         ) : null}
         <KpiRow kpis={snapshot.kpis} />
-        <div className="grid gap-5 lg:grid-cols-2">
+        <div className="grid gap-4 lg:grid-cols-2">
           {snapshot.charts.map((chart) => (
             <ChartCard key={chart.id} chart={chart} />
           ))}
         </div>
         {snapshot.map ? (
           <MapCard
+            key={snapshot.slug}
             mapData={snapshot.map}
             title={
               snapshot.map.kind === "routes"
                 ? "Rotas por veículo"
                 : snapshot.map.kind === "network"
                   ? "Corredores e origens"
-                  : "Status por região"
+                  : snapshot.map.kind === "flows"
+                    ? "Alocação origem → destino"
+                    : "Status por região"
             }
           />
         ) : null}

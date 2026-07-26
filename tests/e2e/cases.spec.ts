@@ -61,8 +61,8 @@ test.describe("Cases e biblioteca", () => {
 
   test("cards âncora usam numeração do ID e CTAs específicos", async ({ page }) => {
     const cards = page.getByTestId("case-card");
-    await expect(cards.nth(2)).toContainText("Case 08");
-    await expect(cards.nth(2)).not.toContainText("Case 03");
+    await expect(cards.nth(2)).toContainText("08 / P0");
+    await expect(cards.nth(2)).not.toContainText("03 / P0");
 
     await expect(
       page.getByRole("button", {

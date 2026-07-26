@@ -1,5 +1,6 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { MotionProvider } from "@/components/providers/MotionProvider";
 import { ContactPanel } from "@/components/sections/ContactPanel";
 import { EvidenceStrip } from "@/components/sections/EvidenceStrip";
 import { ExecutiveHero } from "@/components/sections/ExecutiveHero";
@@ -10,7 +11,7 @@ import { CONTENT } from "@/data/content";
 
 export function HomePage() {
   return (
-    <>
+    <MotionProvider>
       <Header
         name={CONTENT.pessoal.nomeCurto}
         navLinks={CONTENT.nav}
@@ -28,6 +29,6 @@ export function HomePage() {
       <TrajectoryBoard />
       <ContactPanel />
       <Footer />
-    </>
+    </MotionProvider>
   );
 }

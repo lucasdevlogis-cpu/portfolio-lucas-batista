@@ -340,7 +340,7 @@ export const CONTENT: Content = {
     localizacao: "São Paulo/SP",
     tempoResposta: "resposta em até 24h (dias úteis)",
     empresasLabel: "Passagem por",
-    stackTags: ["Python", "SQL", "Power BI", "Streamlit", "IA aplicada"],
+    stackTags: ["Python", "SQL", "Power BI", "Next.js", "IA aplicada"],
     empresasResumo: [
       { nome: "GRUPO SBF", abreviacao: "Centauro e Nike" },
       { nome: "GRUPO NOS", abreviacao: "Shell Select e OXXO" },
@@ -390,15 +390,15 @@ export const CONTENT: Content = {
       valor: "10",
       label: "demos navegáveis",
       detalhe:
-        "Cases em Streamlit com contexto de negócio, métrica, decisão e limitação declarada.",
+        "Três provas React e sete laboratórios analíticos com decisão, métrica e limitação declarada.",
     },
   ],
 
   recruiterBrief: {
     eyebrow: "Perfil em 60 segundos",
-    titulo: "O que um headhunter precisa entender rápido",
+    titulo: "O que sustenta o perfil",
     resumo:
-      "Portfólio reorganizado como dossiê de fit: evidências de julgamento operacional, clareza analítica, capacidade de prototipagem e comunicação com diretoria.",
+      "Julgamento operacional, clareza analítica, capacidade de prototipagem e comunicação executiva — apresentados como evidência, não como promessa.",
     itens: [
       {
         titulo: "Operação com resultado",
@@ -410,7 +410,7 @@ export const CONTENT: Content = {
         titulo: "Entrega demonstrável",
         descricao:
           "Transforma hipóteses em dashboards, simuladores e demos navegáveis, com limites e premissas declarados.",
-        evidencia: `${CASE_COUNT} cases publicados em Streamlit + Next.js`,
+        evidencia: `${CASE_COUNT} provas navegáveis · 3 experiências React`,
       },
       {
         titulo: "Comunicação executiva",
@@ -529,8 +529,9 @@ export const CONTENT: Content = {
 
   contactLinks: {
     eyebrow: "Contato",
-    titulo: "Contato profissional",
-    descricao: "LinkedIn ou email direto para oportunidades e triagem de perfil.",
+    titulo: "Vamos falar de operação",
+    descricao:
+      "LinkedIn ou email direto para oportunidades em operações, dados e inteligência logística.",
     linkedinLabel: "LinkedIn",
     linkedinValue: "Abrir perfil",
     emailLabel: "Email",
@@ -553,12 +554,12 @@ export const CONTENT: Content = {
   secoes: {
     cases: {
       eyebrow: "Prova técnica",
-      title: "Cases âncora para avaliação profissional",
+      title: "Três provas. Decisões reais.",
       subtitle:
-        "Três provas navegáveis para avaliar raciocínio operacional, modelagem analítica, comunicação executiva e capacidade de transformar problema em ferramenta.",
+        "Frete, controle operacional e roteirização apresentados como sistemas de decisão — com cálculo, visual e limite explícito.",
     },
     casesBiblioteca: {
-      title: "Biblioteca complementar de evidências",
+      title: "Índice técnico de evidências",
       subtitle:
         "Mais demos por domínio logístico. A biblioteca amplia a leitura de stack, repertório e profundidade técnica.",
     },

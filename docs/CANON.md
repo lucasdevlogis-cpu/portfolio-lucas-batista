@@ -4,7 +4,7 @@ Atualizado em 21/07/2026.
 
 ## Objetivo
 
-O portfólio é um casebook técnico _headhunter-first_. Em até 60 segundos deve
+O portfólio é um dossiê operacional _headhunter-first_. Em até 60 segundos deve
 responder:
 
 1. Quem é Lucas e qual posição faz sentido?
@@ -13,7 +13,9 @@ responder:
 4. Como entrar em contato?
 
 Não é landing comercial, currículo genérico, catálogo de tecnologias ou
-dashboard sem decisão associada.
+dashboard sem decisão associada. Seu posicionamento visual canônico é
+**Executivo Brutalista Refinado**: escuro, preciso, tipográfico e orientado a
+evidência.
 
 ## Experiência canônica
 
@@ -35,7 +37,7 @@ A navegação pública usa `Perfil · Provas · Trajetória · Contato`.
 | Grupo          | Quantidade | Renderização                                     |
 | -------------- | ---------: | ------------------------------------------------ |
 | Âncoras        |          3 | React/Next em `/provas/{slug}` e dentro do modal |
-| Complementares |          7 | Streamlit em iframe ou nova aba                  |
+| Complementares |          7 | Streamlit como laboratório durante a migração    |
 | Roadmap        |          1 | conteúdo editorial, sem link publicado           |
 
 Âncoras: precificação de frete, torre de controle e CVRP urbano.
@@ -64,7 +66,21 @@ Arquivos gerados não devem ser editados manualmente.
 - A landing é seletiva; profundidade fica nas provas.
 - Dados são sintéticos, públicos ou anonimizados.
 - O modal não replica um site nas âncoras: renderiza o shell React diretamente.
-- Streamlit continua como motor exploratório das complementares.
+- React/Next é a experiência pública desejada para as dez provas.
+- Streamlit é laboratório técnico e fallback transitório, não o framework
+  visual final do portfólio.
+- Python permanece como origem de cálculos e contratos; a interface React não
+  duplica regra de negócio.
+
+## Norte visual
+
+- Hanken Grotesk em títulos, Inter em leitura e JetBrains Mono em dados.
+- Fundo quase preto, grafite em superfícies, laranja em ação e verde em ganho.
+- Regras finas e cantos precisos substituem cards arredondados e sombras.
+- Números, screenshots e decisões têm prioridade sobre ícones decorativos.
+- Movimento é curto, funcional e respeita `prefers-reduced-motion`.
+- A referência fornecida pelo usuário está versionada em `design/references/`;
+  `design/design.md` registra decisões e desvios intencionais.
 
 ## Estado confirmado nesta refatoração
 

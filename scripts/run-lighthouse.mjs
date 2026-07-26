@@ -10,6 +10,7 @@ if (!mode || !["desktop", "mobile"].includes(mode)) {
 }
 
 const targetUrl = process.env.LIGHTHOUSE_URL ?? "http://localhost:3000";
+const allowNoIndex = process.env.LIGHTHOUSE_ALLOW_NOINDEX === "1";
 const targetHost = new URL(targetUrl).hostname;
 const defaultScope = ["localhost", "127.0.0.1"].includes(targetHost) ? "local" : "production";
 const outputScope = (process.env.LIGHTHOUSE_SCOPE ?? defaultScope).replace(/[^a-z0-9-]/gi, "-");
@@ -108,7 +109,17 @@ console.log(
   `Lighthouse ${mode} (mediana de ${requestedRuns}): ${JSON.stringify(scores)} - ${outputPath}`,
 );
 
-if (Object.values(scores).some((score) => score < 90)) {
-  console.error("Gate Lighthouse falhou: todas as categorias devem atingir pelo menos 90.");
+const gatedCategories = allowNoIndex
+  ? ["performance", "accessibility", "best-practices"]
+  : ["performance", "accessibility", "best-practices", "seo"];
+
+if (gatedCategories.some((category) => scores[category] < 90)) {
+  console.error(
+    `Gate Lighthouse falhou: ${gatedCategories.join(", ")} devem atingir pelo menos 90.`,
+  );
   process.exit(1);
+}
+
+if (allowNoIndex) {
+  console.log("SEO mantido como informativo: preview protegido pela Vercel usa noindex.");
 }

@@ -1,11 +1,13 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
-import { ANCHOR_DEMO_SLUGS, DEMO_SNAPSHOTS, type DemoSnapshot } from "../lib/demo-contract";
+import { DEMO_SNAPSHOTS, REACT_DEMO_SLUGS, type DemoSnapshot } from "../lib/demo-contract";
 
 const errors: string[] = [];
 const tones = new Set(["accent", "danger", "warning", "success"]);
 const chartKinds = new Set(["bar", "grouped-bar", "donut"]);
+const chartUnits = new Set(["BRL", "KM", "PERCENT", "TON"]);
+const mapKinds = new Set(["network", "points", "routes", "flows"]);
 const requiredStrings: (keyof DemoSnapshot)[] = [
   "slug",
   "caseId",
@@ -16,7 +18,7 @@ const requiredStrings: (keyof DemoSnapshot)[] = [
   "method",
 ];
 
-for (const slug of ANCHOR_DEMO_SLUGS) {
+for (const slug of REACT_DEMO_SLUGS) {
   const snapshot = DEMO_SNAPSHOTS[slug];
   if (!snapshot) {
     errors.push(`Snapshot ausente: ${slug}`);
@@ -56,6 +58,9 @@ for (const slug of ANCHOR_DEMO_SLUGS) {
     if (!chartKinds.has(chart.kind) || !chart.title?.trim()) {
       errors.push(`${slug}: gráfico ${chart.id || index + 1} inválido`);
     }
+    if (chart.unit && !chartUnits.has(chart.unit)) {
+      errors.push(`${slug}: gráfico ${chart.id || index + 1} com unidade inválida (${chart.unit})`);
+    }
     if (!Array.isArray(chart.data) || chart.data.length < 1) {
       errors.push(`${slug}: gráfico ${chart.id || index + 1} sem dados`);
     }
@@ -68,11 +73,17 @@ for (const slug of ANCHOR_DEMO_SLUGS) {
   if (!snapshot.map) {
     errors.push(`${slug}: mapa ausente`);
   } else if (
+    !mapKinds.has(snapshot.map.kind) ||
     snapshot.map.center.length !== 2 ||
     !snapshot.map.center.every(Number.isFinite) ||
     !Number.isFinite(snapshot.map.zoom)
   ) {
     errors.push(`${slug}: centro/zoom do mapa inválido`);
+  } else if (
+    snapshot.map.kind === "network" &&
+    (!snapshot.map.nodes?.length || !snapshot.map.edges?.length)
+  ) {
+    errors.push(`${slug}: mapa de rede sem nós ou corredores`);
   }
   const jsonPath = join(process.cwd(), "contracts", "demo-snapshots", `${slug}.json`);
   if (!existsSync(jsonPath)) {
@@ -86,4 +97,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`[validate-demo-contract] OK - ${ANCHOR_DEMO_SLUGS.length} snapshots âncora válidos.`);
+console.log(`[validate-demo-contract] OK - ${REACT_DEMO_SLUGS.length} snapshots React válidos.`);

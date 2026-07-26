@@ -14,7 +14,7 @@ from streamlit_folium import st_folium
 
 from presentation import tokens as brand
 
-_DEFAULT_TILES = "CartoDB positron"
+_DEFAULT_TILES = "CartoDB dark_matter"
 
 
 def base_map(
@@ -52,11 +52,11 @@ def _brand_icon(tipo: str, color: str) -> folium.DivIcon:
     icon_name = mapping.get(tipo.lower(), "circle")
     html = (
         f"<div style='"
-        f"background:{color};color:white;"
-        f"border-radius:50%;width:28px;height:28px;"
+        f"background:{color};color:{brand.SURFACE_DARK};"
+        f"border-radius:2px;width:28px;height:28px;"
         f"display:flex;align-items:center;justify-content:center;"
-        f"font-size:11px;border:2px solid white;"
-        f"box-shadow:0 4px 10px rgba(7,17,31,0.22);'>"
+        f"font-size:11px;border:2px solid {brand.SURFACE_DARK};"
+        f"box-shadow:0 6px 18px rgba(0,0,0,0.38);'>"
         f'<i class="fa fa-{icon_name}"></i></div>'
     )
     return folium.DivIcon(
@@ -146,11 +146,11 @@ def add_numbered_markers(
                 icon_anchor=(12, 12),
                 html=(
                     f"<div style='"
-                    f"background:{color};color:white;"
-                    f"border-radius:50%;width:24px;height:24px;"
+                    f"background:{color};color:{brand.SURFACE_DARK};"
+                    f"border-radius:2px;width:24px;height:24px;"
                     f"display:flex;align-items:center;justify-content:center;"
-                    f"font-size:11px;font-weight:900;border:2px solid white;"
-                    f"box-shadow:0 4px 10px rgba(17,24,39,0.28);'>"
+                    f"font-size:11px;font-weight:900;border:2px solid {brand.SURFACE_DARK};"
+                    f"box-shadow:0 5px 16px rgba(0,0,0,0.4);'>"
                     f"{label}</div>"
                 ),
             ),
@@ -347,11 +347,12 @@ def add_legend(
         position:fixed;
         {position_css}
         z-index:9999;
+        color:{brand.FOREGROUND};
         background:{brand.CARD};
         border:1px solid {brand.BORDER};
-        border-radius:8px;
+        border-radius:2px;
         padding:10px 12px;
-        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+        box-shadow:0 10px 28px rgba(0,0,0,0.32);
         font-family:{brand.FONT_FAMILY};
         line-height:1.4;
         max-width:220px;

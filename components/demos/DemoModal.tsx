@@ -33,17 +33,17 @@ export function DemoModal({ isOpen, onClose, caseItem, copy }: DemoModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="max-h-[92vh] max-w-6xl gap-0 overflow-hidden rounded-2xl border-border bg-card p-0 lg:max-w-7xl"
+        className="max-h-[94vh] max-w-6xl gap-0 overflow-hidden rounded-sm border-border bg-card p-0 shadow-premium lg:max-w-7xl"
         showCloseButton
         closeLabel={copy.closeLabel}
       >
         <DialogHeader className="border-b border-border px-5 py-4 sm:px-6">
           <div className="flex items-center justify-between gap-3 pr-8">
             <div className="min-w-0">
-              <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-warm-accent-contrast">
+              <p className="font-mono text-[0.68rem] font-bold uppercase tracking-[0.14em] text-primary">
                 {caseItem.categoria}
               </p>
-              <DialogTitle className="mt-1 font-heading text-xl font-bold leading-tight text-ink">
+              <DialogTitle className="mt-1 font-heading text-xl font-extrabold uppercase leading-tight text-foreground">
                 {caseItem.titulo}
               </DialogTitle>
             </div>
@@ -53,7 +53,7 @@ export function DemoModal({ isOpen, onClose, caseItem, copy }: DemoModalProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={copy.openExternalLabel}
-                className="inline-flex size-10 items-center justify-center rounded-lg text-accent-contrast hover:bg-editorial sm:hidden"
+                className="inline-flex size-10 items-center justify-center border border-border text-primary hover:bg-primary hover:text-primary-foreground sm:hidden"
               >
                 <ExternalLink className="size-4" aria-hidden />
               </a>
@@ -61,7 +61,7 @@ export function DemoModal({ isOpen, onClose, caseItem, copy }: DemoModalProps) {
                 href={openUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden min-h-11 items-center gap-1 text-xs font-bold text-accent-contrast hover:underline sm:inline-flex"
+                className="hidden min-h-11 items-center gap-1 font-mono text-[0.68rem] font-bold uppercase tracking-[0.08em] text-primary hover:underline sm:inline-flex"
               >
                 <ExternalLink className="size-3.5" aria-hidden />
                 {copy.openExternalLabel}
@@ -71,7 +71,7 @@ export function DemoModal({ isOpen, onClose, caseItem, copy }: DemoModalProps) {
           <DialogDescription className="sr-only">{caseItem.perguntaNegocio}</DialogDescription>
         </DialogHeader>
 
-        <div className="grid max-h-[calc(92vh-4.5rem)] overflow-y-auto lg:grid-cols-[22rem_1fr] lg:overflow-hidden">
+        <div className="grid max-h-[calc(94vh-4.5rem)] overflow-y-auto lg:grid-cols-[20rem_1fr] lg:overflow-hidden">
           <CaseContext caseItem={caseItem} labels={copy.context} />
 
           <div className="relative flex min-h-[300px] flex-col bg-card">

@@ -2,7 +2,9 @@ import { chromium } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
-const baseUrl = (process.env.QA_BASE_URL ?? "http://127.0.0.1:3000").replace(/\/$/, "");
+import { resolveQaUrls } from "./qa-url.mjs";
+
+const { baseUrl, entryUrl } = resolveQaUrls();
 const outDir = path.join(process.cwd(), ".artifacts", "qa", "viewports");
 const viewports = [
   { name: "1440x900", width: 1440, height: 900 },
@@ -36,7 +38,7 @@ for (const viewport of viewports) {
   });
   const page = await context.newPage();
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto(baseUrl, { waitUntil: "networkidle", timeout: 120_000 });
+  await page.goto(entryUrl, { waitUntil: "networkidle", timeout: 120_000 });
 
   await screenshot(page, `home-${viewport.name}`);
   await settle(page);
@@ -68,6 +70,10 @@ for (const slug of anchorSlugs) {
     });
     const page = await context.newPage();
     await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto(entryUrl, {
+      waitUntil: "domcontentloaded",
+      timeout: 120_000,
+    });
     await page.goto(`${baseUrl}/provas/${slug}`, {
       waitUntil: "networkidle",
       timeout: 120_000,

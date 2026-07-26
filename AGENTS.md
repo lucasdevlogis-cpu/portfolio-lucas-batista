@@ -38,7 +38,8 @@ repositório com main file `apps/demos/app.py`.
 - Tailwind CSS v4 em `app/globals.css`, sem `tailwind.config.ts`;
 - Base UI para dialog, Lucide para ícones;
 - ECharts e MapLibre carregados sob demanda nas 3 âncoras;
-- Streamlit 1.58, Pandas, Plotly, Folium e NumPy nas complementares;
+- Motion para revelações editoriais curtas e respeitando reduced motion;
+- Streamlit 1.58, Pandas, Plotly, Folium e NumPy no laboratório transitório;
 - Playwright, Lighthouse, ESLint, Ruff e pytest para qualidade.
 
 ## Fontes da verdade
@@ -88,7 +89,9 @@ Header → ExecutiveHero → EvidenceStrip → ProfileBrief
 ### Visual
 
 - Mobile-first em 375 px; também validar 768 e 1440 px.
-- Inter no corpo e Source Serif 4 nos títulos.
+- Hanken Grotesk nos títulos, Inter no corpo e JetBrains Mono em índices/dados.
+- Fundo grafite, laranja para ação e verde somente para resultado positivo.
+- Cantos entre 2 e 8 px; evitar cardismo e superfícies excessivamente arredondadas.
 - Evitar arco-íris, glassmorphism, gradientes e sombras sem função.
 - Cards apenas para agrupamento real; prefira divisores e espaço para listas.
 - Até 3 KPIs por prova; gráfico ou mapa principal, método e limitação visíveis.
@@ -154,8 +157,8 @@ Markdown ou Python.
 ## Proibições
 
 - Não commitar `.env.local`, `.vercel/`, `.venv/`, `.artifacts/` ou segredos.
-- Não reintroduzir Framer Motion, helpers mortos ou componentes arquivados sem
-  justificativa técnica e validação.
+- Não reintroduzir o pacote `framer-motion`, helpers mortos ou componentes
+  arquivados. O pacote `motion` é a dependência aprovada para movimento curto.
 - Não criar uma segunda fonte para slugs, tokens, copy ou cálculos.
 - Não usar exclusões amplas, reset destrutivo ou force-push.
 

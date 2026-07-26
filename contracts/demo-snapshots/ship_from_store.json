@@ -1,0 +1,510 @@
+{
+  "slug": "ship_from_store",
+  "caseId": "04-ship-from-store",
+  "title": "Ship from Store / Origem Ótima",
+  "question": "Quando uma loja ou hub supera o CD como origem do pedido?",
+  "decision": "Alocar pedidos para a origem com melhor trade-off custo-prazo respeitando capacidade.",
+  "limitation": "Sem estoque por SKU, rede viária ou regras fiscais; distância proxy.",
+  "method": "Score de decisão custo + prazo × peso com baseline sempre-CD e capacidade diária.",
+  "frameworks": [
+    "OMS / Fulfillment distribuído",
+    "Fleetbase (LSOS)"
+  ],
+  "kpis": [
+    {
+      "label": "Economia vs baseline",
+      "value": "R$ 8.884",
+      "tone": "success"
+    },
+    {
+      "label": "Atendidos por loja/hub",
+      "value": "62%",
+      "tone": "success"
+    },
+    {
+      "label": "Redução média de prazo",
+      "value": "+0,8 dia",
+      "tone": "success"
+    }
+  ],
+  "charts": [
+    {
+      "id": "pedidos-por-origem",
+      "title": "Pedidos por origem escolhida",
+      "kind": "bar",
+      "data": [
+        {
+          "label": "CD-SP-01",
+          "value": 23
+        },
+        {
+          "label": "HUB-MG-01",
+          "value": 13
+        },
+        {
+          "label": "LOJA-SP-01",
+          "value": 10
+        },
+        {
+          "label": "LOJA-RJ-01",
+          "value": 8
+        },
+        {
+          "label": "LOJA-PR-01",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "id": "economia-por-uf",
+      "title": "Economia por UF de destino",
+      "kind": "bar",
+      "unit": "BRL",
+      "data": [
+        {
+          "label": "MG",
+          "value": 4363.0
+        },
+        {
+          "label": "RJ",
+          "value": 2664.0
+        },
+        {
+          "label": "PR",
+          "value": 1783.0
+        },
+        {
+          "label": "SP",
+          "value": 74.0
+        }
+      ]
+    }
+  ],
+  "map": {
+    "kind": "flows",
+    "center": [
+      -22.0,
+      -46.0
+    ],
+    "zoom": 4,
+    "nodes": [
+      {
+        "id": "CD-SP-01",
+        "lat": -23.51,
+        "lon": -46.72
+      },
+      {
+        "id": "LOJA-SP-01",
+        "lat": -23.555,
+        "lon": -46.64
+      },
+      {
+        "id": "LOJA-RJ-01",
+        "lat": -22.91,
+        "lon": -43.18
+      },
+      {
+        "id": "HUB-MG-01",
+        "lat": -19.93,
+        "lon": -43.94
+      },
+      {
+        "id": "LOJA-PR-01",
+        "lat": -25.43,
+        "lon": -49.27
+      }
+    ],
+    "edges": [
+      {
+        "from": [
+          -25.43,
+          -49.27
+        ],
+        "to": [
+          -25.51907,
+          -49.22364
+        ],
+        "label": "PED-0001 · LOJA-PR-01",
+        "value": 297.0,
+        "tone": "accent"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -23.52445,
+          -46.69952
+        ],
+        "label": "PED-0006 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -19.93,
+          -43.94
+        ],
+        "to": [
+          -23.01421,
+          -43.1841
+        ],
+        "label": "PED-0037 · HUB-MG-01",
+        "value": 14.0,
+        "tone": "warm"
+      },
+      {
+        "from": [
+          -23.555,
+          -46.64
+        ],
+        "to": [
+          -23.52508,
+          -46.66216
+        ],
+        "label": "PED-0046 · LOJA-SP-01",
+        "value": 5.0,
+        "tone": "accent"
+      },
+      {
+        "from": [
+          -22.91,
+          -43.18
+        ],
+        "to": [
+          -22.79013,
+          -43.21671
+        ],
+        "label": "PED-0014 · LOJA-RJ-01",
+        "value": 320.0,
+        "tone": "accent"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -23.47248,
+          -46.65895
+        ],
+        "label": "PED-0055 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -23.59449,
+          -46.73239
+        ],
+        "label": "PED-0034 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -19.91767,
+          -43.93753
+        ],
+        "label": "PED-0049 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -25.43,
+          -49.27
+        ],
+        "to": [
+          -25.47171,
+          -49.30483
+        ],
+        "label": "PED-0013 · LOJA-PR-01",
+        "value": 304.0,
+        "tone": "accent"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -23.66538,
+          -46.63467
+        ],
+        "label": "PED-0058 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -23.64115,
+          -46.6685
+        ],
+        "label": "PED-0047 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -23.58038,
+          -46.69023
+        ],
+        "label": "PED-0051 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -19.93,
+          -43.94
+        ],
+        "to": [
+          -19.8846,
+          -43.84003
+        ],
+        "label": "PED-0032 · HUB-MG-01",
+        "value": 442.0,
+        "tone": "warm"
+      },
+      {
+        "from": [
+          -19.93,
+          -43.94
+        ],
+        "to": [
+          -20.05845,
+          -43.92685
+        ],
+        "label": "PED-0004 · HUB-MG-01",
+        "value": 421.0,
+        "tone": "warm"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -25.42715,
+          -49.12971
+        ],
+        "label": "PED-0053 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -23.555,
+          -46.64
+        ],
+        "to": [
+          -23.55456,
+          -46.54607
+        ],
+        "label": "PED-0018 · LOJA-SP-01",
+        "value": 11.0,
+        "tone": "accent"
+      },
+      {
+        "from": [
+          -23.555,
+          -46.64
+        ],
+        "to": [
+          -23.51143,
+          -46.67182
+        ],
+        "label": "PED-0009 · LOJA-SP-01",
+        "value": 2.0,
+        "tone": "accent"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -23.5759,
+          -46.76536
+        ],
+        "label": "PED-0007 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -19.93,
+          -43.94
+        ],
+        "to": [
+          -19.92982,
+          -43.86034
+        ],
+        "label": "PED-0041 · HUB-MG-01",
+        "value": 441.0,
+        "tone": "warm"
+      },
+      {
+        "from": [
+          -22.91,
+          -43.18
+        ],
+        "to": [
+          -22.92393,
+          -43.04657
+        ],
+        "label": "PED-0005 · LOJA-RJ-01",
+        "value": 333.0,
+        "tone": "accent"
+      },
+      {
+        "from": [
+          -19.93,
+          -43.94
+        ],
+        "to": [
+          -20.01954,
+          -43.96553
+        ],
+        "label": "PED-0044 · HUB-MG-01",
+        "value": 426.0,
+        "tone": "warm"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -23.49387,
+          -46.71281
+        ],
+        "label": "PED-0020 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -19.93,
+          -43.94
+        ],
+        "to": [
+          -19.81126,
+          -43.91958
+        ],
+        "label": "PED-0035 · HUB-MG-01",
+        "value": 443.0,
+        "tone": "warm"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -23.48352,
+          -46.73737
+        ],
+        "label": "PED-0059 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -25.43,
+          -49.27
+        ],
+        "to": [
+          -25.41735,
+          -49.20778
+        ],
+        "label": "PED-0026 · LOJA-PR-01",
+        "value": 293.0,
+        "tone": "accent"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -23.516,
+          -46.78496
+        ],
+        "label": "PED-0057 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -23.51,
+          -46.72
+        ],
+        "to": [
+          -23.61259,
+          -46.81563
+        ],
+        "label": "PED-0016 · CD-SP-01",
+        "value": 0.0,
+        "tone": "primary"
+      },
+      {
+        "from": [
+          -19.93,
+          -43.94
+        ],
+        "to": [
+          -23.05879,
+          -43.17208
+        ],
+        "label": "PED-0028 · HUB-MG-01",
+        "value": 10.0,
+        "tone": "warm"
+      },
+      {
+        "from": [
+          -22.91,
+          -43.18
+        ],
+        "to": [
+          -22.88821,
+          -43.23711
+        ],
+        "label": "PED-0010 · LOJA-RJ-01",
+        "value": 323.0,
+        "tone": "accent"
+      },
+      {
+        "from": [
+          -25.43,
+          -49.27
+        ],
+        "to": [
+          -25.33912,
+          -49.34367
+        ],
+        "label": "PED-0031 · LOJA-PR-01",
+        "value": 293.0,
+        "tone": "accent"
+      }
+    ]
+  }
+}
